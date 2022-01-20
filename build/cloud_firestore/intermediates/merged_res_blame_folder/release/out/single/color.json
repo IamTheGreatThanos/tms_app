@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/dauken/Desktop/flutter/europharm/build/cloud_firestore/intermediates/res/merged/release/color/common_google_signin_btn_text_light.xml",
+        "source": "/Users/dauken/.gradle/caches/transforms-2/files-2.1/0cd0c95cf645f00d921c59b7970ea12e/jetified-play-services-base-17.1.0/res/color/common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/Users/dauken/Desktop/flutter/europharm/build/cloud_firestore/intermediates/res/merged/release/color/common_google_signin_btn_tint.xml",
+        "source": "/Users/dauken/.gradle/caches/transforms-2/files-2.1/0cd0c95cf645f00d921c59b7970ea12e/jetified-play-services-base-17.1.0/res/color/common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "/Users/dauken/Desktop/flutter/europharm/build/cloud_firestore/intermediates/res/merged/release/color/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/dauken/.gradle/caches/transforms-2/files-2.1/0cd0c95cf645f00d921c59b7970ea12e/jetified-play-services-base-17.1.0/res/color/common_google_signin_btn_text_dark.xml"
+    }
+]

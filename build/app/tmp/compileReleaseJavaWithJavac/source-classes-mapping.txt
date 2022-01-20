@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/thousand/europharm/europharm_flutter/BuildConfig.java
+ com.thousand.europharm.europharm_flutter.BuildConfig

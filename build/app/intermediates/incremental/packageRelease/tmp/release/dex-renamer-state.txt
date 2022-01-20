@@ -1,0 +1,4 @@
+#Thu Jan 20 18:44:17 ALMT 2022
+base.0=/Users/dauken/Desktop/flutter/europharm/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
