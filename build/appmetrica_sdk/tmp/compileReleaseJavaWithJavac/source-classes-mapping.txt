@@ -1,4 +1,0 @@
-com/emallstudio/appmetrica_sdk/BuildConfig.java
- com.emallstudio.appmetrica_sdk.BuildConfig
-com/emallstudio/appmetrica_sdk/AppmetricaSdkPlugin.java
- com.emallstudio.appmetrica_sdk.AppmetricaSdkPlugin
