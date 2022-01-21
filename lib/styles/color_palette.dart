@@ -13,6 +13,8 @@ class ColorPalette {
   static const Color secondaryExtraLight = Color(0xFFD2C3EA);
   static const Color secondarySuperExtraLight = Color(0xFFF0EBF8);
   static const Color blue = Color(0xFF306CDC);
+  static const Color lightBlue = Color(0xFF83B1F4);
+  static const Color commonBlue = Color(0xFFE0E9FA);
   static const Color grey = Color(0xFFE5E5E5);
   static const Color commonGrey = Color(0xFFACACAC);
   static const Color darkGrey = Color(0xFF707070);

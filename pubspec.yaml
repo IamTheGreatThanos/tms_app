@@ -65,6 +65,11 @@ dependencies:
   alice: ^0.2.5
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  qr_code_scanner: ^0.6.1
+  camera: ^0.9.4+6
+  video_player: ^2.2.13
+  convex_bottom_bar: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

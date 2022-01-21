@@ -160,6 +160,16 @@ class S {
     );
   }
 
+  /// `Фото`
+  String get photo {
+    return Intl.message(
+      'Фото',
+      name: 'photo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Используя это приложение вы соглашаетесь с `
   String get policy_title {
     return Intl.message(
@@ -205,6 +215,76 @@ class S {
     return Intl.message(
       'Satti',
       name: 'satti',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Заказы`
+  String get orders {
+    return Intl.message(
+      'Заказы',
+      name: 'orders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Расписание`
+  String get schedule {
+    return Intl.message(
+      'Расписание',
+      name: 'schedule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Профиль`
+  String get user {
+    return Intl.message(
+      'Профиль',
+      name: 'user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `У вас нет заказов`
+  String get no_orders {
+    return Intl.message(
+      'У вас нет заказов',
+      name: 'no_orders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Пройти верификацию`
+  String get do_verification {
+    return Intl.message(
+      'Пройти верификацию',
+      name: 'do_verification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Получите доступ на исполнение заказов`
+  String get get_access {
+    return Intl.message(
+      'Получите доступ на исполнение заказов',
+      name: 'get_access',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Подтвердите свою личность`
+  String get confirm_identity {
+    return Intl.message(
+      'Подтвердите свою личность',
+      name: 'confirm_identity',
       desc: '',
       args: [],
     );
