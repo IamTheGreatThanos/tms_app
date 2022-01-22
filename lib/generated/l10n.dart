@@ -230,6 +230,66 @@ class S {
     );
   }
 
+  /// `Имя`
+  String get first_name {
+    return Intl.message(
+      'Имя',
+      name: 'first_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Фамилия`
+  String get last_name {
+    return Intl.message(
+      'Фамилия',
+      name: 'last_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Дата рождения`
+  String get date_of_birth {
+    return Intl.message(
+      'Дата рождения',
+      name: 'date_of_birth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ИИН`
+  String get iin {
+    return Intl.message(
+      'ИИН',
+      name: 'iin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Личные данные`
+  String get personal_data {
+    return Intl.message(
+      'Личные данные',
+      name: 'personal_data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Верификация`
+  String get verification {
+    return Intl.message(
+      'Верификация',
+      name: 'verification',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Расписание`
   String get schedule {
     return Intl.message(
@@ -250,6 +310,16 @@ class S {
     );
   }
 
+  /// `Следующий шаг`
+  String get next_step {
+    return Intl.message(
+      'Следующий шаг',
+      name: 'next_step',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `У вас нет заказов`
   String get no_orders {
     return Intl.message(
@@ -257,6 +327,16 @@ class S {
       name: 'no_orders',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Шаг {step} из 4`
+  String steps_count(Object step) {
+    return Intl.message(
+      'Шаг $step из 4',
+      name: 'steps_count',
+      desc: '',
+      args: [step],
     );
   }
 

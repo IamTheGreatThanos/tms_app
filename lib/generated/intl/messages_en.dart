@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m1(phoneNumber) =>
       "Сообщение отправлено на номер ${phoneNumber}";
 
+  static String m2(step) => "Шаг ${step} из 4";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "code_can_be_resend": m0,
@@ -33,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Подтвердите свою личность"),
         "create_password":
             MessageLookupByLibrary.simpleMessage("Придумайте пароль"),
+        "date_of_birth": MessageLookupByLibrary.simpleMessage("Дата рождения"),
         "do_verification":
             MessageLookupByLibrary.simpleMessage("Пройти верификацию"),
         "enter": MessageLookupByLibrary.simpleMessage("Вход"),
@@ -47,12 +50,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Поле не должно быть пустым!"),
         "firebase_messaging_token":
             MessageLookupByLibrary.simpleMessage("Firebase messaging token"),
+        "first_name": MessageLookupByLibrary.simpleMessage("Имя"),
         "get_access": MessageLookupByLibrary.simpleMessage(
             "Получите доступ на исполнение заказов"),
         "iDontHaveReferalCode": MessageLookupByLibrary.simpleMessage(
             "У меня нет реферального кода"),
+        "iin": MessageLookupByLibrary.simpleMessage("ИИН"),
         "inputErrorGeneral":
             MessageLookupByLibrary.simpleMessage("Проверьте ввод"),
+        "last_name": MessageLookupByLibrary.simpleMessage("Фамилия"),
         "last_part":
             MessageLookupByLibrary.simpleMessage("Ураа! Последний пункт"),
         "less_than_8_symbols":
@@ -61,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Message also contained a notification"),
         "message_data": MessageLookupByLibrary.simpleMessage("Message data"),
         "next": MessageLookupByLibrary.simpleMessage("Далее"),
+        "next_step": MessageLookupByLibrary.simpleMessage("Следующий шаг"),
         "no_data": MessageLookupByLibrary.simpleMessage("No data"),
         "no_orders": MessageLookupByLibrary.simpleMessage("У вас нет заказов"),
         "okay": MessageLookupByLibrary.simpleMessage("Окей"),
@@ -68,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Пароль"),
         "passwordNotMatching":
             MessageLookupByLibrary.simpleMessage("Пароли не совпадают"),
+        "personal_data": MessageLookupByLibrary.simpleMessage("Личные данные"),
         "phone_number": MessageLookupByLibrary.simpleMessage("Номер телефона"),
         "photo": MessageLookupByLibrary.simpleMessage("Фото"),
         "policy_title": MessageLookupByLibrary.simpleMessage(
@@ -92,10 +100,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_is_not_reachable": MessageLookupByLibrary.simpleMessage(
             "Server is not reachable. Please verify your internet connection and try again"),
         "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться"),
+        "steps_count": m2,
         "terms_of_use": MessageLookupByLibrary.simpleMessage("Terms of Use"),
         "title": MessageLookupByLibrary.simpleMessage("Europharm"),
         "understandably": MessageLookupByLibrary.simpleMessage("Понятно"),
         "user": MessageLookupByLibrary.simpleMessage("Профиль"),
+        "verification": MessageLookupByLibrary.simpleMessage("Верификация"),
         "with_your_help_were_doing_logistics_better":
             MessageLookupByLibrary.simpleMessage(
                 "С вашей помощью мы\nделаем логистику лучше.")

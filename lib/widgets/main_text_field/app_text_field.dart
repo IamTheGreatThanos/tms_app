@@ -234,7 +234,10 @@ class _AppTextFieldState extends State<AppTextField> {
                   filled: true,
                   isDense: true,
                   contentPadding: widget.contentPadding,
-                  hintStyle: widget.hintStyle ?? ProjectTextStyles.ui_16Medium,
+                  hintStyle: widget.hintStyle ??
+                      ProjectTextStyles.ui_16Medium.copyWith(
+                        color: ColorPalette.commonGrey,
+                      ),
                   hintText: widget.hintText,
                   counterText: '',
                   disabledBorder: widget.disabledBorder ??

@@ -1,6 +1,8 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
+import 'package:europharm_flutter/widgets/_utils/app_router.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -139,11 +141,42 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  MainButton(
-                    onTap: () {},
-                    title: S.of(context).do_verification,
-                    icon: "assets/images/svg/arrow_right.svg",
-                  )
+                  GestureDetector(
+                    onTap: () {
+                      AppRouter.push(
+                        context,
+                        PersonalInfoVerification(),
+                        rootNavigator: true,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: ColorPalette.blue,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Text(
+                              S.of(context).do_verification,
+                              style: ProjectTextStyles.ui_16Medium.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                              top: 3,
+                              right: 15,
+                              child: SvgPicture.asset(
+                                  "assets/images/svg/arrow_right.svg"))
+                        ],
+                      ),
+                    ),
+                  ),
+                  // MainButton(
+                  //   onTap: () {},
+                  //   title: S.of(context).do_verification,
+                  // )
                 ],
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
+import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +26,10 @@ class TopLevelBlocs extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => BottomNavBarCubit(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              BlocVerification()..add(EventInitialVerification()),
         )
       ],
       child: child,

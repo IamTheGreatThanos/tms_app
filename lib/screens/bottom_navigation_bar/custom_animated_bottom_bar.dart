@@ -47,6 +47,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
         ],
       ),
       child: SafeArea(
+        bottom: false,
         child: Container(
           width: double.infinity,
           height: containerHeight,
