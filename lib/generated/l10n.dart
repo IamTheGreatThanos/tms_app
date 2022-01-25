@@ -310,6 +310,36 @@ class S {
     );
   }
 
+  /// `Загрузить`
+  String get load_data {
+    return Intl.message(
+      'Загрузить',
+      name: 'load_data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ожидайте подтверждения\nаккаунта в течении 24 часов!`
+  String get wait_for_account_confirmation {
+    return Intl.message(
+      'Ожидайте подтверждения\nаккаунта в течении 24 часов!',
+      name: 'wait_for_account_confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Загрузите фотографии транспорта`
+  String get load_photo {
+    return Intl.message(
+      'Загрузите фотографии транспорта',
+      name: 'load_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Следующий шаг`
   String get next_step {
     return Intl.message(
@@ -475,6 +505,176 @@ class S {
     return Intl.message(
       'Окей',
       name: 'okay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Номер прав`
+  String get car_rights_number {
+    return Intl.message(
+      'Номер прав',
+      name: 'car_rights_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Срок истечения прав`
+  String get car_rights_expire {
+    return Intl.message(
+      'Срок истечения прав',
+      name: 'car_rights_expire',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Выберите тип транспорта`
+  String get car_type {
+    return Intl.message(
+      'Выберите тип транспорта',
+      name: 'car_type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Год выпуска транспорта`
+  String get car_issue_date {
+    return Intl.message(
+      'Год выпуска транспорта',
+      name: 'car_issue_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Габариты`
+  String get car_dimensions {
+    return Intl.message(
+      'Габариты',
+      name: 'car_dimensions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Государственный номер`
+  String get government_number {
+    return Intl.message(
+      'Государственный номер',
+      name: 'government_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Свидетельство о регистрации`
+  String get registration_certificate {
+    return Intl.message(
+      'Свидетельство о регистрации',
+      name: 'registration_certificate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сделайте фото `
+  String get make_photo {
+    return Intl.message(
+      'Сделайте фото ',
+      name: 'make_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `стороны водительского удостоверения`
+  String get side_of_rights {
+    return Intl.message(
+      'стороны водительского удостоверения',
+      name: 'side_of_rights',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `с лицевой `
+  String get facial_side {
+    return Intl.message(
+      'с лицевой ',
+      name: 'facial_side',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `с обратной `
+  String get back_side {
+    return Intl.message(
+      'с обратной ',
+      name: 'back_side',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `и `
+  String get and_from {
+    return Intl.message(
+      'и ',
+      name: 'and_from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сфотографировать`
+  String get photograph {
+    return Intl.message(
+      'Сфотографировать',
+      name: 'photograph',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сделайте фото с правами в руках, что бы ваше лицо было видно в кадре`
+  String get make_rights_with_face_photo {
+    return Intl.message(
+      'Сделайте фото с правами в руках, что бы ваше лицо было видно в кадре',
+      name: 'make_rights_with_face_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Сфотографируйте водительское удостоверение `
+  String get make_rights_photo {
+    return Intl.message(
+      'Сфотографируйте водительское удостоверение ',
+      name: 'make_rights_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `с лицевой стороны`
+  String get from_facial_side {
+    return Intl.message(
+      'с лицевой стороны',
+      name: 'from_facial_side',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `с задней стороны`
+  String get from_back_side {
+    return Intl.message(
+      'с задней стороны',
+      name: 'from_back_side',
       desc: '',
       args: [],
     );

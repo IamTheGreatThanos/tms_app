@@ -2,7 +2,7 @@ import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
-import 'package:europharm_flutter/widgets/_utils/custom_phone_input_formatter.dart';
+import 'package:europharm_flutter/utils/custom_phone_input_formatter.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';

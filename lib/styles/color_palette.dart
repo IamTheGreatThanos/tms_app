@@ -29,7 +29,6 @@ class ColorPalette {
   static const Color darkGreen = Color(0xFF209F85);
   static const Color lightGray = Color(0xFF9A9EA7);
   static const Color gray = Color(0xFF727F88);
-  static const Color darkGray = Color(0xFF31363D);
   static const Color black = Color(0xFF000000);
   static const Color orange = Color(0xFFF35630);
   static const Color warning = Color(0xFFFBBB05);

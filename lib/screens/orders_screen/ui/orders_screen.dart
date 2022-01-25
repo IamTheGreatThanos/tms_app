@@ -1,11 +1,13 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
-import 'package:europharm_flutter/widgets/_utils/app_router.dart';
+import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/src/provider.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -147,7 +149,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         context,
                         PersonalInfoVerification(),
                         rootNavigator: true,
-                      );
+                      ).then((value) {
+                        context
+                            .read<BlocVerification>()
+                            .add(EventInitialVerification());
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 16),

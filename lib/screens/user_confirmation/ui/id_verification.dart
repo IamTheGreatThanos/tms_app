@@ -52,7 +52,8 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   double _currentScale = 1.0;
   double _baseScale = 1.0;
   int _pointers = 0;
-
+  bool isBackSide = false;
+  List<String> images = [];
   @override
   void initState() {
     super.initState();
@@ -149,30 +150,12 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
       key: _scaffoldKey,
       body: Stack(
         children: [
-          Column(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: Center(
-                      child: _cameraPreviewWidget(),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                      color: controller != null &&
-                              controller!.value.isRecordingVideo
-                          ? Colors.redAccent
-                          : Colors.grey,
-                      width: 3.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          Positioned(
+              top: 0,
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: _cameraPreviewWidget()),
           Container(
             alignment: Alignment.center,
             decoration: ShapeDecoration(
@@ -183,11 +166,48 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
             ),
           ),
           Positioned(
+              top: 210,
+              left: 18,
+              right: 18,
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: S.of(context).make_rights_photo,
+                    style: ProjectTextStyles.ui_16Medium.copyWith(
+                      color: ColorPalette.white,
+                    ),
+                  ),
+                  TextSpan(
+                    text: isBackSide
+                        ? S.of(context).from_back_side
+                        : S.of(context).from_facial_side,
+                    style: ProjectTextStyles.ui_16Medium.copyWith(
+                      color: ColorPalette.blue,
+                    ),
+                  ),
+                ]),
+              )),
+          Positioned(
             bottom: 100,
             left: 10,
             right: 10,
             child: GestureDetector(
-              onTap: onTakePictureButtonPressed,
+              onTap: (){
+                takePicture().then((XFile? file) {
+                  if (mounted) {
+                    setState(() {
+                      images.add(file!.path);
+                      if(isBackSide){
+                        Navigator.of(context).pop(images);
+                      }
+                      else{
+                        isBackSide = !isBackSide;
+                      }
+                    });
+                  }
+                });
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 16,
@@ -201,9 +221,9 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SvgPicture.asset("assets/images/svg/make_photo.svg"),
-                    const Text(
-                      "Сфотографировать",
-                      style: TextStyle(
+                    Text(
+                      S.of(context).photograph,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                       ),
@@ -226,7 +246,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
                       Navigator.of(context).pop();
                     },
                     child:
-                    SvgPicture.asset("assets/images/svg/arrow_back.svg")),
+                        SvgPicture.asset("assets/images/svg/arrow_back.svg")),
                 Text(
                   S.of(context).photo,
                   style: ProjectTextStyles.ui_20Medium.copyWith(
@@ -243,7 +263,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
                       });
                     },
                     child:
-                    SvgPicture.asset("assets/images/svg/flashlight.svg")),
+                        SvgPicture.asset("assets/images/svg/flashlight.svg")),
               ],
             ),
           ),
@@ -376,7 +396,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
           videoController?.dispose();
           videoController = null;
         });
-        if (file != null) showInSnackBar('Picture saved to ${file.path}');
+        // if (file != null) showInSnackBar('Picture saved to ${file.path}');
       }
     });
   }

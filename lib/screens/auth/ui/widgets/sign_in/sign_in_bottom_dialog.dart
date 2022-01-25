@@ -10,7 +10,7 @@ import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:europharm_flutter/widgets/_utils/custom_phone_input_formatter.dart';
+import 'package:europharm_flutter/utils/custom_phone_input_formatter.dart';
 
 part '_vmodel.dart';
 

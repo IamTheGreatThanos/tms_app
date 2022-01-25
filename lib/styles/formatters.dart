@@ -15,11 +15,6 @@ class Formatters {
     return DateFormat("MMM d, hh:mm a").format(dateTime.toLocal());
   }
 
-  //
-  // static String sessionDateFormatterFile(DateTime dateTime) {
-  //   return DateFormat('MMM dd, yy, hh:mm a').format(dateTime);
-  // }
-  //
   static String mainDateAndTime(DateTime dateTime) {
     return DateFormat('MM/dd/yy, hh:mm a').format(dateTime.toLocal());
   }
@@ -27,15 +22,6 @@ class Formatters {
   static String mainOnlyDate(DateTime dateTime) {
     return DateFormat('MM/dd/yy').format(dateTime.toLocal());
   }
-
-  //
-  // static DateFormat bDayFormatter = DateFormat('MMM dd, yyyy');
-  static MaskTextInputFormatter phoneFormatter = MaskTextInputFormatter(
-    mask: '+1 ### ### ####',
-    filter: {
-      "#": RegExp(r'[0-9]'),
-    },
-  );
 
   static String scheduleDayOfWeek(DateTime dateTime) {
     return DateFormat('EEE').format(dateTime.toLocal());

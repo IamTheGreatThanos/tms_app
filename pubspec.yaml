@@ -69,6 +69,7 @@ dependencies:
   camera: ^0.9.4+6
   video_player: ^2.2.13
   convex_bottom_bar: ^3.0.0
+  device_preview: ^1.0.0
 
 dev_dependencies:
   flutter_test:

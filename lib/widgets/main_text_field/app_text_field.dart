@@ -151,22 +151,6 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    var suffixIcon = widget.suffixIcon;
-    // if (widget.isVisibleObscureButton) {
-    //   suffixIcon = IconButton(
-    //     icon: widget.obscureText
-    //         ? SvgPicture.asset(
-    //             AppAssets.svg.eyeSlash,
-    //           )
-    //         : const Icon(
-    //             Icons.remove_red_eye,
-    //             color: AppColors.neutral1,
-    //           ),
-    //     onPressed: () {
-    //       widget.obscureText = !widget.obscureText;
-    //     },
-    //   );
-    // }
     return BlocProvider.value(
       value: widget.cubit,
       child: BlocBuilder<InputCubit, StateInputCubit>(
@@ -224,7 +208,11 @@ class _AppTextFieldState extends State<AppTextField> {
                             widget.obscureText = !widget.obscureText;
                           },
                         )
-                      : null,
+                      : widget.suffixIcon,
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 24,
+                    minWidth: 24,
+                  ),
                   prefixIcon: widget.prefixIcon,
                   prefixIconConstraints: const BoxConstraints(
                     minHeight: 36.0,
