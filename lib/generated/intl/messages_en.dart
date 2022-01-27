@@ -48,6 +48,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "date_of_birth": MessageLookupByLibrary.simpleMessage("Дата рождения"),
         "do_verification":
             MessageLookupByLibrary.simpleMessage("Пройти верификацию"),
+        "documents": MessageLookupByLibrary.simpleMessage("Документы"),
         "enter": MessageLookupByLibrary.simpleMessage("Вход"),
         "enter_phone_correctly": MessageLookupByLibrary.simpleMessage(
             "Введите номер телефона корректно"),
@@ -70,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Получите доступ на исполнение заказов"),
         "government_number":
             MessageLookupByLibrary.simpleMessage("Государственный номер"),
+        "help": MessageLookupByLibrary.simpleMessage("Помощь"),
         "iDontHaveReferalCode": MessageLookupByLibrary.simpleMessage(
             "У меня нет реферального кода"),
         "iin": MessageLookupByLibrary.simpleMessage("ИИН"),
@@ -123,10 +125,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Свидетельство о регистрации"),
         "repeat_password":
             MessageLookupByLibrary.simpleMessage("Повторите пароль"),
+        "ride_history": MessageLookupByLibrary.simpleMessage("История поездок"),
         "satti": MessageLookupByLibrary.simpleMessage("Satti"),
         "schedule": MessageLookupByLibrary.simpleMessage("Расписание"),
         "server_is_not_reachable": MessageLookupByLibrary.simpleMessage(
             "Server is not reachable. Please verify your internet connection and try again"),
+        "settings": MessageLookupByLibrary.simpleMessage("Настройки"),
         "side_of_rights": MessageLookupByLibrary.simpleMessage(
             "стороны водительского удостоверения"),
         "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться"),

@@ -61,7 +61,7 @@ class ProjectTextStyles {
     height: 1.42,
   );
   static const TextStyle ui_14Medium = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     fontSize: 14,
     color: ColorPalette.black,
     height: 1.42,

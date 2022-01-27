@@ -780,6 +780,46 @@ class S {
     );
   }
 
+  /// `История поездок`
+  String get ride_history {
+    return Intl.message(
+      'История поездок',
+      name: 'ride_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Документы`
+  String get documents {
+    return Intl.message(
+      'Документы',
+      name: 'documents',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Помощь`
+  String get help {
+    return Intl.message(
+      'Помощь',
+      name: 'help',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Настройки`
+  String get settings {
+    return Intl.message(
+      'Настройки',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Поле не должно быть пустым!`
   String get fill_field {
     return Intl.message(

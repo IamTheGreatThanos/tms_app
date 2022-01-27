@@ -84,7 +84,7 @@ void main() async {
               child: child!,
             );
           },
-          title: 'Bent Tree',
+          title: 'Europharm',
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             S.delegate,
