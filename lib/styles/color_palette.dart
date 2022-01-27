@@ -27,6 +27,7 @@ class ColorPalette {
   static const Color borderLightGray = Color(0xFFD9DCDE);
   static const Color bordersIconsGray = Color(0xFFB6BBC6);
   static const Color darkGreen = Color(0xFF209F85);
+  static const Color green = Color(0xFF1BB55C);
   static const Color lightGray = Color(0xFF9A9EA7);
   static const Color gray = Color(0xFF727F88);
   static const Color black = Color(0xFF000000);

@@ -39,16 +39,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "car_rights_number": MessageLookupByLibrary.simpleMessage("Номер прав"),
         "car_type":
             MessageLookupByLibrary.simpleMessage("Выберите тип транспорта"),
+        "choose": MessageLookupByLibrary.simpleMessage("Выберите"),
+        "city": MessageLookupByLibrary.simpleMessage("Город"),
         "code_can_be_resend": m0,
         "code_send_to": m1,
+        "company_name":
+            MessageLookupByLibrary.simpleMessage("Название компании"),
         "confirm_identity":
             MessageLookupByLibrary.simpleMessage("Подтвердите свою личность"),
+        "contacts": MessageLookupByLibrary.simpleMessage("Контактные данные"),
+        "country": MessageLookupByLibrary.simpleMessage("Страна"),
         "create_password":
             MessageLookupByLibrary.simpleMessage("Придумайте пароль"),
+        "current_password":
+            MessageLookupByLibrary.simpleMessage("Текущий пароль"),
         "date_of_birth": MessageLookupByLibrary.simpleMessage("Дата рождения"),
         "do_verification":
             MessageLookupByLibrary.simpleMessage("Пройти верификацию"),
         "documents": MessageLookupByLibrary.simpleMessage("Документы"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
         "enter": MessageLookupByLibrary.simpleMessage("Вход"),
         "enter_phone_correctly": MessageLookupByLibrary.simpleMessage(
             "Введите номер телефона корректно"),
@@ -93,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "message_contained_notification": MessageLookupByLibrary.simpleMessage(
             "Message also contained a notification"),
         "message_data": MessageLookupByLibrary.simpleMessage("Message data"),
+        "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
         "next": MessageLookupByLibrary.simpleMessage("Далее"),
         "next_step": MessageLookupByLibrary.simpleMessage("Следующий шаг"),
         "no_data": MessageLookupByLibrary.simpleMessage("No data"),
@@ -118,6 +128,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "referalCode": MessageLookupByLibrary.simpleMessage("Реферальный код"),
         "referalCodeExample":
             MessageLookupByLibrary.simpleMessage("Например: AQN43653876"),
+        "referal_code": MessageLookupByLibrary.simpleMessage("Реферальный код"),
         "referal_code_dialog": MessageLookupByLibrary.simpleMessage(
             " - это личный код приглашения от вашего менеджера."),
         "registration": MessageLookupByLibrary.simpleMessage("Регистрация"),

@@ -320,6 +320,16 @@ class S {
     );
   }
 
+  /// `Выберите`
+  String get choose {
+    return Intl.message(
+      'Выберите',
+      name: 'choose',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Ожидайте подтверждения\nаккаунта в течении 24 часов!`
   String get wait_for_account_confirmation {
     return Intl.message(
@@ -500,11 +510,101 @@ class S {
     );
   }
 
+  /// `Новый пароль`
+  String get new_password {
+    return Intl.message(
+      'Новый пароль',
+      name: 'new_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Текущий пароль`
+  String get current_password {
+    return Intl.message(
+      'Текущий пароль',
+      name: 'current_password',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Окей`
   String get okay {
     return Intl.message(
       'Окей',
       name: 'okay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `История поездок`
+  String get ride_history {
+    return Intl.message(
+      'История поездок',
+      name: 'ride_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Страна`
+  String get country {
+    return Intl.message(
+      'Страна',
+      name: 'country',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Город`
+  String get city {
+    return Intl.message(
+      'Город',
+      name: 'city',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Контактные данные`
+  String get contacts {
+    return Intl.message(
+      'Контактные данные',
+      name: 'contacts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Реферальный код`
+  String get referal_code {
+    return Intl.message(
+      'Реферальный код',
+      name: 'referal_code',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Название компании`
+  String get company_name {
+    return Intl.message(
+      'Название компании',
+      name: 'company_name',
       desc: '',
       args: [],
     );
@@ -775,16 +875,6 @@ class S {
     return Intl.message(
       'Понятно',
       name: 'understandably',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `История поездок`
-  String get ride_history {
-    return Intl.message(
-      'История поездок',
-      name: 'ride_history',
       desc: '',
       args: [],
     );

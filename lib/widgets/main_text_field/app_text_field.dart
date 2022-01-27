@@ -22,6 +22,7 @@ class AppTextField extends StatefulWidget {
     this.maxLength,
     this.maxLines = 1,
     this.minLines,
+    this.fillColor,
     this.isVisibleObscureButton = false,
     EdgeInsetsGeometry? contentPadding,
     this.nextFocus,
@@ -68,6 +69,7 @@ class AppTextField extends StatefulWidget {
   final InputBorder? disabledBorder;
   final InputBorder? enabledBorder;
   final FocusNode? focusNode;
+  final Color? fillColor;
   final InputBorder? focusedBorder;
   final TextStyle? hintStyle;
   final String? hintText;
@@ -218,7 +220,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     minHeight: 36.0,
                     minWidth: 36.0,
                   ),
-                  fillColor: ColorPalette.fieldGrey,
+                  fillColor: widget.fillColor ?? ColorPalette.fieldGrey,
                   filled: true,
                   isDense: true,
                   contentPadding: widget.contentPadding,
@@ -231,7 +233,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   disabledBorder: widget.disabledBorder ??
                       OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.transparent,
                           width: 1.0,
                         ),
@@ -247,7 +249,7 @@ class _AppTextFieldState extends State<AppTextField> {
                         ),
                         gapPadding: 0.0,
                       ),
-                  focusedBorder: widget.disabledBorder ??
+                  focusedBorder: widget.focusedBorder ??
                       OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide(

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'generated/l10n.dart';
@@ -47,7 +48,6 @@ void main() async {
         DeviceOrientation.portraitDown,
       ]);
       context.read<ErrorHandler>().initialize(S.of(context));
-
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
       await context.read<SecureStorage>().init();
@@ -78,12 +78,12 @@ void main() async {
     DependenciesProvider(
       child: TopLevelBlocs(
         child: MaterialApp(
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: DisableGlowScrollBehavior(),
-              child: child!,
-            );
-          },
+          // builder: (context, child) {
+          //   return ScrollConfiguration(
+          //     behavior: DisableGlowScrollBehavior(),
+          //     child: child!,
+          //   );
+          // },
           title: 'Europharm',
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

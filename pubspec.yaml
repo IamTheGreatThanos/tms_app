@@ -49,7 +49,7 @@ dependencies:
   intl: ^0.17.0
   flutter_multi_formatter: ^2.4.1
   flutter_masked_text: 0.8.0
-  mask_text_input_formatter: 1.1.0
+  mask_text_input_formatter: ^2.1.0
   device_info: ^2.0.3
   firebase_crashlytics: 2.4.5
   firebase_messaging: 11.2.5
@@ -71,6 +71,7 @@ dependencies:
   convex_bottom_bar: ^3.0.0
   device_preview: ^1.0.0
   table_calendar: ^3.0.3
+  country_code_picker: ^2.0.2
 
 dev_dependencies:
   flutter_test:

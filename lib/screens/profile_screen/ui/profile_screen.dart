@@ -1,4 +1,6 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
+import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -23,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
             horizontal: 10,
           ),
           child: Column(
-            children: const[
+            children: const [
               _BuildConfirmation(),
               SizedBox(
                 height: 16,
@@ -221,12 +223,22 @@ class _BuildProfileMenu extends StatelessWidget {
           _BuildMenuItem(
             icon: "personal_data",
             title: S.of(context).personal_data,
-            onTap: () {},
+            onTap: () {
+              AppRouter.push(
+                context,
+                const PersonalDataScreen(),
+              );
+            },
           ),
           _BuildMenuItem(
             icon: "ride_history",
             title: S.of(context).ride_history,
-            onTap: () {},
+            onTap: () {
+              AppRouter.push(
+                context,
+                const RideHistoryScreen(),
+              );
+            },
           ),
           _BuildMenuItem(
             icon: "documents",
@@ -265,38 +277,44 @@ class _BuildMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: ColorPalette.fieldGrey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: SvgPicture.asset(
-                  "assets/images/svg/$icon.svg",
-                  width: 24,
-                  height: 24,
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: ColorPalette.fieldGrey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: SvgPicture.asset(
+                      "assets/images/svg/$icon.svg",
+                      width: 24,
+                      height: 24,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    title,
+                    style: ProjectTextStyles.ui_16Medium,
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                title,
-                style: ProjectTextStyles.ui_16Medium,
-              ),
+              SvgPicture.asset(
+                "assets/images/svg/chevrone_right.svg",
+                width: 24,
+                height: 24,
+              )
             ],
           ),
-          SvgPicture.asset(
-            "assets/images/svg/chevrone_right.svg",
-            width: 24,
-            height: 24,
-          )
-        ],
+        ),
       ),
     );
   }

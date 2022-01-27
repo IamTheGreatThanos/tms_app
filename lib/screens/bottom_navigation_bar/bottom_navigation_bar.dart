@@ -92,9 +92,14 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                           itemCornerRadius: 24,
                           curve: Curves.easeIn,
                           onItemSelected: (index) {
-                            context
+                            if(index == state.currentPageIndex){
+                              navigatorKeys[index].currentState!.popUntil((route) => route.isFirst);
+                            }
+                            else {
+                              context
                                 .read<BottomNavBarCubit>()
                                 .changeCurrentPage(index);
+                            }
                           },
                           items: [
                             BottomNavBarItem(
