@@ -5,6 +5,7 @@ import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmode
 import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
+import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,23 +20,13 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
   final PersonalDataVModel _vmodel = PersonalDataVModel();
 
   @override
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          S.of(context).personal_data,
-          style: ProjectTextStyles.ui_20Medium,
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            "assets/images/svg/arrow_back.svg",
-            color: ColorPalette.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+      appBar: CustomAppBar(
+        title: S.of(context).personal_data,
       ),
       backgroundColor: ColorPalette.grey,
       body: SingleChildScrollView(

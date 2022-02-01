@@ -96,6 +96,12 @@ class ProjectTextStyles {
     color: ColorPalette.black,
     height: 1.6,
   );
+  static const TextStyle ui_10Medium = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 10,
+    color: ColorPalette.black,
+    height: 1.6,
+  );
   static const TextStyle ui_22Medium = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 22,

@@ -220,7 +220,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     minHeight: 36.0,
                     minWidth: 36.0,
                   ),
-                  fillColor: widget.fillColor ?? ColorPalette.fieldGrey,
+                  fillColor: widget.fillColor ?? ColorPalette.lightGrey,
                   filled: true,
                   isDense: true,
                   contentPadding: widget.contentPadding,

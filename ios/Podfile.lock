@@ -588,6 +588,10 @@ PODS:
     - Flutter
   - wakelock (0.0.1):
     - Flutter
+  - yandex_mapkit (0.0.1):
+    - Flutter
+    - YandexMapsMobile (= 4.0.0-full)
+  - YandexMapsMobile (4.0.0-full)
   - YandexMobileMetrica/Dynamic (4.0.0):
     - YandexMobileMetrica/Dynamic/Core (= 4.0.0)
     - YandexMobileMetrica/Dynamic/Crashes (= 4.0.0)
@@ -622,6 +626,7 @@ DEPENDENCIES:
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
+  - yandex_mapkit (from `.symlinks/plugins/yandex_mapkit/ios`)
 
 SPEC REPOS:
   trunk:
@@ -651,6 +656,7 @@ SPEC REPOS:
     - PINCache
     - PINOperation
     - PromisesObjC
+    - YandexMapsMobile
     - YandexMobileMetrica
 
 EXTERNAL SOURCES:
@@ -706,6 +712,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
+  yandex_mapkit:
+    :path: ".symlinks/plugins/yandex_mapkit/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -760,6 +768,8 @@ SPEC CHECKSUMS:
   url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
   video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
+  yandex_mapkit: 2d9da6e13f6f1a03395debbbbb7845eaefa24a8b
+  YandexMapsMobile: 0f3d8c92fad685dc33d07f83eed4eb0166089743
   YandexMobileMetrica: 85ba4c1a6839985d58bf45ec7f915e433525b094
 
 PODFILE CHECKSUM: fb082d9de3a2e4f36c52beadeceee6ed957d99c6

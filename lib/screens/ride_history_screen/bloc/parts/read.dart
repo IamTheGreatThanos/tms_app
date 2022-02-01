@@ -23,15 +23,18 @@ extension Read on BlocRideHistory {
           }
         }
       }
-      ridesHistory[0].showTime = true;
-
+      var filteredHistory = ridesHistory
+          .where((element) =>
+      element.date!.isAfter(event.from ??
+          DateTime.now().subtract(Duration(days: 31))) &&
+          element.date!.isBefore(event.to ?? DateTime.now()))
+          .toList();
+      if(filteredHistory[0].date!.isEquals(filteredHistory[1].date!)){
+        filteredHistory[1].showTime = false;
+        filteredHistory[0].showTime = true;
+      }
       emit(StateLoadRideHistory(
-        history: ridesHistory
-            .where((element) =>
-                element.date!.isAfter(event.from ??
-                    DateTime.now().subtract(Duration(days: 31))) &&
-                element.date!.isBefore(event.to ?? DateTime.now()))
-            .toList(),
+        history: filteredHistory,
         from: event.from ?? DateTime.now().subtract(Duration(days: 31)),
         to: event.to ?? DateTime.now(),
       ));

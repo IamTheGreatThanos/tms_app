@@ -18,17 +18,17 @@ class ColorPalette {
   static const Color grey = Color(0xFFE5E5E5);
   static const Color commonGrey = Color(0xFFACACAC);
   static const Color darkGrey = Color(0xFF707070);
-  static const Color fieldGrey = Color(0xFFF2F2F8);
+  static const Color lightGrey = Color(0xFFF2F2F8);
   static const Color pickColor = Color(0xFF83B1F4);
 
   static const Color white = Color(0xFFFFFFFF);
+  static const Color red = Color(0xFFE74C3C);
   static const Color backgroundLightGray = Color(0xFFF8F8F8);
   static const Color backgroundGray = Color(0xFFF2F2F2);
   static const Color borderLightGray = Color(0xFFD9DCDE);
   static const Color bordersIconsGray = Color(0xFFB6BBC6);
   static const Color darkGreen = Color(0xFF209F85);
   static const Color green = Color(0xFF1BB55C);
-  static const Color lightGray = Color(0xFF9A9EA7);
   static const Color gray = Color(0xFF727F88);
   static const Color black = Color(0xFF000000);
   static const Color orange = Color(0xFFF35630);

@@ -1,6 +1,9 @@
 import 'package:europharm_flutter/managers/dynamic_link_manager.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:europharm_flutter/screens/map_test/example_map.dart';
+import 'package:europharm_flutter/screens/map_test/polygon_page.dart';
 import 'package:europharm_flutter/screens/onboarding_screen/onboarding_screen.dart';
+import 'package:europharm_flutter/widgets/after_login_layer/after_login_layer.dart';
 import 'package:europharm_flutter/widgets/after_login_layer/after_login_layer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,11 +29,8 @@ class DynamicLinkLayer extends StatelessWidget {
         },
         buildWhen: (p, c) => c is AuthorizedState || c is NotAuthorizedState,
         builder: (context, state) {
-          if (state is AuthorizedState) {
-            return const AfterLoginLayer();
-          }
           if (state is NotAuthorizedState) {
-            return const OnBoardingScreen();
+            return OnBoardingScreen();            // return MapControlsPage();
           }
           return const SizedBox.shrink();
         },

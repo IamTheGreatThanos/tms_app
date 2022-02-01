@@ -78,12 +78,12 @@ void main() async {
     DependenciesProvider(
       child: TopLevelBlocs(
         child: MaterialApp(
-          // builder: (context, child) {
-          //   return ScrollConfiguration(
-          //     behavior: DisableGlowScrollBehavior(),
-          //     child: child!,
-          //   );
-          // },
+          builder: (context, child) {
+            return ScrollConfiguration(
+              behavior: DisableGlowScrollBehavior(),
+              child: child!,
+            );
+          },
           title: 'Europharm',
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

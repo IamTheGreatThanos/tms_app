@@ -4,6 +4,7 @@ import 'package:europharm_flutter/screens/ride_history_screen/ui/widgets/calenda
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
+import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,22 +25,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
     return AppLoaderOverlay(
       child: Scaffold(
         backgroundColor: ColorPalette.backgroundGray,
-        appBar: AppBar(
-          backgroundColor: ColorPalette.white,
-          elevation: 0,
-          title: Text(
-            S.of(context).ride_history,
-            style: ProjectTextStyles.ui_20Medium,
-          ),
-          leading: IconButton(
-            icon: SvgPicture.asset(
-              "assets/images/svg/arrow_back.svg",
-              color: ColorPalette.black,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+        appBar: CustomAppBar(
+          title: S.of(context).ride_history,
         ),
         body: BlocConsumer<BlocRideHistory, StateBlocRideHistory>(
           listener: (context, state) {
@@ -259,7 +246,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                                       BorderRadius.circular(
                                                           100),
                                                   color:
-                                                      ColorPalette.fieldGrey),
+                                                      ColorPalette.lightGrey),
                                               padding: const EdgeInsets.all(8),
                                               child: SvgPicture.asset(
                                                   "assets/images/svg/history_item.svg")),

@@ -1,6 +1,9 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
+import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
+import 'package:europharm_flutter/screens/settings_screen/ui/settings_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -243,17 +246,32 @@ class _BuildProfileMenu extends StatelessWidget {
           _BuildMenuItem(
             icon: "documents",
             title: S.of(context).documents,
-            onTap: () {},
+            onTap: () {
+              AppRouter.push(
+                context,
+                const DocumentsScreen(),
+              );
+            },
           ),
           _BuildMenuItem(
             icon: "help",
             title: S.of(context).help,
-            onTap: () {},
+            onTap: () {
+              AppRouter.push(
+                context,
+                const FaqScreen(),
+              );
+            },
           ),
           _BuildMenuItem(
             icon: "settings",
             title: S.of(context).settings,
-            onTap: () {},
+            onTap: () {
+              AppRouter.push(
+                context,
+                const SettingsScreen(),
+              );
+            },
           ),
         ],
       ),
@@ -289,7 +307,7 @@ class _BuildMenuItem extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: ColorPalette.fieldGrey,
+                      color: ColorPalette.lightGrey,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: SvgPicture.asset(

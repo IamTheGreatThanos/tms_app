@@ -82,8 +82,15 @@
   "last_part": "Ураа! Последний пункт",
   "referal_code_dialog": " - это личный код приглашения от вашего менеджера.",
   "understandably": "Понятно",
-  "documents":"Документы",
-  "help":"Помощь",
-  "settings":"Настройки",
+  "documents": "Документы",
+  "finances": "Финансы",
+  "ratings": "Рейтинги",
+  "how_to_pass_verification": "Как пройти верификацию?",
+  "how_to_enter_payment_info": "Как ввести платежные данные?",
+  "how_to_change_password": "Как изменить пароль?",
+  "faq": "FAQ",
+  "help": "Помощь",
+  "log_out": "Выйти из аккаунта",
+  "settings": "Настройки",
   "fill_field": "Поле не должно быть пустым!"
 }

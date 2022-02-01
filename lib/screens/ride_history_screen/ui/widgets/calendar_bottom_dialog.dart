@@ -4,6 +4,7 @@ import 'package:europharm_flutter/widgets/app_calendar_new/utils.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart' as c;
 
 const width = 300.0;
 
@@ -104,9 +105,11 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
             vertical: 12.0,
           ),
           // child: Text("dawdwa"),
-          child: TableCalendar(
+          child:
+          // c.TableCalendar(focusedDay: DateTime.now(), firstDay: DateTime.now().subtract(const Duration(days: 365)), lastDay: DateTime.now())
+          TableCalendar(
             focusedDay: DateTime.now(),
-            firstDay: DateTime.now().subtract(const Duration(days: 1000)),
+            firstDay: DateTime.now().subtract(const Duration(days: 365)),
             lastDay: DateTime.now(),
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             rangeStartDay: _rangeStart,
@@ -118,7 +121,7 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
                 setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
-                  _rangeStart = null; // Important to clean those
+                  _rangeStart = null;
                   _rangeEnd = null;
                   _rangeSelectionMode = RangeSelectionMode.toggledOff;
                 });

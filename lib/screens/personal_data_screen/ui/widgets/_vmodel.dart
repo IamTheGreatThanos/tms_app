@@ -59,7 +59,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
   );
 
   late final referalCode = AppTextField(
-    fillColor: ColorPalette.fieldGrey,
+    fillColor: ColorPalette.lightGrey,
     readonly: true,
     style: ProjectTextStyles.ui_16Medium.copyWith(
       color: ColorPalette.darkGrey,

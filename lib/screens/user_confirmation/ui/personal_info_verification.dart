@@ -7,6 +7,7 @@ import 'package:europharm_flutter/screens/user_confirmation/ui/successful_screen
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
+import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -36,22 +37,11 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          S.of(context).verification,
-          style: ProjectTextStyles.ui_20Medium,
-        ),
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            "assets/images/svg/arrow_back.svg",
-            color: ColorPalette.black,
-          ),
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-        ),
+      appBar: CustomAppBar(
+        title: S.of(context).verification,
+        rootNavigator: true,
         bottom: const _BuildProgress(),
+        height: 110,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -125,7 +115,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                   ClipRRect(
                     child: LinearProgressIndicator(
                       value: _progressValue(state),
-                      backgroundColor: ColorPalette.fieldGrey,
+                      backgroundColor: ColorPalette.lightGrey,
                       valueColor:
                           const AlwaysStoppedAnimation(ColorPalette.blue),
                       minHeight: 6,
@@ -236,7 +226,7 @@ class _BuildSecondStep extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: ColorPalette.fieldGrey,
+            color: ColorPalette.lightGrey,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
@@ -351,7 +341,7 @@ class _BuildThirdStep extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(17),
           decoration: BoxDecoration(
-              color: ColorPalette.fieldGrey,
+              color: ColorPalette.lightGrey,
               borderRadius: BorderRadius.circular(20)),
           child: Column(
             children: [
@@ -437,7 +427,7 @@ class _BuildFourthStep extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: ColorPalette.fieldGrey,
+            color: ColorPalette.lightGrey,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(

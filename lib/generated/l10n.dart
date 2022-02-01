@@ -890,11 +890,81 @@ class S {
     );
   }
 
+  /// `Финансы`
+  String get finances {
+    return Intl.message(
+      'Финансы',
+      name: 'finances',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Рейтинги`
+  String get ratings {
+    return Intl.message(
+      'Рейтинги',
+      name: 'ratings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Как пройти верификацию?`
+  String get how_to_pass_verification {
+    return Intl.message(
+      'Как пройти верификацию?',
+      name: 'how_to_pass_verification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Как ввести платежные данные?`
+  String get how_to_enter_payment_info {
+    return Intl.message(
+      'Как ввести платежные данные?',
+      name: 'how_to_enter_payment_info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Как изменить пароль?`
+  String get how_to_change_password {
+    return Intl.message(
+      'Как изменить пароль?',
+      name: 'how_to_change_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FAQ`
+  String get faq {
+    return Intl.message(
+      'FAQ',
+      name: 'faq',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Помощь`
   String get help {
     return Intl.message(
       'Помощь',
       name: 'help',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Выйти из аккаунта`
+  String get log_out {
+    return Intl.message(
+      'Выйти из аккаунта',
+      name: 'log_out',
       desc: '',
       args: [],
     );

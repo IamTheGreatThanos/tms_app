@@ -67,8 +67,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Введите SMS код подтверждения"),
         "enter_to": MessageLookupByLibrary.simpleMessage("Войдите в "),
         "facial_side": MessageLookupByLibrary.simpleMessage("с лицевой "),
+        "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
         "fill_field":
             MessageLookupByLibrary.simpleMessage("Поле не должно быть пустым!"),
+        "finances": MessageLookupByLibrary.simpleMessage("Финансы"),
         "firebase_messaging_token":
             MessageLookupByLibrary.simpleMessage("Firebase messaging token"),
         "first_name": MessageLookupByLibrary.simpleMessage("Имя"),
@@ -81,6 +83,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "government_number":
             MessageLookupByLibrary.simpleMessage("Государственный номер"),
         "help": MessageLookupByLibrary.simpleMessage("Помощь"),
+        "how_to_change_password":
+            MessageLookupByLibrary.simpleMessage("Как изменить пароль?"),
+        "how_to_enter_payment_info": MessageLookupByLibrary.simpleMessage(
+            "Как ввести платежные данные?"),
+        "how_to_pass_verification":
+            MessageLookupByLibrary.simpleMessage("Как пройти верификацию?"),
         "iDontHaveReferalCode": MessageLookupByLibrary.simpleMessage(
             "У меня нет реферального кода"),
         "iin": MessageLookupByLibrary.simpleMessage("ИИН"),
@@ -94,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "load_data": MessageLookupByLibrary.simpleMessage("Загрузить"),
         "load_photo": MessageLookupByLibrary.simpleMessage(
             "Загрузите фотографии транспорта"),
+        "log_out": MessageLookupByLibrary.simpleMessage("Выйти из аккаунта"),
         "make_photo": MessageLookupByLibrary.simpleMessage("Сделайте фото "),
         "make_rights_photo": MessageLookupByLibrary.simpleMessage(
             "Сфотографируйте водительское удостоверение "),
@@ -125,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Problem connecting to the server. Please try again"),
         "push_foreground": MessageLookupByLibrary.simpleMessage(
             "Got a message whilst in the foreground!"),
+        "ratings": MessageLookupByLibrary.simpleMessage("Рейтинги"),
         "referalCode": MessageLookupByLibrary.simpleMessage("Реферальный код"),
         "referalCodeExample":
             MessageLookupByLibrary.simpleMessage("Например: AQN43653876"),
