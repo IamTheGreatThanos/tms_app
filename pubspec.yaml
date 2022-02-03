@@ -74,6 +74,9 @@ dependencies:
   country_code_picker: ^2.0.2
   yandex_mapkit: ^2.0.1
   dotted_line: ^3.1.0
+  syncfusion_flutter_calendar: ^19.4.48
+  syncfusion_localizations: ^19.4.48
+  in_date_utils: ^1.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/ui/profile_screen.dart';
+import 'package:europharm_flutter/screens/schedule_screen/ui/schedule_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +58,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                       Navigator(
                         key: navigatorKeys[1],
                         onGenerateRoute: (route) => MaterialPageRoute(
-                          builder: (context) => Container(),
+                          builder: (context) => ScheduleScreen(),
                         ),
                       ),
                       Navigator(

@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'generated/l10n.dart';
 import 'main/dependency_initializer/dependency_initializer.dart';
@@ -92,7 +93,8 @@ void main() async {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: S.delegate.supportedLocales,
+          supportedLocales:
+            S.delegate.supportedLocales,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
