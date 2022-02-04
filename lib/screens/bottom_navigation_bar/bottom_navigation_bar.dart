@@ -1,4 +1,3 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/ui/profile_screen.dart';
@@ -6,7 +5,6 @@ import 'package:europharm_flutter/screens/schedule_screen/ui/schedule_screen.dar
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'cubit/bottom_nav_bar_cubit.dart';
 import 'custom_animated_bottom_bar.dart';
@@ -27,7 +25,6 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {

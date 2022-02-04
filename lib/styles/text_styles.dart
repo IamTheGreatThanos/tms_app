@@ -31,6 +31,11 @@ class ProjectTextStyles {
     fontSize: 20,
     color: ColorPalette.black,
   );
+  static const TextStyle ui_20Large = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 20,
+    color: ColorPalette.black,
+  );
   static const TextStyle ui_20Regular = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 20,
