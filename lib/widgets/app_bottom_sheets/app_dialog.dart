@@ -8,7 +8,7 @@ Future<T?> showAppDialog<T>(
   String? body,
   Function? onTap,
   Widget Function(BuildContext context)? actions,
-  bool barrierDismissible = true,
+  bool barrierDismissible = false,
   bool showCancel = true,
 }) =>
     showDialog<T?>(
@@ -66,18 +66,14 @@ Future<T?> showAppDialog<T>(
                   ),
                 if (showCancel)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MainButton(
-                            title: S.of(context).okay,
-                            onTap: () {
-                              Navigator.of(context).pop(true);
-                              onTap?.call();
-                            })
-                      ],
-                    ),
+                    padding: const EdgeInsets.only(
+                        bottom: 20.0, left: 16, right: 16),
+                    child: MainButton(
+                        title: S.of(context).okay,
+                        onTap: () {
+                          Navigator.of(context).pop(true);
+                          onTap?.call();
+                        }),
                   ),
                 if (!showCancel && actions != null) actions(context),
               ],
