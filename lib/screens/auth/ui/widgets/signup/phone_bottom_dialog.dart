@@ -62,11 +62,14 @@ class _BuildPhoneFieldState extends State<_BuildPhoneField> {
             } else {
               context.loaderOverlay.hide();
             }
+            if (state is StatePhoneRegisterSuccess) {
+              Navigator.of(context, rootNavigator: true).pop();
+              showCodeBottomDialog(context, _vmodel);
+            }
             if (state is StateAuthError) {
-              showAppDialog(
-                context,
-                body: state.error.message,
-              );
+              showAppDialog(context,
+                  body: state.error.message,
+                  onTap: () => context.read<BlocAuth>().add(EventAuthInit()));
             }
           },
           builder: (context, state) {
@@ -100,9 +103,8 @@ class _BuildPhoneFieldState extends State<_BuildPhoneField> {
                             icon: "assets/images/svg/arrow-right.svg",
                             onTap: () {
                               if (_vmodel.phone.validated) {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop();
-                                showCodeBottomDialog(context, _vmodel);
+                                context.read<BlocAuth>().add(EventRegisterPhone(
+                                    phone: _vmodel.phoneText));
                               }
                             },
                           )

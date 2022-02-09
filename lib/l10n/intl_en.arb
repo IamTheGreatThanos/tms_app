@@ -8,6 +8,7 @@
   "server_is_not_reachable": "Server is not reachable. Please verify your internet connection and try again",
   "problem_connecting_to_the_server": "Problem connecting to the server. Please try again",
   "with_your_help_were_doing_logistics_better": "С вашей помощью мы\nделаем логистику лучше.",
+  "errorGeneral": "Что то пошло не так",
   "registration": "Регистрация",
   "enter": "Вход",
   "photo": "Фото",

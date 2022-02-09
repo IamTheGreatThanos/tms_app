@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "enter_sms_code": MessageLookupByLibrary.simpleMessage(
             "Введите SMS код подтверждения"),
         "enter_to": MessageLookupByLibrary.simpleMessage("Войдите в "),
+        "errorGeneral":
+            MessageLookupByLibrary.simpleMessage("Что то пошло не так"),
         "facial_side": MessageLookupByLibrary.simpleMessage("с лицевой "),
         "faq": MessageLookupByLibrary.simpleMessage("FAQ"),
         "fill_field":

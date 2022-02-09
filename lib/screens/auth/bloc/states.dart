@@ -6,6 +6,12 @@ class SignInInitial extends StateBlocAuth {}
 
 class StateAuthLoading extends StateBlocAuth {}
 
+class StatePhoneRegisterSuccess extends StateBlocAuth {}
+
+class StatePhoneCodeRegisterSuccess extends StateBlocAuth {}
+
+class StateRegisterConfirmSuccess extends StateBlocAuth {}
+
 class StateAuthError extends StateBlocAuth {
   StateAuthError(this.error);
 

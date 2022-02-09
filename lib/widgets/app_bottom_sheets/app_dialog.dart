@@ -6,6 +6,7 @@ Future<T?> showAppDialog<T>(
   BuildContext context, {
   String? title,
   String? body,
+  Function? onTap,
   Widget Function(BuildContext context)? actions,
   bool barrierDismissible = true,
   bool showCancel = true,
@@ -73,6 +74,7 @@ Future<T?> showAppDialog<T>(
                             title: S.of(context).okay,
                             onTap: () {
                               Navigator.of(context).pop(true);
+                              onTap?.call();
                             })
                       ],
                     ),

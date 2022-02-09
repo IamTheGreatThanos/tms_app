@@ -25,11 +25,7 @@ class _BuildCreatePasswordFieldState extends State<_BuildCreatePasswordField> {
 
   @override
   void initState() {
-    _vmodel = SignUpVModel(
-      bloc: BlocProvider.of<BlocAuth>(
-        context,
-      ),
-    );
+    _vmodel = widget.vmodel;
     super.initState();
   }
 
@@ -45,10 +41,15 @@ class _BuildCreatePasswordFieldState extends State<_BuildCreatePasswordField> {
             } else {
               context.loaderOverlay.hide();
             }
+            if(state is StateRegisterConfirmSuccess){
+              Navigator.of(context, rootNavigator: true).pop();
+              showReferalCodeBottomDialog(context, widget.vmodel);
+            }
             if (state is StateAuthError) {
               showAppDialog(
                 context,
                 body: state.error.message,
+                onTap: () => context.read<BlocAuth>().add(EventAuthInit())
               );
             }
           },
@@ -83,8 +84,7 @@ class _BuildCreatePasswordFieldState extends State<_BuildCreatePasswordField> {
                         onTap: () {
                           if (widget.vmodel.password.validated &&
                               widget.vmodel.repeatPassword.validated) {
-                            Navigator.of(context, rootNavigator: true).pop();
-                            showReferalCodeBottomDialog(context, widget.vmodel);
+                            context.read<BlocAuth>().add(EventRegisterConfirm(password: _vmodel.password.controller.text));
                           }
                         },
                       )

@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Что то пошло не так`
+  String get errorGeneral {
+    return Intl.message(
+      'Что то пошло не так',
+      name: 'errorGeneral',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Регистрация`
   String get registration {
     return Intl.message(

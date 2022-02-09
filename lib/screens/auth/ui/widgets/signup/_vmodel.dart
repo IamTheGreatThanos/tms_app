@@ -48,10 +48,17 @@ class SignUpVModel extends Cubit<_StateVModel> {
     ),
     hintText: S.current.referalCodeExample,
   );
+  late final pinController = TextEditingController();
+
+  String get phoneText => phone.controller.text.replaceAll("+", "").replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "");
 
   @override
   Future<void> close() {
     phone.dispose();
+    password.dispose();
+    repeatPassword.dispose();
+    referalCode.dispose();
+    pinController.dispose();
     return super.close();
   }
 

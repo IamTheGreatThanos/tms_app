@@ -8,9 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import 'generated/l10n.dart';
 import 'main/dependency_initializer/dependency_initializer.dart';
@@ -28,7 +26,7 @@ import 'network/services/network_service.dart';
 import 'network/tokens_repository/tokens_repository.dart';
 import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
 
-const String baseUrl = '';
+const String baseUrl = '127.0.0.1:8000/api/v1/';
 
 String get projectBaseUrl {
   if (kDebugMode) return baseUrl;
@@ -149,12 +147,12 @@ class MainAuthorization extends StatelessWidget {
           );
         }
         if (state is UnauthorizedState) {
-          return Application(
+          return const Application(
             false,
           );
         }
         if (state is AuthorizedState) {
-          return Application(
+          return const Application(
             true,
           );
         }

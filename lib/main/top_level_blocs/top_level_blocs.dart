@@ -1,4 +1,5 @@
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
@@ -25,7 +26,9 @@ class TopLevelBlocs extends StatelessWidget {
           )..add(InitialLoginEvent()),
         ),
         BlocProvider(
-          create: (context) => BlocAuth(),
+          create: (context) => BlocAuth(
+            repository: context.read<GlobalRepository>(),
+          ),
         ),
         BlocProvider(
           create: (context) => BottomNavBarCubit(),
