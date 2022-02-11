@@ -6,8 +6,8 @@ extension RegisterPhoneCode on BlocAuth {
     try {
       PhoneCodeRegisterResponse response = await repository.registerPhoneCode(event.phone, event.code);
       print(response);
-      if(response.data != null) {
-        registerToken = response.data!.token ?? "";
+      if(response.token != null) {
+        registerToken = response.token ?? "";
       }
       emit(StatePhoneCodeRegisterSuccess());
     } catch(e) {

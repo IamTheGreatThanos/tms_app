@@ -26,7 +26,7 @@ import 'network/services/network_service.dart';
 import 'network/tokens_repository/tokens_repository.dart';
 import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
 
-const String baseUrl = 'http://127.0.0.1:8000/api/v1/';
+const String baseUrl = 'http://185.129.50.172/api/v1/';
 
 String get projectBaseUrl {
   if (kDebugMode) return baseUrl;

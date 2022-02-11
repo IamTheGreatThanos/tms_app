@@ -1,37 +1,30 @@
-/// user : {"id":103,"city":null,"phone":"87089146990","name":null,"surname":null,"date":null,"iin":null,"role":null,"type":null,"avatar":null,"token":null,"promocode":null,"actived":false,"phone_verified":"2022-02-10T10:01:16.449208Z","created_at":"2022-02-10T10:01:16.000000Z","updated_at":"2022-02-10T10:01:16.000000Z","car":null,"documents":null}
-/// token : "2|He7Kitv794z5QR9WrIDUA03rIHOm5XPUuPGrg2Sf"
-/// message : "Success"
+/// access_token : "6|qLyLhpGErTyonpqu5215M9shpaOfQb824CytRoJg"
+/// user : {"id":103,"city":null,"phone":"87089146990","name":null,"surname":null,"date":null,"iin":null,"role":"user","type":"hired","avatar":null,"token":null,"promocode":null,"actived":false,"phone_verified":"2022-02-10 16:01:16","created_at":"2022-02-10T10:01:16.000000Z","updated_at":"2022-02-10T10:01:38.000000Z","car":null,"documents":null}
 
-class PhoneCodeRegisterResponse {
-  PhoneCodeRegisterResponse({
-      User? user, 
-      String? token, 
-      String? message,}){
+class LoginResponse {
+  LoginResponse({
+      String? accessToken, 
+      User? user,}){
+    _accessToken = accessToken;
     _user = user;
-    _token = token;
-    _message = message;
 }
 
-  PhoneCodeRegisterResponse.fromJson(dynamic json) {
+  LoginResponse.fromJson(dynamic json) {
+    _accessToken = json['access_token'];
     _user = json['user'] != null ? User.fromJson(json['user']) : null;
-    _token = json['token'];
-    _message = json['message'];
   }
+  String? _accessToken;
   User? _user;
-  String? _token;
-  String? _message;
 
+  String? get accessToken => _accessToken;
   User? get user => _user;
-  String? get token => _token;
-  String? get message => _message;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['access_token'] = _accessToken;
     if (_user != null) {
       map['user'] = _user?.toJson();
     }
-    map['token'] = _token;
-    map['message'] = _message;
     return map;
   }
 
@@ -44,15 +37,15 @@ class PhoneCodeRegisterResponse {
 /// surname : null
 /// date : null
 /// iin : null
-/// role : null
-/// type : null
+/// role : "user"
+/// type : "hired"
 /// avatar : null
 /// token : null
 /// promocode : null
 /// actived : false
-/// phone_verified : "2022-02-10T10:01:16.449208Z"
+/// phone_verified : "2022-02-10 16:01:16"
 /// created_at : "2022-02-10T10:01:16.000000Z"
-/// updated_at : "2022-02-10T10:01:16.000000Z"
+/// updated_at : "2022-02-10T10:01:38.000000Z"
 /// car : null
 /// documents : null
 
@@ -65,8 +58,8 @@ class User {
       dynamic surname, 
       dynamic date, 
       dynamic iin, 
-      dynamic role, 
-      dynamic type, 
+      String? role, 
+      String? type, 
       dynamic avatar, 
       dynamic token, 
       dynamic promocode, 
@@ -123,8 +116,8 @@ class User {
   dynamic _surname;
   dynamic _date;
   dynamic _iin;
-  dynamic _role;
-  dynamic _type;
+  String? _role;
+  String? _type;
   dynamic _avatar;
   dynamic _token;
   dynamic _promocode;
@@ -142,8 +135,8 @@ class User {
   dynamic get surname => _surname;
   dynamic get date => _date;
   dynamic get iin => _iin;
-  dynamic get role => _role;
-  dynamic get type => _type;
+  String? get role => _role;
+  String? get type => _type;
   dynamic get avatar => _avatar;
   dynamic get token => _token;
   dynamic get promocode => _promocode;

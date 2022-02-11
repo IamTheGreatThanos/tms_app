@@ -50,6 +50,13 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                 body: state.error.message,
               );
             }
+            if(state is StateSuccessSignIn){
+              context.read<LoginBloc>().add(
+                LogInEvent(
+                  state.accessToken,
+                ),
+              );
+            }
           },
           builder: (context, state) {
             return BlocBuilder<SignUpVModel, _StateVModel>(

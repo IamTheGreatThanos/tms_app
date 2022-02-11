@@ -7,10 +7,10 @@ class InitialLoginEvent extends LoginEvent {}
 
 class LogInEvent extends LoginEvent {
   final String accessToken;
-  final String refreshToken;
 
-  LogInEvent(this.accessToken, this.refreshToken);
+  LogInEvent(
+    this.accessToken,
+  );
 }
 
 class LogOutEvent extends LoginEvent {}
-

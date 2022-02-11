@@ -278,7 +278,7 @@ class AuthInterceptor extends InterceptorsWrapper {
       baseDio.interceptors.requestLock.lock();
       final tokens = await refreshTokens(tokensRepository.refreshToken);
       if (tokens != null) {
-        tokensRepository.save(tokens.accessToken, tokens.refreshToken);
+        tokensRepository.save(tokens.accessToken);
         err.requestOptions.headers["Authorization"] =
             'Bearer ${tokens.accessToken}';
         final lastResponse = await dioRefresher.fetch(err.requestOptions);

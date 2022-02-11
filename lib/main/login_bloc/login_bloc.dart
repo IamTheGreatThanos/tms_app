@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   _onLogInEvent(LogInEvent event, Emitter<LoginState> emit) async {
     try {
-      await _tokensRepository.save(event.accessToken, event.refreshToken);
+      await _tokensRepository.save(event.accessToken);
       emit(AuthorizedState());
     } catch (e) {
       emit(ErrorLoginState('errorMessage'));

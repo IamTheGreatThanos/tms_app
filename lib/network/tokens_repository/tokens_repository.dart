@@ -21,9 +21,8 @@ class TokensRepository {
 
   bool hasToken() => accessToken.isNotEmpty && refreshToken.isNotEmpty;
 
-  Future<void> save(String accessToken, String refreshToken) async {
+  Future<void> save(String accessToken) async {
     _accessToken = accessToken;
-    _refreshToken = refreshToken;
     await _hiveRepository.saveTokens(accessToken, refreshToken);
     _accessToken = accessToken;
   }

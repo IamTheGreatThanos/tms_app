@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
@@ -55,6 +56,13 @@ class _BuildLoginState extends State<_BuildLogin> {
               showAppDialog(
                 context,
                 body: state.error.message,
+              );
+            }
+            if(state is StateSuccessSignIn){
+              context.read<LoginBloc>().add(
+                LogInEvent(
+                  state.accessToken,
+                ),
               );
             }
           },

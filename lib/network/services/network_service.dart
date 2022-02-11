@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
 import 'package:europharm_flutter/network/dio_wrapper/side_dio_wrapper.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:path_provider/path_provider.dart';
@@ -43,7 +45,7 @@ class NetworkService {
 
   Future<PhoneCodeRegisterResponse> registerConfirm(
       String password, String registerToken) async {
-    _dioWrapper.tokensRepository.save(registerToken, "");
+    _dioWrapper.tokensRepository.save(registerToken);
     var response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "password": password,
@@ -52,5 +54,17 @@ class NetworkService {
       method: NetworkMethod.post,
     );
     return PhoneCodeRegisterResponse.fromJson(response.data);
+  }
+
+  Future<LoginResponse> login(String phone, String password) async {
+    var response = await _dioWrapper.sendRequest(
+      formData: FormData.fromMap({
+        "phone": phone,
+        "password": password,
+      }),
+      path: "login",
+      method: NetworkMethod.get,
+    );
+    return LoginResponse.fromJson(response.data);
   }
 }

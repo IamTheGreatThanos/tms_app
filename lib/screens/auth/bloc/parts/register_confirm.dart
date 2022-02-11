@@ -4,7 +4,8 @@ extension RegisterConfirm on BlocAuth {
   Future<void> _registerConfirm(EventRegisterConfirm event,
       Emitter<StateBlocAuth> emit) async {
     try {
-      PhoneCodeRegisterResponse response = await repository.registerConfirm(event.password, registerToken);
+      PhoneCodeRegisterResponse response =
+      await repository.registerConfirm(event.password, registerToken);
       print(response);
       emit(StateRegisterConfirmSuccess());
     } catch(e) {
