@@ -101,13 +101,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               title: S.of(context).enter,
               textColor: ColorPalette.blue,
               onTap: () {
-                AppRouter.pushOff(
-                  context,
-                  const BottomNavigationBarScreen(),
-                );
+                // AppRouter.pushOff(
+                //   context,
+                //   const BottomNavigationBarScreen(),
+                // );
                 // showReferalCodeBottomDialog(
                 //     context, SignUpVModel(bloc: BlocAuth()));
-                // showSignInBottomDialog(context);
+                showSignInBottomDialog(context);
               },
               color: ColorPalette.white,
               borderColor: ColorPalette.blue,

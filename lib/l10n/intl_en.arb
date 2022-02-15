@@ -4,7 +4,7 @@
   "message_data": "Message data",
   "message_contained_notification": "Message also contained a notification",
   "firebase_messaging_token": "Firebase messaging token",
-  "no_data": "No data",
+  "no_data": "Нет данных",
   "server_is_not_reachable": "Server is not reachable. Please verify your internet connection and try again",
   "problem_connecting_to_the_server": "Problem connecting to the server. Please try again",
   "with_your_help_were_doing_logistics_better": "С вашей помощью мы\nделаем логистику лучше.",

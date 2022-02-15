@@ -100,10 +100,10 @@ class S {
     );
   }
 
-  /// `No data`
+  /// `Нет данных`
   String get no_data {
     return Intl.message(
-      'No data',
+      'Нет данных',
       name: 'no_data',
       desc: '',
       args: [],

@@ -8,6 +8,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/login_respo
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NetworkService {
@@ -63,8 +64,16 @@ class NetworkService {
         "password": password,
       }),
       path: "login",
-      method: NetworkMethod.get,
+      method: NetworkMethod.post,
     );
     return LoginResponse.fromJson(response.data);
+  }
+
+  Future<ProfileResponse> getProfile() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "profile",
+      method: NetworkMethod.get,
+    );
+    return ProfileResponse.fromJson(response.data);
   }
 }

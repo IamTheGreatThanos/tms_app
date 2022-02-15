@@ -91,8 +91,7 @@ void main() async {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales:
-            S.delegate.supportedLocales,
+          supportedLocales: S.delegate.supportedLocales,
           theme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
@@ -149,11 +148,13 @@ class MainAuthorization extends StatelessWidget {
         if (state is UnauthorizedState) {
           return const Application(
             false,
+            key: ValueKey(0),
           );
         }
         if (state is AuthorizedState) {
           return const Application(
             true,
+            key: ValueKey(1),
           );
         }
         return const SizedBox.shrink();

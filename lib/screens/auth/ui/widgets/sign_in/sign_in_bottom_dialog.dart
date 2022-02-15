@@ -109,7 +109,7 @@ class _BuildLoginState extends State<_BuildLogin> {
                         isEnabled: state.isValidated,
                         onTap: () {
                           context.read<BlocAuth>().add(EventAuthPhone(
-                              phoneNumber: _vmodel.phone.controller.text,
+                              phoneNumber: _vmodel.phoneText,
                               password: _vmodel.password.controller.text));
                         },
                       )

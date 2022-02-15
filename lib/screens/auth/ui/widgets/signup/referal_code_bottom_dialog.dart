@@ -24,11 +24,7 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
 
   @override
   void initState() {
-    _vmodel = SignUpVModel(
-      bloc: BlocProvider.of<BlocAuth>(
-        context,
-      ),
-    );
+    _vmodel = widget.vmodel;
     super.initState();
   }
 
@@ -50,12 +46,12 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                 body: state.error.message,
               );
             }
-            if(state is StateSuccessSignIn){
+            if (state is StateSuccessSignIn) {
               context.read<LoginBloc>().add(
-                LogInEvent(
-                  state.accessToken,
-                ),
-              );
+                    LogInEvent(
+                      state.accessToken,
+                    ),
+                  );
             }
           },
           builder: (context, state) {
@@ -95,12 +91,26 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                       const SizedBox(
                         height: 20,
                       ),
-                      MainButton(title: S.of(context).signUp, onTap: () {}),
+                      MainButton(
+                          title: S.of(context).signUp,
+                          onTap: () {
+                            Navigator.of(context, rootNavigator: true).pop();
+                            context.read<BlocAuth>().add(EventAuthPhone(
+                                  phoneNumber: _vmodel.phoneText,
+                                  password: _vmodel.password.controller.text,
+                                ));
+                          }),
                       const SizedBox(
                         height: 20,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                          context.read<BlocAuth>().add(EventAuthPhone(
+                                phoneNumber: _vmodel.phoneText,
+                                password: _vmodel.password.controller.text,
+                              ));
+                        },
                         child: Text(
                           S.of(context).iDontHaveReferalCode,
                           style: ProjectTextStyles.ui_16Medium.copyWith(

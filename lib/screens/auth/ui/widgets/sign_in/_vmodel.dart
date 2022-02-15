@@ -45,6 +45,9 @@ class SignInVModel extends Cubit<_StateVModel> {
     return '';
   }
 
+  String get phoneText => phone.controller.text.replaceAll("+", "").replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "");
+
+
   List<String> _validator(String value, String error) {
     List<String> output = [];
     if (error.isEmpty) {

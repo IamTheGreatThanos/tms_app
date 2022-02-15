@@ -116,7 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "new_password": MessageLookupByLibrary.simpleMessage("Новый пароль"),
         "next": MessageLookupByLibrary.simpleMessage("Далее"),
         "next_step": MessageLookupByLibrary.simpleMessage("Следующий шаг"),
-        "no_data": MessageLookupByLibrary.simpleMessage("No data"),
+        "no_data": MessageLookupByLibrary.simpleMessage("Нет данных"),
         "no_orders": MessageLookupByLibrary.simpleMessage("У вас нет заказов"),
         "okay": MessageLookupByLibrary.simpleMessage("Окей"),
         "orders": MessageLookupByLibrary.simpleMessage("Заказы"),

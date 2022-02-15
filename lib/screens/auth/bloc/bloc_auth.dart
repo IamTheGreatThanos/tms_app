@@ -25,6 +25,22 @@ class BlocAuth extends Bloc<EventBlocAuth, StateBlocAuth> {
     on<EventRegisterPhoneCode>(_registerPhoneCode);
     on<EventRegisterConfirm>(_registerConfirm);
     on<EventAuthInit>((event, emit) => emit(SignInInitial()));
+    on<EventAuthPhone>((event, emit) async{
+      try{
+        final token = await repository.login(event.phoneNumber, event.password);
+        emit(StateSuccessSignIn(accessToken: token.accessToken!));
+      }catch(e){
+        print(e);
+        emit(
+          StateAuthError(
+            AppError(
+              message: e.dioErrorMessage,
+              code: e.dioErrorStatusCode,
+            ),
+          ),
+        );
+      }
+    });
   }
 
   final GlobalRepository repository;

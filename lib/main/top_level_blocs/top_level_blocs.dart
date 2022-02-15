@@ -5,6 +5,7 @@ import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
 import 'package:europharm_flutter/screens/documents_screen/bloc/bloc_documents_screen.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
+import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_history.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class TopLevelBlocs extends StatelessWidget {
   final Widget child;
 
-  const TopLevelBlocs({required this.child});
+  const TopLevelBlocs({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

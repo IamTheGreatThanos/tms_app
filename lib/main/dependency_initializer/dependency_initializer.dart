@@ -8,10 +8,11 @@ class DependenciesInitializer<T extends Object> extends StatefulWidget {
   final Widget child;
 
   const DependenciesInitializer({
+    Key? key,
     required this.loadingIndicatorScreen,
     required this.initializer,
     required this.child,
-  });
+  }) : super(key: key);
 
   @override
   _DependenciesInitializerState<T> createState() =>

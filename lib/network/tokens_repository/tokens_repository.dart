@@ -19,7 +19,7 @@ class TokensRepository {
     _refreshToken = tokens.refreshToken;
   }
 
-  bool hasToken() => accessToken.isNotEmpty && refreshToken.isNotEmpty;
+  bool hasToken() => accessToken.isNotEmpty;
 
   Future<void> save(String accessToken) async {
     _accessToken = accessToken;

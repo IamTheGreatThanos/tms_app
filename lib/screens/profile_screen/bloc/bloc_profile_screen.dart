@@ -1,15 +1,24 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'events.dart';
+
 part 'states.dart';
 
-class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
-  ProfileScreenBloc() : super(ProfileScreenInitial()) {
-    on<ProfileScreenEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+part 'parts/_read.dart';
+
+class BlocProfileScreen extends Bloc<EventBlocProfile, StateBlocProfile> {
+  BlocProfileScreen({
+    required this.repository,
+  }) : super(StateProfileLoading()) {
+    on<EventProfileInitial>(_read);
   }
+
+  final GlobalRepository repository;
 }

@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
+import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
 import 'package:europharm_flutter/screens/settings_screen/ui/settings_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
@@ -10,6 +13,7 @@ import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/src/provider.dart';
 
@@ -144,61 +148,88 @@ class _BuildUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: ColorPalette.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(13),
-              child: Image.asset(
-                "assets/images/png/profile_photo.png",
-                width: 70,
-                height: 70,
-                fit: BoxFit.cover,
-              )),
-          const SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Самат Саматов",
-                style: ProjectTextStyles.ui_20Medium.copyWith(
-                    color: ColorPalette.black, fontWeight: FontWeight.w600),
+    return BlocProvider(
+      create: (context) => BlocProfileScreen(
+        repository: context.read<GlobalRepository>(),
+      )..add(EventProfileInitial()),
+      child: BlocConsumer<BlocProfileScreen, StateBlocProfile>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is StateProfileLoadData) {
+            return Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: ColorPalette.white,
+                borderRadius: BorderRadius.circular(20),
               ),
-              const SizedBox(
-                height: 7,
-              ),
-              Row(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ...List.generate(5, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 2.0),
-                      child: SvgPicture.asset(
-                          "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg"),
-                    );
-                  }),
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: state.profile.data!.avatar != null
+                          ? CachedNetworkImage(
+                              imageUrl: state.profile.data!.avatar,
+                              errorWidget: (context, url, error) =>
+                                  const Center(
+                                child: Icon(Icons.error),
+                              ),
+                            )
+                          : Image.asset(
+                              "assets/images/png/profile_photo.png",
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            )),
                   const SizedBox(
-                    width: 8,
+                    width: 10,
                   ),
-                  Text(
-                    "Рейтинг 4.78",
-                    style: ProjectTextStyles.ui_14Medium.copyWith(
-                      color: ColorPalette.commonGrey,
-                    ),
-                  )
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.profile.data!.isNameFilled
+                            ? "${state.profile.data!.name.isNotEmpty ? state.profile.data!.name : ""} "
+                                "${state.profile.data!.surname.isNotEmpty ? state.profile.data!.surname : ""}"
+                            : S.of(context).no_data,
+                        style: ProjectTextStyles.ui_20Medium.copyWith(
+                            color: ColorPalette.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          ...List.generate(5, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 2.0),
+                              child: SvgPicture.asset(
+                                  "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg"),
+                            );
+                          }),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Рейтинг 4.78",
+                            style: ProjectTextStyles.ui_14Medium.copyWith(
+                              color: ColorPalette.commonGrey,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ],
-              )
-            ],
-          ),
-        ],
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

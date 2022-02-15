@@ -1,4 +1,6 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
+import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
@@ -6,8 +8,10 @@ import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
+import 'package:europharm_flutter/widgets/dialogs/two_buttons_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/src/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -33,7 +37,9 @@ class SettingsScreen extends StatelessWidget {
               left: 10,
               child: Container(
                 padding: const EdgeInsets.only(
-                  left: 15, right: 15, top: 15,
+                  left: 15,
+                  right: 15,
+                  top: 15,
                 ),
                 decoration: BoxDecoration(
                   color: ColorPalette.white,
@@ -42,7 +48,26 @@ class SettingsScreen extends StatelessWidget {
                 child: _BuildMenuItem(
                   icon: "exit",
                   title: S.of(context).log_out,
-                  onTap: (){},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => TwoButtonsDialog(
+                        title: "Вы уверены что хотите выйти?",
+                        subtitle:
+                            "Если вы выйдете из аккаунта, то больше не сможете пользоваться услугами до следующего входа",
+                        firstButtonText: "Да",
+                        secondButtonText: "Нет",
+                        onFirstTap: () {
+                          Navigator.pop(ctx);
+                          context.read<BottomNavBarCubit>().changeCurrentPage(0);
+                          context.read<LoginBloc>().add(LogOutEvent());
+                        },
+                        onSecondTap: () {
+                          Navigator.pop(ctx);
+                        },
+                      ),
+                    );
+                  },
                 ),
               ))
         ],
@@ -93,14 +118,12 @@ class _BuildSettingsMenu extends StatelessWidget {
           _BuildMenuItem(
             icon: "settings_finances",
             title: S.of(context).finances,
-            onTap: () {
-            },
+            onTap: () {},
           ),
           _BuildMenuItem(
             icon: "settings_ratings",
             title: S.of(context).ratings,
-            onTap: () {
-            },
+            onTap: () {},
           ),
           _BuildMenuItem(
             icon: "documents",

@@ -1,5 +1,6 @@
 import 'package:europharm_flutter/managers/dynamic_link_manager.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:europharm_flutter/screens/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:europharm_flutter/screens/map_test/example_map.dart';
 import 'package:europharm_flutter/screens/map_test/polygon_page.dart';
 import 'package:europharm_flutter/screens/onboarding_screen/onboarding_screen.dart';
@@ -31,6 +32,9 @@ class DynamicLinkLayer extends StatelessWidget {
         builder: (context, state) {
           if (state is NotAuthorizedState) {
             return OnBoardingScreen();            // return MapControlsPage();
+          }
+          if (state is AuthorizedState) {
+            return BottomNavigationBarScreen();            // return MapControlsPage();
           }
           return const SizedBox.shrink();
         },
