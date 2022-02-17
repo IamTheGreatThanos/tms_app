@@ -38,10 +38,10 @@ class SignInVModel extends Cubit<_StateVModel> {
   }
 
   String get error {
-    final state = bloc.state;
-    if (state is StateAuthError) {
-      return state.error.message;
-    }
+    // final state = bloc.state;
+    // if (state is StateAuthError) {
+    //   return state.error.message;
+    // }
     return '';
   }
 
@@ -69,7 +69,7 @@ class SignInVModel extends Cubit<_StateVModel> {
       _StateVModel(
         isValidated: phone.controller.text.isNotEmpty &&
             password.controller.text.isNotEmpty &&
-            phone.controller.text.length == 17,
+            phone.controller.text.length >= 17,
       ),
     );
   }
