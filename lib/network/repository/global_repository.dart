@@ -8,6 +8,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 
+import '../../screens/user_confirmation/ui/_vmodel.dart';
+
 class GlobalRepository {
   late final NetworkService _networkService;
   late FirebaseAnalytics analytics;
@@ -51,4 +53,7 @@ class GlobalRepository {
 
   Future<ProfileResponse> getProfile() async =>
       await _networkService.getProfile();
+
+  Future<ProfileResponse> verify(PersonalInfoVModel vModel) async =>
+      await _networkService.verify(vModel);
 }

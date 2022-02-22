@@ -36,7 +36,9 @@ class TopLevelBlocs extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              BlocVerification()..add(EventInitialVerification()),
+              BlocVerification(
+                repository: context.read<GlobalRepository>()
+              )..add(EventInitialVerification()),
         ),
         BlocProvider(
           create: (context) => BlocRideHistory()..add(EventReadRideHistory()),

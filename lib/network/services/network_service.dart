@@ -11,6 +11,8 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_regis
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../screens/user_confirmation/ui/_vmodel.dart';
+
 class NetworkService {
   late final DioWrapper _dioWrapper;
   final SideDioWrapper _sideDioWrapper = SideDioWrapper();
@@ -74,6 +76,14 @@ class NetworkService {
       path: "profile",
       method: NetworkMethod.get,
     );
+    return ProfileResponse.fromJson(response.data);
+  }
+
+  Future<ProfileResponse> verify(PersonalInfoVModel vModel) async {
+    var response = await _dioWrapper.sendRequest(
+        path: "verify",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap(await vModel.toJson()));
     return ProfileResponse.fromJson(response.data);
   }
 }

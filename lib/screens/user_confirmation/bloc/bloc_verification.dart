@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
@@ -10,7 +11,9 @@ part 'states.dart';
 
 class BlocVerification
     extends Bloc<EventBlocVerification, StateBlocVerification> {
-  BlocVerification() : super(StateVerificationInitial()) {
+  BlocVerification({
+    required this.repository,
+  }) : super(StateVerificationInitial()) {
     on<EventInitialVerification>((event, emit) {
       emit(StateVerificationFirstStep());
     });
@@ -29,4 +32,6 @@ class BlocVerification
       emit(StateVerificationFourthStep());
     });
   }
+
+  final GlobalRepository repository;
 }
