@@ -289,6 +289,7 @@ class _BuildSecondStep extends StatelessWidget {
                     rootNavigator: true,
                   ).then((value) {
                     if (value is List<String>) {
+                      vmodel.images = value;
                       context
                           .read<BlocVerification>()
                           .add(EventVerificationSecondStep(idImages: value));

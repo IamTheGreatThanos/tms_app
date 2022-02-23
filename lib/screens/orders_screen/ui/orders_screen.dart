@@ -14,6 +14,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/src/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../order_card/ui/order_card.dart';
+
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
 
@@ -252,226 +254,231 @@ class _BuildOrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: ColorPalette.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Опубликовано",
-                  style: ProjectTextStyles.ui_12Medium
-                      .copyWith(color: ColorPalette.commonGrey),
-                ),
-                Text(
-                  order.date ?? S.of(context).no_data,
-                  style: ProjectTextStyles.ui_12Medium
-                      .copyWith(color: ColorPalette.commonGrey),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  order.customerName ?? S.of(context).no_data,
-                  style: ProjectTextStyles.ui_20Medium,
-                ),
-                if (order.isCurrent)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: ColorPalette.lightBlue,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    padding: const EdgeInsets.all(4),
-                    child: Text(
-                      "Текущий Заказ",
-                      style: ProjectTextStyles.ui_10Regular.copyWith(
-                        color: ColorPalette.white,
+      child: GestureDetector(
+        onTap: (){
+          AppRouter.push(context, OrderCard(), rootNavigator: true);
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: ColorPalette.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Опубликовано",
+                    style: ProjectTextStyles.ui_12Medium
+                        .copyWith(color: ColorPalette.commonGrey),
+                  ),
+                  Text(
+                    order.date ?? S.of(context).no_data,
+                    style: ProjectTextStyles.ui_12Medium
+                        .copyWith(color: ColorPalette.commonGrey),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    order.customerName ?? S.of(context).no_data,
+                    style: ProjectTextStyles.ui_20Medium,
+                  ),
+                  if (order.isCurrent)
+                    Container(
+                      decoration: BoxDecoration(
+                        color: ColorPalette.lightBlue,
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                    ),
-                  )
-              ],
-            ),
-            if (order.isCurrent)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: double.infinity,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Stack(
-                      children: [
-                        const YandexMap(
-                          tiltGesturesEnabled: false,
-                          zoomGesturesEnabled: false,
-                          rotateGesturesEnabled: false,
-                          scrollGesturesEnabled: false,
-                          modelsEnabled: false,
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        "Текущий Заказ",
+                        style: ProjectTextStyles.ui_10Regular.copyWith(
+                          color: ColorPalette.white,
                         ),
-                        Positioned(
-                          right: 5,
-                          top: 5,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: ColorPalette.white,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4.5,
-                              horizontal: 8,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 6,
-                                  width: 6,
-                                  decoration: BoxDecoration(
-                                    color: ColorPalette.red,
-                                    borderRadius: BorderRadius.circular(100),
+                      ),
+                    )
+                ],
+              ),
+              if (order.isCurrent)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      width: double.infinity,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Stack(
+                        children: [
+                          const YandexMap(
+                            tiltGesturesEnabled: false,
+                            zoomGesturesEnabled: false,
+                            rotateGesturesEnabled: false,
+                            scrollGesturesEnabled: false,
+                            modelsEnabled: false,
+                          ),
+                          Positioned(
+                            right: 5,
+                            top: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorPalette.white,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4.5,
+                                horizontal: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 6,
+                                    width: 6,
+                                    decoration: BoxDecoration(
+                                      color: ColorPalette.red,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Text(
-                                  "LIVE",
-                                  style: ProjectTextStyles.ui_12Medium,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text(
+                                    "LIVE",
+                                    style: ProjectTextStyles.ui_12Medium,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
+              const Divider(
+                thickness: 2,
+                color: ColorPalette.lightGrey,
               ),
-            const Divider(
-              thickness: 2,
-              color: ColorPalette.lightGrey,
-            ),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: order.isCurrent
-                        ? ColorPalette.blue
-                        : ColorPalette.lightBlue,
-                    borderRadius: BorderRadius.circular(10),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: order.isCurrent
+                          ? ColorPalette.blue
+                          : ColorPalette.lightBlue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: SvgPicture.asset("assets/images/svg/orders_geo.svg"),
                   ),
-                  child: SvgPicture.asset("assets/images/svg/orders_geo.svg"),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      order.addresses.first.streetName ?? S.of(context).no_data,
-                      style: ProjectTextStyles.ui_16Medium,
-                    ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    Text(
-                      order.addresses.first.title ?? S.of(context).no_data,
-                      style: ProjectTextStyles.ui_12Medium
-                          .copyWith(color: ColorPalette.commonGrey),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.only(left: 16.0),
-              child: DottedLine(
-                direction: Axis.vertical,
-                dashColor: ColorPalette.commonGrey,
-                lineLength: 25,
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: ColorPalette.lightGrey,
-                    borderRadius: BorderRadius.circular(10),
+                  const SizedBox(
+                    width: 10,
                   ),
-                  child:
-                      SvgPicture.asset("assets/images/svg/orders_geo_done.svg"),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      order.addresses.first.streetName ?? S.of(context).no_data,
-                      style: ProjectTextStyles.ui_16Medium,
-                    ),
-                    const SizedBox(
-                      height: 6,
-                    ),
-                    Text(
-                      order.addresses.first.title ?? S.of(context).no_data,
-                      style: ProjectTextStyles.ui_12Medium
-                          .copyWith(color: ColorPalette.commonGrey),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const Divider(
-              thickness: 2,
-              color: ColorPalette.lightGrey,
-            ),
-            _BuildImages(),
-            Text(
-              order.title ?? S.of(context).no_data,
-              style: ProjectTextStyles.ui_16Medium.copyWith(
-                color: ColorPalette.darkGrey,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        order.addresses.first.streetName ?? S.of(context).no_data,
+                        style: ProjectTextStyles.ui_16Medium,
+                      ),
+                      const SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        order.addresses.first.title ?? S.of(context).no_data,
+                        style: ProjectTextStyles.ui_12Medium
+                            .copyWith(color: ColorPalette.commonGrey),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const Divider(
-              thickness: 2,
-              color: ColorPalette.lightGrey,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Способ оплаты",
-                  style: ProjectTextStyles.ui_12Medium
-                      .copyWith(color: ColorPalette.darkGrey),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0),
+                child: DottedLine(
+                  direction: Axis.vertical,
+                  dashColor: ColorPalette.commonGrey,
+                  lineLength: 25,
                 ),
-                Text(
-                  "Без наличные",
-                  style: ProjectTextStyles.ui_12Medium
-                      .copyWith(color: ColorPalette.blue),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: ColorPalette.lightGrey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child:
+                        SvgPicture.asset("assets/images/svg/orders_geo_done.svg"),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        order.addresses.first.streetName ?? S.of(context).no_data,
+                        style: ProjectTextStyles.ui_16Medium,
+                      ),
+                      const SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        order.addresses.first.title ?? S.of(context).no_data,
+                        style: ProjectTextStyles.ui_12Medium
+                            .copyWith(color: ColorPalette.commonGrey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Divider(
+                thickness: 2,
+                color: ColorPalette.lightGrey,
+              ),
+              _BuildImages(),
+              Text(
+                order.title ?? S.of(context).no_data,
+                style: ProjectTextStyles.ui_16Medium.copyWith(
+                  color: ColorPalette.darkGrey,
                 ),
-              ],
-            )
-          ],
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Divider(
+                thickness: 2,
+                color: ColorPalette.lightGrey,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Способ оплаты",
+                    style: ProjectTextStyles.ui_12Medium
+                        .copyWith(color: ColorPalette.darkGrey),
+                  ),
+                  Text(
+                    "Без наличные",
+                    style: ProjectTextStyles.ui_12Medium
+                        .copyWith(color: ColorPalette.blue),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

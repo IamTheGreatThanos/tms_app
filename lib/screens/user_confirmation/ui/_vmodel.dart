@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,29 @@ class PersonalInfoVModel {
     hintText: S.current.car_type,
     validator: _validate,
   );
+  List<String> images = [];
+  Future<Map<String, dynamic>> toJson() async {
+    final multipartImages = [];
+    // for (var el in images) {
+    //   multipartImages.add(await MultipartFile.fromFile(el));
+    // }
+    return {
+      "name": firstName.controller.text,
+      "surname": lastName.controller.text,
+      "date": dateOfBirth.controller.text,
+      "iin": iin.controller.text,
+      "doc_number": carRightsNumber.controller.text,
+      "image_1": await MultipartFile.fromFile(images.first),
+      "image_2": await MultipartFile.fromFile(images.last),
+      "deadline": carRightsExpire.controller.text,
+      "car_id": 1,
+      "car_date": carIssueDate.controller.text,
+      "dimensions": carDimensions.controller.text,
+      "number": governmentNumber.controller.text,
+      "file": multipartImages,
+    };
+  }
+
   late final carIssueDate = AppTextField(
     hintText: S.current.car_issue_date,
     readonly: true,
@@ -139,13 +163,13 @@ class PersonalInfoVModel {
     );
     if (date != null) {
       if (isBirth) {
-        dateOfBirth.controller.text = DateFormat.yMMMd().format(date);
+        dateOfBirth.controller.text = DateFormat("yyyy-dd-MM").format(date);
       }
       if (isCarExpire) {
-        carRightsExpire.controller.text = DateFormat.yMMMd().format(date);
+        carRightsExpire.controller.text = DateFormat("yyyy-dd-MM").format(date);
       }
       if (isCarIssue) {
-        carIssueDate.controller.text = DateFormat.yMMMd().format(date);
+        carIssueDate.controller.text = DateFormat("yyyy-dd-MM").format(date);
       }
     }
   }
