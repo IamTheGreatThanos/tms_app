@@ -74,42 +74,44 @@ void main() async {
   }
 
   runApp(
-    DependenciesProvider(
-      child: TopLevelBlocs(
-        child: MaterialApp(
-          builder: (context, child) {
-            return ScrollConfiguration(
-              behavior: DisableGlowScrollBehavior(),
-              child: child!,
-            );
-          },
-          title: 'Europharm',
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.white,
-            ),
-            scaffoldBackgroundColor: ColorPalette.white,
-            fontFamily: 'Gilroy',
-            textSelectionTheme: const TextSelectionThemeData().copyWith(
-              cursorColor: ColorPalette.black,
-            ),
-          ),
-          home: DependenciesInitializer(
-            loadingIndicatorScreen: const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
+    RestartWidget(
+      child: DependenciesProvider(
+        child: TopLevelBlocs(
+          child: MaterialApp(
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: DisableGlowScrollBehavior(),
+                child: child!,
+              );
+            },
+            title: 'Europharm',
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            theme: ThemeData(
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white,
+              ),
+              scaffoldBackgroundColor: ColorPalette.white,
+              fontFamily: 'Gilroy',
+              textSelectionTheme: const TextSelectionThemeData().copyWith(
+                cursorColor: ColorPalette.black,
               ),
             ),
-            initializer: _initialize,
-            child: const MainAuthorization(),
+            home: DependenciesInitializer(
+              loadingIndicatorScreen: const Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+              initializer: _initialize,
+              child: const MainAuthorization(),
+            ),
           ),
         ),
       ),
@@ -174,5 +176,36 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DynamicLinkLayer(isAuthenticated: isAuthenticated);
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  const RestartWidget({Key? key, required this.child}) : super(key: key);
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
+    );
   }
 }

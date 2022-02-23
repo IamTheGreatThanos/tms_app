@@ -49,6 +49,11 @@ class TopLevelBlocs extends StatelessWidget {
           create: (context) =>
               BlocOrdersScreen()..add(EventInitialOrdersScreen()),
         ),
+        BlocProvider(
+          create: (context) => BlocProfileScreen(
+            repository: context.read<GlobalRepository>(),
+          )..add(EventProfileInitial()),
+        ),
       ],
       child: child,
     );

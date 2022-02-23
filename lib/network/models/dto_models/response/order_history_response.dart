@@ -19,12 +19,12 @@ class OrderHistoryResponse {
     _success = json['success'];
     _statusCode = json['statusCode'];
     _message = json['message'];
-    if (json['data'] != null) {
-      _data = [];
-      json['data'].forEach((v) {
-        _data?.add(Dynamic.fromJson(v));
-      });
-    }
+    // if (json['data'] != null) {
+    //   _data = [];
+    //   json['data'].forEach((v) {
+    //     _data?.add(Dynamic.fromJson(v));
+    //   });
+    // }
   }
   bool? _success;
   int? _statusCode;

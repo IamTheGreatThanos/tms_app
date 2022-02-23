@@ -1,4 +1,5 @@
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
@@ -59,8 +60,8 @@ class SettingsScreen extends StatelessWidget {
                         secondButtonText: "Нет",
                         onFirstTap: () {
                           Navigator.pop(ctx);
-                          context.read<BottomNavBarCubit>().changeCurrentPage(0);
                           context.read<LoginBloc>().add(LogOutEvent());
+                          RestartWidget.restartApp(context);
                         },
                         onSecondTap: () {
                           Navigator.pop(ctx);
