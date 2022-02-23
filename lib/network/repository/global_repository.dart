@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
@@ -51,4 +54,11 @@ class GlobalRepository {
 
   Future<ProfileResponse> getProfile() async =>
       await _networkService.getProfile();
+
+  Future<CarsResponse> getCars() async => await _networkService.getCars();
+
+  Future<MarksResponse> getMarks() async => await _networkService.getMarks();
+
+  Future<PositionsResponse> getPositions() async =>
+      await _networkService.getPositions();
 }

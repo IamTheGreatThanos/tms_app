@@ -12,6 +12,10 @@ import 'package:europharm_flutter/network/models/dto_models/response/profile_res
 import 'package:path_provider/path_provider.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
+import '../models/dto_models/response/cars_response.dart';
+import '../models/dto_models/response/marks_response.dart';
+import '../models/dto_models/response/order_history_response.dart';
+import '../models/dto_models/response/positions_response.dart';
 
 class NetworkService {
   late final DioWrapper _dioWrapper;
@@ -79,6 +83,29 @@ class NetworkService {
     return ProfileResponse.fromJson(response.data);
   }
 
+  Future<PositionsResponse> getPositions() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "positions",
+      method: NetworkMethod.get,
+    );
+    return PositionsResponse.fromJson(response.data);
+  }
+
+  Future<CarsResponse> getCars() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "cars",
+      method: NetworkMethod.get,
+    );
+    return CarsResponse.fromJson(response.data);
+  }
+
+  Future<MarksResponse> getMarks() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "marks",
+      method: NetworkMethod.get,
+    );
+    return MarksResponse.fromJson(response.data);
+  }
 
   Future<ProfileResponse> verify(PersonalInfoVModel vModel) async {
     var response = await _dioWrapper.sendRequest(
@@ -88,4 +115,14 @@ class NetworkService {
     return ProfileResponse.fromJson(response.data);
   }
 
+  Future<OrderHistoryResponse> orderHistory(String startDate, String endDate) async {
+    var response = await _dioWrapper.sendRequest(
+        path: "order/history",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "start_date": startDate,
+          "end_date": endDate,
+        }));
+    return OrderHistoryResponse.fromJson(response.data);
+  }
 }
