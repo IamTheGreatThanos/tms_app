@@ -35,19 +35,24 @@ class TopLevelBlocs extends StatelessWidget {
           create: (context) => BottomNavBarCubit(),
         ),
         BlocProvider(
-          create: (context) =>
-              BlocVerification()..add(EventInitialVerification()),
+          create: (context) => BlocVerification(
+            repository: context.read<GlobalRepository>(),
+          )..add(EventInitialVerification()),
         ),
         BlocProvider(
-          create: (context) => BlocRideHistory()..add(EventReadRideHistory()),
+          create: (context) => BlocRideHistory(
+            repository: context.read<GlobalRepository>(),
+          )..add(EventReadRideHistory()),
         ),
         BlocProvider(
-          create: (context) =>
-              BlocDocumentsScreen()..add(EventInitialDocumentsScreen()),
+          create: (context) => BlocDocumentsScreen(
+            repository: context.read<GlobalRepository>(),
+          )..add(EventInitialDocumentsScreen()),
         ),
         BlocProvider(
-          create: (context) =>
-              BlocOrdersScreen()..add(EventInitialOrdersScreen()),
+          create: (context) => BlocOrdersScreen(
+            repository: context.read<GlobalRepository>(),
+          )..add(EventInitialOrdersScreen()),
         ),
         BlocProvider(
           create: (context) => BlocProfileScreen(

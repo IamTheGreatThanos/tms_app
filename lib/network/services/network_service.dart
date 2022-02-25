@@ -115,7 +115,15 @@ class NetworkService {
     return ProfileResponse.fromJson(response.data);
   }
 
-  Future<OrderHistoryResponse> orderHistory(String startDate, String endDate) async {
+  Future<void> logout(PersonalInfoVModel vModel) async {
+    await _dioWrapper.sendRequest(
+      path: "logout",
+      method: NetworkMethod.post,
+    );
+  }
+
+  Future<OrderHistoryResponse> orderHistory(
+      String startDate, String endDate) async {
     var response = await _dioWrapper.sendRequest(
         path: "order/history",
         method: NetworkMethod.post,
