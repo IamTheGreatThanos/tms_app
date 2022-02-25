@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
@@ -10,6 +11,8 @@ import 'package:europharm_flutter/network/models/dto_models/response/profile_res
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
+
+import '../../screens/user_confirmation/ui/_vmodel.dart';
 
 class GlobalRepository {
   late final NetworkService _networkService;
@@ -36,7 +39,8 @@ class GlobalRepository {
     }
   }
 
-  Future refreshAuthToken() async => print('asdf');
+  Future<LoginResponse> login(String phone, String password) async =>
+      await _networkService.login(phone, password);
 
   Future<PhoneRegisterResponse> registerPhone(String phone) async =>
       await _networkService.registerPhone(phone);
@@ -49,9 +53,6 @@ class GlobalRepository {
           String password, String registerToken) async =>
       await _networkService.registerConfirm(password, registerToken);
 
-  Future<LoginResponse> login(String phone, String password) async =>
-      await _networkService.login(phone, password);
-
   Future<ProfileResponse> getProfile() async =>
       await _networkService.getProfile();
 
@@ -59,6 +60,17 @@ class GlobalRepository {
 
   Future<MarksResponse> getMarks() async => await _networkService.getMarks();
 
+  Future<void> verify(PersonalInfoVModel vModel) async =>
+      await _networkService.verify(vModel);
+
+  Future<void> acceptOrder(int orderId) async =>
+      await _networkService.acceptOrder(orderId);
+
+  Future<OrderHistoryResponse> orderHistory(String startDate, String endDate) async =>
+      await _networkService.orderHistory(startDate, endDate);
+
   Future<PositionsResponse> getPositions() async =>
       await _networkService.getPositions();
+
+  Future<void> logout() async => await _networkService.logout();
 }

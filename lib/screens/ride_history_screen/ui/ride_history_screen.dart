@@ -204,7 +204,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                         vertical: 10.0),
                                     child: Text(
                                       DateFormat("dd MMMM")
-                                          .format(state.history[index].date!),
+                                          .format(state.history[index].createdAt!),
                                       style: ProjectTextStyles.ui_16Medium
                                           .copyWith(
                                         color: ColorPalette.commonGrey,
@@ -258,9 +258,10 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                state.history[index].name!,
+                                                state.history[index].order!.description!,
                                                 style: ProjectTextStyles
                                                     .ui_16Medium,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                               const SizedBox(
                                                 height: 3,
@@ -268,7 +269,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                               Text(
                                                 DateFormat("dd.MM.yyyy в kk:mm")
                                                     .format(state
-                                                        .history[index].date!),
+                                                        .history[index].createdAt!),
                                                 style: ProjectTextStyles
                                                     .ui_12Medium
                                                     .copyWith(

@@ -107,19 +107,20 @@ class NetworkService {
     return MarksResponse.fromJson(response.data);
   }
 
-  Future<ProfileResponse> verify(PersonalInfoVModel vModel) async {
-    var response = await _dioWrapper.sendRequest(
+  Future<void> verify(PersonalInfoVModel vModel) async {
+    await _dioWrapper.sendRequest(
         path: "verify",
         method: NetworkMethod.post,
         formData: FormData.fromMap(await vModel.toJson()));
-    return ProfileResponse.fromJson(response.data);
   }
 
-  Future<void> logout(PersonalInfoVModel vModel) async {
+  Future<void> acceptOrder(int orderId) async {
     await _dioWrapper.sendRequest(
-      path: "logout",
-      method: NetworkMethod.post,
-    );
+        path: "/order/accept",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+        }));
   }
 
   Future<OrderHistoryResponse> orderHistory(
@@ -132,5 +133,12 @@ class NetworkService {
           "end_date": endDate,
         }));
     return OrderHistoryResponse.fromJson(response.data);
+  }
+
+  Future<void> logout() async {
+    await _dioWrapper.sendRequest(
+      path: "logout",
+      method: NetworkMethod.post,
+    );
   }
 }

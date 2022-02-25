@@ -9,29 +9,24 @@ extension Read on BlocRideHistory {
       if (event.from != null || event.to != null) {
         emit(StateRideHistoryInitial());
       }
-      if (ridesHistory.isEmpty) {
-        Random rand = Random();
-        for (int i = 0; i < 500; i++) {
-          DateTime date = DateTime.now().subtract(
-              Duration(days: rand.nextInt(365), minutes: rand.nextInt(720)));
-          ridesHistory.add(RidesResponse(date: date, name: "ANGZ01010101001"));
+      var historyData = await repository.orderHistory(
+          DateFormat("yyyy-dd-MM").format(
+              event.from ?? DateTime.now().subtract(const Duration(days: 31))),
+          DateFormat("yyyy-dd-MM").format(event.to ?? DateTime.now()));
+      var filteredHistory;
+      if (historyData.data != null && historyData.data!.isNotEmpty) {
+        filteredHistory = historyData.data!
+            .where((element) =>
+                element.createdAt!.isAfter(event.from ??
+                    DateTime.now().subtract(Duration(days: 31))) &&
+                element.createdAt!.isBefore(event.to ?? DateTime.now()))
+            .toList();
+        if (filteredHistory.length > 1 && filteredHistory[0]
+            .createdAt!
+            .isEquals(filteredHistory[1].createdAt!) ) {
+          filteredHistory[1].showTime = false;
+          filteredHistory[0].showTime = true;
         }
-        ridesHistory.sort((a, b) => b.date!.compareTo(a.date!));
-        for (int i = 0; i < ridesHistory.length - 1; i++) {
-          if (!ridesHistory[i].date!.isEquals(ridesHistory[i + 1].date!)) {
-            ridesHistory[i].showTime = true;
-          }
-        }
-      }
-      var filteredHistory = ridesHistory
-          .where((element) =>
-      element.date!.isAfter(event.from ??
-          DateTime.now().subtract(Duration(days: 31))) &&
-          element.date!.isBefore(event.to ?? DateTime.now()))
-          .toList();
-      if(filteredHistory[0].date!.isEquals(filteredHistory[1].date!)){
-        filteredHistory[1].showTime = false;
-        filteredHistory[0].showTime = true;
       }
       emit(StateLoadRideHistory(
         history: filteredHistory,

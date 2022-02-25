@@ -6,7 +6,7 @@ abstract class StateBlocRideHistory {}
 class StateRideHistoryInitial extends StateBlocRideHistory {}
 
 class StateLoadRideHistory extends StateBlocRideHistory {
-  final List<RidesResponse> history;
+  final List<OrderHistoryData> history;
   final DateTime from;
   final DateTime to;
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/rides.dart';
 import 'package:europharm_flutter/utils/extensions/date_time_extension.dart';
 import 'package:intl/intl.dart';
@@ -20,5 +21,5 @@ class BlocRideHistory extends Bloc<EventBlocRideHistory, StateBlocRideHistory> {
   }
 
   final GlobalRepository repository;
-  List<RidesResponse> ridesHistory = [];
+  List<OrderHistoryData> ridesHistory = [];
 }
