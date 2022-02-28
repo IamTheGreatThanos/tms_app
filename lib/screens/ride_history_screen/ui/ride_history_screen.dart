@@ -3,6 +3,7 @@ import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_his
 import 'package:europharm_flutter/screens/ride_history_screen/ui/widgets/calendar_bottom_dialog.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
+import 'package:europharm_flutter/widgets/app_list_tile.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -203,8 +204,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.0),
                                     child: Text(
-                                      DateFormat("dd MMMM")
-                                          .format(state.history[index].createdAt!),
+                                      DateFormat("dd MMMM").format(
+                                          state.history[index].createdAt!),
                                       style: ProjectTextStyles.ui_16Medium
                                           .copyWith(
                                         color: ColorPalette.commonGrey,
@@ -234,56 +235,80 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                             index != state.history.length - 1 && state.history[index + 1].showTime ? 20 : 0)),
                                     color: ColorPalette.white,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                  color:
-                                                      ColorPalette.lightGrey),
-                                              padding: const EdgeInsets.all(8),
-                                              child: SvgPicture.asset(
-                                                  "assets/images/svg/history_item.svg")),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                state.history[index].order!.description!,
-                                                style: ProjectTextStyles
-                                                    .ui_16Medium,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              const SizedBox(
-                                                height: 3,
-                                              ),
-                                              Text(
-                                                DateFormat("dd.MM.yyyy в kk:mm")
-                                                    .format(state
-                                                        .history[index].createdAt!),
-                                                style: ProjectTextStyles
-                                                    .ui_12Medium
-                                                    .copyWith(
-                                                        color: ColorPalette
-                                                            .commonGrey),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      SvgPicture.asset(
-                                          "assets/images/svg/chevrone_right.svg"),
-                                    ],
+                                  child: AppListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      radius: 10,
+                                      backgroundImage:
+                                              Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      color:
+                                                          ColorPalette.lightGrey),
+                                                  padding: const EdgeInsets.all(8),
+                                                  child: SvgPicture.asset(
+                                                      "assets/images/svg/history_item.svg")),
+                                    ),
+                                    title: state
+                                        .history[index].order!.description!,
+                                    subtitle: DateFormat("dd.MM.yyyy в kk:mm")
+                                        .format(
+                                            state.history[index].createdAt!),
+                                    trailing: SvgPicture.asset(
+                                        "assets/images/svg/chevrone_right.svg"),
                                   ),
+                                  // Row(
+                                  //   mainAxisAlignment:
+                                  //       MainAxisAlignment.spaceBetween,
+                                  //   children: [
+                                  //     Row(
+                                  //       children: [
+                                  //         Container(
+                                  //             decoration: BoxDecoration(
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(
+                                  //                         100),
+                                  //                 color:
+                                  //                     ColorPalette.lightGrey),
+                                  //             padding: const EdgeInsets.all(8),
+                                  //             child: SvgPicture.asset(
+                                  //                 "assets/images/svg/history_item.svg")),
+                                  //         const SizedBox(
+                                  //           width: 10,
+                                  //         ),
+                                  //         Column(
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.start,
+                                  //           children: [
+                                  //             Text(
+                                  //               state.history[index].order!.description!,
+                                  //               style: ProjectTextStyles
+                                  //                   .ui_16Medium,
+                                  //               overflow: TextOverflow.ellipsis,
+                                  //             ),
+                                  //             const SizedBox(
+                                  //               height: 3,
+                                  //             ),
+                                  //             Text(
+                                  //               DateFormat("dd.MM.yyyy в kk:mm")
+                                  //                   .format(state
+                                  //                       .history[index].createdAt!),
+                                  //               style: ProjectTextStyles
+                                  //                   .ui_12Medium
+                                  //                   .copyWith(
+                                  //                       color: ColorPalette
+                                  //                           .commonGrey),
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     SvgPicture.asset(
+                                  //         "assets/images/svg/chevrone_right.svg"),
+                                  //   ],
+                                  // ),
                                 ),
                               ],
                             );
