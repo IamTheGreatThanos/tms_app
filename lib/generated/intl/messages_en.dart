@@ -34,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "car_dimensions": MessageLookupByLibrary.simpleMessage("Габариты"),
         "car_issue_date":
             MessageLookupByLibrary.simpleMessage("Год выпуска транспорта"),
+        "car_mark": MessageLookupByLibrary.simpleMessage("Марка транспорта"),
+        "car_model": MessageLookupByLibrary.simpleMessage("Модель транспорта"),
         "car_rights_expire":
             MessageLookupByLibrary.simpleMessage("Срок истечения прав"),
         "car_rights_number": MessageLookupByLibrary.simpleMessage("Номер прав"),

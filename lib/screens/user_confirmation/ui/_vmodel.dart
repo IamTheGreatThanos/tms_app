@@ -60,30 +60,49 @@ class PersonalInfoVModel {
     ),
   );
   late final carType = AppTextField(
-    hintText: S.current.car_type,
+    hintText: S.current.car_mark,
+    validator: _validate,
+  );
+  late final carModel = AppTextField(
+    hintText: S.current.car_model,
     validator: _validate,
   );
   List<String> images = [];
+  String rightsPicture = "";
+  String? markId = "1";
+
   Future<Map<String, dynamic>> toJson() async {
-    final multipartImages = [];
-    // for (var el in images) {
-    //   multipartImages.add(await MultipartFile.fromFile(el));
-    // }
     return {
       "name": firstName.controller.text,
       "surname": lastName.controller.text,
       "date": dateOfBirth.controller.text,
       "iin": iin.controller.text,
       "doc_number": carRightsNumber.controller.text,
+      "deadline": carRightsExpire.controller.text,
       "image_1": await MultipartFile.fromFile(images.first),
       "image_2": await MultipartFile.fromFile(images.last),
-      "deadline": carRightsExpire.controller.text,
-      "car_id": 1,
+      "person_image": await MultipartFile.fromFile(rightsPicture),
+      "mark_model_id": markId,
       "car_date": carIssueDate.controller.text,
       "dimensions": carDimensions.controller.text,
       "number": governmentNumber.controller.text,
-      "file": multipartImages,
+      "registration": "drc/image-registration",
+      "image": await MultipartFile.fromFile(rightsPicture),
     };
+  }
+
+  bool isFilled() {
+    return firstName.controller.text.isNotEmpty &&
+        lastName.controller.text.isNotEmpty &&
+        dateOfBirth.controller.text.isNotEmpty &&
+        iin.controller.text.isNotEmpty &&
+        carRightsNumber.controller.text.isNotEmpty &&
+        carRightsExpire.controller.text.isNotEmpty &&
+        images.length == 2 &&
+        rightsPicture.isNotEmpty &&
+        carIssueDate.controller.text.isNotEmpty &&
+        carDimensions.controller.text.isNotEmpty &&
+        governmentNumber.controller.text.isNotEmpty;
   }
 
   late final carIssueDate = AppTextField(

@@ -6,10 +6,12 @@ abstract class StateBlocOrdersScreen {}
 class StateLoadingOrdersScreen extends StateBlocOrdersScreen {}
 
 class StateLoadDataOrdersScreen extends StateBlocOrdersScreen {
-  final List<OrdersResponse> orders;
+  final List<OrdersData> orders;
+  final List<CityData> cities;
 
   StateLoadDataOrdersScreen({
     required this.orders,
+    required this.cities,
   });
 }
 

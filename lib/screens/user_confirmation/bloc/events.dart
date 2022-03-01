@@ -5,6 +5,7 @@ abstract class EventBlocVerification {
 }
 
 class EventInitialVerification extends EventBlocVerification {}
+class EventSuccessfulVerification extends EventBlocVerification {}
 
 class EventVerificationFirstStep extends EventBlocVerification {}
 
@@ -19,3 +20,9 @@ class EventVerificationSecondStep extends EventBlocVerification {
 class EventVerificationThirdStep extends EventBlocVerification {}
 
 class EventVerificationFourthStep extends EventBlocVerification {}
+
+class EventVerificationVerify extends EventBlocVerification {
+  final PersonalInfoVModel vmodel;
+
+  EventVerificationVerify({required this.vmodel});
+}

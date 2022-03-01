@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:meta/meta.dart';
+
+import '../../../network/models/dto_models/response/orders_response.dart';
 
 part 'events.dart';
 part 'states.dart';

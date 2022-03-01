@@ -118,8 +118,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                 children: [
                                   Column(
                                     children: [
-                                      const Text(
-                                        "34",
+                                      Text(
+                                        state.history.length.toString(),
                                         style: ProjectTextStyles.ui_20Medium,
                                       ),
                                       const SizedBox(
@@ -143,7 +143,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   Column(
                                     children: [
                                       Text(
-                                        "30",
+                                        "0",
                                         style: ProjectTextStyles.ui_20Medium
                                             .copyWith(
                                           color: ColorPalette.green,
@@ -171,7 +171,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   Column(
                                     children: [
                                       const Text(
-                                        "1",
+                                        "0",
                                         style: ProjectTextStyles.ui_20Medium,
                                       ),
                                       const SizedBox(
@@ -213,7 +213,6 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     ),
                                   ),
                                 Container(
-                                  padding: const EdgeInsets.all(15.0),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(
@@ -226,30 +225,22 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                                 ? 20
                                                 : 0),
                                         bottomLeft: Radius.circular(
-                                            index != state.history.length - 1 &&
-                                                    state.history[index + 1]
-                                                        .showTime
+                                            state.history.length == 1 ||
+                                                    (index != state.history.length - 1 &&
+                                                        state.history[index + 1]
+                                                            .showTime)
                                                 ? 20
                                                 : 0),
-                                        bottomRight: Radius.circular(
-                                            index != state.history.length - 1 && state.history[index + 1].showTime ? 20 : 0)),
+                                        bottomRight:
+                                            Radius.circular(state.history.length == 1 || (index != state.history.length - 1 && state.history[index + 1].showTime) ? 20 : 0)),
                                     color: ColorPalette.white,
                                   ),
                                   child: AppListTile(
                                     leading: CircleAvatar(
                                       backgroundColor: Colors.transparent,
                                       radius: 10,
-                                      backgroundImage:
-                                              Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100),
-                                                      color:
-                                                          ColorPalette.lightGrey),
-                                                  padding: const EdgeInsets.all(8),
-                                                  child: SvgPicture.asset(
-                                                      "assets/images/svg/history_item.svg")),
+                                      backgroundImage: AssetImage(
+                                          "assets/images/svg/history_item.svg"),
                                     ),
                                     title: state
                                         .history[index].order!.description!,
@@ -258,6 +249,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                             state.history[index].createdAt!),
                                     trailing: SvgPicture.asset(
                                         "assets/images/svg/chevrone_right.svg"),
+                                    contentPadding: const EdgeInsets.all(15.0),
                                   ),
                                   // Row(
                                   //   mainAxisAlignment:

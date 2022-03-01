@@ -6,6 +6,7 @@ import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
 import 'package:europharm_flutter/network/dio_wrapper/side_dio_wrapper.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
@@ -13,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
 import '../models/dto_models/response/cars_response.dart';
+import '../models/dto_models/response/cities_response.dart';
 import '../models/dto_models/response/marks_response.dart';
 import '../models/dto_models/response/order_history_response.dart';
 import '../models/dto_models/response/positions_response.dart';
@@ -105,6 +107,25 @@ class NetworkService {
       method: NetworkMethod.get,
     );
     return MarksResponse.fromJson(response.data);
+  }
+
+  Future<CitiesResponse> getCities() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "cities",
+      method: NetworkMethod.get,
+    );
+    return CitiesResponse.fromJson(response.data);
+  }
+
+  Future<OrdersResponse> getOrdersByCities(String cityId) async {
+    var response = await _dioWrapper.sendRequest(
+      path: "orders",
+      formData: FormData.fromMap({
+        "city_id": cityId,
+      }),
+      method: NetworkMethod.post,
+    );
+    return OrdersResponse.fromJson(response.data);
   }
 
   Future<void> verify(PersonalInfoVModel vModel) async {

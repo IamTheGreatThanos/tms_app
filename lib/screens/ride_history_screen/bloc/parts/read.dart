@@ -13,18 +13,21 @@ extension Read on BlocRideHistory {
           DateFormat("yyyy-dd-MM").format(
               event.from ?? DateTime.now().subtract(const Duration(days: 31))),
           DateFormat("yyyy-dd-MM").format(event.to ?? DateTime.now()));
-      var filteredHistory;
-      if (historyData.data != null && historyData.data!.isNotEmpty) {
-        filteredHistory = historyData.data!
-            .where((element) =>
-                element.createdAt!.isAfter(event.from ??
-                    DateTime.now().subtract(Duration(days: 31))) &&
-                element.createdAt!.isBefore(event.to ?? DateTime.now()))
-            .toList();
+      List<OrderHistoryData> filteredHistory = historyData.data ?? [];
+      if (filteredHistory.isNotEmpty) {
+        filteredHistory.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+        for (int i = 0; i < filteredHistory.length - 1; i++) {
+          if (!filteredHistory[i].createdAt!.isEquals(filteredHistory[i + 1].createdAt!)) {
+            filteredHistory[i].showTime = true;
+          }
+        }
         if (filteredHistory.length > 1 && filteredHistory[0]
             .createdAt!
             .isEquals(filteredHistory[1].createdAt!) ) {
           filteredHistory[1].showTime = false;
+          filteredHistory[0].showTime = true;
+        }
+        if(filteredHistory.length == 1){
           filteredHistory[0].showTime = true;
         }
       }
@@ -33,6 +36,8 @@ extension Read on BlocRideHistory {
         from: event.from ?? DateTime.now().subtract(Duration(days: 31)),
         to: event.to ?? DateTime.now(),
       ));
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

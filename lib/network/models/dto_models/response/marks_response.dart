@@ -8,7 +8,7 @@ class MarksResponse {
       bool? success, 
       int? statusCode, 
       String? message, 
-      List<Data>? data,}){
+      List<Marks>? data,}){
     _success = success;
     _statusCode = statusCode;
     _message = message;
@@ -22,19 +22,19 @@ class MarksResponse {
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(Marks.fromJson(v));
       });
     }
   }
   bool? _success;
   int? _statusCode;
   String? _message;
-  List<Data>? _data;
+  List<Marks>? _data;
 
   bool? get success => _success;
   int? get statusCode => _statusCode;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<Marks>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -56,8 +56,8 @@ class MarksResponse {
 /// created_at : "2022-02-17T05:07:00.000000Z"
 /// updated_at : "2022-02-17T05:07:00.000000Z"
 
-class Data {
-  Data({
+class Marks {
+  Marks({
       int? id, 
       int? markId, 
       String? name, 
@@ -72,7 +72,7 @@ class Data {
     _updatedAt = updatedAt;
 }
 
-  Data.fromJson(dynamic json) {
+  Marks.fromJson(dynamic json) {
     _id = json['id'];
     _markId = json['mark_id'];
     _name = json['name'];

@@ -4,6 +4,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/cars_respon
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
@@ -13,6 +14,7 @@ import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
+import '../models/dto_models/response/cities_response.dart';
 
 class GlobalRepository {
   late final NetworkService _networkService;
@@ -59,6 +61,8 @@ class GlobalRepository {
   Future<CarsResponse> getCars() async => await _networkService.getCars();
 
   Future<MarksResponse> getMarks() async => await _networkService.getMarks();
+  Future<CitiesResponse> getCities() async => await _networkService.getCities();
+  Future<OrdersResponse> getOrdersByCities(String cityId) async => await _networkService.getOrdersByCities(cityId);
 
   Future<void> verify(PersonalInfoVModel vModel) async =>
       await _networkService.verify(vModel);

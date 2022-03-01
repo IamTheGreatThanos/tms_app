@@ -1,10 +1,15 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
+import '../../../network/models/dto_models/response/error.dart';
+import '../../../network/models/dto_models/response/marks_response.dart';
 import '../../../network/repository/global_repository.dart';
+import '../ui/_vmodel.dart';
 
 part 'events.dart';
 
@@ -29,10 +34,55 @@ class BlocVerification
     on<EventVerificationThirdStep>((event, emit) {
       emit(StateVerificationThirdStep());
     });
-    on<EventVerificationFourthStep>((event, emit) {
-      emit(StateVerificationFourthStep());
+    on<EventVerificationFourthStep>((event, emit) async {
+      try {
+        emit(StateVerificationLoading());
+        var response = await repository.getMarks();
+        for (int i = 0; i < response.data!.length; i++) {
+          for (int k = i + 1; k < response.data!.length; k++) {
+            if (response.data![k].name == response.data![i].name) {
+              response.data!.removeAt(k);
+            }
+          }
+        }
+        marks = response.data!;
+        emit(StateVerificationFourthStep(marks));
+      } catch (e) {
+        emit(StateVerificationError(
+            error: AppError(
+              message: e.dioErrorMessage,
+              code: e.dioErrorStatusCode,
+            )));
+      }
+    });
+    on<EventVerificationVerify>((event, emit) async {
+      try {
+        emit(StateVerificationLoading());
+        if (!event.vmodel.isFilled()) {
+          await repository.verify(event.vmodel);
+          emit(StateSuccessfulVerification());
+        } else {
+          throw "Заполните все поля";
+        }
+      } catch (e) {
+        if (e is DioError) {
+          emit(StateVerificationError(
+              error: AppError(
+                message: e.dioErrorMessage,
+                code: e.dioErrorStatusCode,
+              )));
+        } else {
+          emit(StateVerificationError(
+              error: AppError(
+                message: e.toString(),
+                code: 0,
+              )));
+        }
+        emit(StateVerificationFourthStep(marks));
+      }
     });
   }
 
   final GlobalRepository repository;
+  List<Marks> marks = [];
 }

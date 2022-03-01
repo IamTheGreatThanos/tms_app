@@ -990,6 +990,26 @@ class S {
     );
   }
 
+  /// `Марка транспорта`
+  String get car_mark {
+    return Intl.message(
+      'Марка транспорта',
+      name: 'car_mark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Модель транспорта`
+  String get car_model {
+    return Intl.message(
+      'Модель транспорта',
+      name: 'car_model',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Поле не должно быть пустым!`
   String get fill_field {
     return Intl.message(
