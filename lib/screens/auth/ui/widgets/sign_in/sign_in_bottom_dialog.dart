@@ -87,7 +87,7 @@ class _BuildLoginState extends State<_BuildLogin> {
                             TextSpan(
                               text: S.of(context).satti,
                               style: ProjectTextStyles.ui_20Medium
-                                  .copyWith(color: ColorPalette.blue),
+                                  .copyWith(color: ColorPalette.main),
                             ),
                           ],
                         ),

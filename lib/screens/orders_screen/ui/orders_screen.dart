@@ -20,6 +20,7 @@ import 'package:provider/src/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../widgets/app_bottom_sheets/app_dialog.dart';
+import '../../map_test/polygon_page.dart';
 import '../../order_card/ui/order_card.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -79,7 +80,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             children: [
                               SvgPicture.asset("assets/images/svg/location.svg"),
                               SizedBox(
-                                width: 150,
+                                width: 200,
                                 child: DropdownButtonFormField(
                                   iconSize: 0,
                                   value: selectedValue ?? state.cities.first.name,
@@ -145,6 +146,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       const SizedBox(
                         height: 23,
                       ),
+                      GestureDetector(
+                        child: Text("Map test"),
+                        onTap: () => AppRouter.push(context, PolylinePage()),
+                      ),
+                      const SizedBox(
+                        height: 23,
+                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Column(
@@ -162,7 +170,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                          color: ColorPalette.blue,
+                                          color: ColorPalette.main,
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       child: SvgPicture.asset(
@@ -205,7 +213,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 16),
                                         decoration: BoxDecoration(
-                                            color: ColorPalette.blue,
+                                            color: ColorPalette.main,
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         child: Stack(
@@ -264,7 +272,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ],
                   );
                 }
-                return Center(child: CircularProgressIndicator());
+                return SizedBox.shrink();
               },
             ),
           ),
@@ -274,7 +282,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 }
 
-class _BuildOrderItem extends StatelessWidget {
+class _BuildOrderItem extends StatefulWidget {
   final OrdersData order;
 
   const _BuildOrderItem({
@@ -282,6 +290,17 @@ class _BuildOrderItem extends StatelessWidget {
     required this.order,
   }) : super(key: key);
 
+  @override
+  State<_BuildOrderItem> createState() => _BuildOrderItemState();
+}
+
+class _BuildOrderItemState extends State<_BuildOrderItem> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -308,7 +327,7 @@ class _BuildOrderItem extends StatelessWidget {
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
                   Text(
-                    DateFormat("dd MMMM").format(order.startDate!),
+                    DateFormat("dd MMMM").format(widget.order.startDate!),
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
@@ -321,7 +340,7 @@ class _BuildOrderItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    order.employee?.name ?? S.of(context).no_data,
+                    widget.order.employee?.name ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_20Medium,
                   ),
                   // if (order.isCurrent)
@@ -419,14 +438,14 @@ class _BuildOrderItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.from ?? S.of(context).no_data,
+                        widget.order.from ?? S.of(context).no_data,
                         style: ProjectTextStyles.ui_16Medium,
                       ),
                       const SizedBox(
                         height: 6,
                       ),
                       Text(
-                        order.from ?? S.of(context).no_data,
+                        widget.order.from ?? S.of(context).no_data,
                         style: ProjectTextStyles.ui_12Medium
                             .copyWith(color: ColorPalette.commonGrey),
                       ),
@@ -460,14 +479,14 @@ class _BuildOrderItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        order.to ?? S.of(context).no_data,
+                        widget.order.to ?? S.of(context).no_data,
                         style: ProjectTextStyles.ui_16Medium,
                       ),
                       const SizedBox(
                         height: 6,
                       ),
                       Text(
-                        order.to ?? S.of(context).no_data,
+                        widget.order.to ?? S.of(context).no_data,
                         style: ProjectTextStyles.ui_12Medium
                             .copyWith(color: ColorPalette.commonGrey),
                       ),
@@ -481,7 +500,7 @@ class _BuildOrderItem extends StatelessWidget {
               ),
               // _BuildImages(),
               Text(
-                order.description ?? S.of(context).no_data,
+                widget.order.description ?? S.of(context).no_data,
                 style: ProjectTextStyles.ui_16Medium.copyWith(
                   color: ColorPalette.darkGrey,
                 ),
@@ -501,9 +520,9 @@ class _BuildOrderItem extends StatelessWidget {
                         .copyWith(color: ColorPalette.darkGrey),
                   ),
                   Text(
-                    order.payment ?? S.of(context).no_data,
+                    widget.order.payment ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_12Medium
-                        .copyWith(color: ColorPalette.blue),
+                        .copyWith(color: ColorPalette.main),
                   ),
                 ],
               ),

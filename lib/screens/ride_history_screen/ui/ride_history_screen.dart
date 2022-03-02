@@ -77,7 +77,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
                                         decoration: BoxDecoration(
-                                          color: ColorPalette.blue,
+                                          color: ColorPalette.main,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),

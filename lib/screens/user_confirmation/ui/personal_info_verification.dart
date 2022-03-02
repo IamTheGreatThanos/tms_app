@@ -152,7 +152,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                       value: _progressValue(state),
                       backgroundColor: ColorPalette.lightGrey,
                       valueColor:
-                          const AlwaysStoppedAnimation(ColorPalette.blue),
+                          const AlwaysStoppedAnimation(ColorPalette.main),
                       minHeight: 6,
                     ),
                     borderRadius: BorderRadius.circular(6),
@@ -166,7 +166,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                       Text(
                         S.of(context).personal_data,
                         style: ProjectTextStyles.ui_16Medium.copyWith(
-                          color: ColorPalette.blue,
+                          color: ColorPalette.main,
                         ),
                       ),
                       Text(
@@ -178,7 +178,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                                     ? 3
                                     : 4),
                         style: ProjectTextStyles.ui_16Medium.copyWith(
-                          color: ColorPalette.blue,
+                          color: ColorPalette.main,
                         ),
                       ),
                     ],
@@ -299,7 +299,7 @@ class _BuildSecondStep extends StatelessWidget {
                     TextSpan(
                         text: S.of(context).facial_side,
                         style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.blue)),
+                            .copyWith(color: ColorPalette.main)),
                     TextSpan(
                         text: S.of(context).and_from,
                         style: ProjectTextStyles.ui_16Medium
@@ -307,7 +307,7 @@ class _BuildSecondStep extends StatelessWidget {
                     TextSpan(
                         text: S.of(context).back_side,
                         style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.blue)),
+                            .copyWith(color: ColorPalette.main)),
                     TextSpan(
                         text: S.of(context).side_of_rights,
                         style: ProjectTextStyles.ui_16Medium
@@ -335,7 +335,7 @@ class _BuildSecondStep extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                       color: Colors.transparent,
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
                     children: [
@@ -343,7 +343,7 @@ class _BuildSecondStep extends StatelessWidget {
                         child: Text(
                           S.of(context).photograph,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -352,7 +352,7 @@ class _BuildSecondStep extends StatelessWidget {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -416,7 +416,7 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
@@ -425,7 +425,7 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
                         child: Text(
                           S.of(context).photograph,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -434,7 +434,7 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -593,7 +593,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
@@ -602,7 +602,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
                         child: Text(
                           S.of(context).load_data,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -611,7 +611,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -663,7 +663,7 @@ class _BuildFooter extends StatelessWidget {
                       }
                     },
                     borderRadius: 10,
-                    borderColor: ColorPalette.blue,
+                    borderColor: ColorPalette.main,
                     color: Colors.transparent,
                     icon: "assets/images/svg/arrow_left.svg",
                   ),

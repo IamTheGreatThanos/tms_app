@@ -64,7 +64,7 @@ class _BuildPhoneFieldState extends State<_BuildPhoneField> {
               context.loaderOverlay.hide();
             }
             if (state is StatePhoneRegisterSuccess) {
-              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).pop();
               showCodeBottomDialog(context, _vmodel);
             }
             if (state is StateAuthError) {

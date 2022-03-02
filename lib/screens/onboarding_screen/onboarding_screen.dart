@@ -77,7 +77,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         Text(
           S.of(context).with_your_help_were_doing_logistics_better,
           style: ProjectTextStyles.ui_24Medium.copyWith(
-            color: ColorPalette.blue,
+            color: ColorPalette.main,
           ),
           textAlign: TextAlign.center,
         ),
@@ -99,7 +99,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             MainButton(
               borderRadius: 10.0,
               title: S.of(context).enter,
-              textColor: ColorPalette.blue,
+              textColor: ColorPalette.main,
               onTap: () {
                 // AppRouter.pushOff(
                 //   context,
@@ -110,7 +110,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 showSignInBottomDialog(context);
               },
               color: ColorPalette.white,
-              borderColor: ColorPalette.blue,
+              borderColor: ColorPalette.main,
             ),
           ],
         ),

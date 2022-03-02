@@ -85,7 +85,7 @@ class _BuildSmsCodeFieldState extends State<_BuildSmsCodeField> {
                           controller: _vmodel.pinController,
                           length: 5,
                           obscureText: false,
-                          cursorColor: ColorPalette.blue,
+                          cursorColor: ColorPalette.main,
                           cursorHeight: 18,
                           cursorWidth: 2,
                           textStyle: ProjectTextStyles.ui_16Medium,
