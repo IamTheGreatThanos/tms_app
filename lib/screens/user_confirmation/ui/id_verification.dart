@@ -86,15 +86,23 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   }
 
   void initCamera() async {
-    controller = CameraController(
-      const CameraDescription(
-        name: "0",
-        lensDirection: CameraLensDirection.back,
-        sensorOrientation: 90,
-      ),
-      ResolutionPreset.medium,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
+    // controller = CameraController(
+    //   const CameraDescription(
+    //     name: "0",
+    //     lensDirection: CameraLensDirection.back,
+    //     sensorOrientation: 90,
+    //   ),
+    //   ResolutionPreset.medium,
+    //   imageFormatGroup: ImageFormatGroup.jpeg,
+    // );
+    var cameras = await availableCameras();
+    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller!.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
     await controller!.initialize();
     await controller!
         .getMinExposureOffset()

@@ -179,6 +179,7 @@ class PersonalInfoVModel {
       initialDate: DateTime.now(),
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
+      locale: Locale("ru", "RU"),
     );
     if (date != null) {
       if (isBirth) {
