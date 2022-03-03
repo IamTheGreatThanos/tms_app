@@ -61,22 +61,18 @@ dependencies:
   pin_code_fields: ^7.3.0
   firebase_core: 1.11.0
   firebase_dynamic_links: 2.0.9
-  appmetrica_sdk: ^0.0.7+1
-  alice: ^0.2.5
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   qr_code_scanner: ^0.6.1
-  camera: ^0.9.4+6
-  video_player: ^2.2.13
+  camera: ^0.9.4+14
   convex_bottom_bar: ^3.0.0
   device_preview: ^1.0.0
   table_calendar: ^3.0.3
-  country_code_picker: ^2.0.2
-  yandex_mapkit: ^2.0.1
+  yandex_mapkit: ^2.0.2
   dotted_line: ^3.1.0
-  syncfusion_flutter_calendar: ^19.4.48
+  syncfusion_flutter_calendar: ^19.4.54
+  country_code_picker: ^2.0.2
   syncfusion_localizations: ^19.4.48
-  in_date_utils: ^1.0.2
   another_xlider: ^1.0.1+2
 dev_dependencies:
   flutter_test:

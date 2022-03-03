@@ -158,7 +158,7 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                       isScrollable: false,
                       indicator: BoxDecoration(
                             borderRadius: BorderRadius.circular(50), // Creates border
-                            color: ColorPalette.blue), //Change background color from here
+                            color: ColorPalette.main), //Change background color from here
                       labelPadding: EdgeInsets.all(0),
                       labelColor: ColorPalette.white,
                       // indicatorColor: ColorPalette.red,
@@ -293,7 +293,7 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
             padding: const EdgeInsets.all(10),
             child: MainButton(
               title: buttonText[_tabController.index],
-                color: _current==2?ColorPalette.green:ColorPalette.blue,
+                color: _current==2?ColorPalette.green:ColorPalette.main,
                 // "Отсканировать",
               // S.of(context).next_step,
               onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard()));
@@ -393,7 +393,7 @@ class _BuildOrderItem extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Icon(Icons.margin, color: ColorPalette.blue,size: 22,),
+                          child: Icon(Icons.margin, color: ColorPalette.main,size: 22,),
                         ),
                         Text(
                           "ANGZ0112201-1-7; ANGZ0112201${i*2}",

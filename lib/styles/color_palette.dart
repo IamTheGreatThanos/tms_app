@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorPalette {
-  static const Color main = Color(0xFF209F85);
+  // static const Color main = Color(0xFF209F85);
   static const Color dark = Color(0xFF166F5D);
   static const Color light = Color(0xFF63BCAA);
   static const Color extraLight = Color(0xFFAADBD0);
@@ -12,7 +12,7 @@ class ColorPalette {
   static const Color secondaryLight = Color(0xFFBAA2DF);
   static const Color secondaryExtraLight = Color(0xFFD2C3EA);
   static const Color secondarySuperExtraLight = Color(0xFFF0EBF8);
-  static const Color blue = Color(0xFF306CDC);
+  static const Color main = Color(0xFF28A745);
   static const Color lightBlue = Color(0xFF83B1F4);
   static const Color commonBlue = Color(0xFFE0E9FA);
   static const Color grey = Color(0xFFE5E5E5);

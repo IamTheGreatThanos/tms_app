@@ -30,7 +30,7 @@ const String baseUrl = 'http://185.129.50.172/api/v1/';
 
 String get projectBaseUrl {
   if (kDebugMode) return baseUrl;
-  return '';
+  return "http://185.129.50.172/api/v1/";
 }
 
 void main() async {
@@ -78,12 +78,12 @@ void main() async {
       child: DependenciesProvider(
         child: TopLevelBlocs(
           child: MaterialApp(
-            builder: (context, child) {
-              return ScrollConfiguration(
-                behavior: DisableGlowScrollBehavior(),
-                child: child!,
-              );
-            },
+            // builder: (context, child) {
+            //   return ScrollConfiguration(
+            //     behavior: DisableGlowScrollBehavior(),
+            //     child: child!,
+            //   );
+            // },
             title: 'Europharm',
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [

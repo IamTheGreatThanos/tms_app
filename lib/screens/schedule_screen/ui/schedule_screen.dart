@@ -68,7 +68,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: InkWell(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: ColorPalette.blue,
+                    color: ColorPalette.main,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: const EdgeInsets.all(10),

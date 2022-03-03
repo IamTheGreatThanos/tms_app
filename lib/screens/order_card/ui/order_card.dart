@@ -175,7 +175,7 @@ class _OrderCardState extends State<OrderCard> {
                           Text(
                             "KRG",
                             style: ProjectTextStyles.ui_12Medium
-                                .copyWith(color: ColorPalette.blue),
+                                .copyWith(color: ColorPalette.main),
                           ),
                           Row(
                             children: [
@@ -259,7 +259,7 @@ class _OrderCardState extends State<OrderCard> {
                                           BoxDecoration(shape: BoxShape.circle),
                                       child: Material(
                                         // type: MaterialType.canvas,
-                                        color: ColorPalette.blue,
+                                        color: ColorPalette.main,
                                         elevation: 3,
                                         borderRadius: BorderRadius.circular(50),
                                         child: Container(
@@ -467,7 +467,7 @@ class _BuildOrderItem extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: order.isCurrent
-                                  ? ColorPalette.blue
+                                  ? ColorPalette.main
                                   : ColorPalette.lightBlue,
                               borderRadius: BorderRadius.circular(10),
                             ),

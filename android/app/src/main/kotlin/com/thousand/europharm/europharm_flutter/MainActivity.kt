@@ -6,7 +6,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import com.yandex.mapkit.MapKitFactory;
 class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        MapKitFactory.setApiKey("b51c2cab-1212-4f56-a22d-77d0a2632811") // Your generated API key
+        MapKitFactory.setApiKey("5e34fc66-a948-4e55-837c-1253cd994b2f") // Your generated API key
         super.configureFlutterEngine(flutterEngine)
     }
 }

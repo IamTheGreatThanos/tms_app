@@ -1,30 +1,31 @@
 import 'dart:math';
 
+import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 
 import 'control_button.dart';
 import 'map_page.dart';
 
-class PolygonPage extends MapPage {
-  const PolygonPage() : super('Polygon example');
+class PolylinePage extends MapPage {
+  const PolylinePage() : super('Polyline example');
 
   @override
   Widget build(BuildContext context) {
-    return _PolygonExample();
+    return _PolylineExample();
   }
 }
 
-class _PolygonExample extends StatefulWidget {
+class _PolylineExample extends StatefulWidget {
   @override
-  _PolygonExampleState createState() => _PolygonExampleState();
+  _PolylineExampleState createState() => _PolylineExampleState();
 }
 
-class _PolygonExampleState extends State<_PolygonExample> {
+class _PolylineExampleState extends State<_PolylineExample> {
   final List<MapObject> mapObjects = [];
 
-  final MapObjectId polygonId = MapObjectId('polygon');
+  final MapObjectId polylineId = const MapObjectId('polyline');
 
   @override
   Widget build(BuildContext context) {
@@ -34,82 +35,83 @@ class _PolygonExampleState extends State<_PolygonExample> {
         children: <Widget>[
           Expanded(
               child: YandexMap(
-                  mapObjects: mapObjects
-              )
-          ),
+            mapObjects: mapObjects,
+          )),
           const SizedBox(height: 20),
           Expanded(
               child: SingleChildScrollView(
-                  child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ControlButton(
-                                onPressed: () async {
-                                  if (mapObjects.any((el) => el.mapId == polygonId)) {
-                                    return;
-                                  }
+                  child: Column(children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ControlButton(
+                    onPressed: () async {
+                      if (mapObjects.any((el) => el.mapId == polylineId)) {
+                        return;
+                      }
+                      final polyline = Polyline(
+                        mapId: polylineId,
+                        coordinates: [
+                          Point(latitude: 59.945933, longitude: 30.320045),
+                          Point(latitude: 55.75222, longitude: 37.88398),
+                          // Point(latitude: 59.2239, longitude: 39.88398),
+                          // Point(latitude: 56.32867, longitude: 44.00205),
+                          // Point(latitude: 61.67642, longitude: 50.80994),
+                          // Point(latitude: 61.823618, longitude: 56.823571),
+                          // Point(latitude: 60.15328, longitude: 59.95205),
+                          // Point(latitude: 56.8519, longitude: 60.6122),
+                          // Point(latitude: 54.74306, longitude: 55.96779),
+                          // Point(latitude: 55.78874, longitude: 49.12214),
+                          // Point(latitude: 58.59665, longitude: 49.66007),
+                          // Point(latitude: 60.44498, longitude: 50.9968),
+                          // Point(latitude: 63.206777, longitude: 59.750022),
+                          // Point(latitude: 57.15222, longitude: 65.52722),
+                          // Point(latitude: 61.25, longitude: 73.41667),
+                          // Point(latitude: 55.0415, longitude: 82.9346),
+                          // Point(latitude: 66.42989, longitude: 112.4021),
+                        ],
+                        strokeColor: ColorPalette.black,
+                        strokeWidth: 2,
+                        outlineColor: ColorPalette.black,
+                        outlineWidth: 2.0,
+                        onTap: (Polyline self, Point point) =>
+                            print('Tapped me at $point'),
+                      );
 
-                                  final polygon = Polygon(
-                                    mapId: polygonId,
-                                    outerRingCoordinates: const <Point>[
-                                      // Point(latitude: 56.34295, longitude: 74.62829),
-                                      Point(latitude: 70.12669, longitude: 98.97399),
-                                      Point(latitude: 56.04956, longitude: 125.07751),
-                                    ],
-                                    innerRingsCoordinates: const <List<Point>>[
-                                      <Point>[
-                                        // Point(latitude: 57.34295, longitude: 78.62829),
-                                        Point(latitude: 69.12669, longitude: 98.97399),
-                                        Point(latitude: 57.04956, longitude: 121.07751),
-                                      ]
-                                    ],
-                                    strokeColor: Colors.orange[700]!,
-                                    strokeWidth: 3.0,
-                                    fillColor: Colors.yellow[200]!,
-                                    onTap: (Polygon self, Point point) => print('Tapped me at $point'),
-                                  );
+                      setState(() {
+                        mapObjects.add(polyline);
+                      });
+                    },
+                    title: 'Add'),
+                ControlButton(
+                    onPressed: () async {
+                      if (!mapObjects.any((el) => el.mapId == polylineId)) {
+                        return;
+                      }
 
-                                  setState(() {
-                                    mapObjects.add(polygon);
-                                  });
-                                },
-                                title: 'Add'
-                            ),
-                            ControlButton(
-                                onPressed: () async {
-                                  if (!mapObjects.any((el) => el.mapId == polygonId)) {
-                                    return;
-                                  }
+                      final polyline =
+                          mapObjects.firstWhere((el) => el.mapId == polylineId)
+                              as Polyline;
 
-                                  final polygon = mapObjects.firstWhere((el) => el.mapId == polygonId) as Polygon;
-
-                                  setState(() {
-                                    mapObjects[mapObjects.indexOf(polygon)] = polygon.copyWith(
-                                      strokeColor: Colors.orange[700]!,
-                                      strokeWidth: 3.0,
-                                      fillColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                                    );
-                                  });
-                                },
-                                title: 'Update'
-                            ),
-                            ControlButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    mapObjects.removeWhere((el) => el.mapId == polygonId);
-                                  });
-                                },
-                                title: 'Remove'
-                            )
-                          ],
-                        )
-                      ]
-                  )
-              )
-          )
-        ]
-    );
+                      setState(() {
+                        mapObjects[mapObjects.indexOf(polyline)] =
+                            polyline.copyWith(
+                                strokeColor: Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)],
+                                strokeWidth: 8.5);
+                      });
+                    },
+                    title: 'Update'),
+                ControlButton(
+                    onPressed: () async {
+                      setState(() {
+                        mapObjects.removeWhere((el) => el.mapId == polylineId);
+                      });
+                    },
+                    title: 'Remove')
+              ],
+            )
+          ])))
+        ]);
   }
 }

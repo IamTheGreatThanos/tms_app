@@ -6,7 +6,6 @@ import 'package:europharm_flutter/widgets/camera/camera_shape.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:video_player/video_player.dart';
 
 class IdVerificationScreen extends StatefulWidget {
   const IdVerificationScreen({Key? key}) : super(key: key);
@@ -35,9 +34,6 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   bool isFlashlightEnabled = false;
   bool isCameraInitialized = false;
   XFile? imageFile;
-  XFile? videoFile;
-  VideoPlayerController? videoController;
-  VoidCallback? videoPlayerListener;
   bool enableAudio = true;
   double _minAvailableExposureOffset = 0.0;
   double _maxAvailableExposureOffset = 0.0;
@@ -90,16 +86,23 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   }
 
   void initCamera() async {
-    controller = CameraController(
-      const CameraDescription(
-        name: "0",
-        lensDirection: CameraLensDirection.back,
-        sensorOrientation: 90,
-      ),
-      kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
-      enableAudio: enableAudio,
-      imageFormatGroup: ImageFormatGroup.jpeg,
-    );
+    // controller = CameraController(
+    //   const CameraDescription(
+    //     name: "0",
+    //     lensDirection: CameraLensDirection.back,
+    //     sensorOrientation: 90,
+    //   ),
+    //   ResolutionPreset.medium,
+    //   imageFormatGroup: ImageFormatGroup.jpeg,
+    // );
+    var cameras = await availableCameras();
+    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller!.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
     await controller!.initialize();
     await controller!
         .getMinExposureOffset()
@@ -183,7 +186,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
                         ? S.of(context).from_back_side
                         : S.of(context).from_facial_side,
                     style: ProjectTextStyles.ui_16Medium.copyWith(
-                      color: ColorPalette.blue,
+                      color: ColorPalette.main,
                     ),
                   ),
                 ]),
@@ -393,8 +396,6 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
       if (mounted) {
         setState(() {
           imageFile = file;
-          videoController?.dispose();
-          videoController = null;
         });
         // if (file != null) showInSnackBar('Picture saved to ${file.path}');
       }
