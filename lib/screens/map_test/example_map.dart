@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -21,6 +23,9 @@ class _MapControlsExample extends StatefulWidget {
 class _MapControlsExampleState extends State<_MapControlsExample> {
   late YandexMapController controller;
   final List<MapObject> mapObjects = [];
+  final MapObjectId polylineId = MapObjectId('polyline');
+  final MapObjectId polylineId2 = MapObjectId('polyline2');
+
 
   final MapObjectId targetMapObjectId = MapObjectId('target_placemark');
   static const Point _point = Point(latitude: 59.945933, longitude: 30.320045);
@@ -66,310 +71,106 @@ class _MapControlsExampleState extends State<_MapControlsExample> {
         children: <Widget>[
           Expanded(
               child: YandexMap(
-                tiltGesturesEnabled: tiltGesturesEnabled,
-                zoomGesturesEnabled: zoomGesturesEnabled,
-                rotateGesturesEnabled: rotateGesturesEnabled,
-                scrollGesturesEnabled: scrollGesturesEnabled,
-                modelsEnabled: modelsEnabled,
-                nightModeEnabled: nightModeEnabled,
-                fastTapEnabled: fastTapEnabled,
-                mode2DEnabled: mode2DEnabled,
-                indoorEnabled: indoorEnabled,
-                liteModeEnabled: liteModeEnabled,
-                logoAlignment: MapAlignment(horizontal: HorizontalAlignment.left, vertical: VerticalAlignment.bottom),
-                screenRect: screenRect,
-                mapObjects: mapObjects,
-                onMapCreated: (YandexMapController yandexMapController) async {
-                  controller = yandexMapController;
-
-                  final cameraPosition = await controller.getCameraPosition();
-                  final minZoom = await controller.getMinZoom();
-                  final maxZoom = await controller.getMaxZoom();
-
-                  print('Camera position: $cameraPosition');
-                  print('Min zoom: $minZoom, Max zoom: $maxZoom');
-                },
-                onMapTap: (Point point) => print('Tapped map at $point'),
-                onMapLongTap: (Point point) => print('Long tapped map at $point'),
-                onCameraPositionChanged: (CameraPosition cameraPosition, CameraUpdateReason reason, bool finished) {
-                  print('Camera position: $cameraPosition, Reason: $reason');
-
-                  if (finished) {
-                    print('Camera position movement has been finished');
-                  }
-                },
+                  mapObjects: mapObjects
               )
           ),
           const SizedBox(height: 20),
-          // Expanded(
-          //   child: SingleChildScrollView(
-          //     child: Table(
-          //       children: <TableRow>[
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(
-          //                     CameraUpdate.newCameraPosition(CameraPosition(target: _point)),
-          //                     animation: animation
-          //                 );
-          //               },
-          //               title: 'Specific position'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(CameraUpdate.zoomTo(1), animation: animation);
-          //               },
-          //               title: 'Specific zoom'
-          //           )
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(CameraUpdate.azimuthTo(1), animation: animation);
-          //               },
-          //               title: 'Specific azimuth'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(CameraUpdate.tiltTo(1), animation: animation);
-          //               },
-          //               title: 'Specific tilt'
-          //           ),
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(CameraUpdate.zoomIn(), animation: animation);
-          //               },
-          //               title: 'Zoom in'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.moveCamera(CameraUpdate.zoomOut(), animation: animation);
-          //               },
-          //               title: 'Zoom out'
-          //           ),
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 final newBounds = BoundingBox(
-          //                   northEast: const Point(latitude: 65.0, longitude: 40.0),
-          //                   southWest: const Point(latitude: 60.0, longitude: 30.0),
-          //                 );
-          //                 await controller.moveCamera(CameraUpdate.newBounds(newBounds), animation: animation);
-          //               },
-          //               title: 'New bounds'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 final newBounds = BoundingBox(
-          //                   northEast: const Point(latitude: 65.0, longitude: 40.0),
-          //                   southWest: const Point(latitude: 60.0, longitude: 30.0),
-          //                 );
-          //                 await controller.moveCamera(
-          //                     CameraUpdate.newTiltAzimuthBounds(newBounds, azimuth: 1, tilt: 1),
-          //                     animation: animation
-          //                 );
-          //               },
-          //               title: 'New bounds with tilt and azimuth'
-          //           ),
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 final placemark = Placemark(
-          //                     mapId: targetMapObjectId,
-          //                     point: (await controller.getCameraPosition()).target,
-          //                     opacity: 0.7,
-          //                     icon: PlacemarkIcon.single(
-          //                         PlacemarkIconStyle(
-          //                             image: BitmapDescriptor.fromAssetImage('lib/assets/place.png')
-          //                         )
-          //                     )
-          //                 );
-          //
-          //                 setState(() {
-          //                   mapObjects.removeWhere((el) => el.mapId == targetMapObjectId);
-          //                   mapObjects.add(placemark);
-          //                 });
-          //               },
-          //               title: 'Target point'
-          //           ),
-          //           Container()
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.setMapStyle(style);
-          //               },
-          //               title: 'Set Style'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 await controller.setMapStyle('');
-          //               },
-          //               title: 'Remove style'
-          //           ),
-          //         ]),
-          //         TableRow(
-          //           children: <Widget>[
-          //             ControlButton(
-          //                 onPressed: () async {
-          //                   setState(() {
-          //                     screenRect = const ScreenRect(
-          //                         bottomRight: ScreenPoint(x: 600, y: 600),
-          //                         topLeft: ScreenPoint(x: 200, y: 200)
-          //                     );
-          //                   });
-          //                 },
-          //                 title: 'Focus rect'
-          //             ),
-          //             ControlButton(
-          //                 onPressed: () async {
-          //                   setState(() {
-          //                     screenRect = null;
-          //                   });
-          //                 },
-          //                 title: 'Clear focus rect'
-          //             )
-          //           ],
-          //         ),
-          //         TableRow(
-          //           children: <Widget>[
-          //             ControlButton(
-          //                 onPressed: () async {
-          //                   final region = await controller.getFocusRegion();
-          //                   print(region);
-          //                 },
-          //                 title: 'Focus region'
-          //             ),
-          //             ControlButton(
-          //                 onPressed: () async {
-          //                   final region = await controller.getVisibleRegion();
-          //                   print(region);
-          //                 },
-          //                 title: 'Visible region'
-          //             )
-          //           ],
-          //         ),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 final screenPoint = await controller.getScreenPoint(
-          //                     (await controller.getCameraPosition()).target
-          //                 );
-          //
-          //                 print(screenPoint);
-          //               },
-          //               title: 'Map point to screen'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 final mediaQuery = MediaQuery.of(context);
-          //                 final point = await controller.getPoint(
-          //                     ScreenPoint(x: mediaQuery.size.width, y: mediaQuery.size.height)
-          //                 );
-          //
-          //                 print(point);
-          //               },
-          //               title: 'Screen point to map'
-          //           ),
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   tiltGesturesEnabled = !tiltGesturesEnabled;
-          //                 });
-          //               },
-          //               title: 'Tilt gestures: ${_enabledText(tiltGesturesEnabled)}'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   rotateGesturesEnabled = !rotateGesturesEnabled;
-          //                 });
-          //               },
-          //               title: 'Rotate gestures: ${_enabledText(rotateGesturesEnabled)}'
-          //           ),
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   zoomGesturesEnabled = !zoomGesturesEnabled;
-          //                 });
-          //               },
-          //               title: 'Zoom gestures: ${_enabledText(zoomGesturesEnabled)}'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   scrollGesturesEnabled = !scrollGesturesEnabled;
-          //                 });
-          //               },
-          //               title: 'Scroll gestures: ${_enabledText(scrollGesturesEnabled)}'
-          //           )
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   modelsEnabled = !modelsEnabled;
-          //                 });
-          //               },
-          //               title: 'Models: ${_enabledText(modelsEnabled)}'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   nightModeEnabled = !nightModeEnabled;
-          //                 });
-          //               },
-          //               title: 'Night mode: ${_enabledText(nightModeEnabled)}'
-          //           )
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   fastTapEnabled = !fastTapEnabled;
-          //                 });
-          //               },
-          //               title: 'Fast tap: ${_enabledText(fastTapEnabled)}'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   mode2DEnabled = !mode2DEnabled;
-          //                 });
-          //               },
-          //               title: '2D mode: ${_enabledText(mode2DEnabled)}'
-          //           )
-          //         ]),
-          //         TableRow(children: <Widget>[
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   indoorEnabled = !indoorEnabled;
-          //                 });
-          //               },
-          //               title: 'Indoor mode: ${_enabledText(indoorEnabled)}'
-          //           ),
-          //           ControlButton(
-          //               onPressed: () async {
-          //                 setState(() {
-          //                   liteModeEnabled = !liteModeEnabled;
-          //                 });
-          //               },
-          //               title: 'Lite mode: ${_enabledText(liteModeEnabled)}'
-          //           )
-          //         ])
-          //       ],
-          //     ),
-          //   ),
-          // )
+
+          Expanded(
+              child: SingleChildScrollView(
+                  child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            ControlButton(
+                                onPressed: () async {
+                                  if (mapObjects.any((el) => el.mapId == polylineId)) {
+                                    return;
+                                  }
+
+                                  final polyline = Polyline(
+                                    mapId: polylineId,
+                                    coordinates: <Point>[
+                                      // Point(latitude: 82.445933, longitude: 53.329945),
+                                      Point(latitude: 43.0, longitude: 77.0),
+                                      Point(latitude: 47.0, longitude: 77.0),
+                                      // Point(latitude: 46.32867, longitude: 64.00205),
+                                      // Point(latitude: 47.67642, longitude: 56.80994),
+                                      // Point(latitude: 49.823618, longitude: 66.823571),
+                                      // Point(latitude: 40.15328, longitude: 51.95205),
+                                      // Point(latitude: 46.8519, longitude: 55.6122),
+                                      // Point(latitude: 44.74306, longitude: 63.96779),
+                                      // Point(latitude: 45.78874, longitude: 63.12214),
+                                      // Point(latitude: 48.59665, longitude: 65.66007),
+                                      // Point(latitude: 40.44498, longitude: 50.9968),
+                                      // Point(latitude: 43.206777, longitude: 59.750022),
+                                      // Point(latitude: 47.15222, longitude: 65.52722),
+                                      // Point(latitude: 41.25, longitude: 68.41667),
+                                      // Point(latitude: 45.0415, longitude: 70.9346),
+                                      // Point(latitude: 46.42989, longitude: 75.4021),
+                                    ],
+                                    strokeColor: Colors.blue,
+                                    strokeWidth: 2, // default value 5.0, this will be a little bold
+                                    outlineColor: Colors.blue[200]!,
+                                    outlineWidth: 5,
+                                    onTap: (Polyline self, Point point) => print('Tapped me at $point'),
+                                  );
+                                  final polyline2 = Polyline(
+                                    mapId: polylineId2,
+                                    coordinates: <Point>[
+                                      // Point(latitude: 82.445933, longitude: 53.329945),
+
+                                      Point(latitude: 47.0, longitude: 77.0),
+                                      Point(latitude: 53.0, longitude: 77.0),
+
+                                    ],
+                                    strokeColor: Colors.black,
+                                    strokeWidth: 5, // default value 5.0, this will be a little bold
+                                    outlineColor: Colors.green[200]!,
+                                    outlineWidth: 1.0,
+                                    onTap: (Polyline self, Point point) => print('Tapped me at $point'),
+                                  );
+
+                                  setState(() {
+                                    mapObjects.add(polyline);
+                                    mapObjects.add(polyline2);
+                                  });
+
+                                },
+                                title: 'Add'
+                            ),
+                            ControlButton(
+                                onPressed: () async {
+                                  if (!mapObjects.any((el) => el.mapId == polylineId)) {
+                                    return;
+                                  }
+
+                                  final polyline = mapObjects.firstWhere((el) => el.mapId == polylineId) as Polyline;
+
+                                  setState(() {
+                                    mapObjects[mapObjects.indexOf(polyline)] = polyline.copyWith(
+                                        strokeColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                                        strokeWidth: 8.5
+                                    );
+                                  });
+                                },
+                                title: 'Update'
+                            ),
+                            ControlButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    mapObjects.removeWhere((el) => el.mapId == polylineId);
+                                  });
+                                },
+                                title: 'Remove'
+                            )
+                          ],
+                        )
+                      ]
+                  )
+              )
+          )
         ]
     );
   }
