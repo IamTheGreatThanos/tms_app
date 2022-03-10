@@ -349,7 +349,7 @@ class _OrderCardState extends State<OrderCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 30),
               child: MainButton(
                 title: "Поехали",
                 // S.of(context).next_step,

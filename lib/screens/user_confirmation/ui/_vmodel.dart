@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class PersonalInfoVModel {
       child: GestureDetector(
         child: SvgPicture.asset(
           "assets/images/svg/calendar.svg",
+          color: ColorPalette.main,
         ),
         onTap: () => _datePick(
           isBirth: true,
@@ -51,7 +53,8 @@ class PersonalInfoVModel {
       padding: const EdgeInsets.only(right: 13.0),
       child: GestureDetector(
         child: SvgPicture.asset(
-          "assets/images/svg/calendar.svg",
+          "assets/images/svg/calendar.svg",          color: ColorPalette.main,
+
         ),
         onTap: () => _datePick(
           isCarExpire: true,
@@ -112,7 +115,8 @@ class PersonalInfoVModel {
       padding: const EdgeInsets.only(right: 13.0),
       child: GestureDetector(
         child: SvgPicture.asset(
-          "assets/images/svg/calendar.svg",
+          "assets/images/svg/calendar.svg",          color: ColorPalette.main,
+
         ),
         onTap: () => _datePick(
           isCarIssue: true,

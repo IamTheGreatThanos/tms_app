@@ -80,7 +80,8 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                               successReferalCodeCallback(context);
                             },
                             child: SvgPicture.asset(
-                                "assets/images/svg/referal_code_help.svg"),
+                                "assets/images/svg/referal_code_help.svg",          color: ColorPalette.main,
+                            ),
                           )
                         ],
                       ),
@@ -144,7 +145,7 @@ class OneButtonDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/images/svg/referal_code_icon.svg"),
+            SvgPicture.asset("assets/images/svg/referal_code_icon.svg",color: ColorPalette.main,),
             const SizedBox(height: 15.0),
             Flexible(
               child: Text(

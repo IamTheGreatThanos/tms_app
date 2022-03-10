@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:europharm_flutter/network/models/dto_models/response/accepted_orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
@@ -61,8 +62,14 @@ class GlobalRepository {
   Future<CarsResponse> getCars() async => await _networkService.getCars();
 
   Future<MarksResponse> getMarks() async => await _networkService.getMarks();
+
   Future<CitiesResponse> getCities() async => await _networkService.getCities();
-  Future<OrdersResponse> getOrdersByCities(String cityId) async => await _networkService.getOrdersByCities(cityId);
+
+  Future<AcceptedOrdersResponse> acceptedOrders() async =>
+      await _networkService.acceptedOrders();
+
+  Future<OrdersResponse> getOrdersByCities(String cityId) async =>
+      await _networkService.getOrdersByCities(cityId);
 
   Future<void> verify(PersonalInfoVModel vModel) async =>
       await _networkService.verify(vModel);
@@ -70,7 +77,8 @@ class GlobalRepository {
   Future<void> acceptOrder(int orderId) async =>
       await _networkService.acceptOrder(orderId);
 
-  Future<OrderHistoryResponse> orderHistory(String startDate, String endDate) async =>
+  Future<OrderHistoryResponse> orderHistory(
+          String startDate, String endDate) async =>
       await _networkService.orderHistory(startDate, endDate);
 
   Future<PositionsResponse> getPositions() async =>

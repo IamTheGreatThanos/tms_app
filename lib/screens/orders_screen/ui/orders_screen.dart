@@ -56,12 +56,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
             child: BlocConsumer<BlocOrdersScreen, StateBlocOrdersScreen>(
               buildWhen: (p, c) => c is StateLoadDataOrdersScreen,
               listener: (context, state) {
-                if(state is StateLoadingOrdersScreen){
+                if (state is StateLoadingOrdersScreen) {
                   context.loaderOverlay.show();
-                }else{
+                } else {
                   context.loaderOverlay.hide();
                 }
-                if(state is StateOrdersScreenError){
+                if (state is StateOrdersScreenError) {
                   showAppDialog(
                     context,
                     body: state.error.message,
@@ -78,12 +78,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         children: [
                           Row(
                             children: [
-                              SvgPicture.asset("assets/images/svg/location.svg"),
+                              SvgPicture.asset(
+                                "assets/images/svg/location.svg",
+                                color: ColorPalette.main,
+                              ),
                               SizedBox(
                                 width: 200,
                                 child: DropdownButtonFormField(
                                   iconSize: 0,
-                                  value: selectedValue ?? state.cities.first.name,
+                                  value:
+                                      selectedValue ?? state.cities.first.name,
                                   decoration: InputDecoration(
                                     suffixIcon: SvgPicture.asset(
                                       "assets/images/svg/dropdown_arrow.svg",
@@ -119,13 +123,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   },
                                   onChanged: (e) {
                                     selectedValue = e.toString();
-                                    context.read<BlocOrdersScreen>()
-                                      .add(EventInitialOrdersScreen(
-                                          cityId: state.cities
-                                              .firstWhere(
-                                                  (element) => element.name == e)
-                                              .id
-                                              .toString()));
+                                    context.read<BlocOrdersScreen>().add(
+                                        EventInitialOrdersScreen(
+                                            cityId: state.cities
+                                                .firstWhere((element) =>
+                                                    element.name == e)
+                                                .id
+                                                .toString()));
                                   },
                                 ),
                               ),
@@ -133,12 +137,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           ),
                           Row(
                             children: [
-                              SvgPicture.asset("assets/images/svg/filter.svg"),
+                              SvgPicture.asset(
+                                "assets/images/svg/filter.svg",
+                                color: ColorPalette.main,
+                              ),
                               const SizedBox(
                                 width: 22,
                               ),
                               SvgPicture.asset(
-                                  "assets/images/svg/notifications.svg"),
+                                "assets/images/svg/notifications.svg",
+                                color: ColorPalette.main,
+                              ),
                             ],
                           )
                         ],
@@ -191,7 +200,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     Text(
                                       S.of(context).get_access,
                                       style: ProjectTextStyles.ui_16Medium
-                                          .copyWith(color: ColorPalette.darkGrey),
+                                          .copyWith(
+                                              color: ColorPalette.darkGrey),
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(
@@ -263,8 +273,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           order: state.orders[index],
                                         );
                                       }),
-                              const SizedBox(height: 85,)
-
+                              const SizedBox(
+                                height: 85,
+                              )
                             ],
                           ),
                         ),
@@ -295,12 +306,12 @@ class _BuildOrderItem extends StatefulWidget {
 }
 
 class _BuildOrderItemState extends State<_BuildOrderItem> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -343,20 +354,20 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     widget.order.employee?.name ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_20Medium,
                   ),
-                  // if (order.isCurrent)
-                  //   Container(
-                  //     decoration: BoxDecoration(
-                  //       color: ColorPalette.lightBlue,
-                  //       borderRadius: BorderRadius.circular(4),
-                  //     ),
-                  //     padding: const EdgeInsets.all(4),
-                  //     child: Text(
-                  //       "Текущий Заказ",
-                  //       style: ProjectTextStyles.ui_10Regular.copyWith(
-                  //         color: ColorPalette.white,
-                  //       ),
-                  //     ),
-                  //   )
+                  if (widget.order.status?.toLowerCase() == "send")
+                    Container(
+                      decoration: BoxDecoration(
+                        color: ColorPalette.grey400,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        "Текущий Заказ",
+                        style: ProjectTextStyles.ui_10Regular.copyWith(
+                          color: ColorPalette.white,
+                        ),
+                      ),
+                    )
                 ],
               ),
               // if (order.isCurrent)
@@ -426,7 +437,9 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: ColorPalette.lightBlue,
+                      color: widget.order.status?.toLowerCase() == "send"
+                          ? ColorPalette.main
+                          : ColorPalette.grey400,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: SvgPicture.asset("assets/images/svg/orders_geo.svg"),
