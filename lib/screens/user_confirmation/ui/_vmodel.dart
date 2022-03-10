@@ -181,9 +181,9 @@ class PersonalInfoVModel {
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
-      locale: Locale("ru", "RU"),
+      firstDate: isCarExpire ? DateTime.now():DateTime(1950),
+      lastDate: isCarExpire ?DateTime(2050) :DateTime.now(),
+        locale: Locale("ru", "RU"),
     );
     if (date != null) {
       if (isBirth) {

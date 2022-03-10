@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -46,6 +47,7 @@ class BlocVerification
           }
         }
         marks = response.data!;
+        log("${marks}");
         emit(StateVerificationFourthStep(marks));
       } catch (e) {
         emit(StateVerificationError(

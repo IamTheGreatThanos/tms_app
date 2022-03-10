@@ -6,6 +6,7 @@ import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
+import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -139,6 +140,16 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                     _vmodel.repeatPassword,
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              MainButton(onTap: (){},
+                color: ColorPalette.green,
+                title: "Сохранить",
+              ),
+              const SizedBox(
+                height: 15,
               ),
               const SizedBox(
                 height: 85,
