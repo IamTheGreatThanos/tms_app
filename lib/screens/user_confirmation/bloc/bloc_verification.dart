@@ -40,7 +40,7 @@ class BlocVerification
         var response = await repository.getMarks();
         for (int i = 0; i < response.data!.length; i++) {
           for (int k = i + 1; k < response.data!.length; k++) {
-            if (response.data![k].name == response.data![i].name) {
+            if (response.data![i].name == response.data![k].name) {
               response.data!.removeAt(k);
             }
           }
