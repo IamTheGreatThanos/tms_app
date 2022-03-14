@@ -6,6 +6,7 @@ import 'package:europharm_flutter/widgets/camera/camera_shape.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 
 class IdVerificationScreen extends StatefulWidget {
   const IdVerificationScreen({Key? key}) : super(key: key);
@@ -86,23 +87,29 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   }
 
   void initCamera() async {
-    // controller = CameraController(
-    //   const CameraDescription(
-    //     name: "0",
-    //     lensDirection: CameraLensDirection.back,
-    //     sensorOrientation: 90,
-    //   ),
-    //   ResolutionPreset.medium,
-    //   imageFormatGroup: ImageFormatGroup.jpeg,
-    // );
+    controller = CameraController(
+      const CameraDescription(
+        name: "0",
+        lensDirection: CameraLensDirection.back,
+        sensorOrientation: 90,
+      ),
+      ResolutionPreset.medium,
+      imageFormatGroup: ImageFormatGroup.jpeg,
+    );
+    Logger().i("|||||CAMERA is initialized id_verification|||");
+
     var cameras = await availableCameras();
+    print("|||||CAMERA is initialized id_verification 2");
+
     controller = CameraController(cameras[0], ResolutionPreset.max);
-    controller!.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
+    // controller!.initialize().then((_) {
+    //   if (!mounted) {
+    //     return;
+    //   }
+    //   setState(() {});
+    // });
+    print("|||||CAMERA is initialized id_verification 3");
+
     await controller!.initialize();
     await controller!
         .getMinExposureOffset()
@@ -113,11 +120,15 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     await controller!
         .getMaxZoomLevel()
         .then((value) => _maxAvailableZoom = value);
+    print("camera is initialized id_verification");
+
     await controller!
         .getMinZoomLevel()
         .then((value) => _minAvailableZoom = value);
     setState(() {
       isCameraInitialized = true;
+      print("|||||CAMERA is initialized id_verification 4");
+
     });
   }
 
@@ -196,11 +207,16 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
             left: 10,
             right: 10,
             child: GestureDetector(
-              onTap: (){
-                takePicture().then((XFile? file) {
+              onTap: () async {
+
+                // onTakePictureButtonPressed();
+
+                 await takePicture().then((XFile? file) {
                   if (mounted) {
                     setState(() {
-                      images.add(file!.path);
+                      if(file != null) {
+                        images.add(file.path);
+                      }
                       if(isBackSide){
                         Navigator.of(context).pop(images);
                       }
@@ -328,14 +344,14 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
       return;
     }
 
-    final CameraController cameraController = controller!;
+    // final CameraController cameraController = controller!;
 
     final offset = Offset(
       details.localPosition.dx / constraints.maxWidth,
       details.localPosition.dy / constraints.maxHeight,
     );
-    cameraController.setExposurePoint(offset);
-    cameraController.setFocusPoint(offset);
+    // cameraController.setExposurePoint(offset);
+    // cameraController.setFocusPoint(offset);
   }
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
@@ -415,10 +431,13 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     }
 
     try {
+      Logger().d("message");
       XFile file = await cameraController.takePicture();
+      Logger().e("|||||||||||||||| camera TAKE PICTURE");
       return file;
     } on CameraException catch (e) {
       _showCameraException(e);
+      Logger().e(e);
       return null;
     }
   }
