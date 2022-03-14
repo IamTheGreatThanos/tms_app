@@ -139,6 +139,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     obscureText: true,
     onChanged: updateIsPasswordValidated,
     isVisibleObscureButton: true,
+    textCapitalization: TextCapitalization.none,
   );
   late final newPassword = AppTextField(
     fillColor: ColorPalette.white,
@@ -148,6 +149,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     validator: (value) => _passwordValidator(value!),
     onChanged: updateIsPasswordValidated,
     isVisibleObscureButton: true,
+    textCapitalization: TextCapitalization.none,
   );
 
   late final repeatPassword = AppTextField(
@@ -158,6 +160,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     validator: (value) => _passwordValidator(value!),
     onChanged: updateIsPasswordValidated,
     isVisibleObscureButton: true,
+    textCapitalization: TextCapitalization.none,
   );
 
   PersonalDataVModel() : super(

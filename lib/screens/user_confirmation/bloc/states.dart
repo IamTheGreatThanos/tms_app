@@ -6,6 +6,10 @@ abstract class StateBlocVerification {
 
 class StateVerificationInitial extends StateBlocVerification {}
 
+class StateVerificationLoading extends StateBlocVerification {}
+
+class StateSuccessfulVerification extends StateBlocVerification {}
+
 class StateVerificationFirstStep extends StateBlocVerification {}
 
 class StateVerificationSecondStep extends StateBlocVerification {
@@ -18,4 +22,14 @@ class StateVerificationSecondStep extends StateBlocVerification {
 
 class StateVerificationThirdStep extends StateBlocVerification {}
 
-class StateVerificationFourthStep extends StateBlocVerification {}
+class StateVerificationFourthStep extends StateBlocVerification {
+  final List<Marks> marks;
+
+  StateVerificationFourthStep(this.marks);
+}
+
+class StateVerificationError extends StateBlocVerification {
+  final AppError error;
+
+  StateVerificationError({required this.error});
+}

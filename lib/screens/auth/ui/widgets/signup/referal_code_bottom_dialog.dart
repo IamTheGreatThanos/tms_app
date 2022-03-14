@@ -80,7 +80,8 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                               successReferalCodeCallback(context);
                             },
                             child: SvgPicture.asset(
-                                "assets/images/svg/referal_code_help.svg"),
+                                "assets/images/svg/referal_code_help.svg",          color: ColorPalette.main,
+                            ),
                           )
                         ],
                       ),
@@ -144,7 +145,7 @@ class OneButtonDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/images/svg/referal_code_icon.svg"),
+            SvgPicture.asset("assets/images/svg/referal_code_icon.svg",color: ColorPalette.main,),
             const SizedBox(height: 15.0),
             Flexible(
               child: Text(
@@ -159,7 +160,7 @@ class OneButtonDialog extends StatelessWidget {
                   TextSpan(
                     text: S.of(context).referalCode,
                     style: ProjectTextStyles.ui_16Medium.copyWith(
-                      color: ColorPalette.blue,
+                      color: ColorPalette.main,
                     ),
                   ),
                   TextSpan(
@@ -172,13 +173,13 @@ class OneButtonDialog extends StatelessWidget {
             MainButton(
               borderRadius: 10.0,
               title: S.of(context).understandably,
-              textColor: ColorPalette.blue,
+              textColor: ColorPalette.main,
               onTap: () {
                 Navigator.of(context, rootNavigator: true).pop();
               },
               // icon: "assets/images/svg/arrow_right.svg",
               color: ColorPalette.white,
-              borderColor: ColorPalette.blue,
+              borderColor: ColorPalette.main,
             ),
           ],
         ),

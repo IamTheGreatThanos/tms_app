@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:europharm_flutter/main.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -14,7 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LogOutEvent>((event, emit) => _onLogOutEvent(event, emit));
   }
 
-  _onInitialLoginEvent(InitialLoginEvent event, Emitter<LoginState> emit) {
+  _onInitialLoginEvent(InitialLoginEvent event, Emitter<LoginState> emit) async {
+    // await _tokensRepository.save("5|QoBqf9Mf4lYLLU2zLW0dIzd57u2s4TyHPv2PF6g7");
     if (_tokensRepository.hasToken()) {
       emit(AuthorizedState());
     } else {

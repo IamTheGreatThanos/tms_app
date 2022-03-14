@@ -7,7 +7,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
+# followed by an optional build number separated by a
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
@@ -61,22 +61,21 @@ dependencies:
   pin_code_fields: ^7.3.0
   firebase_core: 1.11.0
   firebase_dynamic_links: 2.0.9
-  appmetrica_sdk: ^0.0.7+1
-  alice: ^0.2.5
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   qr_code_scanner: ^0.6.1
-  camera: ^0.9.4+6
-  video_player: ^2.2.13
+  google_maps_flutter: ^2.1.2
   convex_bottom_bar: ^3.0.0
   device_preview: ^1.0.0
   table_calendar: ^3.0.3
-  country_code_picker: ^2.0.2
-  yandex_mapkit: ^2.0.1
+  yandex_mapkit: ^2.0.2
   dotted_line: ^3.1.0
-  syncfusion_flutter_calendar: ^19.4.48
+  syncfusion_flutter_calendar: ^19.4.54
+  country_code_picker: ^2.0.2
   syncfusion_localizations: ^19.4.48
-  in_date_utils: ^1.0.2
+  another_xlider: ^1.0.1+2
+  video_player: ^2.3.0
+  camera: ^0.9.4+16
 dev_dependencies:
   flutter_test:
     sdk: flutter

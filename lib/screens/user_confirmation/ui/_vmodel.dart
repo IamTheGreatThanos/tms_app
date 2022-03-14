@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class PersonalInfoVModel {
       child: GestureDetector(
         child: SvgPicture.asset(
           "assets/images/svg/calendar.svg",
+          color: ColorPalette.main,
         ),
         onTap: () => _datePick(
           isBirth: true,
@@ -51,7 +53,8 @@ class PersonalInfoVModel {
       padding: const EdgeInsets.only(right: 13.0),
       child: GestureDetector(
         child: SvgPicture.asset(
-          "assets/images/svg/calendar.svg",
+          "assets/images/svg/calendar.svg",          color: ColorPalette.main,
+
         ),
         onTap: () => _datePick(
           isCarExpire: true,
@@ -60,9 +63,51 @@ class PersonalInfoVModel {
     ),
   );
   late final carType = AppTextField(
-    hintText: S.current.car_type,
+    hintText: S.current.car_mark,
     validator: _validate,
   );
+  late final carModel = AppTextField(
+    hintText: S.current.car_model,
+    validator: _validate,
+  );
+  List<String> images = [];
+  String rightsPicture = "";
+  String? markId = "1";
+
+  Future<Map<String, dynamic>> toJson() async {
+    return {
+      "name": firstName.controller.text,
+      "surname": lastName.controller.text,
+      "date": dateOfBirth.controller.text,
+      "iin": iin.controller.text,
+      "doc_number": carRightsNumber.controller.text,
+      "deadline": carRightsExpire.controller.text,
+      "image_1": await MultipartFile.fromFile(images.first),
+      "image_2": await MultipartFile.fromFile(images.last),
+      "person_image": await MultipartFile.fromFile(rightsPicture),
+      "mark_model_id": markId,
+      "car_date": carIssueDate.controller.text,
+      "dimensions": carDimensions.controller.text,
+      "number": governmentNumber.controller.text,
+      "registration": "drc/image-registration",
+      "image": await MultipartFile.fromFile(rightsPicture),
+    };
+  }
+
+  bool isFilled() {
+    return firstName.controller.text.isNotEmpty &&
+        lastName.controller.text.isNotEmpty &&
+        dateOfBirth.controller.text.isNotEmpty &&
+        iin.controller.text.isNotEmpty &&
+        carRightsNumber.controller.text.isNotEmpty &&
+        carRightsExpire.controller.text.isNotEmpty &&
+        images.length == 2 &&
+        rightsPicture.isNotEmpty &&
+        carIssueDate.controller.text.isNotEmpty &&
+        carDimensions.controller.text.isNotEmpty &&
+        governmentNumber.controller.text.isNotEmpty;
+  }
+
   late final carIssueDate = AppTextField(
     hintText: S.current.car_issue_date,
     readonly: true,
@@ -70,7 +115,8 @@ class PersonalInfoVModel {
       padding: const EdgeInsets.only(right: 13.0),
       child: GestureDetector(
         child: SvgPicture.asset(
-          "assets/images/svg/calendar.svg",
+          "assets/images/svg/calendar.svg",          color: ColorPalette.main,
+
         ),
         onTap: () => _datePick(
           isCarIssue: true,
@@ -158,8 +204,9 @@ class PersonalInfoVModel {
     final date = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
+      firstDate: isCarExpire ? DateTime.now():DateTime(1950),
+      lastDate: isCarExpire ?DateTime(2050) :DateTime.now(),
+        locale: Locale("ru", "RU"),
     );
     if (date != null) {
       if (isBirth) {

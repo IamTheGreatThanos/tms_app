@@ -4,14 +4,22 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
 import 'package:europharm_flutter/network/dio_wrapper/side_dio_wrapper.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/accepted_orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
+import '../models/dto_models/response/cars_response.dart';
+import '../models/dto_models/response/cities_response.dart';
+import '../models/dto_models/response/marks_response.dart';
+import '../models/dto_models/response/order_history_response.dart';
+import '../models/dto_models/response/positions_response.dart';
 
 class NetworkService {
   late final DioWrapper _dioWrapper;
@@ -79,11 +87,109 @@ class NetworkService {
     return ProfileResponse.fromJson(response.data);
   }
 
-  Future<ProfileResponse> verify(PersonalInfoVModel vModel) async {
+  Future<PositionsResponse> getPositions() async {
     var response = await _dioWrapper.sendRequest(
+      path: "positions",
+      method: NetworkMethod.get,
+    );
+    return PositionsResponse.fromJson(response.data);
+  }
+
+  Future<CarsResponse> getCars() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "cars",
+      method: NetworkMethod.get,
+    );
+    return CarsResponse.fromJson(response.data);
+  }
+
+  Future<MarksResponse> getMarks() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "marks",
+      method: NetworkMethod.get,
+    );
+    return MarksResponse.fromJson(response.data);
+  }
+
+  Future<CitiesResponse> getCities() async {
+    var response = await _dioWrapper.sendRequest(
+      path: "cities",
+      method: NetworkMethod.get,
+    );
+    return CitiesResponse.fromJson(response.data);
+  }
+
+  Future<OrdersResponse> getOrdersByCities(String cityId) async {
+    var response = await _dioWrapper.sendRequest(
+      path: "orders",
+      formData: FormData.fromMap({
+        "city_id": cityId,
+      }),
+      method: NetworkMethod.post,
+    );
+    return OrdersResponse.fromJson(response.data);
+  }
+
+  Future<void> verify(PersonalInfoVModel vModel) async {
+    await _dioWrapper.sendRequest(
         path: "verify",
         method: NetworkMethod.post,
         formData: FormData.fromMap(await vModel.toJson()));
-    return ProfileResponse.fromJson(response.data);
+  }
+
+  Future<void> acceptOrder(int orderId) async {
+    await _dioWrapper.sendRequest(
+        path: "/order/accept",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+        }));
+  }
+
+  Future<void> stopOrder(int orderId, String cause) async {
+    await _dioWrapper.sendRequest(
+        path: "/order/stop",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+          "stop_reason": cause,
+        }));
+  }
+
+  Future<OrderPointsResponse> orderPoints(int orderId) async {
+    final response = await _dioWrapper.sendRequest(
+        path: "/order/points",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+        }));
+    return OrderPointsResponse.fromJson(response.data);
+  }
+
+  Future<AcceptedOrdersResponse> acceptedOrders() async {
+    final response = await _dioWrapper.sendRequest(
+      path: "/order/accepted",
+      method: NetworkMethod.get,
+    );
+    return AcceptedOrdersResponse.fromJson(response.data);
+  }
+
+  Future<OrderHistoryResponse> orderHistory(
+      String startDate, String endDate) async {
+    var response = await _dioWrapper.sendRequest(
+        path: "order/history",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "start_date": startDate,
+          "end_date": endDate,
+        }));
+    return OrderHistoryResponse.fromJson(response.data);
+  }
+
+  Future<void> logout() async {
+    await _dioWrapper.sendRequest(
+      path: "logout",
+      method: NetworkMethod.post,
+    );
   }
 }

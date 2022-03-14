@@ -64,7 +64,7 @@ class _FullCalendarScreenState extends State<FullCalendarScreen> {
             Navigator.of(context).pop(DateTime(year, month, day));
           },
           monthTitleStyle: ProjectTextStyles.ui_20Large.copyWith(
-            color: ColorPalette.blue,
+            color: ColorPalette.main,
           ),
         ));
   }

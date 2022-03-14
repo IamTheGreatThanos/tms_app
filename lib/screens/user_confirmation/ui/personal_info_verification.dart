@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/id_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/successful_screen.dart';
@@ -13,8 +14,12 @@ import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
+import '../../../network/models/dto_models/response/marks_response.dart';
+import '../../../widgets/app_bottom_sheets/app_dialog.dart';
 import '_vmodel.dart';
 
 class PersonalInfoVerification extends StatefulWidget {
@@ -36,63 +41,93 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: S.of(context).verification,
-        rootNavigator: true,
-        bottom: const _BuildProgress(),
-        height: 110,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 16.0,
-        ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 60.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BlocConsumer<BlocVerification, StateBlocVerification>(
-                        builder: (context, state) {
-                          if (state is StateVerificationFirstStep) {
-                            return _BuildFirstStep(vmodel: _vmodel!);
-                          }
-                          if (state is StateVerificationSecondStep) {
-                            return _BuildSecondStep(
-                              vmodel: _vmodel!,
-                              state: state,
-                            );
-                          }
-                          if (state is StateVerificationThirdStep) {
-                            return _BuildThirdStep();
-                          }
-                          if (state is StateVerificationFourthStep) {
-                            return _BuildFourthStep(vmodel: _vmodel!);
-                          }
-                          return const SizedBox.shrink();
-                        },
-                        listener: (context, state) {}),
-                  ],
-                ),
-              ),
+    return LoaderOverlay(
+      child: BlocProvider<BlocVerification>(
+        create: (context) =>
+            BlocVerification(repository: context.read<GlobalRepository>())
+              ..add(EventInitialVerification()),
+        child: Scaffold(
+          appBar: CustomAppBar(
+            title: S.of(context).verification,
+            rootNavigator: true,
+            bottom: const _BuildProgress(),
+            height: 110,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+              vertical: 16.0,
             ),
-            Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: BlocConsumer<BlocVerification, StateBlocVerification>(
-                    builder: (context, state) {
-                      return _BuildFooter(
-                        state: state,
-                        vmodel: _vmodel!,
-                      );
-                    },
-                    listener: (context, state) {}))
-          ],
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 60.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        BlocConsumer<BlocVerification, StateBlocVerification>(
+                          builder: (context, state) {
+                            if (state is StateVerificationFirstStep) {
+                              return _BuildFirstStep(vmodel: _vmodel!);
+                            }
+                            if (state is StateVerificationSecondStep) {
+                              return _BuildSecondStep(
+                                vmodel: _vmodel!,
+                                state: state,
+                              );
+                            }
+                            if (state is StateVerificationThirdStep) {
+                              return _BuildThirdStep(
+                                vmodel: _vmodel!,
+                              );
+                            }
+                            if (state is StateVerificationFourthStep) {
+                              return _BuildFourthStep(
+                                vmodel: _vmodel!,
+                                marks: state.marks.toSet().toList(),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                          listener: (context, state) {
+                            if(state is StateVerificationLoading){
+                              context.loaderOverlay.show();
+                            }
+                            else{
+                              context.loaderOverlay.hide();
+                            }
+                            if (state is StateVerificationError) {
+                              showAppDialog(
+                                context,
+                                body: state.error.message,
+                              );
+                            }
+                            if (state is StateSuccessfulVerification) {
+                              AppRouter.push(context, SuccessfulScreen());
+                            }
+                          },
+                          buildWhen: (p, c) => c is! StateVerificationError || c is! StateVerificationLoading,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: BlocConsumer<BlocVerification, StateBlocVerification>(
+                        builder: (context, state) {
+                          return _BuildFooter(
+                            state: state,
+                            vmodel: _vmodel!,
+                          );
+                        },
+                        listener: (context, state) {}))
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -117,7 +152,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                       value: _progressValue(state),
                       backgroundColor: ColorPalette.lightGrey,
                       valueColor:
-                          const AlwaysStoppedAnimation(ColorPalette.blue),
+                          const AlwaysStoppedAnimation(ColorPalette.main),
                       minHeight: 6,
                     ),
                     borderRadius: BorderRadius.circular(6),
@@ -131,7 +166,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                       Text(
                         S.of(context).personal_data,
                         style: ProjectTextStyles.ui_16Medium.copyWith(
-                          color: ColorPalette.blue,
+                          color: ColorPalette.main,
                         ),
                       ),
                       Text(
@@ -143,7 +178,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                                     ? 3
                                     : 4),
                         style: ProjectTextStyles.ui_16Medium.copyWith(
-                          color: ColorPalette.blue,
+                          color: ColorPalette.main,
                         ),
                       ),
                     ],
@@ -231,7 +266,7 @@ class _BuildSecondStep extends StatelessWidget {
           ),
           child: Column(
             children: [
-              state.idImages == null
+              vmodel.images.isEmpty
                   ? Image.asset(
                       "assets/images/png/identifications.png",
                       height: 90,
@@ -242,12 +277,12 @@ class _BuildSecondStep extends StatelessWidget {
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 2 - 32,
                             height: 90,
-                            child: Image.file(File(state.idImages!.first))),
+                            child: Image.file(File(vmodel.images.first))),
                         SizedBox(
                             width: MediaQuery.of(context).size.width / 2 - 32,
                             height: 90,
                             child: Image.file(
-                              File(state.idImages!.last),
+                              File(vmodel.images.last),
                             )),
                       ],
                     ),
@@ -264,7 +299,7 @@ class _BuildSecondStep extends StatelessWidget {
                     TextSpan(
                         text: S.of(context).facial_side,
                         style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.blue)),
+                            .copyWith(color: ColorPalette.main)),
                     TextSpan(
                         text: S.of(context).and_from,
                         style: ProjectTextStyles.ui_16Medium
@@ -272,7 +307,7 @@ class _BuildSecondStep extends StatelessWidget {
                     TextSpan(
                         text: S.of(context).back_side,
                         style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.blue)),
+                            .copyWith(color: ColorPalette.main)),
                     TextSpan(
                         text: S.of(context).side_of_rights,
                         style: ProjectTextStyles.ui_16Medium
@@ -300,7 +335,7 @@ class _BuildSecondStep extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                       color: Colors.transparent,
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
                     children: [
@@ -308,7 +343,7 @@ class _BuildSecondStep extends StatelessWidget {
                         child: Text(
                           S.of(context).photograph,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -317,7 +352,7 @@ class _BuildSecondStep extends StatelessWidget {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -331,7 +366,16 @@ class _BuildSecondStep extends StatelessWidget {
   }
 }
 
-class _BuildThirdStep extends StatelessWidget {
+class _BuildThirdStep extends StatefulWidget {
+  final PersonalInfoVModel vmodel;
+
+  const _BuildThirdStep({Key? key, required this.vmodel}) : super(key: key);
+
+  @override
+  State<_BuildThirdStep> createState() => _BuildThirdStepState();
+}
+
+class _BuildThirdStepState extends State<_BuildThirdStep> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -360,11 +404,19 @@ class _BuildThirdStep extends StatelessWidget {
                 height: 15,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  var file =
+                      await ImagePicker().pickImage(source: ImageSource.gallery);
+                  if (file != null) {
+                    setState(() {
+                      widget.vmodel.rightsPicture = file.path;
+                    });
+                  }
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
@@ -373,7 +425,7 @@ class _BuildThirdStep extends StatelessWidget {
                         child: Text(
                           S.of(context).photograph,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -382,7 +434,7 @@ class _BuildThirdStep extends StatelessWidget {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -395,33 +447,127 @@ class _BuildThirdStep extends StatelessWidget {
     );
   }
 }
-
-class _BuildFourthStep extends StatelessWidget {
+//123
+class _BuildFourthStep extends StatefulWidget {
   final PersonalInfoVModel vmodel;
+  final List<Marks> marks;
 
-  const _BuildFourthStep({Key? key, required this.vmodel}) : super(key: key);
+  const _BuildFourthStep({Key? key, required this.vmodel, required this.marks})
+      : super(key: key);
+
+  @override
+  State<_BuildFourthStep> createState() => _BuildFourthStepState();
+}
+
+class _BuildFourthStepState extends State<_BuildFourthStep> {
+  String markValue = "";
+
+  @override
+  void initState() {
+    markValue = widget.marks.first.name!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        vmodel.carType,
+        // vmodel.carType,
+        // DropdownButton(
+        //   items: widget.marks.map((Marks mark) {
+        //     return DropdownMenuItem<String>(
+        //       value: mark.name,
+        //       child: Text(mark.name!),
+        //     );
+        //   }).toList(),
+        //   onChanged: (e) {
+        //     setState(() {
+        //       widget.vmodel.markId = widget.marks
+        //           .firstWhere((element) => element.name == e)
+        //           .id
+        //           .toString();
+        //     });
+        //   },
+        //   // dropdownColor: ,
+        // ),
+        DropdownButtonFormField(
+          iconSize: 24,
+          dropdownColor: ColorPalette.lightGrey,
+          focusColor: ColorPalette.lightGrey,
+          value: markValue,
+          decoration: InputDecoration(
+            focusColor: ColorPalette.lightGrey,
+            hoverColor: ColorPalette.lightGrey,
+            hintStyle: ProjectTextStyles.ui_16Medium,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 1.0,
+              ),
+              gapPadding: 0.0,
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 1.0,
+              ),
+              gapPadding: 0.0,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 1.0,
+              ),
+              gapPadding: 0.0,
+            ),
+            filled: true,
+            contentPadding: EdgeInsets.all(16),
+            fillColor: ColorPalette.lightGrey,
+          ),
+          items: widget.marks.map((Marks mark) {
+            return DropdownMenuItem<String>(
+              value: mark.name,
+              child: Text(mark.name!),
+            );
+          }).toList(),
+          validator: (value) {
+            if (value == null) {
+              return 'Выберите марку';
+            }
+            return null;
+          },
+          onChanged: (e) {
+            setState(() {
+              widget.vmodel.markId = widget.marks
+                  .firstWhere((element) => element.name == e)
+                  .id
+                  .toString();
+            });
+          },
+        ),
         const SizedBox(
           height: 10,
         ),
-        vmodel.carIssueDate,
+        widget.vmodel.carModel,
         const SizedBox(
           height: 10,
         ),
-        vmodel.carDimensions,
+        widget.vmodel.carIssueDate,
         const SizedBox(
           height: 10,
         ),
-        vmodel.governmentNumber,
+        widget.vmodel.carDimensions,
         const SizedBox(
           height: 10,
         ),
-        vmodel.registrationCertificate,
+        widget.vmodel.governmentNumber,
+        const SizedBox(
+          height: 10,
+        ),
+        widget.vmodel.registrationCertificate,
         const SizedBox(
           height: 10,
         ),
@@ -447,7 +593,7 @@ class _BuildFourthStep extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.blue),
+                      border: Border.all(color: ColorPalette.main),
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10)),
                   child: Stack(
@@ -456,7 +602,7 @@ class _BuildFourthStep extends StatelessWidget {
                         child: Text(
                           S.of(context).load_data,
                           style: ProjectTextStyles.ui_16Medium.copyWith(
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ),
                         ),
                       ),
@@ -465,7 +611,7 @@ class _BuildFourthStep extends StatelessWidget {
                           right: 15,
                           child: SvgPicture.asset(
                             "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.blue,
+                            color: ColorPalette.main,
                           ))
                     ],
                   ),
@@ -517,7 +663,7 @@ class _BuildFooter extends StatelessWidget {
                       }
                     },
                     borderRadius: 10,
-                    borderColor: ColorPalette.blue,
+                    borderColor: ColorPalette.main,
                     color: Colors.transparent,
                     icon: "assets/images/svg/arrow_left.svg",
                   ),
@@ -552,11 +698,11 @@ class _BuildFooter extends StatelessWidget {
               }
               if (state is StateVerificationFourthStep
                   // && vmodel.lastStepValidated
-              ) {
-                AppRouter.push(context, SuccessfulScreen());
-                // context
-                //     .read<BlocVerification>()
-                //     .add(EventVerificationFourthStep());
+                  ) {
+                // AppRouter.push(context, SuccessfulScreen());
+                context
+                    .read<BlocVerification>()
+                    .add(EventVerificationVerify(vmodel: vmodel));
               }
             },
           ),

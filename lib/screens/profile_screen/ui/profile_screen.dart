@@ -71,7 +71,7 @@ class _BuildConfirmation extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: ColorPalette.blue,
+                color: ColorPalette.main,
                 borderRadius: BorderRadius.circular(10)),
             child: SvgPicture.asset(
               "assets/images/svg/user_confirmation.svg",
@@ -112,7 +112,7 @@ class _BuildConfirmation extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
-                  color: ColorPalette.blue,
+                  color: ColorPalette.main,
                   borderRadius: BorderRadius.circular(10)),
               child: Stack(
                 children: [
@@ -343,6 +343,7 @@ class _BuildMenuItem extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(
                       "assets/images/svg/$icon.svg",
+                      color: ColorPalette.main,
                       width: 24,
                       height: 24,
                     ),

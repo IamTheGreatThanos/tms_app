@@ -27,6 +27,7 @@ class BlocAuth extends Bloc<EventBlocAuth, StateBlocAuth> {
     on<EventAuthInit>((event, emit) => emit(SignInInitial()));
     on<EventAuthPhone>((event, emit) async{
       try{
+        emit(StateAuthLoading());
         final token = await repository.login(event.phoneNumber, event.password);
         emit(StateSuccessSignIn(accessToken: token.accessToken!));
       }catch(e){

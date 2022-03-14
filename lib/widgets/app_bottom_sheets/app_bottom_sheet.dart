@@ -32,7 +32,7 @@ Future<T?> showAppBottomSheet<T>(
         top: Radius.circular(16),
       ),
     ),
-    builder: (_) {
+    builder: (context) {
       return Padding(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
