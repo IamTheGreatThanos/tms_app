@@ -343,6 +343,7 @@ class _BuildMenuItem extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(
                       "assets/images/svg/$icon.svg",
+                      color: ColorPalette.main,
                       width: 24,
                       height: 24,
                     ),

@@ -5,8 +5,10 @@ abstract class StateBlocOrderCard {}
 
 class StateLoadingOrderCard extends StateBlocOrderCard {}
 
+class StateEditSuccess extends StateBlocOrderCard {}
+
 class StateLoadDataOrderCard extends StateBlocOrderCard {
-  final List<OrdersResponse> orders;
+  final OrderPointsResponse orders;
 
   StateLoadDataOrderCard({
     required this.orders,
