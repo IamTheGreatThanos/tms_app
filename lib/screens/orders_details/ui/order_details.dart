@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart' as od;
 import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
@@ -19,19 +20,21 @@ import '../../order_card/ui/order_card.dart';
 import '../bloc/bloc_order_details.dart';
 
 class OrderDetails extends StatefulWidget {
-  const OrderDetails({Key? key}) : super(key: key);
+  final od.OrdersData ordersData;
+  const OrderDetails({Key? key, required this.ordersData}) : super(key: key);
 
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMixin {
+class _OrderDetailsState extends State<OrderDetails>
+    with TickerProviderStateMixin {
   List<String> buttonText = [
     "Дальше в путь",
     "Принять оплату",
     "Принять и подписать",
   ];
-  int _current=0;
+  int _current = 0;
 
   late TabController _tabController;
   late PageController _controller;
@@ -43,14 +46,13 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
     super.initState();
     // selectedValue = cities[0];
     _tabController = TabController(length: 3, vsync: this);
-    _controller=PageController();
+    _controller = PageController();
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging)
-
-      setState(() {
-        print(_tabController.index);
-        _current=_tabController.index;
-      });
+        setState(() {
+          print(_tabController.index);
+          _current = _tabController.index;
+        });
     });
   }
 
@@ -73,10 +75,9 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                       borderRadius: BorderRadius.circular(16),
                       child: Container(
                         width: double.infinity,
-                        height: _current==1? 500:200,
+                        height: _current == 1 ? 500 : 200,
                         decoration: BoxDecoration(
                           color: ColorPalette.white,
-
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Stack(
@@ -107,7 +108,8 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                                       width: 6,
                                       decoration: BoxDecoration(
                                         color: ColorPalette.red,
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                       ),
                                     ),
                                     const SizedBox(
@@ -157,30 +159,32 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                     child: TabBar(
                       isScrollable: false,
                       indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50), // Creates border
-                            color: ColorPalette.main), //Change background color from here
+                          borderRadius: BorderRadius.circular(50),
+                          // Creates border
+                          color: ColorPalette.main),
+                      //Change background color from here
                       labelPadding: EdgeInsets.all(0),
                       labelColor: ColorPalette.white,
                       // indicatorColor: ColorPalette.red,
                       labelStyle: ProjectTextStyles.ui_16Medium,
                       unselectedLabelColor: ColorPalette.grey,
                       controller: _tabController,
-                      onTap: (index){
+                      onTap: (index) {
                         setState(() {
-                          _current=index;
-                          _controller.animateToPage(_current, duration: Duration(milliseconds: 50), curve: Curves.ease);
-
+                          _current = index;
+                          _controller.animateToPage(_current,
+                              duration: Duration(milliseconds: 50),
+                              curve: Curves.ease);
                         });
-
                       },
 
-                      tabs:  <Widget>[
+                      tabs: <Widget>[
                         Tab(
                           child: Text("Товар"),
                         ),
                         Tab(
-                          child:Text("В путь"),
-            // Container(
+                          child: Text("В путь"),
+                          // Container(
                           //     padding: EdgeInsets.symmetric(horizontal: 33,vertical: 12),
                           //     decoration: BoxDecoration(
                           //       borderRadius: BorderRadius.circular(20),
@@ -189,7 +193,9 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                           //     child: Text("Товар",style: ProjectTextStyles.ui_16Medium.copyWith(color: ColorPalette.white),)),
                         ),
                         Tab(
-                          child:  Text("Оплата",),
+                          child: Text(
+                            "Оплата",
+                          ),
                         ),
                       ],
                     ),
@@ -197,15 +203,14 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
 
                   Container(
                     // width: 500,
-                    height: _current==0 ? 300:50,
+                    height: _current == 0 ? 300 : 50,
                     child: PageView(
-                      controller: _controller,
-                        onPageChanged: (index){
-                        setState(() {
-                          _current=index;
-                          _tabController.index=index;
-
-                        });
+                        controller: _controller,
+                        onPageChanged: (index) {
+                          setState(() {
+                            _current = index;
+                            _tabController.index = index;
+                          });
                         },
                         children: [
                           BlocConsumer<BlocOrderDetails, StateBlocOrderDetails>(
@@ -218,7 +223,8 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                                   return Center(
                                     child: Text(
                                       S.of(context).no_orders,
-                                      style: ProjectTextStyles.ui_16Medium.copyWith(
+                                      style: ProjectTextStyles.ui_16Medium
+                                          .copyWith(
                                         color: ColorPalette.commonGrey,
                                       ),
                                     ),
@@ -242,14 +248,16 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                             },
                           ),
                           Text(""),
-
-
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: Icon(Icons.monetization_on, size: 30,color: ColorPalette.secondaryMain,),
+                                child: Icon(
+                                  Icons.monetization_on,
+                                  size: 30,
+                                  color: ColorPalette.secondaryMain,
+                                ),
                               ),
                               SizedBox(
                                 height: 50,
@@ -260,7 +268,11 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                                         text: 'Тип оплаты: ',
                                         style: ProjectTextStyles.ui_16Medium,
                                         children: const <TextSpan>[
-                                          TextSpan(text: 'Наличными', style: TextStyle(color: ColorPalette.secondaryMain)),
+                                          TextSpan(
+                                              text: 'Наличными',
+                                              style: TextStyle(
+                                                  color: ColorPalette
+                                                      .secondaryMain)),
                                         ],
                                       ),
                                     ),
@@ -269,34 +281,35 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
                                         text: 'Сумма оплаты: ',
                                         style: ProjectTextStyles.ui_16Medium,
                                         children: const <TextSpan>[
-                                          TextSpan(text: '95 310Т', style: TextStyle(color: ColorPalette.secondaryMain)),
+                                          TextSpan(
+                                              text: '95 310Т',
+                                              style: TextStyle(
+                                                  color: ColorPalette
+                                                      .secondaryMain)),
                                         ],
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),
                             ],
                           ),
-
-                        ]
-                    ),
+                        ]),
                   ),
                 ],
               ),
             ),
           ),
-
-
           Padding(
             padding: const EdgeInsets.all(10),
             child: MainButton(
               title: buttonText[_tabController.index],
-                color: _current==2?ColorPalette.green:ColorPalette.main,
-                // "Отсканировать",
+              color: _current == 2 ? ColorPalette.green : ColorPalette.main,
+              // "Отсканировать",
               // S.of(context).next_step,
-              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderCard()));
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OrderCard(order: widget.ordersData,)));
                 // if (state is StateVerificationFirstStep
                 // // && vmodel.firstStepValidated
                 // ) {
@@ -327,8 +340,6 @@ class _OrderDetailsState extends State<OrderDetails> with TickerProviderStateMix
               },
             ),
           ),
-
-
         ],
       ),
     );
@@ -375,7 +386,7 @@ class _BuildOrderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       decoration: BoxDecoration(
         // color: ColorPalette.white,
         borderRadius: BorderRadius.circular(20),
@@ -383,30 +394,31 @@ class _BuildOrderItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Column(
             children: [
-                for(int i=0;i<8;i++)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(Icons.margin, color: ColorPalette.main,size: 22,),
+              for (int i = 0; i < 8; i++)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.margin,
+                          color: ColorPalette.main,
+                          size: 22,
                         ),
-                        Text(
-                          "ANGZ0112201-1-7; ANGZ0112201${i*2}",
-                          style: ProjectTextStyles.ui_12Medium
-                              .copyWith(color: ColorPalette.commonGrey),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        "ANGZ0112201-1-7; ANGZ0112201${i * 2}",
+                        style: ProjectTextStyles.ui_12Medium
+                            .copyWith(color: ColorPalette.commonGrey),
+                      ),
+                    ],
                   ),
+                ),
             ],
           ),
-
-
         ],
       ),
     );

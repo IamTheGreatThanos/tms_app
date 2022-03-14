@@ -38,13 +38,20 @@ class BlocVerification
     on<EventVerificationFourthStep>((event, emit) async {
       try {
         emit(StateVerificationLoading());
+        List<int> indexes = [];
         var response = await repository.getMarks();
         for (int i = 0; i < response.data!.length; i++) {
-          for (int k = i + 1; k < response.data!.length; k++) {
+          for (int k = 0; k < response.data!.length && k != i; k++) {
             if (response.data![i].name == response.data![k].name) {
-              response.data!.removeAt(k);
+              // response.data!.removeAt(k);
+              indexes.add(k);
             }
           }
+        }
+        indexes = indexes.toSet().toList();
+        indexes.sort((a, b) => b.compareTo(a));
+        for (var element in indexes) {
+          response.data?.removeAt(element);
         }
         marks = response.data!;
         log("${marks}");
@@ -60,7 +67,7 @@ class BlocVerification
     on<EventVerificationVerify>((event, emit) async {
       try {
         emit(StateVerificationLoading());
-        if (!event.vmodel.isFilled()) {
+        if (event.vmodel.isFilled()) {
           await repository.verify(event.vmodel);
           emit(StateSuccessfulVerification());
         } else {

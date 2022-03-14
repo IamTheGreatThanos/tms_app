@@ -318,7 +318,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
       padding: const EdgeInsets.only(bottom: 15.0),
       child: GestureDetector(
         onTap: () {
-          AppRouter.push(context, OrderCard(), rootNavigator: true);
+          AppRouter.push(context, OrderCard(order: widget.order,), rootNavigator: true);
         },
         child: Container(
           padding: const EdgeInsets.all(15),
