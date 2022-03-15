@@ -137,7 +137,6 @@ class PersonalInfoVModel {
     validator: _validate,
   );
   String selectedDate = '';
-  List<String> images = [];
 
   PersonalInfoVModel(this.context);
 
@@ -172,28 +171,6 @@ class PersonalInfoVModel {
       return [S.current.fill_field];
     }
     return [];
-  }
-
-  Future<Map<String, dynamic>> toJson() async {
-    final multipartImages = [];
-    // for (var el in images) {
-    //   multipartImages.add(await MultipartFile.fromFile(el));
-    // }
-    return {
-      "name": firstName.controller.text,
-      "surname": lastName.controller.text,
-      "date": dateOfBirth.controller.text,
-      "iin": iin.controller.text,
-      "doc_number": carRightsNumber.controller.text,
-      "image_1": await MultipartFile.fromFile(images.first),
-      "image_2": await MultipartFile.fromFile(images.last),
-      "deadline": carRightsExpire.controller.text,
-      "car_id": 1,
-      "car_date": carIssueDate.controller.text,
-      "dimensions": carDimensions.controller.text,
-      "number": governmentNumber.controller.text,
-      "file": multipartImages,
-    };
   }
 
   Future<void> _datePick({
