@@ -108,7 +108,7 @@ class _ItemWidget extends StatelessWidget {
         duration: animationDuration,
         curve: curve,
         decoration: BoxDecoration(
-          color: isSelected ? ColorPalette.main : backgroundColor,
+          color: isSelected ? ColorPalette.lightGrey : backgroundColor,
           borderRadius: BorderRadius.circular(itemCornerRadius),
         ),
         child: SingleChildScrollView(
@@ -124,7 +124,7 @@ class _ItemWidget extends StatelessWidget {
               children: <Widget>[
                 SvgPicture.asset(
                   item.icon,
-                  color: isSelected ? Colors.white : ColorPalette.lightBlue,
+                  color: isSelected ? Colors.black : ColorPalette.grey400,
                 ),
                 if (isSelected)
                   Expanded(

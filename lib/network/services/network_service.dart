@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
 import 'package:europharm_flutter/network/dio_wrapper/side_dio_wrapper.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/accepted_orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
@@ -142,6 +144,34 @@ class NetworkService {
         formData: FormData.fromMap({
           "order_id": orderId,
         }));
+  }
+
+  Future<void> stopOrder(int orderId, String cause) async {
+    await _dioWrapper.sendRequest(
+        path: "/order/stop",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+          "stop_reason": cause,
+        }));
+  }
+
+  Future<OrderPointsResponse> orderPoints(int orderId) async {
+    final response = await _dioWrapper.sendRequest(
+        path: "/order/points",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "order_id": orderId,
+        }));
+    return OrderPointsResponse.fromJson(response.data);
+  }
+
+  Future<AcceptedOrdersResponse> acceptedOrders() async {
+    final response = await _dioWrapper.sendRequest(
+      path: "/order/accepted",
+      method: NetworkMethod.get,
+    );
+    return AcceptedOrdersResponse.fromJson(response.data);
   }
 
   Future<OrderHistoryResponse> orderHistory(

@@ -16,6 +16,7 @@ class ColorPalette {
   static const Color lightBlue = Color(0xFF83B1F4);
   static const Color commonBlue = Color(0xFFE0E9FA);
   static const Color grey = Color(0xFFE5E5E5);
+  static const Color grey400 = Color(0xFF959DA5);
   static const Color commonGrey = Color(0xFFACACAC);
   static const Color darkGrey = Color(0xFF707070);
   static const Color lightGrey = Color(0xFFF2F2F8);
