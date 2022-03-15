@@ -441,7 +441,6 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
       return null;
     }
   }
-
   void _showCameraException(CameraException e) {
     logError(e.code, e.description);
     showInSnackBar('Error: ${e.code}\n${e.description}');
