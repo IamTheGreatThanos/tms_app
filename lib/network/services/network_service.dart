@@ -168,7 +168,7 @@ class NetworkService {
 
   Future<AcceptedOrdersResponse> acceptedOrders() async {
     final response = await _dioWrapper.sendRequest(
-      path: "/order/accepted",
+      path: "/orders/accepted",
       method: NetworkMethod.get,
     );
     return AcceptedOrdersResponse.fromJson(response.data);

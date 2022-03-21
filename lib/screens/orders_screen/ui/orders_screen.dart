@@ -354,7 +354,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     widget.order.employee?.name ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_20Medium,
                   ),
-                  if (widget.order.status?.toLowerCase() == "send")
+                  if (widget.order.status?.toLowerCase() == "accepted")
                     Container(
                       decoration: BoxDecoration(
                         color: ColorPalette.grey400,
@@ -370,7 +370,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     )
                 ],
               ),
-              // if (order.isCurrent)
+              if (widget.order.status?.toLowerCase() == "accepted")
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: ClipRRect(
@@ -437,7 +437,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: widget.order.status?.toLowerCase() == "send"
+                      color: widget.order.status?.toLowerCase() == "accepted"
                           ? ColorPalette.main
                           : ColorPalette.grey400,
                       borderRadius: BorderRadius.circular(10),

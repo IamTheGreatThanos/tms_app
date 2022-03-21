@@ -128,7 +128,6 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     setState(() {
       isCameraInitialized = true;
       print("|||||CAMERA is initialized id_verification 4");
-
     });
   }
 

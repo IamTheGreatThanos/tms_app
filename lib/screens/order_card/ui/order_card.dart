@@ -10,11 +10,11 @@ import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/src/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:another_xlider/another_xlider.dart';
 import '../../../widgets/main_button/main_button.dart';
@@ -39,84 +39,96 @@ class _OrderCardState extends State<OrderCard> {
   ];
   double _lowerValue = 50;
   String? selectedValue;
-  Timer? timer ;
-  Duration duration=Duration(minutes: 30);
+  Timer? timer;
+
+  Duration duration = const Duration(minutes: 30);
 
   @override
   void initState() {
     super.initState();
     selectedValue = cities[0];
   }
-  void startTimer(){
-    print("1");
-    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
 
+  void startTimer() {
+    if (kDebugMode) {
+      print("1");
+    }
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
-  void addTime(){
-    final addSeconds= 1;
+
+  void addTime() {
+    const addSeconds = 1;
     setState(() {
       final seconds = duration.inSeconds + addSeconds;
       duration = Duration(seconds: seconds);
     });
   }
-  TextStyle bold44=TextStyle(fontSize: 44,color: Colors.black);
-  Widget biuldTime(){
-    String twoDigits(int n) => n.toString().padLeft(2,'0');
-    final minutes= twoDigits(duration.inMinutes.remainder(60));
-    final seconds= twoDigits(duration.inSeconds.remainder(60));
-    final hours= twoDigits(duration.inHours.remainder(24));
 
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${hours}",style: bold44),
-                Text("Ч",)
-              ],
-            ),
+  TextStyle bold44 = const TextStyle(fontSize: 44, color: Colors.black);
+
+  Widget buildTime() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    final hours = twoDigits(duration.inHours.remainder(24));
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(hours, style: bold44),
+              const Text(
+                "Ч",
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(":", style: bold44,),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            ":",
+            style: bold44,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${minutes}",style: bold44),
-                Text("мин",)
-              ],
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(minutes, style: bold44),
+              const Text(
+                "мин",
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(":", style: bold44,),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            ":",
+            style: bold44,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("${seconds}",style: bold44),
-                Text("сек",)
-
-              ],
-            ),
-
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(seconds, style: bold44),
+              const Text(
+                "сек",
+              )
+            ],
           ),
-
-
-
-        ],
-      ),
+        ),
+      ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return AppLoaderOverlay(
@@ -427,59 +439,71 @@ class _OrderCardState extends State<OrderCard> {
                                     showAppBottomSheet(context,
                                         // initialChildSize: 0.5,
                                         useRootNavigator: true,
-                                      child: Container(
-                                          child: Column(
-                                            children: [
-                                              Text("Перерыв"),
-                                              SizedBox(
-                                                height: 100,
-                                                  child: TimerPage()),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 18.0,horizontal: 10),
-                                                child: MainButton(onTap: (){} , title: "Выйти на линию",),
-                                              )
-                                            ],
-                                          ))
-                                    );
+                                        child: Column(
+                                          children: [
+                                        const Text("Перерыв"),
+                                        const SizedBox(
+                                            height: 100,
+                                            child: TimerPage()),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 18.0,
+                                                  horizontal: 10),
+                                          child: MainButton(
+                                            onTap: () {},
+                                            title: "Выйти на линию",
+                                          ),
+                                        )
+                                          ],
+                                        ));
                                   }
                                   if (value ==
                                       "Передаю заказ другому водителю") {
-                                    context.read<BlocOrderCard>().add(
-                                        EventStopOrder(cause: "change_driver"));
+                                    // context.read<BlocOrderCard>().add(
+                                    //     EventStopOrder(cause: "change_driver"));
                                     showAppBottomSheet(context,
                                         // initialChildSize: 0.5,
                                         useRootNavigator: true,
-                                        child: Container(
-                                            child: Column(
-                                              children: [
-                                                Text("Передать заказ другому водителю"),
-                                                Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: AppTextField(
-                                                    prefixIcon: Icon(Icons.search),
-                                                    hintText: "Поиск",
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                                  child: EmployerCard(),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 18.0,horizontal: 10),
-                                                  child: MainButton(onTap: (){} , title: "Готово",),
-                                                )
-                                              ],
-                                            ))
-                                    );
+                                        child: Column(
+                                          children: [
+                                        const Text(
+                                            "Передать заказ другому водителю"),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.all(8.0),
+                                          child: AppTextField(
+                                            prefixIcon:
+                                                const Icon(Icons.search),
+                                            hintText: "Поиск",
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: EmployerCard(),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 18.0,
+                                                  horizontal: 10),
+                                          child: MainButton(
+                                            onTap: () {},
+                                            title: "Готово",
+                                          ),
+                                        )
+                                          ],
+                                        ));
                                   }
                                   if (value == "Закончил рабочий день") {
-                                    context.read<BlocOrderCard>().add(
-                                        EventStopOrder(cause: "finish_day"));
+                                    // context.read<BlocOrderCard>().add(
+                                    //     EventStopOrder(cause: "finish_day"));
                                   }
                                   if (value == "Отмена заказа") {
-                                    context
-                                        .read<BlocOrderCard>()
-                                        .add(EventStopOrder(cause: "decline"));
+                                    // context
+                                    //     .read<BlocOrderCard>()
+                                    //     .add(EventStopOrder(cause: "decline"));
                                   }
                                 }
                               });
@@ -756,97 +780,108 @@ class _BuildOrderItem extends StatelessWidget {
 
 class TimerPage extends StatefulWidget {
   const TimerPage({Key? key}) : super(key: key);
+
   @override
   State<TimerPage> createState() => _TimerPageState();
 }
 
 class _TimerPageState extends State<TimerPage> {
-  Timer? timer ;
-  Duration duration=Duration(minutes: 30);
+  Timer? timer;
+
+  Duration duration = const Duration(minutes: 30);
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     startTimer();
   }
-  void startTimer(){
-    print("1");
-    timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
 
+  void startTimer() {
+    if (kDebugMode) {
+      print("1");
+    }
+    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
   }
-  void addTime(){
-    final addSeconds= 1;
+
+  void addTime() {
+    const addSeconds = 1;
     setState(() {
       final seconds = duration.inSeconds - addSeconds;
       duration = Duration(seconds: seconds);
     });
   }
-  TextStyle bold44=TextStyle(fontSize: 44,color: Colors.black);
-  Widget biuldTime(){
-    String twoDigits(int n) => n.toString().padLeft(2,'0');
-    final minutes= twoDigits(duration.inMinutes.remainder(60));
-    final seconds= twoDigits(duration.inSeconds.remainder(60));
-    final hours= twoDigits(duration.inHours.remainder(24));
 
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text("${hours}",style: bold44),
-                Text("Ч",)
-              ],
-            ),
+  TextStyle bold44 = const TextStyle(fontSize: 44, color: Colors.black);
+
+  Widget buildTime() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    final hours = twoDigits(duration.inHours.remainder(24));
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(hours, style: bold44),
+              const Text(
+                "Ч",
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(":", style: bold44,),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            ":",
+            style: bold44,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text("${minutes}",style: bold44),
-                Text("Ч",)
-              ],
-            ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(minutes, style: bold44),
+              const Text(
+                "Ч",
+              )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(":", style: bold44,),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            ":",
+            style: bold44,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text("${seconds}",style: bold44),
-                Text("Ч",)
-
-              ],
-            ),
-
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(seconds, style: bold44),
+              const Text(
+                "Ч",
+              )
+            ],
           ),
-
-
-
-        ],
-      ),
+        ),
+      ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return
-      Container(
-        child: biuldTime(),
-      )
-    ;
+    return Container(
+      child: buildTime(),
+    );
   }
 }
 
@@ -860,24 +895,27 @@ class EmployerCard extends StatefulWidget {
 class _EmployerCardState extends State<EmployerCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Бауыржан Тайманов",style: ProjectTextStyles.ui_16Regular,),
-              Text("Водитель-экспедитор",
-                style: ProjectTextStyles.ui_12Regular.copyWith(color: ColorPalette.gray),),
-            ],
-          )
-        ],
-      )
-      ,);
+    return Row(
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircleAvatar(),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Бауыржан Тайманов",
+              style: ProjectTextStyles.ui_16Regular,
+            ),
+            Text(
+              "Водитель-экспедитор",
+              style: ProjectTextStyles.ui_12Regular
+                  .copyWith(color: ColorPalette.gray),
+            ),
+          ],
+        )
+      ],
+    );
   }
 }
-

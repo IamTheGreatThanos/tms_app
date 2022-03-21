@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-OrdersResponse ordersResponseFromJson(String str) => OrdersResponse.fromJson(json.decode(str));
-
 class OrdersResponse {
   OrdersResponse({
     this.success,

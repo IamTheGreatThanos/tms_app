@@ -31,21 +31,23 @@ class ProfileScreen extends StatelessWidget {
             vertical: 20.0,
             horizontal: 10,
           ),
-          child: Column(
-            children: const [
-              _BuildConfirmation(),
-              SizedBox(
-                height: 16,
-              ),
-              _BuildUserInfo(),
-              SizedBox(
-                height: 16,
-              ),
-              _BuildProfileMenu(),
-              SizedBox(
-                height: 55,
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: const [
+                _BuildConfirmation(),
+                SizedBox(
+                  height: 16,
+                ),
+                _BuildUserInfo(),
+                SizedBox(
+                  height: 16,
+                ),
+                _BuildProfileMenu(),
+                SizedBox(
+                  height: 55,
+                ),
+              ],
+            ),
           ),
         ),
       ),
