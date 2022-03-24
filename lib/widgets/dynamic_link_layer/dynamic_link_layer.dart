@@ -1,4 +1,3 @@
-import 'package:europharm_flutter/managers/dynamic_link_manager.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:europharm_flutter/screens/map_test/example_map.dart';
@@ -21,7 +20,7 @@ class DynamicLinkLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<DynamicLinkLayerBloc>(
       create: (context) => DynamicLinkLayerBloc(
-          context.read<HiveRepository>(), DynamicLinkManager(), isAuthenticated)
+          context.read<HiveRepository>(), isAuthenticated)
         ..add(InitialDynamicLinkLayerEvent()),
       child: BlocConsumer<DynamicLinkLayerBloc, DynamicLinkLayerState>(
         listener: (context, state) {

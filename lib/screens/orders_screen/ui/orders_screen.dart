@@ -4,6 +4,8 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/dto_models/response/orders.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/map_test/driving_page.dart';
+import 'package:europharm_flutter/screens/map_test/placemark_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
@@ -157,7 +159,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ),
                       GestureDetector(
                         child: Text("Map test"),
-                        onTap: () => AppRouter.push(context, PolylinePage()),
+                        onTap: () {
+                          // AppRouter.push(
+                          //     context, PolylinePage(), rootNavigator: true);
+                          // AppRouter.push(context, DrivingPage(),
+                          //     rootNavigator: true);
+                          AppRouter.push(context, PlacemarkPage(),
+                              rootNavigator: true);
+                        },
                       ),
                       const SizedBox(
                         height: 23,
@@ -318,7 +327,12 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
       padding: const EdgeInsets.only(bottom: 15.0),
       child: GestureDetector(
         onTap: () {
-          AppRouter.push(context, OrderCard(order: widget.order,), rootNavigator: true);
+          AppRouter.push(
+              context,
+              OrderCard(
+                order: widget.order,
+              ),
+              rootNavigator: true);
         },
         child: Container(
           padding: const EdgeInsets.all(15),
@@ -371,63 +385,63 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                 ],
               ),
               if (widget.order.status?.toLowerCase() == "accepted")
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: double.infinity,
-                    height: 160,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Stack(
-                      children: [
-                        const YandexMap(
-                          tiltGesturesEnabled: false,
-                          zoomGesturesEnabled: false,
-                          rotateGesturesEnabled: false,
-                          scrollGesturesEnabled: false,
-                          modelsEnabled: false,
-                        ),
-                        Positioned(
-                          right: 5,
-                          top: 5,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: ColorPalette.white,
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 4.5,
-                              horizontal: 8,
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 6,
-                                  width: 6,
-                                  decoration: BoxDecoration(
-                                    color: ColorPalette.red,
-                                    borderRadius: BorderRadius.circular(100),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      width: double.infinity,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Stack(
+                        children: [
+                          const YandexMap(
+                            tiltGesturesEnabled: false,
+                            zoomGesturesEnabled: false,
+                            rotateGesturesEnabled: false,
+                            scrollGesturesEnabled: false,
+                            modelsEnabled: false,
+                          ),
+                          Positioned(
+                            right: 5,
+                            top: 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorPalette.white,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4.5,
+                                horizontal: 8,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 6,
+                                    width: 6,
+                                    decoration: BoxDecoration(
+                                      color: ColorPalette.red,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Text(
-                                  "LIVE",
-                                  style: ProjectTextStyles.ui_12Medium,
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text(
+                                    "LIVE",
+                                    style: ProjectTextStyles.ui_12Medium,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
               const Divider(
                 thickness: 2,
                 color: ColorPalette.lightGrey,

@@ -11,7 +11,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_code_
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 
@@ -20,11 +19,9 @@ import '../models/dto_models/response/cities_response.dart';
 
 class GlobalRepository {
   late final NetworkService _networkService;
-  late FirebaseAnalytics analytics;
 
   void init(NetworkService networkService, HiveRepository hiveRepository) {
     _networkService = networkService;
-    analytics = FirebaseAnalytics();
     // if(hiveRepository.getUserId().isNotEmpty) {
     //   try {
     //     analytics.setUserId(hiveRepository.getUserId());
@@ -32,15 +29,6 @@ class GlobalRepository {
     //     print(e);
     //   }
     // }
-  }
-
-  @deprecated
-  void sendAnalytics(String screenName, {Map<String, dynamic>? data}) {
-    try {
-      analytics.logEvent(name: screenName, parameters: data ?? {});
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future<LoginResponse> login(String phone, String password) async =>

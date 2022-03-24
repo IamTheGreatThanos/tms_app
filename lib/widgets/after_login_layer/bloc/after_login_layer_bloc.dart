@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/managers/push_notification_manager.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';

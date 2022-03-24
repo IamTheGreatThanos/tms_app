@@ -1,6 +1,4 @@
 import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,16 +34,11 @@ void main() async {
   ///Global managers initialization
   Future<bool> _initialize(BuildContext context) async {
     try {
-      await Firebase.initializeApp();
-      // final FirebaseAnalytics analytics = FirebaseAnalytics();
-      // final FirebaseAnalyticsObserver observer =
-      //     FirebaseAnalyticsObserver(analytics: analytics);
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ]);
-      context.read<ErrorHandler>().initialize(S.of(context));
+      // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
       await context.read<SecureStorage>().init();
@@ -66,8 +59,7 @@ void main() async {
           .read<GlobalRepository>()
           .init(context.read<NetworkService>(), context.read<HiveRepository>());
     } catch (e, stackTrace) {
-      await FirebaseCrashlytics.instance.recordError(e, stackTrace,
-          reason: 'Dependencies are not initialized', fatal: true);
+      print(e);
     }
     return true;
   }

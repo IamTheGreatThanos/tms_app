@@ -42,6 +42,7 @@ class SignUpVModel extends Cubit<_StateVModel> {
     hintText: S.current.repeat_password,
     onChanged: updateIsPasswordValidated,
     isVisibleObscureButton: true,
+
   );
   late final referalCode = AppTextField(
     hintStyle: ProjectTextStyles.ui_16Medium.copyWith(
