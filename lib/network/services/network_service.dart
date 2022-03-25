@@ -186,6 +186,29 @@ class NetworkService {
     return OrderHistoryResponse.fromJson(response.data);
   }
 
+  Future<void> editProfile(
+    String name,
+    String surname,
+    String cityId,
+    String phone,
+    String oldPassword,
+    String newPassword,
+    String avatar,
+  ) async {
+    var response = await _dioWrapper.sendRequest(
+        path: "profile-edit",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "name": name,
+          "surname": surname,
+          "city_id": cityId,
+          "phone": phone,
+          "old_password": oldPassword,
+          "new_password": newPassword,
+          "avatar": await MultipartFile.fromFile(avatar),
+        }));
+  }
+
   Future<void> logout() async {
     await _dioWrapper.sendRequest(
       path: "logout",

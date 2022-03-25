@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -27,35 +28,28 @@ class _DrivingExampleState extends State<_DrivingExample> {
     endPlacemark
   ];
   final Placemark startPlacemark = Placemark(
-    mapId: MapObjectId('start_placemark'),
-    point: Point(latitude: 55.7558, longitude: 37.6173),
-    icon: PlacemarkIcon.single(
-        PlacemarkIconStyle(
-            image: BitmapDescriptor.fromAssetImage('lib/assets/route_start.png'),
-            scale: 0.3
-        )
-    ),
+    mapId: const MapObjectId('start_placemark'),
+    point: const Point(latitude: 43.238949, longitude: 76.889709),
+    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage(
+            'assets/images/png/route_start.png'),
+        scale: 0.3)),
   );
   final Placemark stopByPlacemark = Placemark(
-    mapId: MapObjectId('stop_by_placemark'),
-    point: Point(latitude: 45.0360, longitude: 38.9746),
-    icon: PlacemarkIcon.single(
-        PlacemarkIconStyle(
-            image: BitmapDescriptor.fromAssetImage('lib/assets/route_stop_by.png'),
-            scale: 0.3
-        )
-    ),
+    mapId: const MapObjectId('stop_by_placemark'),
+    point: const Point(latitude: 43.605108, longitude: 73.763114),
+    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage(
+            'assets/images/png/route_stop_by.png'),
+        scale: 0.3)),
   );
   final Placemark endPlacemark = Placemark(
-      mapId: MapObjectId('end_placemark'),
-      point: Point(latitude: 48.4814, longitude: 135.0721),
-      icon: PlacemarkIcon.single(
-          PlacemarkIconStyle(
-              image: BitmapDescriptor.fromAssetImage('lib/assets/route_end.png'),
-              scale: 0.3
-          )
-      )
-  );
+      mapId: const MapObjectId('end_placemark'),
+      point: const Point(latitude: 49.804684, longitude: 73.109383),
+      icon: PlacemarkIcon.single(PlacemarkIconStyle(
+          image: BitmapDescriptor.fromAssetImage(
+              'assets/images/png/route_end.png'),
+          scale: 0.3)));
 
   @override
   Widget build(BuildContext context) {
@@ -63,43 +57,39 @@ class _DrivingExampleState extends State<_DrivingExample> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Expanded(
-              child: YandexMap(
-                  mapObjects: mapObjects
-              )
-          ),
+          Expanded(child: YandexMap(mapObjects: mapObjects)),
           const SizedBox(height: 20),
           Expanded(
               child: SingleChildScrollView(
-                  child: Column(
-                      children: [
-                        ControlButton(
-                          onPressed: _requestRoutes,
-                          title: 'Build route',
-                        ),
-                      ]
-                  )
-              )
-          )
-        ]
-    );
+                  child: Column(children: [
+            ControlButton(
+              onPressed: _requestRoutes,
+              title: 'Build route',
+            ),
+          ])))
+        ]);
   }
 
   Future<void> _requestRoutes() async {
-    print('Points: ${startPlacemark.point},${stopByPlacemark.point},${endPlacemark.point}');
+    if (kDebugMode) {
+      print(
+          'Points: ${startPlacemark.point},${stopByPlacemark.point},${endPlacemark.point}');
+    }
 
     var resultWithSession = YandexDriving.requestRoutes(
         points: [
-          RequestPoint(point: startPlacemark.point, requestPointType: RequestPointType.wayPoint),
-          RequestPoint(point: stopByPlacemark.point, requestPointType: RequestPointType.viaPoint),
-          RequestPoint(point: endPlacemark.point, requestPointType: RequestPointType.wayPoint),
+          RequestPoint(
+              point: startPlacemark.point,
+              requestPointType: RequestPointType.wayPoint),
+          RequestPoint(
+              point: stopByPlacemark.point,
+              requestPointType: RequestPointType.viaPoint),
+          RequestPoint(
+              point: endPlacemark.point,
+              requestPointType: RequestPointType.wayPoint),
         ],
-        drivingOptions: DrivingOptions(
-            initialAzimuth: 0,
-            routesCount: 5,
-            avoidTolls: true
-        )
-    );
+        drivingOptions: const DrivingOptions(
+            initialAzimuth: 0, routesCount: 5, avoidTolls: true));
 
     await Navigator.push(
         context,
@@ -108,13 +98,9 @@ class _DrivingExampleState extends State<_DrivingExample> {
                 startPlacemark,
                 endPlacemark,
                 resultWithSession.session,
-                resultWithSession.result
-            )
-        )
-    );
+                resultWithSession.result)));
   }
 }
-
 
 class _SessionPage extends StatefulWidget {
   final Future<DrivingSessionResult> result;
@@ -122,7 +108,8 @@ class _SessionPage extends StatefulWidget {
   final Placemark startPlacemark;
   final Placemark endPlacemark;
 
-  _SessionPage(this.startPlacemark, this.endPlacemark, this.session, this.result);
+  const _SessionPage(
+      this.startPlacemark, this.endPlacemark, this.session, this.result);
 
   @override
   _SessionState createState() => _SessionState();
@@ -167,67 +154,58 @@ class _SessionState extends State<_SessionPage> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        YandexMap(
-                            mapObjects: mapObjects
-                        ),
+                        YandexMap(mapObjects: mapObjects),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
                   Expanded(
                       child: SingleChildScrollView(
-                          child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                    height: 60,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        !_progress ? Container() : TextButton.icon(
-                                            icon: const CircularProgressIndicator(),
-                                            label: const Text('Cancel'),
-                                            onPressed: _cancel
-                                        )
-                                      ],
-                                    )
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: Padding(
-                                          padding: EdgeInsets.only(top: 20),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: _getList(),
-                                          )
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ]
-                          )
-                      )
-                  )
-                ]
-            )
-        )
-    );
+                          child: Column(children: <Widget>[
+                    SizedBox(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            !_progress
+                                ? Container()
+                                : TextButton.icon(
+                                    icon: const CircularProgressIndicator(),
+                                    label: const Text('Cancel'),
+                                    onPressed: _cancel)
+                          ],
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Flexible(
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: _getList(),
+                              )),
+                        ),
+                      ],
+                    ),
+                  ])))
+                ])));
   }
 
   List<Widget> _getList() {
     final list = <Widget>[];
 
     if (results.isEmpty) {
-      list.add((Text('Nothing found')));
+      list.add((const Text('Nothing found')));
     }
 
     for (var r in results) {
       list.add(Container(height: 20));
 
       r.routes!.asMap().forEach((i, route) {
-        list.add(Text('Route $i: ${route.metadata.weight.timeWithTraffic.text}'));
+        list.add(
+            Text('Route $i: ${route.metadata.weight.timeWithTraffic.text}'));
       });
 
       list.add(Container(height: 20));
@@ -239,7 +217,9 @@ class _SessionState extends State<_SessionPage> {
   Future<void> _cancel() async {
     await widget.session.cancel();
 
-    setState(() { _progress = false; });
+    setState(() {
+      _progress = false;
+    });
   }
 
   Future<void> _close() async {
@@ -251,20 +231,27 @@ class _SessionState extends State<_SessionPage> {
   }
 
   Future<void> _handleResult(DrivingSessionResult result) async {
-    setState(() { _progress = false; });
+    setState(() {
+      _progress = false;
+    });
 
     if (result.error != null) {
-      print('Error: ${result.error}');
+      if (kDebugMode) {
+        print('Error: ${result.error}');
+      }
       return;
     }
 
-    setState(() { results.add(result); });
+    setState(() {
+      results.add(result);
+    });
     setState(() {
       result.routes!.asMap().forEach((i, route) {
         mapObjects.add(Polyline(
           mapId: MapObjectId('route_${i}_polyline'),
           coordinates: route.geometry,
-          strokeColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          strokeColor:
+              Colors.primaries[Random().nextInt(Colors.primaries.length)],
           strokeWidth: 3,
         ));
       });

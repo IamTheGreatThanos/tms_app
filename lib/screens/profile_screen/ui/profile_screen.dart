@@ -3,6 +3,7 @@ import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
+import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';

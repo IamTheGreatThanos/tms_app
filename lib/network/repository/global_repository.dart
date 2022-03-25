@@ -79,5 +79,17 @@ class GlobalRepository {
   Future<PositionsResponse> getPositions() async =>
       await _networkService.getPositions();
 
+  Future<void> editProfile(
+    String name,
+    String surname,
+    String cityId,
+    String phone,
+    String oldPassword,
+    String newPassword,
+    String avatar,
+  ) async =>
+      await _networkService.editProfile(
+          name, surname, cityId, phone, oldPassword, newPassword, avatar);
+
   Future<void> logout() async => await _networkService.logout();
 }
