@@ -93,6 +93,7 @@ void main() async {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            locale: const Locale('zh'),
             supportedLocales: S.delegate.supportedLocales,
             theme: ThemeData(
               appBarTheme: const AppBarTheme(

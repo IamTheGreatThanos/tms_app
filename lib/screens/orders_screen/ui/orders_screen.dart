@@ -156,8 +156,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         height: 23,
                       ),
                       GestureDetector(
-                        child: Text("Map test"),
-                        onTap: () => AppRouter.push(context, PolylinePage()),
+                        child: const Text("Map test"),
+                        onTap: () => AppRouter.push(context, const PolylinePage()),
                       ),
                       const SizedBox(
                         height: 23,
@@ -265,7 +265,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       ),
                                     )
                                   : ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: state.orders.length,
                                       itemBuilder: (context, index) {
@@ -283,7 +283,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ],
                   );
                 }
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               },
             ),
           ),
