@@ -5,7 +5,8 @@ extension Stop on BlocOrderCard {
       Emitter<StateBlocOrderCard> emit) async {
     try {
       await repository.stopOrder(orderId!, event.cause);
-      emit(StateEditSuccess());
+      emit(StateStopSuccess());
+      // add(EventInitialOrderCard(orderId!));
     } catch (e) {
       emit(StateOrderCardError(
           error: AppError(

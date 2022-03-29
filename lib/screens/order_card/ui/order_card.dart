@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart'
     as od;
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/map_test/control_button.dart';
+import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
+import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
+import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
+import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dart';
@@ -37,32 +43,117 @@ class _OrderCardState extends State<OrderCard> {
     "Алмата",
     "Шымкент",
   ];
+  final List<DrivingSessionResult> results = [];
+  bool _progress = true;
+  Duration duration = const Duration(minutes: 30);
+  final Placemark startPlacemark = Placemark(
+    mapId: const MapObjectId('start_placemark'),
+    point: const Point(latitude: 43.238949, longitude: 76.889709),
+    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage(
+            'assets/images/png/route_start.png'),
+        scale: 0.3)),
+  );
+  final Placemark stopByPlacemark = Placemark(
+    mapId: const MapObjectId('stop_by_placemark'),
+    point: const Point(latitude: 43.605108, longitude: 73.763114),
+    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage(
+            'assets/images/png/route_stop_by.png'),
+        scale: 0.3)),
+  );
+  final Placemark endPlacemark = Placemark(
+      mapId: const MapObjectId('end_placemark'),
+      point: const Point(latitude: 49.804684, longitude: 73.109383),
+      icon: PlacemarkIcon.single(PlacemarkIconStyle(
+          image: BitmapDescriptor.fromAssetImage(
+              'assets/images/png/route_end.png'),
+          scale: 0.3)));
+
   double _lowerValue = 50;
   String? selectedValue;
-  Timer? timer;
 
-  Duration duration = const Duration(minutes: 30);
+  // Timer? timer;
+  late final List<MapObject> mapObjectsMain = [startPlacemark, endPlacemark];
+
+  Future<void> _init(Future<DrivingSessionResult> result) async {
+    try {
+      await _handleResult(await result);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _handleResult(DrivingSessionResult result) async {
+    setState(() {
+      _progress = false;
+    });
+
+    if (result.error != null) {
+      if (kDebugMode) {
+        print('Error: ${result.error}');
+      }
+      return;
+    }
+
+    setState(() {
+      results.add(result);
+    });
+    setState(() {
+      result.routes!.asMap().forEach((i, route) {
+        mapObjectsMain.add(Polyline(
+          mapId: MapObjectId('route_${i}_polyline'),
+          coordinates: route.geometry,
+          strokeColor:
+              Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          strokeWidth: 3,
+        ));
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    var resultWithSession = YandexDriving.requestRoutes(
+        points: [
+          RequestPoint(
+              point: startPlacemark.point,
+              requestPointType: RequestPointType.wayPoint),
+          RequestPoint(
+              point: stopByPlacemark.point,
+              requestPointType: RequestPointType.viaPoint),
+          RequestPoint(
+              point: endPlacemark.point,
+              requestPointType: RequestPointType.wayPoint),
+        ],
+        drivingOptions: const DrivingOptions(
+            initialAzimuth: 0, routesCount: 5, avoidTolls: true));
+    _init(resultWithSession.result);
     selectedValue = cities[0];
   }
 
-  void startTimer() {
-    if (kDebugMode) {
-      print("1");
-    }
-    timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  @override
+  void dispose() {
+    // timer?.cancel();
+    super.dispose();
   }
 
-  void addTime() {
-    const addSeconds = 1;
-    setState(() {
-      final seconds = duration.inSeconds + addSeconds;
-      duration = Duration(seconds: seconds);
-    });
-  }
+  //
+  // void startTimer() {
+  //   if (kDebugMode) {
+  //     print("1");
+  //   }
+  //   timer = Timer.periodic(const Duration(seconds: 1), (_) => addTime());
+  // }
+  //
+  // void addTime() {
+  //   const addSeconds = 1;
+  //   setState(() {
+  //     final seconds = duration.inSeconds + addSeconds;
+  //     duration = Duration(seconds: seconds);
+  //   });
+  // }
 
   TextStyle bold44 = const TextStyle(fontSize: 44, color: Colors.black);
 
@@ -161,7 +252,7 @@ class _OrderCardState extends State<OrderCard> {
               const SizedBox(
                 height: 23,
               ),
-              Expanded(
+              Flexible(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -178,12 +269,10 @@ class _OrderCardState extends State<OrderCard> {
                             ),
                             child: Stack(
                               children: [
-                                const YandexMap(
-                                  tiltGesturesEnabled: false,
-                                  zoomGesturesEnabled: false,
-                                  rotateGesturesEnabled: false,
-                                  scrollGesturesEnabled: false,
-                                  modelsEnabled: false,
+                                YandexMap(
+                                  mapObjects: mapObjectsMain,
+                                  fastTapEnabled: true,
+                                  mode2DEnabled: true,
                                 ),
                                 Positioned(
                                   right: 5,
@@ -375,10 +464,25 @@ class _OrderCardState extends State<OrderCard> {
                           if (state is StateOrderCardError) {
                             showAppDialog(context, body: state.error.message);
                           }
-                          if (state is StateEditSuccess) {
+                          if (state is StateStartSuccess) {
+                            showAppDialog(context,
+                                body: "заказ успешно запущен");
+                            Navigator.of(context).pop();
+                            setState(() {
+                              widget.order.status = "accepted";
+                            });
+                            // context.read<BlocOrdersScreen>().add(
+                            //     EventInitialOrdersScreen(cityId:))
+                          }
+                          if (state is StateStopSuccess) {
                             showAppDialog(context,
                                 body: "заказ успешно остановлен");
                             Navigator.of(context).pop();
+                            setState(() {
+                              widget.order.status = "send";
+                            });
+                            // context.read<BlocOrdersScreen>().add(
+                            //     EventInitialOrdersScreen(cityId:))
                           }
                         },
                         buildWhen: (p, c) => c is StateLoadDataOrderCard,
@@ -420,7 +524,7 @@ class _OrderCardState extends State<OrderCard> {
                   return Padding(
                     padding:
                         const EdgeInsets.only(left: 10, right: 10, bottom: 30),
-                    child: widget.order.status == "send"
+                    child: widget.order.status == "accepted"
                         ? GestureDetector(
                             onTap: () {
                               // showCauseBottomSheet(context);
@@ -430,81 +534,92 @@ class _OrderCardState extends State<OrderCard> {
                                       child: const BuildCauses())
                                   .then((value) {
                                 if (value != null) {
-                                  if (value == "Хочу сделать перерыв") {
+                                  if (value == items[0] ||
+                                      value == items[1] ||
+                                      value == items[2]) {
                                     context
                                         .read<BlocOrderCard>()
                                         .add(EventStopOrder(cause: "relax"));
-                                    startTimer();
-
+                                    // startTimer();
                                     showAppBottomSheet(context,
                                         // initialChildSize: 0.5,
                                         useRootNavigator: true,
                                         child: Column(
                                           children: [
-                                        const Text("Перерыв"),
-                                        const SizedBox(
-                                            height: 100,
-                                            child: TimerPage()),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 18.0,
-                                                  horizontal: 10),
-                                          child: MainButton(
-                                            onTap: () {},
-                                            title: "Выйти на линию",
-                                          ),
-                                        )
+                                            const Text("Перерыв"),
+                                            SizedBox(
+                                                height: 100,
+                                                child: TimerPage(
+                                                  duration: Duration(
+                                                      minutes: value == items[0]
+                                                          ? 30
+                                                          : value == items[1]
+                                                              ? 480
+                                                              : 15),
+                                                )),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 18.0,
+                                                      horizontal: 10),
+                                              child: MainButton(
+                                                onTap: () {
+                                                  context
+                                                      .read<BlocOrderCard>()
+                                                      .add(EventStartOrder());
+                                                },
+                                                title: "Выйти на линию",
+                                              ),
+                                            )
                                           ],
                                         ));
                                   }
-                                  if (value ==
-                                      "Передаю заказ другому водителю") {
-                                    // context.read<BlocOrderCard>().add(
-                                    //     EventStopOrder(cause: "change_driver"));
+                                  if (value == items[4]) {
+                                    context.read<BlocOrderCard>().add(
+                                        EventStopOrder(cause: "change_driver"));
                                     showAppBottomSheet(context,
                                         // initialChildSize: 0.5,
                                         useRootNavigator: true,
                                         child: Column(
                                           children: [
-                                        const Text(
-                                            "Передать заказ другому водителю"),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.all(8.0),
-                                          child: AppTextField(
-                                            prefixIcon:
-                                                const Icon(Icons.search),
-                                            hintText: "Поиск",
-                                          ),
-                                        ),
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: EmployerCard(),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 18.0,
-                                                  horizontal: 10),
-                                          child: MainButton(
-                                            onTap: () {},
-                                            title: "Готово",
-                                          ),
-                                        )
+                                            const Text(
+                                                "Передать заказ другому водителю"),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: AppTextField(
+                                                prefixIcon:
+                                                    const Icon(Icons.search),
+                                                hintText: "Поиск",
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 8.0),
+                                              child: EmployerCard(),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 18.0,
+                                                      horizontal: 10),
+                                              child: MainButton(
+                                                onTap: () {},
+                                                title: "Готово",
+                                              ),
+                                            )
                                           ],
                                         ));
                                   }
-                                  if (value == "Закончил рабочий день") {
-                                    // context.read<BlocOrderCard>().add(
-                                    //     EventStopOrder(cause: "finish_day"));
-                                  }
-                                  if (value == "Отмена заказа") {
-                                    // context
-                                    //     .read<BlocOrderCard>()
-                                    //     .add(EventStopOrder(cause: "decline"));
-                                  }
+                                  // if (value == "Закончил рабочий день") {
+                                  //   context.read<BlocOrderCard>().add(
+                                  //       EventStopOrder(cause: "finish_day"));
+                                  // }
+                                  // if (value == "Отмена заказа") {
+                                  //   context
+                                  //       .read<BlocOrderCard>()
+                                  //       .add(EventStopOrder(cause: "decline"));
+                                  // }
                                 }
                               });
                             },
@@ -539,7 +654,11 @@ class _OrderCardState extends State<OrderCard> {
                             ),
                           )
                         : GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context
+                                  .read<BlocOrderCard>()
+                                  .add(EventStartOrder());
+                            },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               decoration: BoxDecoration(
@@ -616,7 +735,7 @@ class _BuildOrderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         // color: ColorPalette.white,
         borderRadius: BorderRadius.circular(20),
@@ -629,14 +748,14 @@ class _BuildOrderItem extends StatelessWidget {
           ),
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 40),
-                child: DottedLine(
-                  direction: Axis.vertical,
-                  dashColor: ColorPalette.commonGrey,
-                  lineLength: MediaQuery.of(context).size.height * 0.75,
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 16.0, top: 40),
+              //   child: DottedLine(
+              //     direction: Axis.vertical,
+              //     dashColor: ColorPalette.commonGrey,
+              //     lineLength: MediaQuery.of(context).size.height * 0.75,
+              //   ),
+              // ),
               Column(
                 children: [
                   Row(
@@ -779,7 +898,9 @@ class _BuildOrderItem extends StatelessWidget {
 }
 
 class TimerPage extends StatefulWidget {
-  const TimerPage({Key? key}) : super(key: key);
+  final Duration duration;
+
+  const TimerPage({Key? key, required this.duration}) : super(key: key);
 
   @override
   State<TimerPage> createState() => _TimerPageState();
@@ -788,12 +909,20 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   Timer? timer;
 
-  Duration duration = const Duration(minutes: 30);
+  Duration? duration;
 
   @override
   void initState() {
     super.initState();
+    duration = widget.duration;
     startTimer();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    timer?.cancel();
+    super.dispose();
   }
 
   void startTimer() {
@@ -806,7 +935,7 @@ class _TimerPageState extends State<TimerPage> {
   void addTime() {
     const addSeconds = 1;
     setState(() {
-      final seconds = duration.inSeconds - addSeconds;
+      final seconds = duration!.inSeconds - addSeconds;
       duration = Duration(seconds: seconds);
     });
   }
@@ -815,9 +944,9 @@ class _TimerPageState extends State<TimerPage> {
 
   Widget buildTime() {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    final hours = twoDigits(duration.inHours.remainder(24));
+    final minutes = twoDigits(duration!.inMinutes.remainder(60));
+    final seconds = twoDigits(duration!.inSeconds.remainder(60));
+    final hours = twoDigits(duration!.inHours.remainder(24));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -849,7 +978,7 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               Text(minutes, style: bold44),
               const Text(
-                "Ч",
+                "Мин",
               )
             ],
           ),
@@ -868,7 +997,7 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               Text(seconds, style: bold44),
               const Text(
-                "Ч",
+                "Сек",
               )
             ],
           ),

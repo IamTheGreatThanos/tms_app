@@ -13,7 +13,7 @@ class DocumentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorPalette.grey,
+        backgroundColor: ColorPalette.background,
         appBar: CustomAppBar(
           title: S.of(context).documents,
         ),

@@ -13,6 +13,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/positions_r
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
+import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
 import '../models/dto_models/response/cities_response.dart';
@@ -80,16 +81,9 @@ class GlobalRepository {
       await _networkService.getPositions();
 
   Future<void> editProfile(
-    String name,
-    String surname,
-    String cityId,
-    String phone,
-    String oldPassword,
-    String newPassword,
-    String avatar,
+    PersonalDataVModel vModel,
   ) async =>
-      await _networkService.editProfile(
-          name, surname, cityId, phone, oldPassword, newPassword, avatar);
+      await _networkService.editProfile(vModel);
 
   Future<void> logout() async => await _networkService.logout();
 }

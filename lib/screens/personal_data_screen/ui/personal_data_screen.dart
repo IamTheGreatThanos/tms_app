@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:europharm_flutter/generated/l10n.dart';
@@ -14,6 +15,7 @@ import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PersonalDataScreen extends StatefulWidget {
   const PersonalDataScreen({Key? key}) : super(key: key);
@@ -32,7 +34,7 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
         appBar: CustomAppBar(
           title: S.of(context).personal_data,
         ),
-        backgroundColor: ColorPalette.grey,
+        backgroundColor: ColorPalette.background,
         body: BlocConsumer<BlocPersonalData, StateBlocPersonalData>(
           listener: (context, state) {
             if (state is StateLoadingPersonalData) {
@@ -59,8 +61,10 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                   ),
                   child: Column(
                     children: [
-                      const Center(
-                        child: _BuildAvatar(),
+                      Center(
+                        child: _BuildAvatar(
+                          vModel: _vmodel,
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
@@ -166,7 +170,7 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                         height: 25,
                       ),
                       MainButton(
-                        onTap: () {},
+                        onTap: () => context.read<BlocPersonalData>().add(EventEditProfile(vModel: _vmodel)),
                         color: ColorPalette.green,
                         title: "Сохранить",
                       ),
@@ -189,65 +193,106 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
   }
 }
 
-class _BuildAvatar extends StatelessWidget {
-  const _BuildAvatar({Key? key}) : super(key: key);
+class _BuildAvatar extends StatefulWidget {
+  final PersonalDataVModel vModel;
+
+  const _BuildAvatar({Key? key, required this.vModel}) : super(key: key);
+
+  @override
+  State<_BuildAvatar> createState() => _BuildAvatarState();
+}
+
+class _BuildAvatarState extends State<_BuildAvatar> {
+  String imagePath = "";
+
+  @override
+  void initState() {
+    imagePath = widget.vModel.image;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(13),
-      child: Stack(
-        children: [
-          const SizedBox(
-            width: 105,
-            height: 105,
-          ),
-          Image.asset(
-            "assets/images/png/profile_photo.png",
-            width: 105,
-            height: 105,
-            fit: BoxFit.cover,
-          ),
-          Positioned(
-              top: 78,
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(50, 50, 50, 0.4),
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 10,
-                    sigmaY: 10,
+    return GestureDetector(
+      onTap: () async {
+        var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          print(image);
+          setState(() {
+            imagePath = image.path;
+            widget.vModel.image = imagePath;
+          });
+        }
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(13),
+        child: Stack(
+          children: [
+            const SizedBox(
+              width: 105,
+              height: 105,
+            ),
+            if (imagePath.isNotEmpty)
+              Container(
+                height: 105,
+                width: 105,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  image: DecorationImage(
+                    image: FileImage(File(imagePath)),
+                    fit: BoxFit.cover,
                   ),
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 ),
-              )),
-          Positioned.fill(
-              bottom: 6,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset("assets/images/svg/camera.svg"),
-                    const SizedBox(
-                      width: 5,
+              )
+            else
+              Image.asset(
+                "assets/images/png/profile_photo.png",
+                width: 105,
+                height: 105,
+                fit: BoxFit.cover,
+              ),
+            Positioned(
+                top: 78,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(50, 50, 50, 0.4),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 10,
+                      sigmaY: 10,
                     ),
-                    Text(
-                      S.of(context).load_data,
-                      textAlign: TextAlign.center,
-                      style: ProjectTextStyles.ui_10Regular.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: ColorPalette.white,
+                  ),
+                )),
+            Positioned.fill(
+                bottom: 6,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset("assets/images/svg/camera.svg"),
+                      const SizedBox(
+                        width: 5,
                       ),
-                    )
-                  ],
-                ),
-              ))
-        ],
+                      Text(
+                        S.of(context).load_data,
+                        textAlign: TextAlign.center,
+                        style: ProjectTextStyles.ui_10Regular.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: ColorPalette.white,
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }
@@ -267,6 +312,7 @@ class _BuildPersonalData extends StatefulWidget {
 
 class _BuildPersonalDataState extends State<_BuildPersonalData> {
   String? cityValue;
+
   @override
   void initState() {
     super.initState();
@@ -363,6 +409,9 @@ class _BuildPersonalDataState extends State<_BuildPersonalData> {
             onChanged: (e) {
               setState(() {
                 cityValue = e.toString();
+                widget.vmodel.cityId = widget.cities.data!
+                    .firstWhere((element) => element.name == cityValue)
+                    .countryId!;
               });
             },
           ),

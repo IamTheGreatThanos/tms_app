@@ -24,4 +24,5 @@ class BlocOrdersScreen extends Bloc<EventBlocOrdersScreen, StateBlocOrdersScreen
   }
 
   final GlobalRepository repository;
+  int? cityId;
 }

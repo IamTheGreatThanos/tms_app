@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class PersonalDataVModel extends Cubit<_StateVModel> {
+  String image = "";
+  late int cityId;
   late final name = AppTextField(
     fillColor: ColorPalette.white,
     enabledBorder: defaultBorder,
@@ -30,6 +33,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     enabledBorder: defaultBorder,
     focusedBorder: defaultBorder,
   );
+  late final phoneController = TextEditingController();
   late final phoneNumber = Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -48,6 +52,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
       Flexible(
         fit: FlexFit.tight,
         child: AppTextField(
+          controller: phoneController,
           keyboardType: TextInputType.phone,
           fillColor: ColorPalette.white,
           enabledBorder: defaultBorder,
@@ -162,6 +167,18 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     isVisibleObscureButton: true,
     textCapitalization: TextCapitalization.none,
   );
+
+  Future<Map<String, dynamic>> toJson() async {
+    return {
+      "name": name.controller.text,
+      "surname": lastName.controller.text,
+      "city_id": cityId,
+      "phone": phoneController.text,
+      "old_password": currentPassword.controller.text,
+      "new_password": newPassword.controller.text,
+      "avatar": await MultipartFile.fromFile(image),
+    };
+  }
 
   PersonalDataVModel() : super(
     const _StateVModel(

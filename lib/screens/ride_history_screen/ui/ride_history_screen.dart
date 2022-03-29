@@ -25,7 +25,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
   Widget build(BuildContext context) {
     return AppLoaderOverlay(
       child: Scaffold(
-        backgroundColor: ColorPalette.backgroundGray,
+        backgroundColor: ColorPalette.background,
         appBar: CustomAppBar(
           title: S.of(context).ride_history,
         ),

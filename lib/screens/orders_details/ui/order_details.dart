@@ -167,7 +167,7 @@ class _OrderDetailsState extends State<OrderDetails>
                       labelColor: ColorPalette.white,
                       // indicatorColor: ColorPalette.red,
                       labelStyle: ProjectTextStyles.ui_16Medium,
-                      unselectedLabelColor: ColorPalette.grey,
+                      unselectedLabelColor: ColorPalette.background,
                       controller: _tabController,
                       onTap: (index) {
                         setState(() {

@@ -20,3 +20,5 @@ class StatePersonalDataError extends StateBlocPersonalData {
     required this.error,
   });
 }
+
+class StateSuccessfullyEditedProfile extends StateBlocPersonalData {}

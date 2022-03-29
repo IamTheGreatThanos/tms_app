@@ -5,7 +5,9 @@ abstract class StateBlocOrderCard {}
 
 class StateLoadingOrderCard extends StateBlocOrderCard {}
 
-class StateEditSuccess extends StateBlocOrderCard {}
+class StateStopSuccess extends StateBlocOrderCard {}
+
+class StateStartSuccess extends StateBlocOrderCard {}
 
 class StateLoadDataOrderCard extends StateBlocOrderCard {
   final OrderPointsResponse orders;

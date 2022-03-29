@@ -9,25 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/src/provider.dart';
 
+List<String> items = [
+  "Перекус - 3 раза в сутки",
+  "Сон - 1 раз в сутки",
+  "Перерыв на 15 минут - 3 раз в сутки",
+  "Другая причина",
+  "Передаю заказ другому водителю",
+];
+
 void showCauseBottomSheet(BuildContext context) {
   showAppBottomSheet(context,
-          initialChildSize: 0.45, useRootNavigator: true, child: BuildCauses())
-      .then((value) {
-    if (value != null) {
-      if (value == "Хочу сделать перерыв") {
-        context.read<BlocOrderCard>().add(EventStopOrder(cause: "relax"));
-      }
-      if (value == "Передаю заказ другому водителю") {
-        context.read<BlocOrderCard>().add(EventStopOrder(cause: "change_driver"));
-      }
-      if (value == "Закончил рабочий день") {
-        context.read<BlocOrderCard>().add(EventStopOrder(cause: "finish_day"));
-      }
-      if (value == "Отмена заказа") {
-        context.read<BlocOrderCard>().add(EventStopOrder(cause: "decline"));
-      }
-    }
-  });
+          initialChildSize: 0.45, useRootNavigator: true, child: BuildCauses());
 }
 
 class BuildCauses extends StatefulWidget {
@@ -38,13 +30,6 @@ class BuildCauses extends StatefulWidget {
 }
 
 class _BuildCausesState extends State<BuildCauses> {
-  List<String> items = [
-    "Хочу сделать перерыв",
-    "Передаю заказ другому водителю",
-    "Закончил рабочий день",
-    "Отмена заказа",
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -117,12 +102,17 @@ class _BuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 54,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(item, style: ProjectTextStyles.ui_16Medium),
+          Flexible(
+              child: Text(
+            item,
+            style: ProjectTextStyles.ui_16Medium,
+            overflow: TextOverflow.ellipsis,
+          )),
           SvgPicture.asset("assets/images/svg/chevrone_right.svg")
         ],
       ),

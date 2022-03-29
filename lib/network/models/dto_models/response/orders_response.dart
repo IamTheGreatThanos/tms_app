@@ -51,7 +51,7 @@ class OrdersData {
   final int? fromLong;
   final int? toLat;
   final int? toLong;
-  final String? status;
+  String? status;
   final Employee? employee;
   final DateTime? startDate;
   final DateTime? endDate;

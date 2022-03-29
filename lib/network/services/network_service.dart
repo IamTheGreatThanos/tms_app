@@ -12,6 +12,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/orders_resp
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
+import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
@@ -187,26 +188,13 @@ class NetworkService {
   }
 
   Future<void> editProfile(
-    String name,
-    String surname,
-    String cityId,
-    String phone,
-    String oldPassword,
-    String newPassword,
-    String avatar,
+    PersonalDataVModel vModel,
   ) async {
     var response = await _dioWrapper.sendRequest(
         path: "profile-edit",
         method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "name": name,
-          "surname": surname,
-          "city_id": cityId,
-          "phone": phone,
-          "old_password": oldPassword,
-          "new_password": newPassword,
-          "avatar": await MultipartFile.fromFile(avatar),
-        }));
+        formData: FormData.fromMap(await vModel.toJson()));
+    print(response);
   }
 
   Future<void> logout() async {

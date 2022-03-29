@@ -13,6 +13,7 @@ import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,6 +35,7 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   String? selectedValue;
+  int cityId = 1;
 
   @override
   void initState() {
@@ -48,7 +50,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             BlocOrdersScreen(repository: context.read<GlobalRepository>())
               ..add(EventInitialOrdersScreen(cityId: "1")),
         child: Scaffold(
-          backgroundColor: ColorPalette.grey,
+          backgroundColor: ColorPalette.background,
           body: Padding(
             padding: const EdgeInsets.only(
               top: 30,
@@ -107,7 +109,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     ),
                                     filled: true,
                                     contentPadding: const EdgeInsets.all(16),
-                                    fillColor: ColorPalette.grey,
+                                    fillColor: ColorPalette.background,
                                   ),
                                   items: state.cities.map((CityData city) {
                                     return DropdownMenuItem<String>(
@@ -124,6 +126,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     return null;
                                   },
                                   onChanged: (e) {
+                                    setState(() {
+                                      cityId = state.cities
+                                          .firstWhere(
+                                              (element) => element.name == e)
+                                          .id!;
+                                    });
                                     selectedValue = e.toString();
                                     context.read<BlocOrdersScreen>().add(
                                         EventInitialOrdersScreen(
@@ -157,17 +165,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       const SizedBox(
                         height: 23,
                       ),
-                      GestureDetector(
-                        child: Text("Map test"),
-                        onTap: () {
-                          // AppRouter.push(
-                          //     context, PolylinePage(), rootNavigator: true);
-                          AppRouter.push(context, DrivingPage(),
-                              rootNavigator: true);
-                          // AppRouter.push(context, PlacemarkPage(),
-                          //     rootNavigator: true);
-                        },
-                      ),
+                      if (kDebugMode)
+                        GestureDetector(
+                          child: Text("Map test"),
+                          onTap: () {
+                            // AppRouter.push(
+                            //     context, PolylinePage(), rootNavigator: true);
+                            AppRouter.push(context, DrivingPage(),
+                                rootNavigator: true);
+                            // AppRouter.push(context, PlacemarkPage(),
+                            //     rootNavigator: true);
+                          },
+                        ),
                       const SizedBox(
                         height: 23,
                       ),
@@ -280,6 +289,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       itemBuilder: (context, index) {
                                         return _BuildOrderItem(
                                           order: state.orders[index],
+                                          cityId: cityId,
                                         );
                                       }),
                               const SizedBox(
@@ -304,10 +314,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
 class _BuildOrderItem extends StatefulWidget {
   final OrdersData order;
+  final int cityId;
 
   const _BuildOrderItem({
     Key? key,
     required this.order,
+    required this.cityId,
   }) : super(key: key);
 
   @override
@@ -328,11 +340,13 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
       child: GestureDetector(
         onTap: () {
           AppRouter.push(
-              context,
-              OrderCard(
-                order: widget.order,
-              ),
-              rootNavigator: true);
+                  context,
+                  OrderCard(
+                    order: widget.order,
+                  ),
+                  rootNavigator: true)
+              .then((value) => context.read<BlocOrdersScreen>().add(
+                  EventInitialOrdersScreen(cityId: widget.cityId.toString())));
         },
         child: Container(
           padding: const EdgeInsets.all(15),

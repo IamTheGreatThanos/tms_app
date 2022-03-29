@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: Scaffold(
-        backgroundColor: ColorPalette.grey,
+        backgroundColor: ColorPalette.background,
         body: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 20.0,
@@ -175,6 +175,8 @@ class _BuildUserInfo extends StatelessWidget {
                       borderRadius: BorderRadius.circular(13),
                       child: state.profile.data!.avatar != null
                           ? CachedNetworkImage(
+                              width: 70,
+                              height: 70,
                               imageUrl: state.profile.data!.avatar,
                               errorWidget: (context, url, error) =>
                                   const Center(

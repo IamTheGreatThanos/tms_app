@@ -56,8 +56,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget _buildColumn(context){
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
