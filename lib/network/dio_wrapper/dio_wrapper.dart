@@ -270,6 +270,9 @@ class AuthInterceptor extends InterceptorsWrapper {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
+    if(err.response?.statusCode == 302){
+      loginBloc.add(LogOutEvent());
+    }
     if (err.response?.statusCode == 401) {
       if (err.requestOptions.path.contains('auth/login')) {
         handler.next(err);
