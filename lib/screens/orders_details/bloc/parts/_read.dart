@@ -43,3 +43,29 @@ extension Read on BlocOrderDetails {
     } catch (e) {}
   }
 }
+
+class Address {
+  final String title;
+  final String streetName;
+  final bool isFrom;
+
+  Address({
+    required this.title,
+    required this.streetName,
+    required this.isFrom,
+  });
+}
+
+class OrdersResponse {
+  final String customerName;
+  final String date;
+  final List<Address> addresses;
+  final bool isCurrent;
+
+  OrdersResponse({
+    required this.customerName,
+    required this.date,
+    required this.addresses,
+    this.isCurrent = false,
+  });
+}

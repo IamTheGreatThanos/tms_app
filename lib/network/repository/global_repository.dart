@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:europharm_flutter/network/models/dto_models/response/accepted_orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
@@ -55,7 +54,7 @@ class GlobalRepository {
 
   Future<CitiesResponse> getCities() async => await _networkService.getCities();
 
-  Future<AcceptedOrdersResponse> acceptedOrders() async =>
+  Future<OrdersResponse> acceptedOrders() async =>
       await _networkService.acceptedOrders();
 
   Future<OrdersResponse> getOrdersByCities(String cityId) async =>
@@ -72,6 +71,9 @@ class GlobalRepository {
 
   Future<void> stopOrder(int orderId, String cause) async =>
       await _networkService.stopOrder(orderId, cause);
+
+  Future<void> resumeOrder(int orderId) async =>
+      await _networkService.resumeOrder(orderId);
 
   Future<OrderHistoryResponse> orderHistory(
           String startDate, String endDate) async =>

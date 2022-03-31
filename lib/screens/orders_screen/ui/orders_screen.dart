@@ -1,11 +1,11 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_test/driving_page.dart';
 import 'package:europharm_flutter/screens/map_test/placemark_page.dart';
+import 'package:europharm_flutter/screens/orders_details/ui/order_details.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
@@ -167,11 +167,11 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       ),
                       if (kDebugMode)
                         GestureDetector(
-                          child: Text("Map test"),
+                          child: const Text("Map test"),
                           onTap: () {
                             // AppRouter.push(
                             //     context, PolylinePage(), rootNavigator: true);
-                            AppRouter.push(context, DrivingPage(),
+                            AppRouter.push(context, const DrivingPage(),
                                 rootNavigator: true);
                             // AppRouter.push(context, PlacemarkPage(),
                             //     rootNavigator: true);
@@ -283,7 +283,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                       ),
                                     )
                                   : ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemCount: state.orders.length,
                                       itemBuilder: (context, index) {
@@ -302,7 +303,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ],
                   );
                 }
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               },
             ),
           ),
@@ -313,7 +314,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 }
 
 class _BuildOrderItem extends StatefulWidget {
-  final OrdersData order;
+  final OrderData order;
   final int cityId;
 
   const _BuildOrderItem({
@@ -382,7 +383,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     widget.order.employee?.name ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_20Medium,
                   ),
-                  if (widget.order.status?.toLowerCase() == "accepted")
+                  if (widget.order.status?.toLowerCase() == "accepted" ||
+                      widget.order.status?.toLowerCase() == "in_process")
                     Container(
                       decoration: BoxDecoration(
                         color: ColorPalette.grey400,
@@ -398,7 +400,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     )
                 ],
               ),
-              if (widget.order.status?.toLowerCase() == "accepted")
+              if (widget.order.status?.toLowerCase() == "accepted" ||
+                  widget.order.status?.toLowerCase() == "in_process")
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: ClipRRect(
@@ -465,7 +468,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: widget.order.status?.toLowerCase() == "accepted"
+                      color: widget.order.status?.toLowerCase() == "accepted" ||
+                              widget.order.status?.toLowerCase() == "in_process"
                           ? ColorPalette.main
                           : ColorPalette.grey400,
                       borderRadius: BorderRadius.circular(10),

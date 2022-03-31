@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/accepted_orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';

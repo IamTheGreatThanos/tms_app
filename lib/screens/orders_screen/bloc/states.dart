@@ -6,7 +6,7 @@ abstract class StateBlocOrdersScreen {}
 class StateLoadingOrdersScreen extends StateBlocOrdersScreen {}
 
 class StateLoadDataOrdersScreen extends StateBlocOrdersScreen {
-  final List<OrdersData> orders;
+  final List<OrderData> orders;
   final List<CityData> cities;
 
   StateLoadDataOrdersScreen({

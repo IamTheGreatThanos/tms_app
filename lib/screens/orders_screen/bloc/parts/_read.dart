@@ -5,8 +5,8 @@ extension Read on BlocOrdersScreen {
       Emitter<StateBlocOrdersScreen> emit) async {
     CitiesResponse citiesResponse = CitiesResponse();
     OrdersResponse ordersResponse = OrdersResponse();
-    AcceptedOrdersResponse currentOrders = AcceptedOrdersResponse();
-    List<OrdersData> overallOrders = [];
+    OrdersResponse currentOrders = OrdersResponse();
+    List<OrderData> overallOrders = [];
     try {
       emit(StateLoadingOrdersScreen());
       citiesResponse = await repository.getCities();
@@ -26,12 +26,12 @@ extension Read on BlocOrdersScreen {
       }
       if(currentOrders.data != null) {
         for (var element in currentOrders.data!) {
-          if(element.order != null && element.order!.fromCityId!.id.toString() == event.cityId) {
-            overallOrders.add(element.order!);
+          if(element.fromCityId!.id.toString() == event.cityId) {
+            overallOrders.add(element);
           }
         }
       }
-      overallOrders.addAll(ordersResponse.data ?? []);
+      overallOrders.addAll(ordersResponse.data!.toList());
       emit(StateLoadDataOrdersScreen(
           orders: overallOrders, cities: citiesResponse.data ?? []));
     } catch (e) {

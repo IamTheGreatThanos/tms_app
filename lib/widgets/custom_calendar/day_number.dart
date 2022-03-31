@@ -30,9 +30,14 @@ class DayNumber extends StatelessWidget {
           }
         },
         child: Container(
-          padding:  EdgeInsets.symmetric(horizontal: color != null ? 5 : 0, vertical: color != null ? 2 : 0),
-          width: color != null ? 17 :13,
-          height: color != null ? 17 :18,
+          padding:  EdgeInsets.only(left: color != null ? 5 : 0,
+              right: color != null ? 5 : 0,
+              top: color != null ? 2 : 0,
+              bottom: color != null ? 2 : 4,
+
+          ),
+          width: color != null ? 17 :17,
+          height: color != null ? 17 :17,
           alignment: Alignment.center,
           decoration: color != null
               ? BoxDecoration(

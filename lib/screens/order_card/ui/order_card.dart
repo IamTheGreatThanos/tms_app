@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart'
-    as od;
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/orders_details/ui/order_details.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
+import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
@@ -23,7 +24,7 @@ import '../bloc/bloc_order_card.dart';
 import 'cause_bottom_sheet.dart';
 
 class OrderCard extends StatefulWidget {
-  final od.OrdersData order;
+  final OrderData order;
 
   const OrderCard({Key? key, required this.order}) : super(key: key);
 
@@ -65,6 +66,7 @@ class _OrderCardState extends State<OrderCard> {
 
   double _lowerValue = 0;
   String? selectedValue;
+  bool isScan = false;
 
   // Timer? timer;
   late final List<MapObject> mapObjectsMain = [startPlacemark, endPlacemark];
@@ -119,6 +121,7 @@ class _OrderCardState extends State<OrderCard> {
         drivingOptions: const DrivingOptions(
             initialAzimuth: 0, routesCount: 5, avoidTolls: true));
     _init(resultWithSession.result);
+
     selectedValue = cities[0];
   }
 
@@ -131,9 +134,10 @@ class _OrderCardState extends State<OrderCard> {
   Widget build(BuildContext context) {
     return AppLoaderOverlay(
       child: BlocProvider<BlocOrderCard>(
-        create: (context) =>
-            BlocOrderCard(repository: context.read<GlobalRepository>())
-              ..add(EventInitialOrderCard(widget.order.id!)),
+        create: (context) => BlocOrderCard(
+          repository: context.read<GlobalRepository>(),
+          orderDetails: widget.order,
+        )..add(EventInitialOrderCard(widget.order.id!)),
         child: Scaffold(
           backgroundColor: ColorPalette.white,
           appBar: AppBar(
@@ -166,7 +170,7 @@ class _OrderCardState extends State<OrderCard> {
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
                           width: double.infinity,
-                          height: 400,
+                          height: 300,
                           decoration: BoxDecoration(
                             color: ColorPalette.white,
                             borderRadius: BorderRadius.circular(16),
@@ -373,6 +377,16 @@ class _OrderCardState extends State<OrderCard> {
                                 }
                                 if (state is StateStartSuccess) {
                                   showAppDialog(context,
+                                      body: "заказ успешно принят");
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    widget.order.status = "accepted";
+                                  });
+                                  // context.read<BlocOrdersScreen>().add(
+                                  //     EventInitialOrdersScreen(cityId:))
+                                }
+                                if (state is StateResumeSuccess) {
+                                  showAppDialog(context,
                                       body: "заказ успешно запущен");
                                   Navigator.of(context).pop();
                                   setState(() {
@@ -386,7 +400,7 @@ class _OrderCardState extends State<OrderCard> {
                                       body: "заказ успешно остановлен");
                                   Navigator.of(context).pop();
                                   setState(() {
-                                    widget.order.status = "send";
+                                    widget.order.status = "stopped";
                                   });
                                   // context.read<BlocOrdersScreen>().add(
                                   //     EventInitialOrdersScreen(cityId:))
@@ -407,6 +421,11 @@ class _OrderCardState extends State<OrderCard> {
                                   // } else {
                                   return _BuildOrderItem(
                                     order: widget.order,
+                                    callback: (isOpened) {
+                                      setState(() {
+                                        isScan = isOpened;
+                                      });
+                                    },
                                   );
                                   // return ListView.builder(
                                   //     physics:
@@ -441,140 +460,22 @@ class _OrderCardState extends State<OrderCard> {
                   return Padding(
                     padding:
                         const EdgeInsets.only(left: 10, right: 10, bottom: 30),
-                    child: widget.order.status == "accepted"
+                    child: isScan &&
+                            (widget.order.status == "accepted" ||
+                                widget.order.status == "in_process")
                         ? GestureDetector(
                             onTap: () {
-                              // showCauseBottomSheet(context);
-                              showAppBottomSheet(context,
-                                      initialChildSize: 0.45,
-                                      useRootNavigator: true,
-                                      child: const BuildCauses())
-                                  .then((value) {
-                                if (value != null) {
-                                  if (value == items[0] ||
-                                      value == items[1] ||
-                                      value == items[2]) {
-                                    context
-                                        .read<BlocOrderCard>()
-                                        .add(EventStopOrder(cause: "relax"));
-                                    // startTimer();
-                                    showAppBottomSheet(context,
-                                        // initialChildSize: 0.5,
-                                        useRootNavigator: true,
-                                        child: Column(
-                                          children: [
-                                            const Text("Перерыв"),
-                                            SizedBox(
-                                                height: 100,
-                                                child: TimerPage(
-                                                  duration: Duration(
-                                                      minutes: value == items[0]
-                                                          ? 30
-                                                          : value == items[1]
-                                                              ? 480
-                                                              : 15),
-                                                )),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 18.0,
-                                                      horizontal: 10),
-                                              child: MainButton(
-                                                onTap: () {
-                                                  context
-                                                      .read<BlocOrderCard>()
-                                                      .add(EventStartOrder());
-                                                },
-                                                title: "Выйти на линию",
-                                              ),
-                                            )
-                                          ],
-                                        ));
-                                  }
-                                  if (value == items[4]) {
-                                    context.read<BlocOrderCard>().add(
-                                        EventStopOrder(cause: "change_driver"));
-                                    showAppBottomSheet(context,
-                                        // initialChildSize: 0.5,
-                                        useRootNavigator: true,
-                                        child: Column(
-                                          children: [
-                                            const Text(
-                                                "Передать заказ другому водителю"),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: AppTextField(
-                                                prefixIcon:
-                                                    const Icon(Icons.search),
-                                                hintText: "Поиск",
-                                              ),
-                                            ),
-                                            const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 8.0),
-                                              child: EmployerCard(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 18.0,
-                                                      horizontal: 10),
-                                              child: MainButton(
-                                                onTap: () {},
-                                                title: "Готово",
-                                              ),
-                                            )
-                                          ],
-                                        ));
-                                  }
-                                  // if (value == "Закончил рабочий день") {
-                                  //   context.read<BlocOrderCard>().add(
-                                  //       EventStopOrder(cause: "finish_day"));
-                                  // }
-                                  // if (value == "Отмена заказа") {
-                                  //   context
-                                  //       .read<BlocOrderCard>()
-                                  //       .add(EventStopOrder(cause: "decline"));
-                                  // }
-                                }
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              decoration: BoxDecoration(
-                                  color: ColorPalette.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: ColorPalette.main)),
-                              child: Stack(
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      "Стоп",
-                                      style: ProjectTextStyles.ui_16Medium
-                                          .copyWith(
-                                        color: ColorPalette.main,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                      top: 3,
-                                      right: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/images/svg/chevrone_down.svg",
-                                        width: 24,
-                                        height: 24,
-                                        color: ColorPalette.main,
-                                      ))
-                                ],
-                              ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () {
-                              context
-                                  .read<BlocOrderCard>()
-                                  .add(EventStartOrder());
+                              AppRouter.push(
+                                  context,
+                                  BlocProvider.value(
+                                    value: context.read<BlocOrderCard>(),
+                                    child: OrderDetails(
+                                        ordersData: widget.order,
+                                        mapObjects: mapObjectsMain),
+                                  ));
+                              // context
+                              //     .read<BlocOrderCard>()
+                              //     .add(EventResumeOrder());
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -585,7 +486,7 @@ class _OrderCardState extends State<OrderCard> {
                                 children: [
                                   Center(
                                     child: Text(
-                                      "Поехали",
+                                      "Приехал",
                                       style: ProjectTextStyles.ui_16Medium
                                           .copyWith(
                                         color: Colors.white,
@@ -600,7 +501,207 @@ class _OrderCardState extends State<OrderCard> {
                                 ],
                               ),
                             ),
-                          ),
+                          )
+                        : widget.order.status == "accepted" ||
+                                widget.order.status == "in_process"
+                            ? GestureDetector(
+                                onTap: () {
+                                  // showCauseBottomSheet(context);
+                                  showAppBottomSheet(context,
+                                          initialChildSize: 0.45,
+                                          useRootNavigator: true,
+                                          child: const BuildCauses())
+                                      .then((value) {
+                                    if (value != null) {
+                                      if (value == items[0] ||
+                                          value == items[1] ||
+                                          value == items[2]) {
+                                        context
+                                            .read<BlocOrderCard>()
+                                            .add(EventStopOrder(
+                                                cause: value == items[0]
+                                                    ? "snack"
+                                                    : value == items[1]
+                                                        ? "sleep"
+                                                        : "relax"));
+                                        showAppBottomSheet(context,
+                                            useRootNavigator: true,
+                                            child: Column(
+                                              children: [
+                                                const Text("Перерыв"),
+                                                SizedBox(
+                                                    height: 100,
+                                                    child: TimerPage(
+                                                      duration: Duration(
+                                                          minutes: value ==
+                                                                  items[0]
+                                                              ? 30
+                                                              : value ==
+                                                                      items[1]
+                                                                  ? 480
+                                                                  : 15),
+                                                    )),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 18.0,
+                                                      horizontal: 10),
+                                                  child: MainButton(
+                                                    onTap: () {
+                                                      context
+                                                          .read<BlocOrderCard>()
+                                                          .add(
+                                                              EventResumeOrder());
+                                                      Navigator.pop(context);
+                                                    },
+                                                    title: "Выйти на линию",
+                                                  ),
+                                                )
+                                              ],
+                                            ));
+                                      }
+                                      if (value == items[4]) {
+                                        context.read<BlocOrderCard>().add(
+                                            EventStopOrder(
+                                                cause: "change_driver"));
+                                        showAppBottomSheet(context,
+                                            // initialChildSize: 0.5,
+                                            useRootNavigator: true,
+                                            child: Column(
+                                              children: [
+                                                const Text(
+                                                    "Передать заказ другому водителю"),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: AppTextField(
+                                                    prefixIcon: const Icon(
+                                                        Icons.search),
+                                                    hintText: "Поиск",
+                                                  ),
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                                  child: EmployerCard(),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 18.0,
+                                                      horizontal: 10),
+                                                  child: MainButton(
+                                                    onTap: () {},
+                                                    title: "Готово",
+                                                  ),
+                                                )
+                                              ],
+                                            ));
+                                      }
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 16),
+                                  decoration: BoxDecoration(
+                                      color: ColorPalette.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border:
+                                          Border.all(color: ColorPalette.main)),
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "Стоп",
+                                          style: ProjectTextStyles.ui_16Medium
+                                              .copyWith(
+                                            color: ColorPalette.main,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                          top: 3,
+                                          right: 15,
+                                          child: SvgPicture.asset(
+                                            "assets/images/svg/chevrone_down.svg",
+                                            width: 24,
+                                            height: 24,
+                                            color: ColorPalette.main,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : widget.order.status == "stopped"
+                                ? GestureDetector(
+                                    onTap: () {
+                                      context
+                                          .read<BlocOrderCard>()
+                                          .add(EventResumeOrder());
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      decoration: BoxDecoration(
+                                          color: ColorPalette.main,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              "Выйти на линию",
+                                              style: ProjectTextStyles
+                                                  .ui_16Medium
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                              top: 3,
+                                              right: 15,
+                                              child: SvgPicture.asset(
+                                                  "assets/images/svg/arrow_right.svg"))
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      context
+                                          .read<BlocOrderCard>()
+                                          .add(EventStartOrder());
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      decoration: BoxDecoration(
+                                          color: ColorPalette.main,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              "Поехали",
+                                              style: ProjectTextStyles
+                                                  .ui_16Medium
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                              top: 3,
+                                              right: 15,
+                                              child: SvgPicture.asset(
+                                                  "assets/images/svg/arrow_right.svg"))
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                   );
                 },
               ),
@@ -642,11 +743,13 @@ class _OrderCardState extends State<OrderCard> {
 }
 
 class _BuildOrderItem extends StatelessWidget {
-  final od.OrdersData order;
+  final OrderData order;
+  final Function callback;
 
   const _BuildOrderItem({
     Key? key,
     required this.order,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -715,6 +818,9 @@ class _BuildOrderItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: ExpansionTile(
+                        onExpansionChanged: (isOpened) {
+                          callback.call(isOpened);
+                        },
                         tilePadding: EdgeInsets.zero,
                         expandedAlignment: Alignment.topLeft,
                         childrenPadding: const EdgeInsets.only(left: 40),
@@ -848,7 +954,6 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     timer?.cancel();
     super.dispose();
   }
