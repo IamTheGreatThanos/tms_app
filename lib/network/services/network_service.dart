@@ -179,6 +179,27 @@ class NetworkService {
     return OrderPointsResponse.fromJson(response.data);
   }
 
+  Future<OrderPoint> orderPointProducts(int pointId) async {
+    final response = await _dioWrapper.sendRequest(
+        path: "/order/point/products",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "point_id": pointId,
+        }));
+    return OrderPoint.fromJson(response.data["data"]);
+  }
+
+  Future<OrderPoint> orderProductFinish(int productId, String code) async {
+    final response = await _dioWrapper.sendRequest(
+        path: "/order/point/product/finish",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "product_id": productId,
+          "code": code,
+        }));
+    return OrderPoint.fromJson(response.data["data"]);
+  }
+
   Future<OrdersResponse> acceptedOrders() async {
     final response = await _dioWrapper.sendRequest(
       path: "/orders/accepted",

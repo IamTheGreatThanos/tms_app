@@ -4,7 +4,8 @@ import 'dart:math';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
-import 'package:europharm_flutter/screens/orders_details/ui/order_details.dart';
+import 'package:europharm_flutter/screens/order_finish/bloc/bloc_order_finish.dart';
+import 'package:europharm_flutter/screens/order_finish/ui/order_finish.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
@@ -66,6 +67,7 @@ class _OrderCardState extends State<OrderCard> {
 
   double _lowerValue = 0;
   String? selectedValue;
+  OrderPoint? point;
   bool isScan = false;
 
   // Timer? timer;
@@ -75,7 +77,9 @@ class _OrderCardState extends State<OrderCard> {
     try {
       await _handleResult(await result);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -237,7 +241,7 @@ class _OrderCardState extends State<OrderCard> {
                                 style: ProjectTextStyles.ui_12Medium
                                     .copyWith(color: ColorPalette.commonGrey),
                               ),
-                              const Text("Karagandy, KZ")
+                              const Text("Karaganda, KZ")
                             ],
                           ),
                           Column(
@@ -421,9 +425,10 @@ class _OrderCardState extends State<OrderCard> {
                                   // } else {
                                   return _BuildOrderItem(
                                     order: widget.order,
-                                    callback: (isOpened) {
+                                    callback: (isOpened, orderPoint) {
                                       setState(() {
                                         isScan = isOpened;
+                                        point = orderPoint;
                                       });
                                     },
                                   );
@@ -461,21 +466,26 @@ class _OrderCardState extends State<OrderCard> {
                     padding:
                         const EdgeInsets.only(left: 10, right: 10, bottom: 30),
                     child: isScan &&
+                            point!.products!.isNotEmpty &&
                             (widget.order.status == "accepted" ||
                                 widget.order.status == "in_process")
                         ? GestureDetector(
                             onTap: () {
                               AppRouter.push(
                                   context,
-                                  BlocProvider.value(
-                                    value: context.read<BlocOrderCard>(),
-                                    child: OrderDetails(
-                                        ordersData: widget.order,
-                                        mapObjects: mapObjectsMain),
-                                  ));
-                              // context
-                              //     .read<BlocOrderCard>()
-                              //     .add(EventResumeOrder());
+                                  BlocProvider<BlocOrderFinish>(
+                                    create: (context) => BlocOrderFinish(
+                                      repository:
+                                          context.read<GlobalRepository>(),
+                                    )..add(EventOrderFinishInitial(
+                                        pointId: point!.id!)),
+                                    child: OrderFinish(
+                                      mapObjects: mapObjectsMain,
+                                    ),
+                                  )).then((value) {
+                                context.read<BlocOrderCard>().add(
+                                    EventInitialOrderCard(widget.order.id!));
+                              });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -819,7 +829,7 @@ class _BuildOrderItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: ExpansionTile(
                         onExpansionChanged: (isOpened) {
-                          callback.call(isOpened);
+                          callback.call(isOpened, order.points![i]);
                         },
                         tilePadding: EdgeInsets.zero,
                         expandedAlignment: Alignment.topLeft,
@@ -827,14 +837,15 @@ class _BuildOrderItem extends StatelessWidget {
                         title: Row(
                           children: [
                             Container(
-                              // padding: const EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(7),
                               decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
+                                color: ColorPalette.lightGrey,
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                              child: const Icon(
-                                Icons.lock_clock_outlined,
-                                size: 30,
+                              child: SvgPicture.asset(
+                                "assets/images/svg/order_item.svg",
+                                width: 12,
+                                height: 12,
                               ),
                               // SvgPicture.asset("assets/images/svg/orders_geo.svg"),
                             ),

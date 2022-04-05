@@ -18,9 +18,3 @@ class EventStopOrder extends EventBlocOrderCard {
 class EventStartOrder extends EventBlocOrderCard {}
 
 class EventResumeOrder extends EventBlocOrderCard {}
-
-class EventScanBarcode extends EventBlocOrderCard {
-  final String barcode;
-
-  EventScanBarcode({required this.barcode});
-}

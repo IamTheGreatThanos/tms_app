@@ -28,10 +28,6 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
     on<EventStopOrder>(_stop);
     on<EventStartOrder>(_start);
     on<EventResumeOrder>(_resume);
-    on<EventScanBarcode>((event, emit)async{
-      print(event.barcode);
-      emit(StateSuccessfullyScanned(barcode: event.barcode));
-    });
   }
 
   final GlobalRepository repository;

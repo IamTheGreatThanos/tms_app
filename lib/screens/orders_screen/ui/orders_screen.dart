@@ -5,7 +5,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/orders_resp
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_test/driving_page.dart';
 import 'package:europharm_flutter/screens/map_test/placemark_page.dart';
-import 'package:europharm_flutter/screens/orders_details/ui/order_details.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/bloc_orders_screen.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
