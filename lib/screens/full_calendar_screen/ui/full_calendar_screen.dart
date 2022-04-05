@@ -60,7 +60,6 @@ class _FullCalendarScreenState extends State<FullCalendarScreen> {
             'Декабрь',
           ],
           onMonthTap: (int day, int month, int year) {
-            print('Tapped $day/$month/$year');
             Navigator.of(context).pop(DateTime(year, month, day));
           },
           monthTitleStyle: ProjectTextStyles.ui_20Large.copyWith(

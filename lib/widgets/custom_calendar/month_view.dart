@@ -84,9 +84,9 @@ class MonthView extends StatelessWidget {
 
   Widget buildMonthView(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
+      padding: const EdgeInsets.only(bottom: 20.0, right: 0),
       child: Container(
-        width: MediaQuery.of(context).size.width / 2 - 21,
+        // width: MediaQuery.of(context).size.width / 2,
         // margin: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

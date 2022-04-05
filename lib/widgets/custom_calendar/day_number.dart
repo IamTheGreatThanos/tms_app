@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,10 @@ class DayNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double size = getDayNumberSize(context);
-
+    final sizes = MediaQuery.of(context).size;
+    final double width = sizes.width < 365 ? 15 : sizes.width > 420 ? 21 : 18;
     return Padding(
-      padding: EdgeInsets.only(right: isLastDay ? 0 : 12.0),
+      padding: EdgeInsets.only(right: isLastDay ? 0 : 7.0),
       child: InkWell(
         onTap: () {
           if(day > 0) {
@@ -36,8 +38,8 @@ class DayNumber extends StatelessWidget {
               bottom: color != null ? 2 : 4,
 
           ),
-          width: color != null ? 17 :17,
-          height: color != null ? 17 :17,
+          width: width,
+          height: 23,
           alignment: Alignment.center,
           decoration: color != null
               ? BoxDecoration(
@@ -48,7 +50,7 @@ class DayNumber extends StatelessWidget {
           child: Text(
             day < 1 ? '' : day.toString(),
             textAlign: TextAlign.center,
-            style: ProjectTextStyles.ui_12Medium.copyWith(color: color != null ? Colors.white : Colors.black),
+            style: ProjectTextStyles.ui_14Medium.copyWith(color: color != null ? Colors.white : Colors.black),
           ),
         ),
       ),

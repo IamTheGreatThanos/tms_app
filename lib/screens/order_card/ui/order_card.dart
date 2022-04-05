@@ -752,7 +752,7 @@ class _OrderCardState extends State<OrderCard> {
   }
 }
 
-class _BuildOrderItem extends StatelessWidget {
+class _BuildOrderItem extends StatefulWidget {
   final OrderData order;
   final Function callback;
 
@@ -763,8 +763,21 @@ class _BuildOrderItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<_BuildOrderItem> createState() => _BuildOrderItemState();
+}
+
+class _BuildOrderItemState extends State<_BuildOrderItem> {
+  int selected = -1;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
+      key: GlobalKey(),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         // color: ColorPalette.white,
@@ -807,12 +820,12 @@ class _BuildOrderItem extends StatelessWidget {
                           children: [
                             Text(
                               DateFormat("dd MMMM")
-                                  .format(order.startDate ?? DateTime.now()),
+                                  .format(widget.order.startDate ?? DateTime.now()),
                               style: ProjectTextStyles.ui_12Medium
                                   .copyWith(color: ColorPalette.commonGrey),
                             ),
                             Text(
-                              order.from ?? S.of(context).no_data,
+                              widget.order.from ?? S.of(context).no_data,
                               // order.customerName ?? S.of(context).no_data,
                               style: ProjectTextStyles.ui_16Medium,
                             ),
@@ -824,13 +837,22 @@ class _BuildOrderItem extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  for (int i = 0; i < order.points!.length; i++)
+                  for (int i = 0; i < widget.order.points!.length; i++)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: ExpansionTile(
                         onExpansionChanged: (isOpened) {
-                          callback.call(isOpened, order.points![i]);
+                          setState(() {
+                            if(isOpened) {
+                              selected = i;
+                            }
+                            else{
+                              selected = -1;
+                            }
+                            widget.callback.call(isOpened, widget.order.points![i]);
+                          });
                         },
+                        initiallyExpanded: i == selected,
                         tilePadding: EdgeInsets.zero,
                         expandedAlignment: Alignment.topLeft,
                         childrenPadding: const EdgeInsets.only(left: 40),
@@ -856,14 +878,14 @@ class _BuildOrderItem extends StatelessWidget {
                                 children: [
                                   Text(
                                     DateFormat("dd MMMM").format(
-                                        order.points?[i].date ??
+                                        widget.order.points?[i].date ??
                                             DateTime.now()),
                                     style: ProjectTextStyles.ui_12Medium
                                         .copyWith(
                                             color: ColorPalette.commonGrey),
                                   ),
                                   Text(
-                                    order.points?[i].address ??
+                                    widget.order.points?[i].address ??
                                         S.of(context).no_data,
                                     // order.customerName ?? S.of(context).no_data,
                                     style: ProjectTextStyles.ui_16Medium,
@@ -878,16 +900,16 @@ class _BuildOrderItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Количество товаров - ${order.points?[i].countProducts.toString() ?? S.of(context).no_data} ",
+                                "Количество товаров - ${widget.order.points?[i].countProducts.toString() ?? S.of(context).no_data} ",
                                 textAlign: TextAlign.left,
                                 style: ProjectTextStyles.ui_12Medium
                                     .copyWith(color: ColorPalette.black),
                               ),
                               for (int k = 0;
-                                  k < order.points![i].products!.length;
+                                  k < widget.order.points![i].products!.length;
                                   k++)
                                 Text(
-                                  order.points![i].products?[k].name ??
+                                  widget.order.points![i].products?[k].name ??
                                       S.of(context).no_data,
                                   style: ProjectTextStyles.ui_12Medium
                                       .copyWith(color: ColorPalette.commonGrey),
@@ -923,12 +945,12 @@ class _BuildOrderItem extends StatelessWidget {
                 children: [
                   Text(
                     DateFormat("dd MMMM")
-                        .format(order.endDate ?? DateTime.now()),
+                        .format(widget.order.endDate ?? DateTime.now()),
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
                   Text(
-                    order.to ?? S.of(context).no_data,
+                    widget.order.to ?? S.of(context).no_data,
                     // order.customerName ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_16Medium,
                   ),

@@ -13,8 +13,8 @@ class SignUpVModel extends Cubit<_StateVModel> {
   late final phone = AppTextField(
       hintStyle: ProjectTextStyles.ui_16Medium.copyWith(
         color: ColorPalette.commonGrey,
-
       ),
+      keyboardType: TextInputType.number,
       validator: (value) => _phoneValidator(value!, error),
       hintText: '+7',
       onChanged: updateIsValidated,

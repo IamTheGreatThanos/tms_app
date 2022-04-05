@@ -105,227 +105,104 @@ class _OrderFinishState extends State<OrderFinish>
               //   });
               // }
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Container(
-                                width: double.infinity,
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  color: ColorPalette.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    YandexMap(
-                                      mapObjects: widget.mapObjects,
-                                      fastTapEnabled: true,
-                                      mode2DEnabled: true,
-                                    ),
-                                    Positioned(
-                                      right: 5,
-                                      top: 5,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: ColorPalette.white,
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 4.5,
-                                          horizontal: 8,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: 6,
-                                              width: 6,
-                                              decoration: BoxDecoration(
-                                                color: ColorPalette.red,
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            const Text(
-                                              "LIVE",
-                                              style:
-                                                  ProjectTextStyles.ui_12Medium,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "20 ноября 2021 в 14:45",
-                                      style: ProjectTextStyles.ui_12Medium
-                                          .copyWith(
-                                              color: ColorPalette.commonGrey),
-                                    ),
-                                    const Text(
-                                      "Склад Europharm в Караганде",
-                                      // order.customerName ?? S.of(context).no_data,
-                                      style: ProjectTextStyles.ui_16Medium,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: ColorPalette.background,
-                                  borderRadius: BorderRadius.circular(100)),
-                              height: 46,
-                              child: TabBar(
-                                isScrollable: false,
-                                indicator: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: ColorPalette.main),
-                                labelPadding: const EdgeInsets.all(0),
-                                labelColor: ColorPalette.white,
-                                labelStyle: ProjectTextStyles.ui_16Medium,
-                                unselectedLabelColor: ColorPalette.commonGrey,
-                                controller: _tabController,
-                                onTap: (index) {
-                                  setState(() {
-                                    _current = index;
-                                    _controller.animateToPage(_current,
-                                        duration:
-                                            const Duration(milliseconds: 50),
-                                        curve: Curves.ease);
-                                  });
-                                },
-                                tabs: const [
-                                  Tab(
-                                    child: Text("Товар"),
-                                  ),
-                                  Tab(
-                                    child: Text("В путь"),
-                                  ),
-                                  Tab(
-                                    child: Text(
-                                      "Оплата",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 28,
-                          ),
-                          SizedBox(
-                            width: 700,
-                            height: MediaQuery.of(context).size.height - 389,
+                          _buildOrderData(context),
+                          Container(
+                            height: MediaQuery.of(context).size.height - 600,
                             child: PageView(controller: _controller, children: [
-                              Center(
-                                  child: ListView.builder(
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: 17, left: 10, right: 10),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (productId ==
-                                              state.orderPoint.products?[index]
-                                                  .id) {
-                                            productId = 0;
-                                          } else {
-                                            productId = state.orderPoint
-                                                .products?[index].id!;
-                                          }
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.all(7),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: state.orderPoint
-                                                      .products?[index].id ==
-                                                  productId
-                                              ? ColorPalette.main
-                                                  .withOpacity(0.1)
-                                              : null,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                    padding:
-                                                        const EdgeInsets.all(9),
-                                                    width: 40,
-                                                    height: 40,
-                                                    decoration: BoxDecoration(
-                                                      color: const Color(
-                                                              0xFF22863A)
-                                                          .withOpacity(0.1),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              100),
-                                                    ),
-                                                    child: SvgPicture.asset(
-                                                        "assets/images/svg/box.svg")),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  state
-                                                          .orderPoint
-                                                          .products?[index]
-                                                          .name ??
-                                                      "No data",
-                                                  style: ProjectTextStyles
-                                                      .ui_14Medium
-                                                      .copyWith(
-                                                          color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                            if (state.orderPoint
-                                                    .products?[index].status ==
-                                                "finished")
-                                              SvgPicture.asset(
-                                                  "assets/images/svg/ic_check.svg"),
-                                          ],
+                              Container(
+                                // height: MediaQuery.of(context).size.height - 800,
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 17, left: 10, right: 10),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            if (productId ==
+                                                state.orderPoint
+                                                    .products?[index].id) {
+                                              productId = 0;
+                                            } else {
+                                              productId = state.orderPoint
+                                                  .products?[index].id!;
+                                            }
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(7),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            color: state.orderPoint
+                                                        .products?[index].id ==
+                                                    productId
+                                                ? ColorPalette.main
+                                                    .withOpacity(0.1)
+                                                : null,
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              9),
+                                                      width: 40,
+                                                      height: 40,
+                                                      decoration: BoxDecoration(
+                                                        color: const Color(
+                                                                0xFF22863A)
+                                                            .withOpacity(0.1),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                      child: SvgPicture.asset(
+                                                          "assets/images/svg/box.svg")),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    state
+                                                            .orderPoint
+                                                            .products?[index]
+                                                            .name ??
+                                                        "No data",
+                                                    style: ProjectTextStyles
+                                                        .ui_14Medium
+                                                        .copyWith(
+                                                            color:
+                                                                Colors.black),
+                                                  )
+                                                ],
+                                              ),
+                                              if (state
+                                                      .orderPoint
+                                                      .products?[index]
+                                                      .status ==
+                                                  "finished")
+                                                SvgPicture.asset(
+                                                    "assets/images/svg/ic_check.svg"),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                itemCount: state.orderPoint.products?.length,
-                              )),
+                                    );
+                                  },
+                                  shrinkWrap: true,
+                                  itemCount: state.orderPoint.products?.length,
+                                ),
+                              ),
                               Container(),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -394,37 +271,37 @@ class _OrderFinishState extends State<OrderFinish>
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
-                    child: GestureDetector(
-                        onTap:  () {
-                                showCreatePasswordBottomDialog(
-                                    context, productId!);
-                              },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                              color: ColorPalette.main,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Text(
-                                  "Отсканировать",
-                                  style: ProjectTextStyles.ui_16Medium.copyWith(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                  left: 18,
-                                  child: SvgPicture.asset(
-                                    "assets/images/svg/scan.svg",
-                                  ))
-                            ],
-                          ),
-                        )),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 10),
+                  //   child: GestureDetector(
+                  //       onTap:  () {
+                  //               showCreatePasswordBottomDialog(
+                  //                   context, productId!);
+                  //             },
+                  //       child: Container(
+                  //         padding: const EdgeInsets.symmetric(vertical: 16),
+                  //         decoration: BoxDecoration(
+                  //             color: ColorPalette.main,
+                  //             borderRadius: BorderRadius.circular(10)),
+                  //         child: Stack(
+                  //           children: [
+                  //             Center(
+                  //               child: Text(
+                  //                 "Отсканировать",
+                  //                 style: ProjectTextStyles.ui_16Medium.copyWith(
+                  //                   color: Colors.white,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Positioned(
+                  //                 left: 18,
+                  //                 child: SvgPicture.asset(
+                  //                   "assets/images/svg/scan.svg",
+                  //                 ))
+                  //           ],
+                  //         ),
+                  //       )),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 10.0, right: 10, bottom: 24),
@@ -573,6 +450,140 @@ class _OrderFinishState extends State<OrderFinish>
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildOrderData(BuildContext context) {
+    return Container(
+      height: 450,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: ColorPalette.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Stack(
+                  children: [
+                    YandexMap(
+                      mapObjects: widget.mapObjects,
+                      fastTapEnabled: true,
+                      mode2DEnabled: true,
+                    ),
+                    Positioned(
+                      right: 5,
+                      top: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorPalette.white,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4.5,
+                          horizontal: 8,
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 6,
+                              width: 6,
+                              decoration: BoxDecoration(
+                                color: ColorPalette.red,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              "LIVE",
+                              style: ProjectTextStyles.ui_12Medium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "20 ноября 2021 в 14:45",
+                      style: ProjectTextStyles.ui_12Medium
+                          .copyWith(color: ColorPalette.commonGrey),
+                    ),
+                    const Text(
+                      "Склад Europharm в Караганде",
+                      // order.customerName ?? S.of(context).no_data,
+                      style: ProjectTextStyles.ui_16Medium,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: ColorPalette.background,
+                  borderRadius: BorderRadius.circular(100)),
+              height: 46,
+              child: TabBar(
+                isScrollable: false,
+                indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: ColorPalette.main),
+                labelPadding: const EdgeInsets.all(0),
+                labelColor: ColorPalette.white,
+                labelStyle: ProjectTextStyles.ui_16Medium,
+                unselectedLabelColor: ColorPalette.commonGrey,
+                controller: _tabController,
+                onTap: (index) {
+                  setState(() {
+                    _current = index;
+                    _controller.animateToPage(_current,
+                        duration: const Duration(milliseconds: 50),
+                        curve: Curves.ease);
+                  });
+                },
+                tabs: const [
+                  Tab(
+                    child: Text("Товар"),
+                  ),
+                  Tab(
+                    child: Text("В путь"),
+                  ),
+                  Tab(
+                    child: Text(
+                      "Оплата",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 28,
+          ),
+        ],
       ),
     );
   }
