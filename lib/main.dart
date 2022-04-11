@@ -1,4 +1,5 @@
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,7 @@ import 'managers/user_store.dart';
 import 'network/dio_wrapper/dio_wrapper.dart';
 import 'network/repository/global_repository.dart';
 import 'network/repository/hive_repository.dart';
+import 'network/services/firebase_messaging_repository.dart';
 import 'network/services/network_service.dart';
 import 'network/tokens_repository/tokens_repository.dart';
 import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
@@ -38,6 +40,7 @@ void main() async {
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ]);
+      await Firebase.initializeApp();
       // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
@@ -48,6 +51,7 @@ void main() async {
       await context
           .read<TokensRepository>()
           .init(context.read<HiveRepository>());
+      await context.read<FirebaseMessagingRepository>().init();
       await context.read<DioWrapper>().init(
             baseURL: projectBaseUrl,
             tokensRepository: context.read<TokensRepository>(),

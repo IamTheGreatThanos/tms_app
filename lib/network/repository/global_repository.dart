@@ -41,9 +41,10 @@ class GlobalRepository {
           String phone, String code) async =>
       await _networkService.registerPhoneCode(phone, code);
 
-  Future<PhoneCodeRegisterResponse> registerConfirm(
-          String password, String registerToken) async =>
-      await _networkService.registerConfirm(password, registerToken);
+  Future<PhoneCodeRegisterResponse> registerConfirm(String password,
+          String registerToken, String deviceOs, String deviceToken) async =>
+      await _networkService.registerConfirm(
+          password, registerToken, deviceOs, deviceToken);
 
   Future<ProfileResponse> getProfile() async =>
       await _networkService.getProfile();

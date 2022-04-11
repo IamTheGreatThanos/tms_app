@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
@@ -154,6 +155,7 @@ class _BuildUserInfo extends StatelessWidget {
     return BlocProvider(
       create: (context) => BlocProfileScreen(
         repository: context.read<GlobalRepository>(),
+        firebaseMessagingRepository: context.read<FirebaseMessagingRepository>(),
       )..add(EventProfileInitial()),
       child: BlocConsumer<BlocProfileScreen, StateBlocProfile>(
         listener: (context, state) {

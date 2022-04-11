@@ -55,11 +55,13 @@ class NetworkService {
   }
 
   Future<PhoneCodeRegisterResponse> registerConfirm(
-      String password, String registerToken) async {
+      String password, String registerToken, String deviceOs, String deviceToken) async {
     _dioWrapper.tokensRepository.save(registerToken);
     var response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "password": password,
+        "device_os": deviceOs,
+        "device_token": deviceToken,
       }),
       path: "register-confirm",
       method: NetworkMethod.post,

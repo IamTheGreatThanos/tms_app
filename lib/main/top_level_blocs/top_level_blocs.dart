@@ -1,5 +1,6 @@
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
@@ -30,6 +31,8 @@ class TopLevelBlocs extends StatelessWidget {
         BlocProvider(
           create: (context) => BlocAuth(
             repository: context.read<GlobalRepository>(),
+            firebaseMessagingRepository:
+                context.read<FirebaseMessagingRepository>(),
           ),
         ),
         BlocProvider(
@@ -58,6 +61,7 @@ class TopLevelBlocs extends StatelessWidget {
         BlocProvider(
           create: (context) => BlocProfileScreen(
             repository: context.read<GlobalRepository>(),
+            firebaseMessagingRepository: context.read<FirebaseMessagingRepository>(),
           )..add(EventProfileInitial()),
         ),
         BlocProvider(

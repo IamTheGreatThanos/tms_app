@@ -16,6 +16,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../map_screen/data/bloc/map_cubit.dart';
+import '../../map_screen/data/repo_map.dart';
+import '../../map_screen/map.dart';
+
 class OrderFinish extends StatefulWidget {
   final List<MapObject<dynamic>> mapObjects;
 
@@ -472,11 +476,18 @@ class _OrderFinishState extends State<OrderFinish>
                 ),
                 child: Stack(
                   children: [
-                    YandexMap(
-                      mapObjects: widget.mapObjects,
-                      fastTapEnabled: true,
-                      mode2DEnabled: true,
+                    BlocProvider(
+                      create: (_) => MapCubit(
+                          mapRepository: MapRepository()),
+                      child: SessionPage(
+                        orderId: 5,
+                      ),
                     ),
+                    // YandexMap(
+                    //   mapObjects: widget.mapObjects,
+                    //   fastTapEnabled: true,
+                    //   mode2DEnabled: true,
+                    // ),
                     Positioned(
                       right: 5,
                       top: 5,

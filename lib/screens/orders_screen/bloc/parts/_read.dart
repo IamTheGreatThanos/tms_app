@@ -25,10 +25,11 @@ extension Read on BlocOrdersScreen {
         }
       }
       if(currentOrders.data != null) {
-        for (var element in currentOrders.data!) {
-          if(element.fromCityId!.id.toString() == event.cityId) {
-            overallOrders.add(element);
-          }
+        for(int i = 0; i < currentOrders.data!.length; i++){
+          currentOrders.data![i].isCurrent = true;
+            if(currentOrders.data![i].fromCityId!.id.toString() == event.cityId) {
+              overallOrders.add(currentOrders.data![i]);
+            }
         }
       }
       overallOrders.addAll(ordersResponse.data!.toList());

@@ -192,7 +192,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                         ),
                       ),
                       ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.history.length,
                           itemBuilder: (context, index) {
@@ -236,7 +236,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     color: ColorPalette.white,
                                   ),
                                   child: AppListTile(
-                                    leading: CircleAvatar(
+                                    leading: const CircleAvatar(
                                       backgroundColor: Colors.transparent,
                                       radius: 10,
                                       backgroundImage: AssetImage(
@@ -310,7 +310,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                 ),
               );
             }
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },

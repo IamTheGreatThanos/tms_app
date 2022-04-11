@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/bloc_order_finish.dart';
 import 'package:europharm_flutter/screens/order_finish/ui/order_finish.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -21,6 +22,8 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import 'package:another_xlider/another_xlider.dart';
 import '../../../widgets/main_button/main_button.dart';
 import '../../../widgets/main_text_field/app_text_field.dart';
+import '../../map_screen/data/bloc/map_cubit.dart';
+import '../../map_screen/map.dart';
 import '../bloc/bloc_order_card.dart';
 import 'cause_bottom_sheet.dart';
 
@@ -145,9 +148,9 @@ class _OrderCardState extends State<OrderCard> {
         child: Scaffold(
           backgroundColor: ColorPalette.white,
           appBar: AppBar(
-            title: const Text(
-              "#222222",
-              style: TextStyle(
+            title: Text(
+              "#${widget.order.description!}",
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
@@ -167,65 +170,81 @@ class _OrderCardState extends State<OrderCard> {
               Expanded(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          width: double.infinity,
-                          height: 300,
-                          decoration: BoxDecoration(
-                            color: ColorPalette.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Stack(
-                            children: [
-                              YandexMap(
-                                mapObjects: mapObjectsMain,
-                                fastTapEnabled: true,
-                                mode2DEnabled: true,
-                              ),
-                              Positioned(
-                                right: 5,
-                                top: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: ColorPalette.white,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 4.5,
-                                    horizontal: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 6,
-                                        width: 6,
+                    Visibility(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                width: double.infinity,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  color: ColorPalette.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    BlocProvider(
+                                      create: (_) => MapCubit(
+                                          mapRepository: MapRepository()),
+                                      child: SessionPage(
+                                        orderId: widget.order.id!,
+                                      ),
+                                    ),
+                                    // YandexMap(
+                                    //   mapObjects: mapObjectsMain,
+                                    //   fastTapEnabled: true,
+                                    //   mode2DEnabled: true,
+                                    // ),
+                                    Positioned(
+                                      right: 5,
+                                      top: 5,
+                                      child: Container(
                                         decoration: BoxDecoration(
-                                          color: ColorPalette.red,
+                                          color: ColorPalette.white,
                                           borderRadius:
-                                              BorderRadius.circular(100),
+                                              BorderRadius.circular(40),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 4.5,
+                                          horizontal: 8,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 6,
+                                              width: 6,
+                                              decoration: BoxDecoration(
+                                                color: ColorPalette.red,
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            const Text(
+                                              "LIVE",
+                                              style:
+                                                  ProjectTextStyles.ui_12Medium,
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      const Text(
-                                        "LIVE",
-                                        style: ProjectTextStyles.ui_12Medium,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 15),
+                        ],
                       ),
+                      visible: widget.order.isCurrent,
                     ),
-                    const SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Row(
@@ -385,6 +404,7 @@ class _OrderCardState extends State<OrderCard> {
                                   Navigator.of(context).pop();
                                   setState(() {
                                     widget.order.status = "accepted";
+                                    widget.order.isCurrent = true;
                                   });
                                   // context.read<BlocOrdersScreen>().add(
                                   //     EventInitialOrdersScreen(cityId:))
@@ -768,6 +788,7 @@ class _BuildOrderItem extends StatefulWidget {
 
 class _BuildOrderItemState extends State<_BuildOrderItem> {
   int selected = -1;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -819,8 +840,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              DateFormat("dd MMMM")
-                                  .format(widget.order.startDate ?? DateTime.now()),
+                              DateFormat("dd MMMM").format(
+                                  widget.order.startDate ?? DateTime.now()),
                               style: ProjectTextStyles.ui_12Medium
                                   .copyWith(color: ColorPalette.commonGrey),
                             ),
@@ -843,13 +864,13 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                       child: ExpansionTile(
                         onExpansionChanged: (isOpened) {
                           setState(() {
-                            if(isOpened) {
+                            if (isOpened) {
                               selected = i;
-                            }
-                            else{
+                            } else {
                               selected = -1;
                             }
-                            widget.callback.call(isOpened, widget.order.points![i]);
+                            widget.callback
+                                .call(isOpened, widget.order.points![i]);
                           });
                         },
                         initiallyExpanded: i == selected,

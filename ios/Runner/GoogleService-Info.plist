@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>459027461479-3uhbtk50fn2g6fc2d7vrh7glde8gg0d7.apps.googleusercontent.com</string>
+	<string>481524343359-phvhrnuu8frnbnf0ggd73quvggck79rm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.459027461479-3uhbtk50fn2g6fc2d7vrh7glde8gg0d7</string>
+	<string>com.googleusercontent.apps.481524343359-phvhrnuu8frnbnf0ggd73quvggck79rm</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD-kmEDFjtHn9t1_dONO-ygYRANJDk4dOI</string>
+	<string>AIzaSyBjAknENkTVM641r90wzljObttWR7k-v1M</string>
 	<key>GCM_SENDER_ID</key>
-	<string>459027461479</string>
+	<string>481524343359</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.thousand.europharm.europharm-flutter</string>
+	<string>com.thousand.tmcsatti</string>
 	<key>PROJECT_ID</key>
-	<string>europharm-3e09b</string>
+	<string>tmc-satti</string>
 	<key>STORAGE_BUCKET</key>
-	<string>europharm-3e09b.appspot.com</string>
+	<string>tmc-satti.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:459027461479:ios:c7cc0bbab0ea4cad0c2bc2</string>
+	<string>1:481524343359:ios:f225cb38856e7c03bace8a</string>
 </dict>
 </plist>

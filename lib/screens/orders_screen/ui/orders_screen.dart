@@ -22,6 +22,9 @@ import 'package:provider/src/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../widgets/app_bottom_sheets/app_dialog.dart';
+import '../../map_screen/data/bloc/map_cubit.dart';
+import '../../map_screen/data/repo_map.dart';
+import '../../map_screen/map.dart';
 import '../../map_test/polygon_page.dart';
 import '../../order_card/ui/order_card.dart';
 
@@ -168,12 +171,16 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         GestureDetector(
                           child: const Text("Map test"),
                           onTap: () {
-                            // AppRouter.push(
-                            //     context, PolylinePage(), rootNavigator: true);
-                            AppRouter.push(context, const DrivingPage(),
-                                rootNavigator: true);
-                            // AppRouter.push(context, PlacemarkPage(),
+                            // AppRouter.push(context, const DrivingPage(),
                             //     rootNavigator: true);
+                            AppRouter.push(
+                                context,
+                                BlocProvider(
+                                  create: (_) =>
+                                      MapCubit(mapRepository: MapRepository()),
+                                  child: SessionPage(orderId: 5,),
+                                ),
+                                rootNavigator: true);
                           },
                         ),
                       const SizedBox(
@@ -413,13 +420,20 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                       ),
                       child: Stack(
                         children: [
-                          const YandexMap(
-                            tiltGesturesEnabled: false,
-                            zoomGesturesEnabled: false,
-                            rotateGesturesEnabled: false,
-                            scrollGesturesEnabled: false,
-                            modelsEnabled: false,
+                          BlocProvider(
+                            create: (_) => MapCubit(
+                                mapRepository: MapRepository()),
+                            child: SessionPage(
+                              orderId: widget.order.id!,
+                            ),
                           ),
+                          // const YandexMap(
+                          //   tiltGesturesEnabled: false,
+                          //   zoomGesturesEnabled: false,
+                          //   rotateGesturesEnabled: false,
+                          //   scrollGesturesEnabled: false,
+                          //   modelsEnabled: false,
+                          // ),
                           Positioned(
                             right: 5,
                             top: 5,

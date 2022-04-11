@@ -5,6 +5,8 @@ extension Read on BlocProfileScreen {
       EventProfileInitial event, Emitter<StateBlocProfile> emit) async {
     try {
       final profile = await repository.getProfile();
+      String? deviceToken = await firebaseMessagingRepository.generateNewToken();
+      print(deviceToken);
       emit(StateProfileLoadData(profile: profile));
     } catch (e) {
       emit(

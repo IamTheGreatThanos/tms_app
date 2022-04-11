@@ -50,6 +50,7 @@ class OrderData {
     this.countPoints,
     this.transport,
     this.user,
+    this.isCurrent = false,
   });
 
   final int? id;
@@ -73,6 +74,7 @@ class OrderData {
   final int? countPoints;
   final dynamic transport;
   final User? user;
+  bool isCurrent;
 
   factory OrderData.fromJson(Map<String, dynamic> json) => OrderData(
         id: json["id"],
