@@ -57,10 +57,10 @@ class OrderData {
   final String? description;
   final String? from;
   final String? to;
-  final int? fromLat;
-  final int? fromLong;
-  final int? toLat;
-  final int? toLong;
+  final double? fromLat;
+  final double? fromLong;
+  final double? toLat;
+  final double? toLong;
   String? status;
   final Employee? employee;
   final DateTime? startDate;
