@@ -76,10 +76,10 @@ class GlobalRepository {
   Future<OrderPoint> orderProductFinish(int productId, String code) async =>
       await _networkService.orderProductFinish(productId, code);
 
-  Future<void> stopOrder(int orderId, String cause) async =>
+  Future<OrderData> stopOrder(int orderId, String cause) async =>
       await _networkService.stopOrder(orderId, cause);
 
-  Future<void> resumeOrder(int orderId) async =>
+  Future<OrderData> resumeOrder(int orderId) async =>
       await _networkService.resumeOrder(orderId);
 
   Future<OrderHistoryResponse> orderHistory(

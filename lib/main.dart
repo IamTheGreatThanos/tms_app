@@ -51,7 +51,7 @@ void main() async {
       await context
           .read<TokensRepository>()
           .init(context.read<HiveRepository>());
-      await context.read<FirebaseMessagingRepository>().init();
+      // await context.read<FirebaseMessagingRepository>().init();
       await context.read<DioWrapper>().init(
             baseURL: projectBaseUrl,
             tokensRepository: context.read<TokensRepository>(),

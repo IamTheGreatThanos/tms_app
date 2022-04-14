@@ -148,7 +148,7 @@ class NetworkService {
         }));
   }
 
-  Future<void> stopOrder(int orderId, String cause) async {
+  Future<OrderData> stopOrder(int orderId, String cause) async {
     final response = await _dioWrapper.sendRequest(
         path: "/order/stop",
         method: NetworkMethod.post,
@@ -157,9 +157,10 @@ class NetworkService {
           "stop_reason": cause,
         }));
     print(response);
+    return OrderData.fromJson(response.data["data"]);
   }
 
-  Future<void> resumeOrder(
+  Future<OrderData> resumeOrder(
       int orderId,
       ) async {
     var response = await _dioWrapper.sendRequest(
@@ -169,6 +170,7 @@ class NetworkService {
           "order_id": orderId,
         }));
     print(response);
+    return OrderData.fromJson(response.data["data"]);
   }
 
   Future<OrderPointsResponse> orderPoints(int orderId) async {

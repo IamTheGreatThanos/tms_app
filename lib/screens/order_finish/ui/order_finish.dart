@@ -16,16 +16,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../../network/repository/global_repository.dart';
 import '../../map_screen/data/bloc/map_cubit.dart';
 import '../../map_screen/data/repo_map.dart';
 import '../../map_screen/map.dart';
 
 class OrderFinish extends StatefulWidget {
   final List<MapObject<dynamic>> mapObjects;
+  final OrderData orderData;
 
   const OrderFinish({
     Key? key,
     required this.mapObjects,
+    required this.orderData,
   }) : super(key: key);
 
   @override
@@ -478,9 +481,11 @@ class _OrderFinishState extends State<OrderFinish>
                   children: [
                     BlocProvider(
                       create: (_) => MapCubit(
-                          mapRepository: MapRepository()),
+                          mapRepository: MapRepository(),
+                          repository: context.read<GlobalRepository>()),
                       child: SessionPage(
                         orderId: 5,
+                        orderData: widget.orderData,
                       ),
                     ),
                     // YandexMap(

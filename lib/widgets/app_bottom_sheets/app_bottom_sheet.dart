@@ -12,6 +12,7 @@ Future<T?> showAppBottomSheet<T>(
   bool isDismissible = true,
   bool isScrollControlled = true,
   bool useRootNavigator = false,
+  bool enableDrag = true,
   double initialChildSize = 0.9,
   double minChildSize = 0.25,
   double maxChildSize = 1.0,
@@ -26,6 +27,7 @@ Future<T?> showAppBottomSheet<T>(
     context: context,
     isScrollControlled: isScrollControlled,
     isDismissible: isDismissible,
+    enableDrag: enableDrag,
     backgroundColor: const Color(0xFFFFFFFF),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(

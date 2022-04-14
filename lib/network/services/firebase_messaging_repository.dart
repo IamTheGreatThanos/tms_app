@@ -45,7 +45,6 @@ class FirebaseMessagingRepository {
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {
         _logNotification(message);
-
         onData?.call(message);
       },
       onError: (error) {

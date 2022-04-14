@@ -113,6 +113,21 @@ class _OrderCardState extends State<OrderCard> {
   @override
   void initState() {
     super.initState();
+    int count = 0;
+    try {
+      for (var element in widget.order.points!) {
+        if (element.status == "finished") {
+          count++;
+        }
+      }
+      _lowerValue = count * 100 / widget.order.points!.length;
+    } catch (e) {
+      _lowerValue = 0;
+    }
+    if(_lowerValue is! int){
+      _lowerValue = 0;
+    }
+
     var resultWithSession = YandexDriving.requestRoutes(
         points: [
           RequestPoint(
@@ -185,57 +200,15 @@ class _OrderCardState extends State<OrderCard> {
                                   color: ColorPalette.white,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
-                                child: Stack(
-                                  children: [
-                                    BlocProvider(
-                                      create: (_) => MapCubit(
-                                          mapRepository: MapRepository()),
-                                      child: SessionPage(
-                                        orderId: widget.order.id!,
-                                      ),
-                                    ),
-                                    // YandexMap(
-                                    //   mapObjects: mapObjectsMain,
-                                    //   fastTapEnabled: true,
-                                    //   mode2DEnabled: true,
-                                    // ),
-                                    Positioned(
-                                      right: 5,
-                                      top: 5,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: ColorPalette.white,
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 4.5,
-                                          horizontal: 8,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: 6,
-                                              width: 6,
-                                              decoration: BoxDecoration(
-                                                color: ColorPalette.red,
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            const Text(
-                                              "LIVE",
-                                              style:
-                                                  ProjectTextStyles.ui_12Medium,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                child: BlocProvider(
+                                  create: (_) => MapCubit(
+                                      mapRepository: MapRepository(),
+                                      repository:
+                                          context.read<GlobalRepository>()),
+                                  child: SessionPage(
+                                    orderId: widget.order.id!,
+                                    orderData: widget.order,
+                                  ),
                                 ),
                               ),
                             ),
@@ -256,22 +229,24 @@ class _OrderCardState extends State<OrderCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Text(
-                                "24 ноября, 20:08",
+                                DateFormat("dd MMMM, hh:mm")
+                                    .format(widget.order.startDate!),
                                 style: ProjectTextStyles.ui_12Medium
                                     .copyWith(color: ColorPalette.commonGrey),
                               ),
-                              const Text("Karaganda, KZ")
+                              Text(widget.order.from!),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                "24 ноября, 20:08",
+                                DateFormat("dd MMMM, hh:mm")
+                                    .format(widget.order.endDate!),
                                 style: ProjectTextStyles.ui_12Medium
                                     .copyWith(color: ColorPalette.commonGrey),
                               ),
-                              const Text("Bishkek, KZ")
+                              Text(widget.order.to!),
                             ],
                           )
                         ],
@@ -283,7 +258,9 @@ class _OrderCardState extends State<OrderCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "KRG",
+                            widget.order.from!
+                                .replaceRange(3, widget.order.from!.length, "")
+                                .toUpperCase(),
                             style: ProjectTextStyles.ui_12Medium
                                 .copyWith(color: ColorPalette.main),
                           ),
@@ -300,31 +277,16 @@ class _OrderCardState extends State<OrderCard> {
                                     disabled: true,
                                     selectByTap: true,
                                     // visibleTouchArea: true,
-                                    max: 500,
+                                    max: 100,
                                     min: 0,
                                     values: [_lowerValue],
                                     trackBar: const FlutterSliderTrackBar(
                                         activeDisabledTrackBarColor:
+                                            ColorPalette.main,
+                                        inactiveDisabledTrackBarColor:
                                             ColorPalette.commonBlue,
                                         activeTrackBarHeight: 1,
                                         inactiveTrackBarHeight: 1),
-                                    onDragCompleted:
-                                        (handlerIndex, lowerValue, upperValue) {
-                                      _lowerValue = lowerValue;
-
-                                      setState(() {
-                                        _lowerValue = lowerValue;
-                                      });
-                                    },
-                                    onDragStarted:
-                                        (handlerIndex, lowerValue, upperValue) {
-                                      _lowerValue = lowerValue;
-
-                                      setState(() {
-                                        _lowerValue = lowerValue;
-                                      });
-                                    },
-
                                     handler: FlutterSliderHandler(
                                       // rightHandler: customHandler(Icons.chevron_left),
                                       decoration: const BoxDecoration(
@@ -351,7 +313,10 @@ class _OrderCardState extends State<OrderCard> {
                             ],
                           ),
                           Text(
-                            "FRU",
+                            widget.order.to!
+                                .replaceRange(3, widget.order.to!.length, "")
+                                .toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
                             style: ProjectTextStyles.ui_12Medium
                                 .copyWith(color: ColorPalette.dark),
                           ),
@@ -418,6 +383,65 @@ class _OrderCardState extends State<OrderCard> {
                                   });
                                   // context.read<BlocOrdersScreen>().add(
                                   //     EventInitialOrdersScreen(cityId:))
+                                }
+                                if (state is StateShowTimerInitial) {
+                                  final time =
+                                      state.startTimer.isBefore(DateTime.now())
+                                          ? const Duration()
+                                          : state.startTimer
+                                              .difference(DateTime.now());
+                                  showAppBottomSheet(context,
+                                      useRootNavigator: true,
+                                      isDismissible: false,
+                                      enableDrag: false,
+                                      child: Column(
+                                        children: [
+                                          const Text("Перерыв"),
+                                          SizedBox(
+                                              height: 100,
+                                              child: TimerPage(
+                                                duration: time,
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 18.0, horizontal: 10),
+                                            child: Row(
+                                              children: [
+                                                MainButton(
+                                                    width: 80,
+                                                    icon:
+                                                        "assets/images/svg/arrow_left.svg",
+                                                    iconColor:
+                                                        ColorPalette.white,
+                                                    onTap: () {
+                                                      Navigator.popUntil(
+                                                          context,
+                                                          (route) =>
+                                                              route.isFirst);
+                                                    }),
+                                                SizedBox(
+                                                  width: 8,
+                                                ),
+                                                MainButton(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      90 -
+                                                      20,
+                                                  onTap: () {
+                                                    context
+                                                        .read<BlocOrderCard>()
+                                                        .add(
+                                                            EventResumeOrder());
+                                                    Navigator.pop(context);
+                                                  },
+                                                  title: "Выйти на линию",
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ));
                                 }
                                 if (state is StateStopSuccess) {
                                   showAppDialog(context,
@@ -501,6 +525,7 @@ class _OrderCardState extends State<OrderCard> {
                                         pointId: point!.id!)),
                                     child: OrderFinish(
                                       mapObjects: mapObjectsMain,
+                                      orderData: widget.order,
                                     ),
                                   )).then((value) {
                                 context.read<BlocOrderCard>().add(
@@ -554,41 +579,6 @@ class _OrderCardState extends State<OrderCard> {
                                                     : value == items[1]
                                                         ? "sleep"
                                                         : "relax"));
-                                        showAppBottomSheet(context,
-                                            useRootNavigator: true,
-                                            child: Column(
-                                              children: [
-                                                const Text("Перерыв"),
-                                                SizedBox(
-                                                    height: 100,
-                                                    child: TimerPage(
-                                                      duration: Duration(
-                                                          minutes: value ==
-                                                                  items[0]
-                                                              ? 30
-                                                              : value ==
-                                                                      items[1]
-                                                                  ? 480
-                                                                  : 15),
-                                                    )),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 18.0,
-                                                      horizontal: 10),
-                                                  child: MainButton(
-                                                    onTap: () {
-                                                      context
-                                                          .read<BlocOrderCard>()
-                                                          .add(
-                                                              EventResumeOrder());
-                                                      Navigator.pop(context);
-                                                    },
-                                                    title: "Выйти на линию",
-                                                  ),
-                                                )
-                                              ],
-                                            ));
                                       }
                                       if (value == items[4]) {
                                         context.read<BlocOrderCard>().add(

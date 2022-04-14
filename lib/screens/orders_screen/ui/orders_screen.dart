@@ -167,22 +167,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       const SizedBox(
                         height: 23,
                       ),
-                      if (kDebugMode)
-                        GestureDetector(
-                          child: const Text("Map test"),
-                          onTap: () {
-                            // AppRouter.push(context, const DrivingPage(),
-                            //     rootNavigator: true);
-                            AppRouter.push(
-                                context,
-                                BlocProvider(
-                                  create: (_) =>
-                                      MapCubit(mapRepository: MapRepository()),
-                                  child: SessionPage(orderId: 5,),
-                                ),
-                                rootNavigator: true);
-                          },
-                        ),
+                      // if (kDebugMode)
+                      //   GestureDetector(
+                      //     child: const Text("Map test"),
+                      //     onTap: () {
+                      //       // AppRouter.push(context, const DrivingPage(),
+                      //       //     rootNavigator: true);
+                      //       AppRouter.push(
+                      //           context,
+                      //           BlocProvider(
+                      //             create: (_) => MapCubit(
+                      //                 mapRepository: MapRepository(),
+                      //                 repository:
+                      //                     context.read<GlobalRepository>()),
+                      //             child: SessionPage(
+                      //               orderId: 5,
+                      //             ),
+                      //           ),
+                      //           rootNavigator: true);
+                      //     },
+                      //   ),
                       const SizedBox(
                         height: 23,
                       ),
@@ -390,7 +394,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     style: ProjectTextStyles.ui_20Medium,
                   ),
                   if (widget.order.status?.toLowerCase() == "accepted" ||
-                      widget.order.status?.toLowerCase() == "in_process")
+                      widget.order.status?.toLowerCase() == "in_process" ||
+                      widget.order.status?.toLowerCase() == "stopped")
                     Container(
                       decoration: BoxDecoration(
                         color: ColorPalette.grey400,
@@ -407,7 +412,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                 ],
               ),
               if (widget.order.status?.toLowerCase() == "accepted" ||
-                  widget.order.status?.toLowerCase() == "in_process")
+                  widget.order.status?.toLowerCase() == "in_process" ||
+                  widget.order.status?.toLowerCase() == "stopped")
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: ClipRRect(
@@ -422,9 +428,11 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                         children: [
                           BlocProvider(
                             create: (_) => MapCubit(
-                                mapRepository: MapRepository()),
+                                mapRepository: MapRepository(),
+                                repository: context.read<GlobalRepository>()),
                             child: SessionPage(
                               orderId: widget.order.id!,
+                              orderData: widget.order,
                             ),
                           ),
                           // const YandexMap(
@@ -482,7 +490,9 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: widget.order.status?.toLowerCase() == "accepted" ||
-                              widget.order.status?.toLowerCase() == "in_process"
+                              widget.order.status?.toLowerCase() ==
+                                  "in_process" ||
+                              widget.order.status?.toLowerCase() == "stopped"
                           ? ColorPalette.main
                           : ColorPalette.grey400,
                       borderRadius: BorderRadius.circular(10),

@@ -1,3 +1,5 @@
+import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+
 import '../map_model.dart';
 
 abstract class MapState {}
@@ -9,7 +11,7 @@ class MapLoadingState extends MapState {}
 
 
 class MapLoadedState extends MapState{
-  MapModel loadedMap ;
+  List<OrderPoint> loadedMap;
   MapLoadedState({required this.loadedMap}) : assert(loadedMap != null);
 }
 

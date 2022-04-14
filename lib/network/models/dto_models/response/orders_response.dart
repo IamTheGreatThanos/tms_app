@@ -47,6 +47,7 @@ class OrderData {
     this.createdAt,
     this.images,
     this.points,
+    this.orderStatus,
     this.countPoints,
     this.transport,
     this.user,
@@ -71,6 +72,7 @@ class OrderData {
   final DateTime? createdAt;
   final Images? images;
   final List<OrderPoint>? points;
+  final OrderStatus? orderStatus;
   final int? countPoints;
   final dynamic transport;
   final User? user;
@@ -112,6 +114,9 @@ class OrderData {
         countPoints: json["count_points"],
         transport: json["transport"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
+        orderStatus: json["order_status"] == null
+            ? null
+            : OrderStatus.fromJson(json["order_status"]),
       );
 }
 
@@ -217,7 +222,9 @@ class OrderPoint {
     this.from,
     this.to,
     this.fromLat,
+    this.lat,
     this.fromLong,
+    this.long,
     this.toLat,
     this.toLong,
   });
@@ -236,7 +243,9 @@ class OrderPoint {
   final dynamic fromLat;
   final dynamic fromLong;
   final dynamic toLat;
+  final dynamic lat;
   final dynamic toLong;
+  final dynamic long;
 
   factory OrderPoint.fromJson(Map<String, dynamic> json) => OrderPoint(
         id: json["id"],
@@ -254,12 +263,13 @@ class OrderPoint {
             ? null
             : List<Product>.from(
                 json["products"].map((x) => Product.fromJson(x))),
-        countProducts:
-            json["count_products"],
+        countProducts: json["count_products"],
         from: json["from"],
         to: json["to"],
         fromLat: json["from_lat"],
+        lat: json["lat"],
         fromLong: json["from_long"],
+        long: json["long"],
         toLat: json["to_lat"],
         toLong: json["to_long"],
       );
@@ -292,6 +302,54 @@ class Product {
         status: json["status"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+      );
+}
+
+class OrderStatus {
+  OrderStatus({
+    this.id,
+    this.orderId,
+    this.userId,
+    this.status,
+    this.stopReason,
+    this.countSnack,
+    this.countRelax,
+    this.finishedStatus,
+    this.stopTimer,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final int? id;
+  final int? orderId;
+  final int? userId;
+  final String? status;
+  final String? stopReason;
+  final int? countSnack;
+  final int? countRelax;
+  final dynamic finishedStatus;
+  final DateTime? stopTimer;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
+        id: json["id"],
+        orderId: json["order_id"],
+        userId: json["user_id"],
+        status: json["status"],
+        stopReason: json["stop_reason"],
+        countSnack: json["count_snack"],
+        countRelax: json["count_relax"],
+        finishedStatus: json["finished_status"],
+        stopTimer: json["stop_timer"] == null
+            ? null
+            : DateTime.parse(json["stop_timer"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 }
 

@@ -19,6 +19,14 @@ class StateLoadDataOrderCard extends StateBlocOrderCard {
   });
 }
 
+class StateShowTimerInitial extends StateBlocOrderCard {
+  final DateTime startTimer;
+
+  StateShowTimerInitial({
+    required this.startTimer,
+  });
+}
+
 class StateOrderCardError extends StateBlocOrderCard {
   final AppError error;
 

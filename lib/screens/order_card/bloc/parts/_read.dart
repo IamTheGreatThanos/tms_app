@@ -6,6 +6,9 @@ extension Read on BlocOrderCard {
     try {
       final response = await repository.orderPoints(event.orderId);
       orderId = event.orderId;
+      if(orderDetails.status == "stopped"){
+        emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
+      }
       emit(StateLoadDataOrderCard(orders: response));
     } catch (e) {
       emit(StateOrderCardError(
