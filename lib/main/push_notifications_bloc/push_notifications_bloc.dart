@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +50,9 @@ class PushNotificationsBloc
     tokenRefreshSub = _firebaseMessaging.onTokenRefresh.listen((event) async {
       // await _repository.setFcmToken(event);
     }, onError: (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 

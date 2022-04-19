@@ -7,10 +7,11 @@ extension Resume on BlocOrderCard {
       final result = await repository.resumeOrder(orderId!);
       result.isCurrent = true;
       orderDetails = result;
-      if(orderDetails.status == "stopped"){
-        emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
-      }
+      // if(orderDetails.status == "stopped"){
+      //   emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
+      // }
       emit(StateResumeSuccess());
+      add(EventInitialOrderCard(orderId!));
     } catch (e) {
       emit(StateOrderCardError(
           error: AppError(

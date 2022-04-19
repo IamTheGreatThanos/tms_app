@@ -15,6 +15,16 @@ class StateLoadOrderPoint extends StateBlocOrderFinish {
   });
 }
 
+class StateLoadPointWithoutScan extends StateBlocOrderFinish {
+  final OrderPoint orderPoint;
+  final bool areAllFinished;
+
+  StateLoadPointWithoutScan({
+    required this.orderPoint,
+    this.areAllFinished = false,
+  });
+}
+
 class StateOrderFinishError extends StateBlocOrderFinish {
   final AppError error;
 

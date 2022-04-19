@@ -11,11 +11,21 @@ class StateStartSuccess extends StateBlocOrderCard {}
 
 class StateResumeSuccess extends StateBlocOrderCard {}
 
+class StateLoadOrderDetails extends StateBlocOrderCard {
+  final OrderData order;
+
+  StateLoadOrderDetails({
+    required this.order,
+  });
+}
+
 class StateLoadDataOrderCard extends StateBlocOrderCard {
-  final OrderPointsResponse orders;
+  final OrderPointsResponse orderPoints;
+  final OrderData order;
 
   StateLoadDataOrderCard({
-    required this.orders,
+    required this.orderPoints,
+    required this.order,
   });
 }
 

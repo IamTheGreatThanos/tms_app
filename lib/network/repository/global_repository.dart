@@ -64,7 +64,7 @@ class GlobalRepository {
   Future<void> verify(PersonalInfoVModel vModel) async =>
       await _networkService.verify(vModel);
 
-  Future<void> acceptOrder(int orderId) async =>
+  Future<OrderData> acceptOrder(int orderId) async =>
       await _networkService.acceptOrder(orderId);
 
   Future<OrderPointsResponse> orderPoints(int orderId) async =>
@@ -93,6 +93,9 @@ class GlobalRepository {
     PersonalDataVModel vModel,
   ) async =>
       await _networkService.editProfile(vModel);
+
+  Future<void> sendDeviceToken(String deviceOs, String deviceToken) async =>
+      await _networkService.sendDeviceToken(deviceOs, deviceToken);
 
   Future<void> logout() async => await _networkService.logout();
 }

@@ -1,4 +1,5 @@
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:europharm_flutter/utils/scroll_glow_disable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,11 @@ import 'main/dependency_initializer/dependency_initializer.dart';
 import 'main/dependency_provider/dependency_provider.dart';
 import 'main/login_bloc/login_bloc.dart';
 import 'main/top_level_blocs/top_level_blocs.dart';
-import 'managers/error_handler/error_handler.dart';
 import 'managers/secure_storage_manager/secure_storage_manager.dart';
-import 'managers/url_manager/url_manager.dart';
 import 'managers/user_store.dart';
 import 'network/dio_wrapper/dio_wrapper.dart';
 import 'network/repository/global_repository.dart';
 import 'network/repository/hive_repository.dart';
-import 'network/services/firebase_messaging_repository.dart';
 import 'network/services/network_service.dart';
 import 'network/tokens_repository/tokens_repository.dart';
 import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
@@ -45,7 +43,6 @@ void main() async {
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
       await context.read<SecureStorage>().init();
-      final urlManager = context.read<UrlManager>();
       await context.read<HiveRepository>().init();
       await context.read<UserStore>().init(context.read<HiveRepository>());
       await context
@@ -53,17 +50,19 @@ void main() async {
           .init(context.read<HiveRepository>());
       // await context.read<FirebaseMessagingRepository>().init();
       await context.read<DioWrapper>().init(
-            baseURL: projectBaseUrl,
-            tokensRepository: context.read<TokensRepository>(),
-            globalRepository: context.read<GlobalRepository>(),
-            loginBloc: context.read<LoginBloc>(),
-          );
+          baseURL: projectBaseUrl,
+          tokensRepository: context.read<TokensRepository>(),
+          globalRepository: context.read<GlobalRepository>(),
+          loginBloc: context.read<LoginBloc>());
+
       context.read<NetworkService>().init(context.read<DioWrapper>());
       context
           .read<GlobalRepository>()
           .init(context.read<NetworkService>(), context.read<HiveRepository>());
-    } catch (e, stackTrace) {
-      print(e);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return true;
   }
@@ -73,12 +72,12 @@ void main() async {
       child: DependenciesProvider(
         child: TopLevelBlocs(
           child: MaterialApp(
-            // builder: (context, child) {
-            //   return ScrollConfiguration(
-            //     behavior: DisableGlowScrollBehavior(),
-            //     child: child!,
-            //   );
-            // },
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: DisableGlowScrollBehavior(),
+                child: child!,
+              );
+            },
             title: 'Europharm',
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [

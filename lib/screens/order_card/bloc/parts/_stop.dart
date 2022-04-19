@@ -7,11 +7,11 @@ extension Stop on BlocOrderCard {
       final result = await repository.stopOrder(orderId!, event.cause);
       result.isCurrent = true;
       orderDetails = result;
-      if(orderDetails.status == "stopped"){
-        emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
-      }
+      // if(orderDetails.status == "stopped"){
+      //   emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
+      // }
       emit(StateStopSuccess());
-      // add(EventInitialOrderCard(orderId!));
+      add(EventInitialOrderCard(orderId!));
     } catch (e) {
       emit(StateOrderCardError(
           error: AppError(

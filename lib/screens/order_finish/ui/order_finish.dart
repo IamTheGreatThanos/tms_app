@@ -22,13 +22,13 @@ import '../../map_screen/data/repo_map.dart';
 import '../../map_screen/map.dart';
 
 class OrderFinish extends StatefulWidget {
-  final List<MapObject<dynamic>> mapObjects;
   final OrderData orderData;
+  final bool isScan;
 
   const OrderFinish({
     Key? key,
-    required this.mapObjects,
     required this.orderData,
+    this.isScan = true,
   }) : super(key: key);
 
   @override
@@ -48,11 +48,13 @@ class _OrderFinishState extends State<OrderFinish>
   late PageController _controller;
   String? selectedValue;
   int? productId;
+  late bool isScan;
 
   @override
   void initState() {
     super.initState();
     productId = 0;
+    isScan = widget.isScan;
     _tabController = TabController(length: 3, vsync: this);
     _controller = PageController();
     _tabController.addListener(() {
@@ -130,18 +132,22 @@ class _OrderFinishState extends State<OrderFinish>
                                       padding: const EdgeInsets.only(
                                           bottom: 17, left: 10, right: 10),
                                       child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (productId ==
-                                                state.orderPoint
-                                                    .products?[index].id) {
-                                              productId = 0;
-                                            } else {
-                                              productId = state.orderPoint
-                                                  .products?[index].id!;
-                                            }
-                                          });
-                                        },
+                                        onTap: !isScan
+                                            ? null
+                                            : () {
+                                                setState(() {
+                                                  if (productId ==
+                                                      state
+                                                          .orderPoint
+                                                          .products?[index]
+                                                          .id) {
+                                                    productId = 0;
+                                                  } else {
+                                                    productId = state.orderPoint
+                                                        .products?[index].id!;
+                                                  }
+                                                });
+                                              },
                                         child: Container(
                                           padding: const EdgeInsets.all(7),
                                           decoration: BoxDecoration(
@@ -312,9 +318,24 @@ class _OrderFinishState extends State<OrderFinish>
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 10.0, right: 10, bottom: 24),
-                    child: state.areAllFinished && _current == 0
+                    child: !isScan ||
+                            (state.areAllFinished && _current == 0)
                         ? GestureDetector(
                             onTap: () {
+                              if (!isScan) {
+                                for (var element
+                                    in state.orderPoint.products!) {
+                                  context
+                                      .read<BlocOrderFinish>()
+                                      .add(EventOrderProductFinish(
+                                        productId: element.id!,
+                                        code: element.code!,
+                                      ));
+                                }
+                                setState(() {
+                                  isScan = true;
+                                });
+                              }
                               setState(() {
                                 _current = 1;
                                 _controller.animateToPage(_current,
@@ -484,7 +505,7 @@ class _OrderFinishState extends State<OrderFinish>
                           mapRepository: MapRepository(),
                           repository: context.read<GlobalRepository>()),
                       child: SessionPage(
-                        orderId: 5,
+                        orderId: widget.orderData.id!,
                         orderData: widget.orderData,
                       ),
                     ),

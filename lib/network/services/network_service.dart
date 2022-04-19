@@ -60,8 +60,6 @@ class NetworkService {
     var response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "password": password,
-        "device_os": deviceOs,
-        "device_token": deviceToken,
       }),
       path: "register-confirm",
       method: NetworkMethod.post,
@@ -139,13 +137,26 @@ class NetworkService {
         formData: FormData.fromMap(await vModel.toJson()));
   }
 
-  Future<void> acceptOrder(int orderId) async {
-    await _dioWrapper.sendRequest(
+  Future<OrderData> acceptOrder(int orderId) async {
+    final response = await _dioWrapper.sendRequest(
         path: "/order/accept",
         method: NetworkMethod.post,
         formData: FormData.fromMap({
           "order_id": orderId,
         }));
+    print(response);
+    return OrderData.fromJson(response.data["data"]);
+  }
+
+  Future<void> sendDeviceToken(String deviceOs, String deviceToken) async {
+    final response = await _dioWrapper.sendRequest(
+        path: "/device",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "device_token": deviceToken,
+          "device_os": deviceOs,
+        }));
+    print(response);
   }
 
   Future<OrderData> stopOrder(int orderId, String cause) async {

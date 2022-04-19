@@ -232,7 +232,7 @@ class OrderPoint {
   final int? id;
   final String? name;
   final String? address;
-  final String? status;
+  String? status;
   final DateTime? date;
   final DateTime? createdAt;
   final DateTime? updatedAt;
