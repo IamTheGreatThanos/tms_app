@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,17 +44,26 @@ class _SessionState extends State<SessionPage> {
               return YandexMap(
                 onMapCreated: (YandexMapController yandexMapController) async {
                   controller = yandexMapController;
-                  controller!.moveCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                        target: Point(
-                          longitude: state.loadedMap.first.long!,
-                          latitude: state.loadedMap.first.lat!,
-                          // longitude: widget.orderData.fromLong!,
-                          // latitude: widget.orderData.fromLat!,
+                  final double? lat =
+                      double.tryParse(state.loadedMap.first.lat!);
+                  final double? long =
+                      double.tryParse(state.loadedMap.first.lat!);
+                  if (lat != null && long != null) {
+                    controller!.moveCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: Point(
+                            longitude: lat,
+                            latitude: long,
+                            // longitude: widget.orderData.fromLong!,
+                            // latitude: widget.orderData.fromLat!,
+                          ),
+                          zoom: 5,
                         ),
-                        zoom: 5)),
-                    animation: const MapAnimation(duration: 2.0),
-                  );
+                      ),
+                      animation: const MapAnimation(duration: 2.0),
+                    );
+                  }
                 },
                 mapObjects: mapObjects,
               );
@@ -90,7 +98,7 @@ class _SessionState extends State<SessionPage> {
 
   Future<void> _requestRoutes(List<OrderPoint> data) async {
     for (int i = 0; i < data.length; i++) {
-      placemarks.add(Placemark(
+      placemarks.add(PlacemarkMapObject(
         mapId: MapObjectId('placeMark $i'),
         point: Point(
             latitude: data[i].lat as double, longitude: data[i].long as double),
@@ -118,9 +126,12 @@ class _SessionState extends State<SessionPage> {
       results.add(result);
       for (int i = 0; i < result.routes!.length; i++) {
         mapObjects.add(
-          Polyline(
+          PolylineMapObject(
             mapId: MapObjectId('route_${i}_polyline'),
-            coordinates: result.routes![i].geometry,
+            polyline: Polyline(
+              points: result.routes![i].geometry,
+            ),
+            // coordinates: result.routes![i].geometry,
             strokeColor:
                 Colors.primaries[Random().nextInt(Colors.primaries.length)],
             strokeWidth: 3,

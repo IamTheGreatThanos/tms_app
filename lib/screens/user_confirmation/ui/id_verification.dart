@@ -54,7 +54,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       initCamera();
     });
 
@@ -207,19 +207,17 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
             right: 10,
             child: GestureDetector(
               onTap: () async {
-
                 // onTakePictureButtonPressed();
 
-                 await takePicture().then((XFile? file) {
+                await takePicture().then((XFile? file) {
                   if (mounted) {
                     setState(() {
-                      if(file != null) {
+                      if (file != null) {
                         images.add(file.path);
                       }
-                      if(isBackSide){
+                      if (isBackSide) {
                         Navigator.of(context).pop(images);
-                      }
-                      else{
+                      } else {
                         isBackSide = !isBackSide;
                       }
                     });
@@ -440,6 +438,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
       return null;
     }
   }
+
   void _showCameraException(CameraException e) {
     logError(e.code, e.description);
     showInSnackBar('Error: ${e.code}\n${e.description}');

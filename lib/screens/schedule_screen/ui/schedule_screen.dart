@@ -144,8 +144,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             view: CalendarView.day,
                             onViewChanged:
                                 (ViewChangedDetails viewChangedDetails) {
-                              SchedulerBinding.instance!
-                                  .addPostFrameCallback((duration) {
+                              SchedulerBinding.instance.addPostFrameCallback((duration) {
                                 setState(() {});
                               });
                               if (calendarController.view ==
@@ -196,8 +195,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 size: 5,
                                 color: Colors.green,
                               );
-                              SchedulerBinding.instance!
-                                  .addPostFrameCallback((duration) {
+                              SchedulerBinding.instance.addPostFrameCallback((duration) {
                                 setState(() {});
                               });
                             },
@@ -240,7 +238,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   rootNavigator: true,
                 ).then((value) {
                   if (value is DateTime) {
-                    SchedulerBinding.instance!.addPostFrameCallback((duration) {
+                    SchedulerBinding.instance.addPostFrameCallback((duration) {
                       setState(() {
                         calendarController.displayDate = value;
                         calendarController.selectedDate = value;

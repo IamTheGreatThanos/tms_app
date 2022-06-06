@@ -27,7 +27,7 @@ class _DrivingExampleState extends State<_DrivingExample> {
     stopByPlacemark,
     endPlacemark
   ];
-  final Placemark startPlacemark = Placemark(
+  final PlacemarkMapObject startPlacemark = PlacemarkMapObject(
     mapId: const MapObjectId('start_placemark'),
     point: const Point(latitude: 43.238949, longitude: 76.889709),
     icon: PlacemarkIcon.single(PlacemarkIconStyle(
@@ -35,7 +35,7 @@ class _DrivingExampleState extends State<_DrivingExample> {
             'assets/images/png/route_start.png'),
         scale: 0.3)),
   );
-  final Placemark stopByPlacemark = Placemark(
+  final PlacemarkMapObject stopByPlacemark = PlacemarkMapObject(
     mapId: const MapObjectId('stop_by_placemark'),
     point: const Point(latitude: 43.605108, longitude: 73.763114),
     icon: PlacemarkIcon.single(PlacemarkIconStyle(
@@ -43,7 +43,7 @@ class _DrivingExampleState extends State<_DrivingExample> {
             'assets/images/png/route_stop_by.png'),
         scale: 0.3)),
   );
-  final Placemark endPlacemark = Placemark(
+  final PlacemarkMapObject endPlacemark = PlacemarkMapObject(
       mapId: const MapObjectId('end_placemark'),
       point: const Point(latitude: 49.804684, longitude: 73.109383),
       icon: PlacemarkIcon.single(PlacemarkIconStyle(
@@ -105,8 +105,8 @@ class _DrivingExampleState extends State<_DrivingExample> {
 class _SessionPage extends StatefulWidget {
   final Future<DrivingSessionResult> result;
   final DrivingSession session;
-  final Placemark startPlacemark;
-  final Placemark endPlacemark;
+  final PlacemarkMapObject startPlacemark;
+  final PlacemarkMapObject endPlacemark;
 
   const _SessionPage(
       this.startPlacemark, this.endPlacemark, this.session, this.result);
@@ -247,9 +247,10 @@ class _SessionState extends State<_SessionPage> {
     });
     setState(() {
       result.routes!.asMap().forEach((i, route) {
-        mapObjects.add(Polyline(
+        mapObjects.add(PolylineMapObject(
           mapId: MapObjectId('route_${i}_polyline'),
-          coordinates: route.geometry,
+          polyline: Polyline(points: route.geometry),
+          // coordinates: route.geometry,
           strokeColor:
               Colors.primaries[Random().nextInt(Colors.primaries.length)],
           strokeWidth: 3,

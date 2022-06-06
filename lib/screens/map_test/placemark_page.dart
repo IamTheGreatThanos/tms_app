@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -6,6 +7,8 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import 'control_button.dart';
 import 'map_page.dart';
+
+const _tag = 'placemark_page';
 
 class PlacemarkPage extends MapPage {
   const PlacemarkPage() : super('Placemark example');
@@ -24,16 +27,16 @@ class _PlacemarkExample extends StatefulWidget {
 class _PlacemarkExampleState extends State<_PlacemarkExample> {
   final List<MapObject> mapObjects = [];
 
-  final MapObjectId placemarkId = MapObjectId('normal_icon_placemark');
+  final MapObjectId placemarkId = const MapObjectId('normal_icon_placemark');
   final MapObjectId placemarkWithDynamicIconId =
-      MapObjectId('dynamic_icon_placemark');
+      const MapObjectId('dynamic_icon_placemark');
   final MapObjectId placemarkWithCompositeIconId =
-      MapObjectId('composite_icon_placemark');
+      const MapObjectId('composite_icon_placemark');
 
   Future<Uint8List> _rawPlacemarkImage() async {
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
-    final size = Size(50, 50);
+    const size = Size(50, 50);
     final fillPaint = Paint()
       ..color = Colors.blue[100]!
       ..style = PaintingStyle.fill;
@@ -41,7 +44,7 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
       ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-    final radius = 20.0;
+    const radius = 20.0;
 
     final circleOffset = Offset(size.height / 2, size.width / 2);
 
@@ -63,11 +66,11 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(child: YandexMap(mapObjects: mapObjects)),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
               child: SingleChildScrollView(
                   child: Column(children: <Widget>[
-            Text('Placemark with Assets Icon:'),
+            const Text('Placemark with Assets Icon:'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -77,19 +80,19 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
                         return;
                       }
 
-                      final placemark = Placemark(
+                      final placemark = PlacemarkMapObject(
                           mapId: placemarkId,
-                          point:
-                              Point(latitude: 59.945933, longitude: 30.320045),
-                          onTap: (Placemark self, Point point) =>
-                              print('Tapped me at $point'),
+                          point: const Point(
+                              latitude: 59.945933, longitude: 30.320045),
+                          onTap: (PlacemarkMapObject self, Point point) =>
+                              log('Tapped me at $point', name: _tag),
                           opacity: 0.7,
                           direction: 90,
                           isDraggable: true,
-                          onDragStart: (_) => print('Drag start'),
+                          onDragStart: (_) => log('Drag start', name: _tag),
                           onDrag: (_, Point point) =>
-                              print('Drag at point $point'),
-                          onDragEnd: (_) => print('Drag end'),
+                              log('Drag at point $point', name: _tag),
+                          onDragEnd: (_) => log('Drag end', name: _tag),
                           icon: PlacemarkIcon.single(PlacemarkIconStyle(
                               image: BitmapDescriptor.fromAssetImage(
                                   'lib/assets/place.png'),
@@ -108,7 +111,7 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
 
                       final placemark =
                           mapObjects.firstWhere((el) => el.mapId == placemarkId)
-                              as Placemark;
+                              as PlacemarkMapObject;
 
                       setState(() {
                         mapObjects[mapObjects.indexOf(placemark)] =
@@ -128,7 +131,7 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
                     title: 'Remove'),
               ],
             ),
-            Text('Placemark with Binary Icon:'),
+            const Text('Placemark with Binary Icon:'),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -139,17 +142,17 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
                         return;
                       }
 
-                      final placemarkWithDynamicIcon = Placemark(
+                      final placemarkWithDynamicIcon = PlacemarkMapObject(
                           mapId: placemarkWithDynamicIconId,
-                          point:
-                              Point(latitude: 30.320045, longitude: 59.945933),
-                          onTap: (Placemark self, Point point) =>
-                              print('Tapped me at $point'),
+                          point: const Point(
+                              latitude: 30.320045, longitude: 59.945933),
+                          onTap: (PlacemarkMapObject self, Point point) =>
+                              log('Tapped me at $point', name: _tag),
                           isDraggable: true,
-                          onDragStart: (_) => print('Drag start'),
+                          onDragStart: (_) => log('Drag start', name: _tag),
                           onDrag: (_, Point point) =>
-                              print('Drag at point $point'),
-                          onDragEnd: (_) => print('Drag end'),
+                              log('Drag at point $point', name: _tag),
+                          onDragEnd: (_) => log('Drag end', name: _tag),
                           opacity: 0.95,
                           icon: PlacemarkIcon.single(PlacemarkIconStyle(
                               image: BitmapDescriptor.fromBytes(
@@ -169,7 +172,7 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
 
                       final placemarkWithDynamicIcon = mapObjects.firstWhere(
                               (el) => el.mapId == placemarkWithDynamicIconId)
-                          as Placemark;
+                          as PlacemarkMapObject;
 
                       setState(() {
                         mapObjects[
@@ -206,30 +209,32 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
                         return;
                       }
 
-                      final placemarkWithCompositeIcon = Placemark(
+                      final placemarkWithCompositeIcon = PlacemarkMapObject(
                         mapId: placemarkWithCompositeIconId,
-                        point: Point(latitude: 34.820045, longitude: 45.945933),
-                        onTap: (Placemark self, Point point) =>
-                            print('Tapped me at $point'),
+                        point: const Point(
+                            latitude: 34.820045, longitude: 45.945933),
+                        onTap: (PlacemarkMapObject self, Point point) => log(
+                          'Tapped me at $point',
+                        ),
                         isDraggable: true,
-                        onDragStart: (_) => print('Drag start'),
+                        onDragStart: (_) => log('Drag start', name: _tag),
                         onDrag: (_, Point point) =>
-                            print('Drag at point $point'),
-                        onDragEnd: (_) => print('Drag end'),
+                            log('Drag at point $point', name: _tag),
+                        onDragEnd: (_) => log('Drag end', name: _tag),
                         icon: PlacemarkIcon.composite([
                           PlacemarkCompositeIconItem(
                               name: 'user',
                               style: PlacemarkIconStyle(
                                 image: BitmapDescriptor.fromAssetImage(
                                     'lib/assets/user.png'),
-                                anchor: Offset(0.5, 0.5),
+                                anchor: const Offset(0.5, 0.5),
                               )),
                           PlacemarkCompositeIconItem(
                               name: 'arrow',
                               style: PlacemarkIconStyle(
                                 image: BitmapDescriptor.fromAssetImage(
                                     'lib/assets/arrow.png'),
-                                anchor: Offset(0.5, 1.5),
+                                anchor: const Offset(0.5, 1.5),
                               ))
                         ]),
                         opacity: 0.7,
@@ -249,7 +254,7 @@ class _PlacemarkExampleState extends State<_PlacemarkExample> {
 
                       final placemarkWithCompositeIcon = mapObjects.firstWhere(
                               (el) => el.mapId == placemarkWithCompositeIconId)
-                          as Placemark;
+                          as PlacemarkMapObject;
 
                       setState(() {
                         mapObjects[mapObjects

@@ -7,11 +7,14 @@ extension Read on BlocPersonalData {
       final cities = await repository.getCities();
       emit(StateReadDataPersonalInfo(cities: cities));
     } catch (e) {
-      emit(StatePersonalDataError(
+      emit(
+        StatePersonalDataError(
           error: AppError(
-        message: e.dioErrorMessage,
-        code: e.dioErrorStatusCode,
-      )));
+            message: e.dioErrorMessage,
+            code: e.dioErrorStatusCode,
+          ),
+        ),
+      );
     }
   }
 }

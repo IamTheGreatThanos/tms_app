@@ -11,7 +11,6 @@ import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -966,7 +965,10 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                             }
                             // if (widget.order.points![i].status == "finished") {
                             widget.callback.call(
-                                widget.order.points![i].status == "finished" || (i != 0 && widget.order.points![0].status != "finished")
+                                widget.order.points![i].status == "finished" ||
+                                        (i != 0 &&
+                                            widget.order.points![0].status !=
+                                                "finished")
                                     ? false
                                     : isOpened,
                                 widget.order.points![i]);
@@ -1118,7 +1120,7 @@ class _BuildExpandablePointItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     height: 2,
                     color: ColorPalette.lightGrey,
@@ -1149,14 +1151,18 @@ class _BuildExpandablePointItem extends StatelessWidget {
                         width: 4,
                       ),
                       Text(
-                        point.address ?? S.of(context).no_data,
+                        point.address == null
+                            ? S.of(context).no_data
+                            : point.address!.length > 30
+                                ? point.address!.substring(0, 27) + '...'
+                                : point.address!,
                         style: ProjectTextStyles.ui_12Medium.copyWith(
                           color: ColorPalette.commonGrey,
                         ),
                       ),
                     ],
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     height: 2,
                     color: ColorPalette.lightGrey,
@@ -1176,12 +1182,13 @@ class _BuildExpandablePointItem extends StatelessWidget {
                 style: ProjectTextStyles.ui_12Medium
                     .copyWith(color: ColorPalette.black),
               ),
-              for (int k = 0; k < point.products!.length; k++)
-                Text(
-                  point.products?[k].name ?? S.of(context).no_data,
-                  style: ProjectTextStyles.ui_12Medium
-                      .copyWith(color: ColorPalette.commonGrey),
-                ),
+              if (point.products != null)
+                for (int k = 0; k < point.products!.length; k++)
+                  Text(
+                    point.products?[k].name ?? S.of(context).no_data,
+                    style: ProjectTextStyles.ui_12Medium
+                        .copyWith(color: ColorPalette.commonGrey),
+                  ),
             ],
           ),
         ],

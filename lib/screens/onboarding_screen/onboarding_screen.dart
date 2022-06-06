@@ -1,19 +1,12 @@
-import 'dart:async';
-
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/auth/ui/widgets/sign_in/sign_in_bottom_dialog.dart';
 import 'package:europharm_flutter/screens/auth/ui/widgets/signup/phone_bottom_dialog.dart';
-import 'package:europharm_flutter/screens/bottom_navigation_bar/bottom_navigation_bar.dart';
-import 'package:europharm_flutter/screens/user_confirmation/ui/id_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
-import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 ///OnBoardingScreen with promotion texts
 class OnBoardingScreen extends StatefulWidget {
@@ -43,8 +36,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             left: 10,
             bottom: 22,
           ),
-          child: MediaQuery.of(context).size.height < 750 ? SingleChildScrollView(child: _buildColumn(context)) : _buildColumn(
-              context),
+          child: MediaQuery.of(context).size.height < 750
+              ? SingleChildScrollView(child: _buildColumn(context))
+              : _buildColumn(context),
         ),
       ),
     );
@@ -55,7 +49,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     super.dispose();
   }
 
-  Widget _buildColumn(context){
+  Widget _buildColumn(context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

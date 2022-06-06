@@ -38,6 +38,7 @@ void main() async {
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ]);
+      WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp();
       // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
@@ -56,9 +57,10 @@ void main() async {
           loginBloc: context.read<LoginBloc>());
 
       context.read<NetworkService>().init(context.read<DioWrapper>());
-      context
-          .read<GlobalRepository>()
-          .init(context.read<NetworkService>(), context.read<HiveRepository>());
+      context.read<GlobalRepository>().init(
+            context.read<NetworkService>(),
+            context.read<HiveRepository>(),
+          );
     } catch (e) {
       if (kDebugMode) {
         print(e);

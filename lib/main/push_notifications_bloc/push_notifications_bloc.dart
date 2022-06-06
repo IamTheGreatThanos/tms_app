@@ -5,10 +5,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network/repository/global_repository.dart';
@@ -31,8 +29,10 @@ class PushNotificationsBloc
   StreamSubscription<RemoteMessage>? messageOpenedAppSub;
   StreamSubscription<String>? tokenRefreshSub;
 
-  PushNotificationsBloc(this._repository, this._hiveRepository,)
-      : super(PushNotificationsInitial()) {
+  PushNotificationsBloc(
+    this._repository,
+    this._hiveRepository,
+  ) : super(PushNotificationsInitial()) {
     on<NavigateToScreenPushNotifyEvent>(_onNavigateToScreenPushNotifyEvent);
     on<InitialPushNotifyEvent>(_onInitialPushNotifyEvent);
   }
@@ -98,7 +98,7 @@ class PushNotificationsBloc
       // await _repository.setFcmToken(_firebaseMessagingToken);
       log('fcmToken: $_firebaseMessagingToken', name: _TAG);
     } catch (e) {
-      print(e);
+      log('$e', name: _TAG);
     }
 
     final message = await FirebaseMessaging.instance.getInitialMessage();

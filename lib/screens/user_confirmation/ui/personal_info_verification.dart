@@ -91,10 +91,9 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
                             return const SizedBox.shrink();
                           },
                           listener: (context, state) {
-                            if(state is StateVerificationLoading){
+                            if (state is StateVerificationLoading) {
                               context.loaderOverlay.show();
-                            }
-                            else{
+                            } else {
                               context.loaderOverlay.hide();
                             }
                             if (state is StateVerificationError) {
@@ -104,10 +103,12 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
                               );
                             }
                             if (state is StateSuccessfulVerification) {
-                              AppRouter.push(context, SuccessfulScreen());
+                              AppRouter.push(context, const SuccessfulScreen());
                             }
                           },
-                          buildWhen: (p, c) => c is! StateVerificationError || c is! StateVerificationLoading,
+                          buildWhen: (p, c) =>
+                              c is! StateVerificationError ||
+                              c is! StateVerificationLoading,
                         ),
                       ],
                     ),
@@ -117,14 +118,15 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
                     bottom: 0,
                     right: 0,
                     left: 0,
-                    child: BlocConsumer<BlocVerification, StateBlocVerification>(
-                        builder: (context, state) {
-                          return _BuildFooter(
-                            state: state,
-                            vmodel: _vmodel!,
-                          );
-                        },
-                        listener: (context, state) {}))
+                    child:
+                        BlocConsumer<BlocVerification, StateBlocVerification>(
+                            builder: (context, state) {
+                              return _BuildFooter(
+                                state: state,
+                                vmodel: _vmodel!,
+                              );
+                            },
+                            listener: (context, state) {}))
               ],
             ),
           ),
@@ -320,7 +322,7 @@ class _BuildSecondStep extends StatelessWidget {
                 onTap: () {
                   AppRouter.push(
                     context,
-                    IdVerificationScreen(),
+                    const IdVerificationScreen(),
                     rootNavigator: true,
                   ).then((value) {
                     if (value is List<String>) {
@@ -405,8 +407,8 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
               ),
               GestureDetector(
                 onTap: () async {
-                  var file =
-                      await ImagePicker().pickImage(source: ImageSource.gallery);
+                  var file = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
                   if (file != null) {
                     setState(() {
                       widget.vmodel.rightsPicture = file.path;
@@ -447,6 +449,7 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
     );
   }
 }
+
 //123
 class _BuildFourthStep extends StatefulWidget {
   final PersonalInfoVModel vmodel;
@@ -501,7 +504,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
             hintStyle: ProjectTextStyles.ui_16Medium,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),
@@ -509,7 +512,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),
@@ -517,14 +520,14 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.transparent,
                 width: 1.0,
               ),
               gapPadding: 0.0,
             ),
             filled: true,
-            contentPadding: EdgeInsets.all(16),
+            contentPadding: const EdgeInsets.all(16),
             fillColor: ColorPalette.lightGrey,
           ),
           items: widget.marks.map((Marks mark) {

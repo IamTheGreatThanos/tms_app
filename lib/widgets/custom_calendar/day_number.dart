@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
