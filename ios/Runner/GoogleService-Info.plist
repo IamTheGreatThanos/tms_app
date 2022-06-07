@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>481524343359-phvhrnuu8frnbnf0ggd73quvggck79rm.apps.googleusercontent.com</string>
+	<string>1026634301421-vlt4fnhkikjtm141lt8cg089u6em050v.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.481524343359-phvhrnuu8frnbnf0ggd73quvggck79rm</string>
+	<string>com.googleusercontent.apps.1026634301421-vlt4fnhkikjtm141lt8cg089u6em050v</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBjAknENkTVM641r90wzljObttWR7k-v1M</string>
+	<string>AIzaSyCUFI3TndlsgW1fnSukbSbS1RVROsPeo30</string>
 	<key>GCM_SENDER_ID</key>
-	<string>481524343359</string>
+	<string>1026634301421</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.thousand.tmcsatti</string>
 	<key>PROJECT_ID</key>
-	<string>tmc-satti</string>
+	<string>tms-satti</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tmc-satti.appspot.com</string>
+	<string>tms-satti.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:481524343359:ios:f225cb38856e7c03bace8a</string>
+	<string>1:1026634301421:ios:3187efb06b6dbbe32db1e4</string>
 </dict>
 </plist>

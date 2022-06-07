@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/ui/profile_screen.dart';
 import 'package:europharm_flutter/screens/schedule_screen/ui/schedule_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../main/push_notifications_bloc/push_notifications_bloc.dart';
 import '../../network/repository/global_repository.dart';
@@ -28,6 +32,14 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
+
+ 
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {

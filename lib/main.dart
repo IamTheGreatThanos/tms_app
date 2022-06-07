@@ -1,3 +1,4 @@
+import 'package:europharm_flutter/firebase_options.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/utils/scroll_glow_disable.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +40,9 @@ void main() async {
         DeviceOrientation.portraitDown,
       ]);
       WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
@@ -102,6 +105,7 @@ void main() async {
             ),
             home: DependenciesInitializer(
               loadingIndicatorScreen: const Scaffold(
+                backgroundColor: Colors.orange,
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),

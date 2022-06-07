@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
@@ -37,90 +38,108 @@ class _SessionState extends State<SessionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<MapCubit, MapState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            if (state is MapLoadedState) {
-              _requestRoutes(state.loadedMap);
-              return YandexMap(
-                onMapCreated: (YandexMapController yandexMapController) async {
-                  controller = yandexMapController;
-                  final double? lat =
-                      double.tryParse(state.loadedMap.first.lat!);
-                  final double? long =
-                      double.tryParse(state.loadedMap.first.lat!);
-                  if (lat != null && long != null) {
-                    controller!.moveCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: Point(
-                            longitude: lat,
-                            latitude: long,
-                            // longitude: widget.orderData.fromLong!,
-                            // latitude: widget.orderData.fromLat!,
-                          ),
-                          zoom: 5,
+        listener: (context, state) {
+          if (state is MapLoadedState) {
+            _requestRoutes(state.loadedMap);
+          }
+        },
+        builder: (context, state) {
+          if (state is MapLoadedState) {
+            // _requestRoutes(state.loadedMap);
+            return YandexMap(
+              onMapCreated: (YandexMapController yandexMapController) async {
+                controller = yandexMapController;
+                final double? lat = double.tryParse(state.loadedMap.first.lat!);
+                final double? long =
+                    double.tryParse(state.loadedMap.first.long!);
+                if (lat != null && long != null) {
+                  controller!.moveCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: Point(
+                          longitude: long,
+                          latitude: lat,
+                          // longitude: widget.orderData.fromLong!,
+                          // latitude: widget.orderData.fromLat!,
                         ),
+                        zoom: 5,
                       ),
-                      animation: const MapAnimation(duration: 2.0),
-                    );
-                  }
-                },
-                mapObjects: mapObjects,
-              );
-            }
+                    ),
+                    animation: const MapAnimation(duration: 2.0),
+                  );
+                }
+              },
+              mapObjects: mapObjects,
+            );
+          }
 
-            if (state is MapInitState) {
-              if (kDebugMode) {
-                print('init');
-              }
-              return YandexMap(
-                mapObjects: mapObjects,
-              );
+          if (state is MapInitState) {
+            if (kDebugMode) {
+              print('init');
             }
+            return YandexMap(
+              mapObjects: mapObjects,
+            );
+          }
 
-            if (state is MapErrorState) {
-              return Center(
-                child: Text(
-                  state.messsage,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.indigoAccent,
-                ),
-              );
-            }
-          }),
+          if (state is MapErrorState) {
+            return Center(
+              child: Text(
+                state.messsage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.indigoAccent,
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 
   Future<void> _requestRoutes(List<OrderPoint> data) async {
     for (int i = 0; i < data.length; i++) {
-      placemarks.add(PlacemarkMapObject(
-        mapId: MapObjectId('placeMark $i'),
-        point: Point(
-            latitude: data[i].lat as double, longitude: data[i].long as double),
-        icon: PlacemarkIcon.single(PlacemarkIconStyle(
-            image: BitmapDescriptor.fromAssetImage(
-                'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png'),
-            scale: 1)),
-      ));
+      final double? lat = double.tryParse(data[i].lat!);
+      final double? long = double.tryParse(data[i].long!);
+      if (lat != null && long != null) {
+        placemarks.add(
+          PlacemarkMapObject(
+            mapId: MapObjectId('placeMark $i'),
+            point: Point(
+              latitude: lat, // data[i].lat as double,
+              longitude: long, // data[i].long as double,
+            ),
+            icon: PlacemarkIcon.single(PlacemarkIconStyle(
+                image: BitmapDescriptor.fromAssetImage(
+                    'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png'),
+                scale: 1)),
+          ),
+        );
+      }
     }
 
     for (int i = 0; i < placemarks.length; i++) {
       mapObjects.add(placemarks[i]);
-      points.add(RequestPoint(
+      points.add(
+        RequestPoint(
           point: placemarks[i].point,
-          requestPointType: RequestPointType.wayPoint));
+          requestPointType: RequestPointType.wayPoint,
+        ),
+      );
     }
 
     final DrivingSessionResult result = await YandexDriving.requestRoutes(
-            points: points,
-            drivingOptions: const DrivingOptions(
-                initialAzimuth: 0, routesCount: 1, avoidTolls: false))
-        .result;
+      points: points,
+      drivingOptions: const DrivingOptions(
+        initialAzimuth: 0,
+        routesCount: 1,
+        avoidTolls: false,
+      ),
+    ).result;
 
     if (result.routes != null) {
       results.add(result);

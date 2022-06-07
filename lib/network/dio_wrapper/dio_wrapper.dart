@@ -25,13 +25,13 @@ class DioWrapper {
     _dio.options.baseUrl = baseURL;
 
     ///TODO must be removed
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-    };
+    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (HttpClient client) {
+    //   client.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    // };
 
-    _dio.interceptors.requestLock.lock();
+    // _dio.interceptors.requestLock.lock();
     _dio.interceptors.clear();
     _dio.options.connectTimeout = 40000;
     _dio.options.receiveTimeout = 40000;
@@ -45,15 +45,16 @@ class DioWrapper {
         loginBloc: loginBloc,
       ),
       LogInterceptor(
-          request: true,
-          requestBody: true,
-          requestHeader: true,
-          responseBody: true,
-          responseHeader: true,
-          error: true),
+        request: true,
+        requestBody: true,
+        requestHeader: true,
+        responseBody: false,
+        responseHeader: false,
+        error: true,
+      ),
     ]);
 
-    _dio.interceptors.requestLock.unlock();
+    // _dio.interceptors.requestLock.unlock();
   }
 
   void changeBaseURL({required String url}) {
@@ -147,7 +148,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.put(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -161,7 +162,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.delete(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -176,7 +177,7 @@ class DioWrapper {
     Options? options,
   }) async {
     var response = _dio.post(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
       options: options,
@@ -191,7 +192,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.patch(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -204,7 +205,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.post(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -237,7 +238,7 @@ class DioWrapper {
   }
 }
 
-class AuthInterceptor extends InterceptorsWrapper {
+class AuthInterceptor extends QueuedInterceptorsWrapper {
   final TokensRepository tokensRepository;
   final Dio baseDio;
   final Dio dioRefresher;
@@ -270,7 +271,7 @@ class AuthInterceptor extends InterceptorsWrapper {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
-    if(err.response?.statusCode == 302){
+    if (err.response?.statusCode == 302) {
       loginBloc.add(LogOutEvent());
     }
     if (err.response?.statusCode == 401) {
@@ -278,7 +279,7 @@ class AuthInterceptor extends InterceptorsWrapper {
         handler.next(err);
         return;
       }
-      baseDio.interceptors.requestLock.lock();
+      // baseDio.interceptors.requestLock.lock();
       final tokens = await refreshTokens(tokensRepository.refreshToken);
       if (tokens != null) {
         tokensRepository.save(tokens.accessToken);
@@ -286,7 +287,7 @@ class AuthInterceptor extends InterceptorsWrapper {
             'Bearer ${tokens.accessToken}';
         final lastResponse = await dioRefresher.fetch(err.requestOptions);
         handler.resolve(lastResponse);
-        baseDio.interceptors.requestLock.unlock();
+        // baseDio.interceptors.requestLock.unlock();
         return;
       }
     }
@@ -299,9 +300,9 @@ class AuthInterceptor extends InterceptorsWrapper {
           .get('auth/refresh', queryParameters: {"token": refreshToken});
       return DTOTokensResponse.fromJson(response.data);
     } catch (e) {
-      if (e is DioError &&
-          e.response?.statusCode == 404) {
+      if (e is DioError && e.response?.statusCode == 404) {
         loginBloc.add(LogOutEvent());
+        return null;
       }
     }
   }

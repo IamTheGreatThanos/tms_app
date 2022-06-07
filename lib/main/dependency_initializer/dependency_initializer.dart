@@ -42,7 +42,7 @@ class _DependenciesInitializerState<T extends Object>
             return widget.loadingIndicatorScreen;
           }
         } else {
-          return const SizedBox.shrink();
+          return widget.loadingIndicatorScreen; //const SizedBox.shrink();
         }
       },
     );

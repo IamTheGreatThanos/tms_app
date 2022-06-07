@@ -1,4 +1,4 @@
-package com.thousand.europharm.europharm_flutter
+package com.thousand.tmcsatti
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;

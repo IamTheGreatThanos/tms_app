@@ -28,11 +28,13 @@ class PushNotificationsBloc
   StreamSubscription<RemoteMessage>? messageSub;
   StreamSubscription<RemoteMessage>? messageOpenedAppSub;
   StreamSubscription<String>? tokenRefreshSub;
+  late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   PushNotificationsBloc(
     this._repository,
     this._hiveRepository,
   ) : super(PushNotificationsInitial()) {
+    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     on<NavigateToScreenPushNotifyEvent>(_onNavigateToScreenPushNotifyEvent);
     on<InitialPushNotifyEvent>(_onInitialPushNotifyEvent);
   }
@@ -80,8 +82,55 @@ class PushNotificationsBloc
       await _firebaseMessaging.requestPermission(
           sound: true, alert: true, badge: true);
     }
-    messageSub = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      log('Push Notification received', name: _TAG);
+    // messageSub = FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
+
+    const androiInit =
+        AndroidInitializationSettings('@mipmap/ic_launcher'); //for logo
+    final iosInit = IOSInitializationSettings(
+      onDidReceiveLocalNotification: (id, title, body, payload) {},
+    );
+    final initSetting =
+        InitializationSettings(android: androiInit, iOS: iosInit);
+    // final fltNotification = FlutterLocalNotificationsPlugin();
+    await _flutterLocalNotificationsPlugin.initialize(
+      initSetting,
+      onSelectNotification: (payload) async {
+        log('onSelectNotification payload ::: $payload');
+      },
+    );
+    messageSub = FirebaseMessaging.onMessage.listen((message) {
+      log('Push Notification received, ${message.notification.toString()}',
+          name: _TAG);
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      _flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+
+      if (notification != null && android != null) {
+        _flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          const NotificationDetails(
+            android: AndroidNotificationDetails(
+              '1',
+              'channelName',
+              channelDescription: 'channelDescription',
+            ),
+            iOS: IOSNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+            ),
+          ),
+        );
+      }
     });
 
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
