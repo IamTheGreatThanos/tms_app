@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -11,6 +12,8 @@ import 'package:meta/meta.dart';
 part 'events.dart';
 
 part 'states.dart';
+
+const _tag = 'bloc_order_card.dart';
 
 class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   BlocOrderCard({
@@ -39,10 +42,24 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
       bool isFinished = true;
       final response = await repository.orderPoints(event.orderId);
       orderId = event.orderId;
+
       if (orderDetails.status == "stopped") {
-        emit(StateShowTimerInitial(
-            startTimer: orderDetails.orderStatus!.stopTimer!));
+        if (orderDetails.orderStatus == null ||
+            orderDetails.orderStatus!.stopTimer == null) {
+          emit(
+            StateOrderCardError(
+              error: AppError(
+                message:
+                    "orderDetails.orderStatus - ${orderDetails.orderStatus}",
+              ),
+            ),
+          );
+        } else {
+          emit(StateShowTimerInitial(
+              startTimer: orderDetails.orderStatus!.stopTimer!));
+        }
       }
+
       for (int i = 0; i < orderDetails.points!.length; i++) {
         isFinished = true;
         for (var product in orderDetails.points![i].products!) {
@@ -56,6 +73,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
       }
       emit(StateLoadDataOrderCard(orderPoints: response, order: orderDetails));
     } catch (e) {
+      log('$e', name: _tag);
       emit(
         StateOrderCardError(
           error: const AppError(message: "Что то пошло не так 1"),

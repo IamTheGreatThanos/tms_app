@@ -105,7 +105,7 @@ void main() async {
             ),
             home: DependenciesInitializer(
               loadingIndicatorScreen: const Scaffold(
-                backgroundColor: Colors.orange,
+                backgroundColor: Colors.white, // Colors.orange, /// FIXME
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),

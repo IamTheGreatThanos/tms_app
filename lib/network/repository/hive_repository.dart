@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:europharm_flutter/network/models/dto_models/response/dto_tokens_reaponse.dart';
 import 'package:hive/hive.dart';
 

@@ -1,8 +1,10 @@
-part of '../bloc_orders_screen.dart';
+part of '../orders_bloc.dart';
 
-extension Read on BlocOrdersScreen {
-  Future<void> _read(EventInitialOrdersScreen event,
-      Emitter<StateBlocOrdersScreen> emit) async {
+extension Read on OrdersBloc {
+  Future<void> _read(
+    EventInitialOrdersScreen event,
+    Emitter<StateBlocOrdersScreen> emit,
+  ) async {
     CitiesResponse citiesResponse = CitiesResponse();
     OrdersResponse ordersResponse = OrdersResponse();
     OrdersResponse currentOrders = OrdersResponse();
@@ -11,7 +13,8 @@ extension Read on BlocOrdersScreen {
       emit(StateLoadingOrdersScreen());
       citiesResponse = await repository.getCities();
       try {
-        ordersResponse = await repository.getOrdersByCities(event.cityId);
+        ordersResponse =
+            await repository.getOrdersByCities(cityId: event.cityId);
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -24,28 +27,31 @@ extension Read on BlocOrdersScreen {
           print(e);
         }
       }
-      if(currentOrders.data != null) {
-        for(int i = 0; i < currentOrders.data!.length; i++){
+      if (currentOrders.data != null) {
+        for (int i = 0; i < currentOrders.data!.length; i++) {
           currentOrders.data![i].isCurrent = true;
-            if(currentOrders.data![i].fromCityId!.id.toString() == event.cityId) {
-              overallOrders.add(currentOrders.data![i]);
-            }
+          if (currentOrders.data![i].fromCityId!.id.toString() ==
+              event.cityId) {
+            overallOrders.add(currentOrders.data![i]);
+          }
         }
       }
       overallOrders.addAll(ordersResponse.data!.toList());
-      emit(StateLoadDataOrdersScreen(
-          orders: overallOrders, cities: citiesResponse.data ?? []));
+      emit(
+        StateLoadDataOrdersScreen(
+          orders: overallOrders,
+          cities: citiesResponse.data ?? [],
+        ),
+      );
     } catch (e) {
-      emit(StateOrdersScreenError(
+      emit(
+        StateOrdersScreenError(
           error: AppError(
-        message: e.dioErrorMessage,
-        code: e.dioErrorStatusCode,
-      )));
-      // if (e.dioErrorStatusCode == 400) {
-      //   emit(StateLoadDataOrdersScreen(
-      //       orders: ordersResponse.data ?? [],
-      //       cities: citiesResponse.data ?? []));
-      // }
+            message: e.dioErrorMessage,
+            code: e.dioErrorStatusCode,
+          ),
+        ),
+      );
     }
   }
 }

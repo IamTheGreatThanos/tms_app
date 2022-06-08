@@ -1,4 +1,4 @@
-part of 'bloc_orders_screen.dart';
+part of 'orders_bloc.dart';
 
 @immutable
 abstract class StateBlocOrdersScreen {}

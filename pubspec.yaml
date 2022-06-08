@@ -18,7 +18,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.17.0"
+  flutter: ">=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,12 +31,12 @@ dependencies:
   another_flushbar: ^1.10.24
   another_xlider: ^1.1.0
   cached_network_image: ^3.1.0
-  camera: ^0.9.4+16
+  camera: ^0.9.7+1
   change_app_package_name: ^1.1.0
   code_field: ^1.22.0
   # convex_bottom_bar: ^3.0.0
   country_code_picker: ^2.0.2
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.5
   device_info: ^2.0.3
   device_info_plus: ^3.2.2
   # device_preview: ^1.0.0
@@ -57,26 +58,31 @@ dependencies:
   flutter_multi_formatter: ^2.4.1
   flutter_secure_storage: ^5.0.2
   flutter_svg: ^1.1.0
-  hive: ^2.0.4
+  freezed_annotation: ^2.0.3
+  hive: ^2.2.1
   hive_flutter: ^1.1.0
-  image_picker: ^0.8.4+4
+  image_picker: ^0.8.5+3
   intl: ^0.17.0
+  json_annotation: ^4.5.0
+  json_serializable: ^6.1.6
   loader_overlay: ^2.0.4
   logger: ^1.1.0
   mask_text_input_formatter: ^2.1.0
+  path_provider: ^2.0.11
   pin_code_fields: ^7.3.0
-  provider: ^6.0.0
+  provider: ^6.0.3
   # qr_code_scanner: ^1.0.0
   shared_preferences: ^2.0.15
-  syncfusion_flutter_calendar: ^20.1.58
-  syncfusion_localizations: ^20.1.58
-  table_calendar: ^3.0.3
+  syncfusion_flutter_calendar: ^20.1.59
+  syncfusion_localizations: ^20.1.59
+  table_calendar: ^3.0.6
   # url_launcher: ^6.0.17
   # video_player: ^2.3.0
   yandex_mapkit: ^3.0.0
 
 dev_dependencies:
-  flutter_lints: ^1.0.0
+  build_runner: ^2.1.10
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   # freezed: ^2.0.3

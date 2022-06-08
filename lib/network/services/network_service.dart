@@ -1,10 +1,8 @@
-import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
-import 'package:europharm_flutter/network/dio_wrapper/side_dio_wrapper.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
@@ -12,7 +10,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_code_
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../screens/user_confirmation/ui/_vmodel.dart';
 import '../models/dto_models/response/cars_response.dart';
@@ -21,9 +18,11 @@ import '../models/dto_models/response/marks_response.dart';
 import '../models/dto_models/response/order_history_response.dart';
 import '../models/dto_models/response/positions_response.dart';
 
+const _networkService = 'NetworkService';
+
 class NetworkService {
   late final DioWrapper _dioWrapper;
-  final SideDioWrapper _sideDioWrapper = SideDioWrapper();
+  // final SideDioWrapper _sideDioWrapper = SideDioWrapper();
   static const String constToken = '';
 
   void init(DioWrapper dioService) {
@@ -54,8 +53,8 @@ class NetworkService {
     return PhoneCodeRegisterResponse.fromJson(response.data);
   }
 
-  Future<PhoneCodeRegisterResponse> registerConfirm(
-      String password, String registerToken, String deviceOs, String deviceToken) async {
+  Future<PhoneCodeRegisterResponse> registerConfirm(String password,
+      String registerToken, String deviceOs, String deviceToken) async {
     _dioWrapper.tokensRepository.save(registerToken);
     var response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
@@ -77,6 +76,27 @@ class NetworkService {
       method: NetworkMethod.post,
     );
     return LoginResponse.fromJson(response.data);
+  }
+
+  Future<void> sendDeviceToken({
+    required String deviceToken,
+  }) async {
+    String? deviceOS;
+    if (Platform.isIOS) {
+      deviceOS = 'ios';
+    } else {
+      deviceOS = 'android';
+    }
+    var response = await _dioWrapper.sendRequest(
+      formData: FormData.fromMap({
+        "device_token": deviceToken,
+        "device_os": deviceOS,
+      }),
+      path: "device",
+      method: NetworkMethod.post,
+    );
+
+    log('$response', name: _networkService);
   }
 
   Future<ProfileResponse> getProfile() async {
@@ -119,11 +139,13 @@ class NetworkService {
     return CitiesResponse.fromJson(response.data);
   }
 
-  Future<OrdersResponse> getOrdersByCities(String cityId) async {
+  Future<OrdersResponse> getOrdersByCities({
+    String? cityId,
+  }) async {
     var response = await _dioWrapper.sendRequest(
       path: "orders",
       formData: FormData.fromMap({
-        "city_id": cityId,
+        if (cityId != null) "city_id": cityId,
       }),
       method: NetworkMethod.post,
     );
@@ -148,16 +170,16 @@ class NetworkService {
     return OrderData.fromJson(response.data["data"]);
   }
 
-  Future<void> sendDeviceToken(String deviceOs, String deviceToken) async {
-    final response = await _dioWrapper.sendRequest(
-        path: "/device",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "device_token": deviceToken,
-          "device_os": deviceOs,
-        }));
-    print(response);
-  }
+  // Future<void> sendDeviceToken(String deviceOs, String deviceToken) async { /// FIXME
+  //   final response = await _dioWrapper.sendRequest(
+  //       path: "/device",
+  //       method: NetworkMethod.post,
+  //       formData: FormData.fromMap({
+  //         "device_token": deviceToken,
+  //         "device_os": deviceOs,
+  //       }));
+  //   print(response);
+  // }
 
   Future<OrderData> stopOrder(int orderId, String cause) async {
     final response = await _dioWrapper.sendRequest(
@@ -172,8 +194,8 @@ class NetworkService {
   }
 
   Future<OrderData> resumeOrder(
-      int orderId,
-      ) async {
+    int orderId,
+  ) async {
     var response = await _dioWrapper.sendRequest(
         path: "order/resume",
         method: NetworkMethod.post,
@@ -186,11 +208,15 @@ class NetworkService {
 
   Future<OrderPointsResponse> orderPoints(int orderId) async {
     final response = await _dioWrapper.sendRequest(
-        path: "/order/points",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
+      path: "/order/points",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap(
+        {
           "order_id": orderId,
-        }));
+        },
+      ),
+    );
+    
     return OrderPointsResponse.fromJson(response.data);
   }
 

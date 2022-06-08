@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
@@ -13,9 +12,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/profile_res
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
-
-import '../../screens/user_confirmation/ui/_vmodel.dart';
-import '../models/dto_models/response/cities_response.dart';
+import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
 
 class GlobalRepository {
   late final NetworkService _networkService;
@@ -53,13 +50,15 @@ class GlobalRepository {
 
   Future<MarksResponse> getMarks() async => await _networkService.getMarks();
 
-  Future<CitiesResponse> getCities() async => await _networkService.getCities();
+  Future<CitiesResponse> getCities() async => _networkService.getCities();
 
   Future<OrdersResponse> acceptedOrders() async =>
       await _networkService.acceptedOrders();
 
-  Future<OrdersResponse> getOrdersByCities(String cityId) async =>
-      await _networkService.getOrdersByCities(cityId);
+  Future<OrdersResponse> getOrdersByCities({
+    String? cityId,
+  }) async =>
+      _networkService.getOrdersByCities(cityId: cityId);
 
   Future<void> verify(PersonalInfoVModel vModel) async =>
       await _networkService.verify(vModel);
@@ -94,8 +93,11 @@ class GlobalRepository {
   ) async =>
       await _networkService.editProfile(vModel);
 
-  Future<void> sendDeviceToken(String deviceOs, String deviceToken) async =>
-      await _networkService.sendDeviceToken(deviceOs, deviceToken);
+  // Future<void> sendDeviceToken(String deviceOs, String deviceToken) async =>
+  //     await _networkService.sendDeviceToken(deviceOs, deviceToken);
 
-  Future<void> logout() async => await _networkService.logout();
+  Future<void> sendDeviceToken(String deviceToken) async =>
+      _networkService.sendDeviceToken(deviceToken: deviceToken);
+
+  Future<void> logout() async => _networkService.logout();
 }

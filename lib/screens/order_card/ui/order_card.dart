@@ -72,8 +72,9 @@ class _OrderCardState extends State<OrderCard> {
         child: Scaffold(
           backgroundColor: ColorPalette.white,
           appBar: AppBar(
+            centerTitle: true,
             title: Text(
-              "#${widget.order.description!}",
+              "#0000000${widget.order.id}",
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -180,6 +181,7 @@ class _OrderCardState extends State<OrderCard> {
                       child: Column(
                         children: [
                           Visibility(
+                            visible: state.order.isCurrent,
                             child: Column(
                               children: [
                                 Padding(
@@ -210,7 +212,6 @@ class _OrderCardState extends State<OrderCard> {
                                 const SizedBox(height: 15),
                               ],
                             ),
-                            visible: state.order.isCurrent,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10),

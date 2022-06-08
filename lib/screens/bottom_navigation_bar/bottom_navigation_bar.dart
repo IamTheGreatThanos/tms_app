@@ -1,20 +1,15 @@
-import 'dart:developer';
-
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main/push_notifications_bloc/push_notifications_bloc.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
+import 'package:europharm_flutter/screens/bottom_navigation_bar/custom_animated_bottom_bar.dart';
 import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/ui/profile_screen.dart';
 import 'package:europharm_flutter/screens/schedule_screen/ui/schedule_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import '../../main/push_notifications_bloc/push_notifications_bloc.dart';
-import '../../network/repository/global_repository.dart';
-import '../../network/repository/hive_repository.dart';
-import 'cubit/bottom_nav_bar_cubit.dart';
-import 'custom_animated_bottom_bar.dart';
 
 class BottomNavigationBarScreen extends StatefulWidget {
   const BottomNavigationBarScreen({
@@ -33,12 +28,9 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
     GlobalKey<NavigatorState>(),
   ];
 
- 
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -92,19 +84,19 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                           Navigator(
                             key: navigatorKeys[0],
                             onGenerateRoute: (route) => MaterialPageRoute(
-                              builder: (context) => OrdersScreen(),
+                              builder: (context) => const OrdersScreen(),
                             ),
                           ),
                           Navigator(
                             key: navigatorKeys[1],
                             onGenerateRoute: (route) => MaterialPageRoute(
-                              builder: (context) => ScheduleScreen(),
+                              builder: (context) => const ScheduleScreen(),
                             ),
                           ),
                           Navigator(
                             key: navigatorKeys[2],
                             onGenerateRoute: (route) => MaterialPageRoute(
-                              builder: (context) => ProfileScreen(),
+                              builder: (context) => const ProfileScreen(),
                             ),
                           ),
                         ],
@@ -115,21 +107,20 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                         bottom: 22,
                         child: Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(16, 51, 115, 0.2),
-                                  blurRadius: 30,
-                                  offset: Offset(0, 0),
-                                )
-                              ]),
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(16, 51, 115, 0.2),
+                                blurRadius: 30,
+                              )
+                            ],
+                          ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             child: CustomAnimatedBottomBar(
                               containerHeight: 60,
                               backgroundColor: Colors.white,
                               selectedIndex: state.currentPageIndex,
-                              showElevation: true,
                               itemCornerRadius: 24,
                               curve: Curves.easeIn,
                               onItemSelected: (index) {
