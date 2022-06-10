@@ -1,26 +1,23 @@
 import 'dart:io';
 
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
+import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/id_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/successful_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
+import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
-import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-
-import '../../../network/models/dto_models/response/marks_response.dart';
-import '../../../widgets/app_bottom_sheets/app_dialog.dart';
-import '_vmodel.dart';
 
 class PersonalInfoVerification extends StatefulWidget {
   const PersonalInfoVerification({Key? key}) : super(key: key);
@@ -115,18 +112,19 @@ class _PersonalInfoVerificationState extends State<PersonalInfoVerification> {
                   ),
                 ),
                 Positioned(
-                    bottom: 0,
-                    right: 0,
-                    left: 0,
-                    child:
-                        BlocConsumer<BlocVerification, StateBlocVerification>(
-                            builder: (context, state) {
-                              return _BuildFooter(
-                                state: state,
-                                vmodel: _vmodel!,
-                              );
-                            },
-                            listener: (context, state) {}))
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: BlocConsumer<BlocVerification, StateBlocVerification>(
+                    builder: (context, state) {
+                      return _BuildFooter(
+                        state: state,
+                        vmodel: _vmodel!,
+                      );
+                    },
+                    listener: (context, state) {},
+                  ),
+                )
               ],
             ),
           ),
@@ -150,6 +148,7 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
               child: Column(
                 children: [
                   ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
                     child: LinearProgressIndicator(
                       value: _progressValue(state),
                       backgroundColor: ColorPalette.lightGrey,
@@ -157,7 +156,6 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                           const AlwaysStoppedAnimation(ColorPalette.main),
                       minHeight: 6,
                     ),
-                    borderRadius: BorderRadius.circular(6),
                   ),
                   const SizedBox(
                     height: 15,
@@ -172,13 +170,15 @@ class _BuildProgress extends StatelessWidget implements PreferredSizeWidget {
                         ),
                       ),
                       Text(
-                        S.of(context).steps_count(_progressValue(state) == 0.25
-                            ? 1
-                            : _progressValue(state) == 0.5
-                                ? 2
-                                : _progressValue(state) == 0.75
-                                    ? 3
-                                    : 4),
+                        S.of(context).steps_count(
+                              _progressValue(state) == 0.25
+                                  ? 1
+                                  : _progressValue(state) == 0.5
+                                      ? 2
+                                      : _progressValue(state) == 0.75
+                                          ? 3
+                                          : 4,
+                            ),
                         style: ProjectTextStyles.ui_16Medium.copyWith(
                           color: ColorPalette.main,
                         ),
@@ -268,53 +268,64 @@ class _BuildSecondStep extends StatelessWidget {
           ),
           child: Column(
             children: [
-              vmodel.images.isEmpty
-                  ? Image.asset(
-                      "assets/images/png/identifications.png",
+              if (vmodel.images.isEmpty)
+                Image.asset(
+                  "assets/images/png/identifications.png",
+                  height: 90,
+                )
+              else
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 32,
                       height: 90,
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 2 - 32,
-                            height: 90,
-                            child: Image.file(File(vmodel.images.first))),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width / 2 - 32,
-                            height: 90,
-                            child: Image.file(
-                              File(vmodel.images.last),
-                            )),
-                      ],
+                      child: Image.file(File(vmodel.images.first)),
                     ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2 - 32,
+                      height: 90,
+                      child: Image.file(
+                        File(vmodel.images.last),
+                      ),
+                    ),
+                  ],
+                ),
               const SizedBox(
                 height: 15,
               ),
               RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(children: [
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
                     TextSpan(
-                        text: S.of(context).make_photo,
-                        style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.darkGrey)),
+                      text: S.of(context).make_photo,
+                      style: ProjectTextStyles.ui_16Medium
+                          .copyWith(color: ColorPalette.darkGrey),
+                    ),
                     TextSpan(
-                        text: S.of(context).facial_side,
-                        style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.main)),
+                      text: S.of(context).facial_side,
+                      style: ProjectTextStyles.ui_16Medium
+                          .copyWith(color: ColorPalette.main),
+                    ),
                     TextSpan(
-                        text: S.of(context).and_from,
-                        style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.darkGrey)),
+                      text: S.of(context).and_from,
+                      style: ProjectTextStyles.ui_16Medium
+                          .copyWith(color: ColorPalette.darkGrey),
+                    ),
                     TextSpan(
-                        text: S.of(context).back_side,
-                        style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.main)),
+                      text: S.of(context).back_side,
+                      style: ProjectTextStyles.ui_16Medium
+                          .copyWith(color: ColorPalette.main),
+                    ),
                     TextSpan(
-                        text: S.of(context).side_of_rights,
-                        style: ProjectTextStyles.ui_16Medium
-                            .copyWith(color: ColorPalette.darkGrey)),
-                  ])),
+                      text: S.of(context).side_of_rights,
+                      style: ProjectTextStyles.ui_16Medium
+                          .copyWith(color: ColorPalette.darkGrey),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -336,9 +347,10 @@ class _BuildSecondStep extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(color: ColorPalette.main),
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.transparent,
+                    border: Border.all(color: ColorPalette.main),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Stack(
                     children: [
                       Center(
@@ -350,12 +362,13 @@ class _BuildSecondStep extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                          top: 3,
-                          right: 15,
-                          child: SvgPicture.asset(
-                            "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.main,
-                          ))
+                        top: 3,
+                        right: 15,
+                        child: SvgPicture.asset(
+                          "assets/images/svg/arrow_right.svg",
+                          color: ColorPalette.main,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -388,8 +401,9 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
         Container(
           padding: const EdgeInsets.all(17),
           decoration: BoxDecoration(
-              color: ColorPalette.lightGrey,
-              borderRadius: BorderRadius.circular(20)),
+            color: ColorPalette.lightGrey,
+            borderRadius: BorderRadius.circular(20),
+          ),
           child: Column(
             children: [
               Image.asset("assets/images/png/verification_image.png"),
@@ -407,7 +421,7 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
               ),
               GestureDetector(
                 onTap: () async {
-                  var file = await ImagePicker()
+                  final file = await ImagePicker()
                       .pickImage(source: ImageSource.gallery);
                   if (file != null) {
                     setState(() {
@@ -418,9 +432,10 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.main),
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
+                    border: Border.all(color: ColorPalette.main),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Stack(
                     children: [
                       Center(
@@ -432,12 +447,13 @@ class _BuildThirdStepState extends State<_BuildThirdStep> {
                         ),
                       ),
                       Positioned(
-                          top: 3,
-                          right: 15,
-                          child: SvgPicture.asset(
-                            "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.main,
-                          ))
+                        top: 3,
+                        right: 15,
+                        child: SvgPicture.asset(
+                          "assets/images/svg/arrow_right.svg",
+                          color: ColorPalette.main,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -494,7 +510,6 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
         //   // dropdownColor: ,
         // ),
         DropdownButtonFormField(
-          iconSize: 24,
           dropdownColor: ColorPalette.lightGrey,
           focusColor: ColorPalette.lightGrey,
           value: markValue,
@@ -506,7 +521,6 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
               borderRadius: BorderRadius.circular(12.0),
               borderSide: const BorderSide(
                 color: Colors.transparent,
-                width: 1.0,
               ),
               gapPadding: 0.0,
             ),
@@ -514,7 +528,6 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
               borderRadius: BorderRadius.circular(12.0),
               borderSide: const BorderSide(
                 color: Colors.transparent,
-                width: 1.0,
               ),
               gapPadding: 0.0,
             ),
@@ -522,7 +535,6 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
               borderRadius: BorderRadius.circular(12.0),
               borderSide: const BorderSide(
                 color: Colors.transparent,
-                width: 1.0,
               ),
               gapPadding: 0.0,
             ),
@@ -596,9 +608,10 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                      border: Border.all(color: ColorPalette.main),
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10)),
+                    border: Border.all(color: ColorPalette.main),
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Stack(
                     children: [
                       Center(
@@ -610,12 +623,13 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
                         ),
                       ),
                       Positioned(
-                          top: 3,
-                          right: 15,
-                          child: SvgPicture.asset(
-                            "assets/images/svg/arrow_right.svg",
-                            color: ColorPalette.main,
-                          ))
+                        top: 3,
+                        right: 15,
+                        child: SvgPicture.asset(
+                          "assets/images/svg/arrow_right.svg",
+                          color: ColorPalette.main,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -630,7 +644,7 @@ class _BuildFourthStepState extends State<_BuildFourthStep> {
 }
 
 class _BuildFooter extends StatelessWidget {
-  final state;
+  final StateBlocVerification state;
   final PersonalInfoVModel vmodel;
 
   const _BuildFooter({Key? key, required this.state, required this.vmodel})
@@ -640,77 +654,80 @@ class _BuildFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Row(children: [
-        state is! StateVerificationFirstStep &&
-                state is! StateVerificationInitial
-            ? Row(
-                children: [
-                  MainButton(
-                    buttonHeight: 55,
-                    width: 55,
-                    onTap: () {
-                      if (state is StateVerificationSecondStep) {
-                        context
-                            .read<BlocVerification>()
-                            .add(EventVerificationFirstStep());
-                      }
-                      if (state is StateVerificationThirdStep) {
-                        context
-                            .read<BlocVerification>()
-                            .add(EventVerificationSecondStep());
-                      }
-                      if (state is StateVerificationFourthStep) {
-                        context
-                            .read<BlocVerification>()
-                            .add(EventVerificationThirdStep());
-                      }
-                    },
-                    borderRadius: 10,
-                    borderColor: ColorPalette.main,
-                    color: Colors.transparent,
-                    icon: "assets/images/svg/arrow_left.svg",
-                  ),
-                  const SizedBox(
-                    width: 9,
-                  ),
-                ],
-              )
-            : const SizedBox(),
-        Expanded(
-          child: MainButton(
-            title: S.of(context).next_step,
-            onTap: () {
-              if (state is StateVerificationFirstStep
-                  // && vmodel.firstStepValidated
-                  ) {
-                context
-                    .read<BlocVerification>()
-                    .add(EventVerificationSecondStep());
-              }
-              if (state is StateVerificationSecondStep
-                  // && vmodel.secondStepValidated
-                  ) {
-                context
-                    .read<BlocVerification>()
-                    .add(EventVerificationThirdStep());
-              }
-              if (state is StateVerificationThirdStep) {
-                context
-                    .read<BlocVerification>()
-                    .add(EventVerificationFourthStep());
-              }
-              if (state is StateVerificationFourthStep
-                  // && vmodel.lastStepValidated
-                  ) {
-                // AppRouter.push(context, SuccessfulScreen());
-                context
-                    .read<BlocVerification>()
-                    .add(EventVerificationVerify(vmodel: vmodel));
-              }
-            },
-          ),
-        )
-      ]),
+      child: Row(
+        children: [
+          if (state is! StateVerificationFirstStep &&
+              state is! StateVerificationInitial)
+            Row(
+              children: [
+                MainButton(
+                  buttonHeight: 55,
+                  width: 55,
+                  onTap: () {
+                    if (state is StateVerificationSecondStep) {
+                      context
+                          .read<BlocVerification>()
+                          .add(EventVerificationFirstStep());
+                    }
+                    if (state is StateVerificationThirdStep) {
+                      context
+                          .read<BlocVerification>()
+                          .add(EventVerificationSecondStep());
+                    }
+                    if (state is StateVerificationFourthStep) {
+                      context
+                          .read<BlocVerification>()
+                          .add(EventVerificationThirdStep());
+                    }
+                  },
+                  borderRadius: 10,
+                  borderColor: ColorPalette.main,
+                  color: Colors.transparent,
+                  icon: "assets/images/svg/arrow_left.svg",
+                ),
+                const SizedBox(
+                  width: 9,
+                ),
+              ],
+            )
+          else
+            const SizedBox(),
+          Expanded(
+            child: MainButton(
+              title: S.of(context).next_step,
+              onTap: () {
+                if (state is StateVerificationFirstStep
+                    // && vmodel.firstStepValidated
+                    ) {
+                  context
+                      .read<BlocVerification>()
+                      .add(EventVerificationSecondStep());
+                }
+                if (state is StateVerificationSecondStep
+                    // && vmodel.secondStepValidated
+                    ) {
+                  context
+                      .read<BlocVerification>()
+                      .add(EventVerificationThirdStep());
+                }
+                if (state is StateVerificationThirdStep) {
+                  context
+                      .read<BlocVerification>()
+                      .add(EventVerificationFourthStep());
+                }
+                if (state is StateVerificationFourthStep
+                    // && vmodel.lastStepValidated
+                    ) {
+                  // AppRouter.push(context, SuccessfulScreen());
+                  context
+                      .read<BlocVerification>()
+                      .add(EventVerificationVerify(vmodel: vmodel));
+                }
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

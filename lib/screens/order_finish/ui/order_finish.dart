@@ -1,5 +1,8 @@
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
-import 'package:europharm_flutter/screens/order_card/bloc/bloc_order_card.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
+import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
+import 'package:europharm_flutter/screens/map_screen/map.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/bloc_order_finish.dart';
 import 'package:europharm_flutter/screens/order_finish/ui/widgets/success_order_finished.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -14,12 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
-
-import '../../../network/repository/global_repository.dart';
-import '../../map_screen/data/bloc/map_cubit.dart';
-import '../../map_screen/data/repo_map.dart';
-import '../../map_screen/map.dart';
 
 class OrderFinish extends StatefulWidget {
   final OrderData orderData;
@@ -32,7 +29,7 @@ class OrderFinish extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OrderFinishState createState() => _OrderFinishState();
+  State<OrderFinish> createState() => _OrderFinishState();
 }
 
 class _OrderFinishState extends State<OrderFinish>
@@ -96,9 +93,11 @@ class _OrderFinishState extends State<OrderFinish>
         body: BlocConsumer<BlocOrderFinish, StateBlocOrderFinish>(
           listener: (context, state) {
             if (state is StateOrderFinishError) {
-              showAppDialog(context,
-                  title: state.error.message,
-                  onTap: () => Navigator.pop(context));
+              showAppDialog(
+                context,
+                title: state.error.message,
+                onTap: () => Navigator.pop(context),
+              );
             }
           },
           buildWhen: (p, c) => c is StateLoadOrderPoint,
@@ -121,16 +120,19 @@ class _OrderFinishState extends State<OrderFinish>
                       child: Column(
                         children: [
                           _buildOrderData(context),
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height - 600,
-                            child: PageView(controller: _controller, children: [
-                              Container(
-                                // height: MediaQuery.of(context).size.height - 800,
-                                child: ListView.builder(
+                            child: PageView(
+                              controller: _controller,
+                              children: [
+                                ListView.builder(
                                   itemBuilder: (context, index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(
-                                          bottom: 17, left: 10, right: 10),
+                                        bottom: 17,
+                                        left: 10,
+                                        right: 10,
+                                      ),
                                       child: GestureDetector(
                                         onTap: !isScan
                                             ? null
@@ -144,7 +146,7 @@ class _OrderFinishState extends State<OrderFinish>
                                                     productId = 0;
                                                   } else {
                                                     productId = state.orderPoint
-                                                        .products?[index].id!;
+                                                        .products?[index].id;
                                                   }
                                                 });
                                               },
@@ -167,21 +169,25 @@ class _OrderFinishState extends State<OrderFinish>
                                               Row(
                                                 children: [
                                                   Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              9),
-                                                      width: 40,
-                                                      height: 40,
-                                                      decoration: BoxDecoration(
-                                                        color: const Color(
-                                                                0xFF22863A)
-                                                            .withOpacity(0.1),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(100),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                      9,
+                                                    ),
+                                                    width: 40,
+                                                    height: 40,
+                                                    decoration: BoxDecoration(
+                                                      color: const Color(
+                                                        0xFF22863A,
+                                                      ).withOpacity(0.1),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        100,
                                                       ),
-                                                      child: SvgPicture.asset(
-                                                          "assets/images/svg/box.svg")),
+                                                    ),
+                                                    child: SvgPicture.asset(
+                                                      "assets/images/svg/box.svg",
+                                                    ),
+                                                  ),
                                                   const SizedBox(
                                                     width: 10,
                                                   ),
@@ -194,8 +200,8 @@ class _OrderFinishState extends State<OrderFinish>
                                                     style: ProjectTextStyles
                                                         .ui_14Medium
                                                         .copyWith(
-                                                            color:
-                                                                Colors.black),
+                                                      color: Colors.black,
+                                                    ),
                                                   )
                                                 ],
                                               ),
@@ -205,7 +211,8 @@ class _OrderFinishState extends State<OrderFinish>
                                                       .status ==
                                                   "finished")
                                                 SvgPicture.asset(
-                                                    "assets/images/svg/ic_check.svg"),
+                                                  "assets/images/svg/ic_check.svg",
+                                                ),
                                             ],
                                           ),
                                         ),
@@ -215,70 +222,83 @@ class _OrderFinishState extends State<OrderFinish>
                                   shrinkWrap: true,
                                   itemCount: state.orderPoint.products?.length,
                                 ),
-                              ),
-                              Container(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(7),
-                                        decoration: BoxDecoration(
-                                          color: ColorPalette.main
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(100),
+                                Container(),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0,
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(7),
+                                          decoration: BoxDecoration(
+                                            color: ColorPalette.main
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                          child: SvgPicture.asset(
+                                            "assets/images/svg/payments.svg",
+                                          ),
                                         ),
-                                        child: SvgPicture.asset(
-                                            "assets/images/svg/payments.svg"),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        RichText(
-                                            text: TextSpan(children: [
-                                          TextSpan(
-                                              text: "Тип оплаты: ",
-                                              style: ProjectTextStyles
-                                                  .ui_16Medium),
-                                          TextSpan(
-                                              text: "Наличными",
-                                              style: ProjectTextStyles
-                                                  .ui_16Medium
-                                                  .copyWith(
-                                                      color:
-                                                          ColorPalette.main)),
-                                        ])),
-                                        RichText(
-                                            text: TextSpan(children: [
-                                          TextSpan(
-                                              text: "Сумма оплаты: ",
-                                              style: ProjectTextStyles
-                                                  .ui_16Medium),
-                                          TextSpan(
-                                              text: "95 310. 00 ₸",
-                                              style: ProjectTextStyles
-                                                  .ui_16Medium
-                                                  .copyWith(
-                                                      color:
-                                                          ColorPalette.main)),
-                                        ])),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ]),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Тип оплаты: ",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium,
+                                                ),
+                                                TextSpan(
+                                                  text: "Наличными",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium
+                                                      .copyWith(
+                                                    color: ColorPalette.main,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                const TextSpan(
+                                                  text: "Сумма оплаты: ",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium,
+                                                ),
+                                                TextSpan(
+                                                  text: "95 310. 00 ₸",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium
+                                                      .copyWith(
+                                                    color: ColorPalette.main,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -317,20 +337,22 @@ class _OrderFinishState extends State<OrderFinish>
                   // ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 10.0, right: 10, bottom: 24),
-                    child: !isScan ||
-                            (state.areAllFinished && _current == 0)
+                      left: 10.0,
+                      right: 10,
+                      bottom: 24,
+                    ),
+                    child: !isScan || (state.areAllFinished && _current == 0)
                         ? GestureDetector(
                             onTap: () {
                               if (!isScan) {
                                 for (var element
                                     in state.orderPoint.products!) {
-                                  context
-                                      .read<BlocOrderFinish>()
-                                      .add(EventOrderProductFinish(
-                                        productId: element.id!,
-                                        code: element.code!,
-                                      ));
+                                  context.read<BlocOrderFinish>().add(
+                                        EventOrderProductFinish(
+                                          productId: element.id!,
+                                          code: element.code!,
+                                        ),
+                                      );
                                 }
                                 setState(() {
                                   isScan = true;
@@ -338,17 +360,20 @@ class _OrderFinishState extends State<OrderFinish>
                               }
                               setState(() {
                                 _current = 1;
-                                _controller.animateToPage(_current,
-                                    duration: const Duration(milliseconds: 50),
-                                    curve: Curves.ease);
+                                _controller.animateToPage(
+                                  _current,
+                                  duration: const Duration(milliseconds: 50),
+                                  curve: Curves.ease,
+                                );
                                 _tabController.animateTo(_current);
                               });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               decoration: BoxDecoration(
-                                  color: ColorPalette.main,
-                                  borderRadius: BorderRadius.circular(10)),
+                                color: ColorPalette.main,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: Stack(
                                 children: [
                                   Center(
@@ -361,29 +386,34 @@ class _OrderFinishState extends State<OrderFinish>
                                     ),
                                   ),
                                   Positioned(
-                                      right: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/images/svg/arrow_right.svg",
-                                      ))
+                                    right: 15,
+                                    child: SvgPicture.asset(
+                                      "assets/images/svg/arrow_right.svg",
+                                    ),
+                                  )
                                 ],
                               ),
-                            ))
+                            ),
+                          )
                         : _current == 0
                             ? GestureDetector(
                                 onTap: productId != 0
                                     ? () {
                                         showCreatePasswordBottomDialog(
-                                            context, productId!);
+                                          context,
+                                          productId!,
+                                        );
                                       }
                                     : null,
                                 child: Container(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                      color: productId != 0
-                                          ? ColorPalette.main
-                                          : ColorPalette.lightGrey,
-                                      borderRadius: BorderRadius.circular(10)),
+                                    color: productId != 0
+                                        ? ColorPalette.main
+                                        : ColorPalette.lightGrey,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                   child: Stack(
                                     children: [
                                       Center(
@@ -396,32 +426,38 @@ class _OrderFinishState extends State<OrderFinish>
                                         ),
                                       ),
                                       Positioned(
-                                          left: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/images/svg/scan.svg",
-                                          ))
+                                        left: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/images/svg/scan.svg",
+                                        ),
+                                      )
                                     ],
                                   ),
-                                ))
+                                ),
+                              )
                             : _current == 1
                                 ? GestureDetector(
                                     onTap: () {
                                       setState(() {
                                         _current = 2;
-                                        _controller.animateToPage(_current,
-                                            duration: const Duration(
-                                                milliseconds: 50),
-                                            curve: Curves.ease);
+                                        _controller.animateToPage(
+                                          _current,
+                                          duration: const Duration(
+                                            milliseconds: 50,
+                                          ),
+                                          curve: Curves.ease,
+                                        );
                                         _tabController.animateTo(_current);
                                       });
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 16),
+                                        vertical: 16,
+                                      ),
                                       decoration: BoxDecoration(
-                                          color: ColorPalette.main,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        color: ColorPalette.main,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       child: Stack(
                                         children: [
                                           Center(
@@ -435,25 +471,30 @@ class _OrderFinishState extends State<OrderFinish>
                                             ),
                                           ),
                                           Positioned(
-                                              right: 15,
-                                              child: SvgPicture.asset(
-                                                "assets/images/svg/arrow_right.svg",
-                                              ))
+                                            right: 15,
+                                            child: SvgPicture.asset(
+                                              "assets/images/svg/arrow_right.svg",
+                                            ),
+                                          )
                                         ],
                                       ),
-                                    ))
+                                    ),
+                                  )
                                 : GestureDetector(
                                     onTap: () {
                                       AppRouter.pushReplacement(
-                                          context, SuccessOrderFinished());
+                                        context,
+                                        const SuccessOrderFinished(),
+                                      );
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          vertical: 16),
+                                        vertical: 16,
+                                      ),
                                       decoration: BoxDecoration(
-                                          color: ColorPalette.main,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        color: ColorPalette.main,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                       child: Stack(
                                         children: [
                                           Center(
@@ -468,7 +509,8 @@ class _OrderFinishState extends State<OrderFinish>
                                           ),
                                         ],
                                       ),
-                                    )),
+                                    ),
+                                  ),
                   )
                 ],
               );
@@ -483,12 +525,12 @@ class _OrderFinishState extends State<OrderFinish>
   }
 
   Widget _buildOrderData(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 450,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Container(
@@ -502,8 +544,9 @@ class _OrderFinishState extends State<OrderFinish>
                   children: [
                     BlocProvider(
                       create: (_) => MapCubit(
-                          mapRepository: MapRepository(),
-                          repository: context.read<GlobalRepository>()),
+                        mapRepository: MapRepository(),
+                        repository: context.read<GlobalRepository>(),
+                      ),
                       child: SessionPage(
                         orderId: widget.orderData.id!,
                         orderData: widget.orderData,
@@ -559,7 +602,6 @@ class _OrderFinishState extends State<OrderFinish>
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
                       "20 ноября 2021 в 14:45",
@@ -580,15 +622,16 @@ class _OrderFinishState extends State<OrderFinish>
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Container(
               decoration: BoxDecoration(
-                  color: ColorPalette.background,
-                  borderRadius: BorderRadius.circular(100)),
+                color: ColorPalette.background,
+                borderRadius: BorderRadius.circular(100),
+              ),
               height: 46,
               child: TabBar(
-                isScrollable: false,
                 indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: ColorPalette.main),
-                labelPadding: const EdgeInsets.all(0),
+                  borderRadius: BorderRadius.circular(50),
+                  color: ColorPalette.main,
+                ),
+                labelPadding: EdgeInsets.zero,
                 labelColor: ColorPalette.white,
                 labelStyle: ProjectTextStyles.ui_16Medium,
                 unselectedLabelColor: ColorPalette.commonGrey,
@@ -596,9 +639,11 @@ class _OrderFinishState extends State<OrderFinish>
                 onTap: (index) {
                   setState(() {
                     _current = index;
-                    _controller.animateToPage(_current,
-                        duration: const Duration(milliseconds: 50),
-                        curve: Curves.ease);
+                    _controller.animateToPage(
+                      _current,
+                      duration: const Duration(milliseconds: 50),
+                      curve: Curves.ease,
+                    );
                   });
                 },
                 tabs: const [
@@ -627,16 +672,19 @@ class _OrderFinishState extends State<OrderFinish>
 }
 
 void showCreatePasswordBottomDialog(BuildContext context, int productId) {
-  showAppBottomSheet(context,
-      initialChildSize: 0.45,
-      useRootNavigator: true,
-      child: _BuildScanMethodChoose(
-        onScan: (code) =>
-            context.read<BlocOrderFinish>().add(EventOrderProductFinish(
-                  productId: productId,
-                  code: code,
-                )),
-      ));
+  showAppBottomSheet(
+    context,
+    initialChildSize: 0.45,
+    useRootNavigator: true,
+    child: _BuildScanMethodChoose(
+      onScan: (code) => context.read<BlocOrderFinish>().add(
+            EventOrderProductFinish(
+              productId: productId,
+              code: code.toString(),
+            ),
+          ),
+    ),
+  );
 }
 
 class _BuildScanMethodChoose extends StatelessWidget {
@@ -666,7 +714,11 @@ class _BuildScanMethodChoose extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               String barcode = await FlutterBarcodeScanner.scanBarcode(
-                  '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+                '#ff6666',
+                'Cancel',
+                true,
+                ScanMode.BARCODE,
+              );
               if (barcode.isNotEmpty) {
                 Navigator.pop(context, barcode);
                 onScan.call(barcode);
@@ -677,8 +729,9 @@ class _BuildScanMethodChoose extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
-                  color: ColorPalette.main,
-                  borderRadius: BorderRadius.circular(10)),
+                color: ColorPalette.main,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Center(
                 child: Text(
                   "Сфотографировать",
@@ -700,8 +753,9 @@ class _BuildScanMethodChoose extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
-                  color: ColorPalette.main,
-                  borderRadius: BorderRadius.circular(10)),
+                color: ColorPalette.main,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Center(
                 child: Text(
                   "Ручной сканнер",
@@ -719,10 +773,12 @@ class _BuildScanMethodChoose extends StatelessWidget {
 }
 
 void showBarcodeEnterDialog(BuildContext context, Function onScan) {
-  showAppBottomSheet(context,
-      initialChildSize: 0.45,
-      useRootNavigator: true,
-      child: BuildBarcodeEnterField(onScan: onScan));
+  showAppBottomSheet(
+    context,
+    initialChildSize: 0.45,
+    useRootNavigator: true,
+    child: BuildBarcodeEnterField(onScan: onScan),
+  );
 }
 
 class BuildBarcodeEnterField extends StatefulWidget {

@@ -33,7 +33,7 @@ class _PolylineExampleState extends State<_PolylineExample> {
     _completer.complete(controller);
     controller.moveCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(
+        const CameraPosition(
           target: Point(latitude: 41.2995, longitude: 69.2401),
           zoom: 10,
         ),
@@ -44,7 +44,9 @@ class _PolylineExampleState extends State<_PolylineExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Map test"),),
+      appBar: AppBar(
+        title: const Text("Map test"),
+      ),
       body: YandexMap(
         // mapObjects: mapObjects,
         onMapCreated: _onMapCreated,

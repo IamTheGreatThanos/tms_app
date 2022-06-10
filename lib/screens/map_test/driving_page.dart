@@ -30,75 +30,104 @@ class _DrivingExampleState extends State<_DrivingExample> {
   final PlacemarkMapObject startPlacemark = PlacemarkMapObject(
     mapId: const MapObjectId('start_placemark'),
     point: const Point(latitude: 43.238949, longitude: 76.889709),
-    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+    icon: PlacemarkIcon.single(
+      PlacemarkIconStyle(
         image: BitmapDescriptor.fromAssetImage(
-            'assets/images/png/route_start.png'),
-        scale: 0.3)),
+          'assets/images/png/route_start.png',
+        ),
+        scale: 0.3,
+      ),
+    ),
   );
   final PlacemarkMapObject stopByPlacemark = PlacemarkMapObject(
     mapId: const MapObjectId('stop_by_placemark'),
     point: const Point(latitude: 43.605108, longitude: 73.763114),
-    icon: PlacemarkIcon.single(PlacemarkIconStyle(
+    icon: PlacemarkIcon.single(
+      PlacemarkIconStyle(
         image: BitmapDescriptor.fromAssetImage(
-            'assets/images/png/route_stop_by.png'),
-        scale: 0.3)),
+          'assets/images/png/route_stop_by.png',
+        ),
+        scale: 0.3,
+      ),
+    ),
   );
   final PlacemarkMapObject endPlacemark = PlacemarkMapObject(
-      mapId: const MapObjectId('end_placemark'),
-      point: const Point(latitude: 49.804684, longitude: 73.109383),
-      icon: PlacemarkIcon.single(PlacemarkIconStyle(
-          image: BitmapDescriptor.fromAssetImage(
-              'assets/images/png/route_end.png'),
-          scale: 0.3)));
+    mapId: const MapObjectId('end_placemark'),
+    point: const Point(latitude: 49.804684, longitude: 73.109383),
+    icon: PlacemarkIcon.single(
+      PlacemarkIconStyle(
+        image: BitmapDescriptor.fromAssetImage(
+          'assets/images/png/route_end.png',
+        ),
+        scale: 0.3,
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Expanded(child: YandexMap(mapObjects: mapObjects)),
-          const SizedBox(height: 20),
-          Expanded(
-              child: SingleChildScrollView(
-                  child: Column(children: [
-            ControlButton(
-              onPressed: _requestRoutes,
-              title: 'Build route',
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(child: YandexMap(mapObjects: mapObjects)),
+        const SizedBox(height: 20),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ControlButton(
+                  onPressed: _requestRoutes,
+                  title: 'Build route',
+                ),
+              ],
             ),
-          ])))
-        ]);
+          ),
+        )
+      ],
+    );
   }
 
   Future<void> _requestRoutes() async {
     if (kDebugMode) {
       print(
-          'Points: ${startPlacemark.point},${stopByPlacemark.point},${endPlacemark.point}');
+        'Points: ${startPlacemark.point},${stopByPlacemark.point},${endPlacemark.point}',
+      );
     }
 
     var resultWithSession = YandexDriving.requestRoutes(
-        points: [
-          RequestPoint(
-              point: startPlacemark.point,
-              requestPointType: RequestPointType.wayPoint),
-          RequestPoint(
-              point: stopByPlacemark.point,
-              requestPointType: RequestPointType.viaPoint),
-          RequestPoint(
-              point: endPlacemark.point,
-              requestPointType: RequestPointType.wayPoint),
-        ],
-        drivingOptions: const DrivingOptions(
-            initialAzimuth: 0, routesCount: 5, avoidTolls: true));
+      points: [
+        RequestPoint(
+          point: startPlacemark.point,
+          requestPointType: RequestPointType.wayPoint,
+        ),
+        RequestPoint(
+          point: stopByPlacemark.point,
+          requestPointType: RequestPointType.viaPoint,
+        ),
+        RequestPoint(
+          point: endPlacemark.point,
+          requestPointType: RequestPointType.wayPoint,
+        ),
+      ],
+      drivingOptions: const DrivingOptions(
+        initialAzimuth: 0,
+        routesCount: 5,
+        avoidTolls: true,
+      ),
+    );
 
     await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => _SessionPage(
-                startPlacemark,
-                endPlacemark,
-                resultWithSession.session,
-                resultWithSession.result)));
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => _SessionPage(
+          startPlacemark,
+          endPlacemark,
+          resultWithSession.session,
+          resultWithSession.result,
+        ),
+      ),
+    );
   }
 }
 
@@ -109,7 +138,11 @@ class _SessionPage extends StatefulWidget {
   final PlacemarkMapObject endPlacemark;
 
   const _SessionPage(
-      this.startPlacemark, this.endPlacemark, this.session, this.result);
+    this.startPlacemark,
+    this.endPlacemark,
+    this.session,
+    this.result,
+  );
 
   @override
   _SessionState createState() => _SessionState();
@@ -141,63 +174,72 @@ class _SessionState extends State<_SessionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Driving ${widget.session.id}')),
-        body: Container(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 300,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        YandexMap(mapObjects: mapObjects),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                      child: SingleChildScrollView(
-                          child: Column(children: <Widget>[
+      appBar: AppBar(title: Text('Driving ${widget.session.id}')),
+      body: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 300,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  YandexMap(mapObjects: mapObjects),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
                     SizedBox(
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            !_progress
-                                ? Container()
-                                : TextButton.icon(
-                                    icon: const CircularProgressIndicator(),
-                                    label: const Text('Cancel'),
-                                    onPressed: _cancel)
-                          ],
-                        )),
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (!_progress)
+                            Container()
+                          else
+                            TextButton.icon(
+                              icon: const CircularProgressIndicator(),
+                              label: const Text('Cancel'),
+                              onPressed: _cancel,
+                            )
+                        ],
+                      ),
+                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Flexible(
                           child: Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: _getList(),
-                              )),
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: _getList(),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ])))
-                ])));
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   List<Widget> _getList() {
     final list = <Widget>[];
 
     if (results.isEmpty) {
-      list.add((const Text('Nothing found')));
+      list.add(const Text('Nothing found'));
     }
 
     for (var r in results) {
@@ -205,7 +247,8 @@ class _SessionState extends State<_SessionPage> {
 
       r.routes!.asMap().forEach((i, route) {
         list.add(
-            Text('Route $i: ${route.metadata.weight.timeWithTraffic.text}'));
+          Text('Route $i: ${route.metadata.weight.timeWithTraffic.text}'),
+        );
       });
 
       list.add(Container(height: 20));
@@ -247,14 +290,16 @@ class _SessionState extends State<_SessionPage> {
     });
     setState(() {
       result.routes!.asMap().forEach((i, route) {
-        mapObjects.add(PolylineMapObject(
-          mapId: MapObjectId('route_${i}_polyline'),
-          polyline: Polyline(points: route.geometry),
-          // coordinates: route.geometry,
-          strokeColor:
-              Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          strokeWidth: 3,
-        ));
+        mapObjects.add(
+          PolylineMapObject(
+            mapId: MapObjectId('route_${i}_polyline'),
+            polyline: Polyline(points: route.geometry),
+            // coordinates: route.geometry,
+            strokeColor:
+                Colors.primaries[Random().nextInt(Colors.primaries.length)],
+            strokeWidth: 3,
+          ),
+        );
       });
     });
   }

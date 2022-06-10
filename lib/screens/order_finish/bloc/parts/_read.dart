@@ -2,7 +2,9 @@ part of "../bloc_order_finish.dart";
 
 extension Read on BlocOrderFinish {
   Future<void> _read(
-      EventOrderFinishInitial event, Emitter<StateBlocOrderFinish> emit) async {
+    EventOrderFinishInitial event,
+    Emitter<StateBlocOrderFinish> emit,
+  ) async {
     try {
       bool areAllFinished = true;
       final result = await repository.orderPointProducts(event.pointId);
@@ -12,14 +14,21 @@ extension Read on BlocOrderFinish {
           areAllFinished = false;
         }
       }
-      emit(StateLoadOrderPoint(
-          orderPoint: result, areAllFinished: areAllFinished));
+      emit(
+        StateLoadOrderPoint(
+          orderPoint: result,
+          areAllFinished: areAllFinished,
+        ),
+      );
     } catch (e) {
-      emit(StateOrderFinishError(
+      emit(
+        StateOrderFinishError(
           error: AppError(
-        message: e.dioErrorMessage,
-        code: e.dioErrorStatusCode,
-      )));
+            message: e.dioErrorMessage,
+            code: e.dioErrorStatusCode,
+          ),
+        ),
+      );
     }
   }
 }
