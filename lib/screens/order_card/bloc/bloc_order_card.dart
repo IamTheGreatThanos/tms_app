@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'events.dart';
@@ -68,7 +69,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
           }
         }
         if (isFinished) {
-          orderDetails.points![i].status = "finished";
+          // orderDetails.points![i].status = "finished";
         }
       }
       emit(StateLoadDataOrderCard(orderPoints: response, order: orderDetails));
@@ -125,9 +126,15 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   }
 
   Future<void> _stop(
-      EventStopOrder event, Emitter<StateBlocOrderCard> emit) async {
+    EventStopOrder event,
+    Emitter<StateBlocOrderCard> emit,
+  ) async {
     try {
-      final result = await repository.stopOrder(orderId!, event.cause);
+      final result = await repository.stopOrder(
+        orderId!,
+        event.cause,
+        emptyDriver: event.emptyDriver,
+      );
       result.isCurrent = true;
       orderDetails = result;
       // if(orderDetails.status == "stopped"){

@@ -20,9 +20,6 @@ class MapCubit extends Cubit<MapState> {
       emit(MapLoadingState());
       final result = await _repository.orderPoints(orderId);
       emit(MapLoadedState(loadedMap: result.data!));
-      // final MapModel _getmap = await mapRepository.getMap(orderId);
-      // print(_getmap.toString());
-      // emit(MapLoadedState(loadedMap: _getmap));
     } catch (e) {
       log(e.toString());
       emit(MapErrorState(messsage: e.toString()));

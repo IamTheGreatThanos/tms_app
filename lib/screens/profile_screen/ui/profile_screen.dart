@@ -4,7 +4,6 @@ import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
-import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
@@ -17,7 +16,6 @@ import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/src/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -36,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: const [
-                _BuildConfirmation(),
+                //_BuildConfirmation(), /// ПОДТВЕРДИТЕ СВОЮ ЛИЧНОСТЬ
                 SizedBox(
                   height: 16,
                 ),
@@ -148,14 +146,17 @@ class _BuildConfirmation extends StatelessWidget {
 }
 
 class _BuildUserInfo extends StatelessWidget {
-  const _BuildUserInfo({Key? key}) : super(key: key);
+  const _BuildUserInfo({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BlocProfileScreen(
         repository: context.read<GlobalRepository>(),
-        firebaseMessagingRepository: context.read<FirebaseMessagingRepository>(),
+        firebaseMessagingRepository:
+            context.read<FirebaseMessagingRepository>(),
       )..add(EventProfileInitial()),
       child: BlocConsumer<BlocProfileScreen, StateBlocProfile>(
         listener: (context, state) {
@@ -174,23 +175,23 @@ class _BuildUserInfo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ClipRRect(
-                      borderRadius: BorderRadius.circular(13),
-                      child: state.profile.data!.avatar != null
-                          ? CachedNetworkImage(
-                              width: 70,
-                              height: 70,
-                              imageUrl: state.profile.data!.avatar,
-                              errorWidget: (context, url, error) =>
-                                  const Center(
-                                child: Icon(Icons.error),
-                              ),
-                            )
-                          : Image.asset(
-                              "assets/images/png/profile_photo.png",
-                              width: 70,
-                              height: 70,
-                              fit: BoxFit.cover,
-                            )),
+                    borderRadius: BorderRadius.circular(13),
+                    child: state.profile.data!.avatar != null
+                        ? CachedNetworkImage(
+                            width: 70,
+                            height: 70,
+                            imageUrl: state.profile.data!.avatar,
+                            errorWidget: (context, url, error) => const Center(
+                              child: Icon(Icons.error),
+                            ),
+                          )
+                        : Image.asset(
+                            "assets/images/png/profile_photo.png",
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -215,7 +216,8 @@ class _BuildUserInfo extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.only(right: 2.0),
                               child: SvgPicture.asset(
-                                  "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg"),
+                                "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg",
+                              ),
                             );
                           }),
                           const SizedBox(

@@ -14,7 +14,7 @@ class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({Key? key}) : super(key: key);
 
   @override
-  _ScheduleScreenState createState() => _ScheduleScreenState();
+  State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
 List<Color> _colorCollection = <Color>[];
@@ -133,123 +133,128 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ],
                     ),
                     Expanded(
-                        child: SfCalendar(
-                            timeSlotViewSettings: const TimeSlotViewSettings(
-                                timeFormat: 'H : mm',
-                                startHour: 3,
-                                timeTextStyle: TextStyle(color: Colors.black)),
-                            headerHeight: 0,
-                            viewHeaderHeight: 0,
-                            controller: calendarController,
-                            view: CalendarView.day,
-                            onViewChanged:
-                                (ViewChangedDetails viewChangedDetails) {
-                              SchedulerBinding.instance.addPostFrameCallback((duration) {
-                                setState(() {});
-                              });
-                              if (calendarController.view ==
-                                      CalendarView.week ||
-                                  true) {
-                                _headerText = DateFormat('MMMM')
-                                    .format(viewChangedDetails.visibleDates[
-                                        viewChangedDetails
-                                                .visibleDates.length ~/
-                                            2])
-                                    .toString();
-                                _headerTextYear = DateFormat('yyyy')
-                                    .format(viewChangedDetails.visibleDates[
-                                        viewChangedDetails
-                                                .visibleDates.length ~/
-                                            2])
-                                    .toString();
+                      child: SfCalendar(
+                        timeSlotViewSettings: const TimeSlotViewSettings(
+                            timeFormat: 'H : mm',
+                            startHour: 3,
+                            timeTextStyle: TextStyle(color: Colors.black)),
+                        headerHeight: 0,
+                        viewHeaderHeight: 0,
+                        controller: calendarController,
+                        view: CalendarView.day,
+                        onViewChanged: (ViewChangedDetails viewChangedDetails) {
+                          SchedulerBinding.instance
+                              .addPostFrameCallback((duration) {
+                            setState(() {});
+                          });
+                          if (calendarController.view == CalendarView.week ||
+                              true) {
+                            _headerText = DateFormat('MMMM')
+                                .format(viewChangedDetails.visibleDates[
+                                    viewChangedDetails.visibleDates.length ~/
+                                        2])
+                                .toString();
+                            _headerTextYear = DateFormat('yyyy')
+                                .format(viewChangedDetails.visibleDates[
+                                    viewChangedDetails.visibleDates.length ~/
+                                        2])
+                                .toString();
 
-                                currentDate =
-                                    viewChangedDetails.visibleDates[0].weekday;
+                            currentDate =
+                                viewChangedDetails.visibleDates[0].weekday;
 
-                                selectedDate =
-                                    viewChangedDetails.visibleDates[0];
+                            selectedDate = viewChangedDetails.visibleDates[0];
 
-                                for (int i = 0; i < 7; i++) {
-                                  _calendarHeader[i] = DateFormat('EEE')
-                                      .format(viewChangedDetails.visibleDates[0]
-                                          .add(Duration(
-                                              days: i -
-                                                  viewChangedDetails
-                                                      .visibleDates[0].weekday +
-                                                  1)))
-                                      .toString();
-                                }
-                                for (int i = 0; i < 7; i++) {
-                                  _calendarHeaderDate[i] = DateFormat('d')
-                                      .format(viewChangedDetails.visibleDates[0]
-                                          .add(Duration(
-                                              days: i -
-                                                  viewChangedDetails
-                                                      .visibleDates[0].weekday +
-                                                  1)))
-                                      .toString();
-                                }
-                              }
-                              icon1 = const Icon(
-                                Icons.circle,
-                                size: 5,
-                                color: Colors.green,
-                              );
-                              SchedulerBinding.instance.addPostFrameCallback((duration) {
-                                setState(() {});
-                              });
-                            },
-                            firstDayOfWeek: 1,
-                            dataSource: _events,
-                            // _getCalendarDataSource(),
-                            headerDateFormat: "MMMM",
-                            blackoutDatesTextStyle: const TextStyle(
-                              color: Colors.red,
-                            ),
-                            appointmentTextStyle: const TextStyle(
-                              color: Colors.red,
-                            ),
-                            monthViewSettings: const MonthViewSettings(
-                              numberOfWeeksInView: 6,
-                              showAgenda: true,
-                            ),
-                            onSelectionChanged: (details) {})),
+                            for (int i = 0; i < 7; i++) {
+                              _calendarHeader[i] = DateFormat('EEE')
+                                  .format(viewChangedDetails.visibleDates[0]
+                                      .add(Duration(
+                                          days: i -
+                                              viewChangedDetails
+                                                  .visibleDates[0].weekday +
+                                              1)))
+                                  .toString();
+                            }
+                            for (int i = 0; i < 7; i++) {
+                              _calendarHeaderDate[i] = DateFormat('d')
+                                  .format(viewChangedDetails.visibleDates[0]
+                                      .add(Duration(
+                                          days: i -
+                                              viewChangedDetails
+                                                  .visibleDates[0].weekday +
+                                              1)))
+                                  .toString();
+                            }
+                          }
+                          icon1 = const Icon(
+                            Icons.circle,
+                            size: 5,
+                            color: Colors.green,
+                          );
+                          SchedulerBinding.instance
+                              .addPostFrameCallback((duration) {
+                            setState(() {});
+                          });
+                        },
+                        firstDayOfWeek: 1,
+                        dataSource: _events,
+                        // _getCalendarDataSource(),
+                        headerDateFormat: "MMMM",
+                        blackoutDatesTextStyle: const TextStyle(
+                          color: Colors.red,
+                        ),
+                        appointmentTextStyle: const TextStyle(
+                          color: Colors.red,
+                        ),
+                        monthViewSettings: const MonthViewSettings(
+                          numberOfWeeksInView: 6,
+                          showAgenda: true,
+                        ),
+                        onSelectionChanged: (details) {},
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
           Positioned(
-              top: 47,
-              right: 10,
-              child: InkWell(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: ColorPalette.main,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: SvgPicture.asset(
-                      "assets/images/svg/calendar_schedule.svg"),
+            top: 47,
+            right: 10,
+            child: InkWell(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ColorPalette.main,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                onTap: () => AppRouter.push(
-                  context,
-                  const FullCalendarScreen(),
-                  rootNavigator: true,
-                ).then((value) {
+                padding: const EdgeInsets.all(10),
+                child:
+                    SvgPicture.asset("assets/images/svg/calendar_schedule.svg"),
+              ),
+              onTap: () => AppRouter.push(
+                context,
+                const FullCalendarScreen(),
+                rootNavigator: true,
+              ).then(
+                (value) {
                   if (value is DateTime) {
-                    SchedulerBinding.instance.addPostFrameCallback((duration) {
-                      setState(() {
-                        calendarController.displayDate = value;
-                        calendarController.selectedDate = value;
-                        calendarController.view = CalendarView.day;
-                        appointments = getMeetingDetails(date: calendarController.selectedDate);
-                        _events = DataSource(appointments);
-                      });
-                    });
+                    SchedulerBinding.instance.addPostFrameCallback(
+                      (duration) {
+                        setState(() {
+                          calendarController.displayDate = value;
+                          calendarController.selectedDate = value;
+                          calendarController.view = CalendarView.day;
+                          appointments = getMeetingDetails(
+                              date: calendarController.selectedDate);
+                          _events = DataSource(appointments);
+                        });
+                      },
+                    );
                   }
-                }),
-              )),
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -342,15 +347,16 @@ class _AppointmentDataSource extends CalendarDataSource {
 
 //потом надо будет вычленить в отдельный файл пока пусть тут постоит
 class Meeting {
-  Meeting(
-      {required this.from,
-      required this.to,
-      this.background = Colors.green,
-      this.isAllDay = false,
-      this.eventName = '',
-      this.startTimeZone = '',
-      this.endTimeZone = '',
-      this.description = ''});
+  Meeting({
+    required this.from,
+    required this.to,
+    this.background = Colors.green,
+    this.isAllDay = false,
+    this.eventName = '',
+    this.startTimeZone = '',
+    this.endTimeZone = '',
+    this.description = '',
+  });
 
   final String eventName;
   final DateTime from;

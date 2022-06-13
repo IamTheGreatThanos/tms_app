@@ -3,20 +3,22 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/cars_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
+import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
-
-import '../../screens/user_confirmation/ui/_vmodel.dart';
-import '../models/dto_models/response/cars_response.dart';
-import '../models/dto_models/response/cities_response.dart';
-import '../models/dto_models/response/marks_response.dart';
-import '../models/dto_models/response/order_history_response.dart';
-import '../models/dto_models/response/positions_response.dart';
+import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
+import 'package:flutter/foundation.dart';
 
 const _networkService = 'NetworkService';
 
@@ -30,7 +32,7 @@ class NetworkService {
   }
 
   Future<PhoneRegisterResponse> registerPhone(String phone) async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "phone": phone,
       }),
@@ -41,8 +43,10 @@ class NetworkService {
   }
 
   Future<PhoneCodeRegisterResponse> registerPhoneCode(
-      String phone, String code) async {
-    var response = await _dioWrapper.sendRequest(
+    String phone,
+    String code,
+  ) async {
+    final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "phone": phone,
         "code": code,
@@ -53,10 +57,14 @@ class NetworkService {
     return PhoneCodeRegisterResponse.fromJson(response.data);
   }
 
-  Future<PhoneCodeRegisterResponse> registerConfirm(String password,
-      String registerToken, String deviceOs, String deviceToken) async {
+  Future<PhoneCodeRegisterResponse> registerConfirm(
+    String password,
+    String registerToken,
+    String deviceOs,
+    String deviceToken,
+  ) async {
     _dioWrapper.tokensRepository.save(registerToken);
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "password": password,
       }),
@@ -67,7 +75,7 @@ class NetworkService {
   }
 
   Future<LoginResponse> login(String phone, String password) async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "phone": phone,
         "password": password,
@@ -87,7 +95,7 @@ class NetworkService {
     } else {
       deviceOS = 'android';
     }
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "device_token": deviceToken,
         "device_os": deviceOS,
@@ -100,7 +108,7 @@ class NetworkService {
   }
 
   Future<ProfileResponse> getProfile() async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "profile",
       method: NetworkMethod.get,
     );
@@ -108,7 +116,7 @@ class NetworkService {
   }
 
   Future<PositionsResponse> getPositions() async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "positions",
       method: NetworkMethod.get,
     );
@@ -116,7 +124,7 @@ class NetworkService {
   }
 
   Future<CarsResponse> getCars() async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "cars",
       method: NetworkMethod.get,
     );
@@ -124,7 +132,7 @@ class NetworkService {
   }
 
   Future<MarksResponse> getMarks() async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "marks",
       method: NetworkMethod.get,
     );
@@ -132,7 +140,7 @@ class NetworkService {
   }
 
   Future<CitiesResponse> getCities() async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "cities",
       method: NetworkMethod.get,
     );
@@ -142,32 +150,36 @@ class NetworkService {
   Future<OrdersResponse> getOrdersByCities({
     String? cityId,
   }) async {
-    var response = await _dioWrapper.sendRequest(
+    final response = await _dioWrapper.sendRequest(
       path: "orders",
       formData: FormData.fromMap({
         if (cityId != null) "city_id": cityId,
       }),
       method: NetworkMethod.post,
     );
-    return OrdersResponse.fromJson(response.data);
+    return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<void> verify(PersonalInfoVModel vModel) async {
     await _dioWrapper.sendRequest(
-        path: "verify",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap(await vModel.toJson()));
+      path: "verify",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap(await vModel.toJson()),
+    );
   }
 
   Future<OrderData> acceptOrder(int orderId) async {
     final response = await _dioWrapper.sendRequest(
-        path: "/order/accept",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "order_id": orderId,
-        }));
+      path: "/order/accept",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "order_id": orderId,
+      }),
+    );
     print(response);
-    return OrderData.fromJson(response.data["data"]);
+    return OrderData.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
   }
 
   // Future<void> sendDeviceToken(String deviceOs, String deviceToken) async { /// FIXME
@@ -181,29 +193,40 @@ class NetworkService {
   //   print(response);
   // }
 
-  Future<OrderData> stopOrder(int orderId, String cause) async {
+  Future<OrderData> stopOrder(
+    int orderId,
+    String cause, {
+    UserDTO? emptyDriver,
+  }) async {
     final response = await _dioWrapper.sendRequest(
-        path: "/order/stop",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "order_id": orderId,
-          "stop_reason": cause,
-        }));
+      path: "/order/stop",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "order_id": orderId,
+        "stop_reason": cause,
+        if (emptyDriver != null) 'user_id': emptyDriver.id,
+      }),
+    );
     print(response);
-    return OrderData.fromJson(response.data["data"]);
+    return OrderData.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
   }
 
   Future<OrderData> resumeOrder(
     int orderId,
   ) async {
-    var response = await _dioWrapper.sendRequest(
-        path: "order/resume",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "order_id": orderId,
-        }));
+    final response = await _dioWrapper.sendRequest(
+      path: "order/resume",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "order_id": orderId,
+      }),
+    );
     print(response);
-    return OrderData.fromJson(response.data["data"]);
+    return OrderData.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
   }
 
   Future<OrderPointsResponse> orderPoints(int orderId) async {
@@ -216,29 +239,35 @@ class NetworkService {
         },
       ),
     );
-    
+
     return OrderPointsResponse.fromJson(response.data);
   }
 
   Future<OrderPoint> orderPointProducts(int pointId) async {
     final response = await _dioWrapper.sendRequest(
-        path: "/order/point/products",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "point_id": pointId,
-        }));
-    return OrderPoint.fromJson(response.data["data"]);
+      path: "/order/point/products",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "point_id": pointId,
+      }),
+    );
+    return OrderPoint.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
   }
 
   Future<OrderPoint> orderProductFinish(int productId, String code) async {
     final response = await _dioWrapper.sendRequest(
-        path: "/order/point/product/finish",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "product_id": productId,
-          "code": code,
-        }));
-    return OrderPoint.fromJson(response.data["data"]);
+      path: "/order/point/product/finish",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "product_id": productId,
+        "code": code,
+      }),
+    );
+    return OrderPoint.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
   }
 
   Future<OrdersResponse> acceptedOrders() async {
@@ -246,28 +275,32 @@ class NetworkService {
       path: "/orders/accepted",
       method: NetworkMethod.get,
     );
-    return OrdersResponse.fromJson(response.data);
+    return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<OrderHistoryResponse> orderHistory(
-      String startDate, String endDate) async {
-    var response = await _dioWrapper.sendRequest(
-        path: "order/history",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap({
-          "start_date": startDate,
-          "end_date": endDate,
-        }));
-    return OrderHistoryResponse.fromJson(response.data);
+    String startDate,
+    String endDate,
+  ) async {
+    final response = await _dioWrapper.sendRequest(
+      path: "order/history",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "start_date": startDate,
+        "end_date": endDate,
+      }),
+    );
+    return OrderHistoryResponse.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<void> editProfile(
     PersonalDataVModel vModel,
   ) async {
-    var response = await _dioWrapper.sendRequest(
-        path: "profile-edit",
-        method: NetworkMethod.post,
-        formData: FormData.fromMap(await vModel.toJson()));
+    final response = await _dioWrapper.sendRequest(
+      path: "profile-edit",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap(await vModel.toJson()),
+    );
     print(response);
   }
 
@@ -276,5 +309,51 @@ class NetworkService {
       path: "logout",
       method: NetworkMethod.post,
     );
+  }
+
+  Future<List<NotificationDTO>> getNotifications() async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+      path: 'notifications',
+      method: NetworkMethod.get,
+    );
+
+    log('##### getNotifications api:: ${response.statusCode}',
+        name: _networkService);
+
+    List<NotificationDTO> notifications =
+        await compute<List, List<NotificationDTO>>(
+      (List list) {
+        return list
+            .map((e) => NotificationDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    // log(drivers.toString(), name: _networkService);
+
+    return notifications;
+  }
+
+  Future<List<UserDTO>> getEmptyDrivers() async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+      path: 'empty-users',
+      method: NetworkMethod.get,
+    );
+    log('##### getEmptyDrivers api:: ${response.statusCode}',
+        name: _networkService);
+
+    List<UserDTO> drivers = await compute<List, List<UserDTO>>(
+      (List list) {
+        return list
+            .map((e) => UserDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    // log(drivers.toString(), name: _networkService);
+
+    return drivers;
   }
 }

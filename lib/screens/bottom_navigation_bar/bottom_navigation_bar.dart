@@ -6,6 +6,7 @@ import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav
 import 'package:europharm_flutter/screens/bottom_navigation_bar/custom_animated_bottom_bar.dart';
 import 'package:europharm_flutter/screens/orders_screen/ui/orders_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/ui/profile_screen.dart';
+import 'package:europharm_flutter/screens/schedule_screen/ui/calendar_screen.dart';
 import 'package:europharm_flutter/screens/schedule_screen/ui/schedule_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,8 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                           Navigator(
                             key: navigatorKeys[1],
                             onGenerateRoute: (route) => MaterialPageRoute(
-                              builder: (context) => const ScheduleScreen(),
+                              builder: (context) =>
+                                  CalendarScreen(), // const ScheduleScreen(),
                             ),
                           ),
                           Navigator(

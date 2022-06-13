@@ -41,9 +41,12 @@ class DynamicLinkLayer extends StatelessWidget {
   }
 }
 
-Future openDialog(ctx, dynamic dialog) =>
-    Navigator.of(ctx, rootNavigator: true).push(MaterialPageRoute<bool>(
+Future openDialog(BuildContext ctx, dynamic dialog) =>
+    Navigator.of(ctx, rootNavigator: true).push(
+      MaterialPageRoute<bool>(
         builder: (BuildContext context) {
           return dialog;
         },
-        fullscreenDialog: true));
+        fullscreenDialog: true,
+      ),
+    );

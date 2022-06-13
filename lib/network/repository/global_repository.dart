@@ -9,6 +9,8 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_code_
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
+import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
@@ -29,31 +31,40 @@ class GlobalRepository {
   }
 
   Future<LoginResponse> login(String phone, String password) async =>
-      await _networkService.login(phone, password);
+      _networkService.login(phone, password);
 
   Future<PhoneRegisterResponse> registerPhone(String phone) async =>
-      await _networkService.registerPhone(phone);
+      _networkService.registerPhone(phone);
 
   Future<PhoneCodeRegisterResponse> registerPhoneCode(
-          String phone, String code) async =>
-      await _networkService.registerPhoneCode(phone, code);
+    String phone,
+    String code,
+  ) async =>
+      _networkService.registerPhoneCode(phone, code);
 
-  Future<PhoneCodeRegisterResponse> registerConfirm(String password,
-          String registerToken, String deviceOs, String deviceToken) async =>
-      await _networkService.registerConfirm(
-          password, registerToken, deviceOs, deviceToken);
+  Future<PhoneCodeRegisterResponse> registerConfirm(
+    String password,
+    String registerToken,
+    String deviceOs,
+    String deviceToken,
+  ) async =>
+      _networkService.registerConfirm(
+        password,
+        registerToken,
+        deviceOs,
+        deviceToken,
+      );
 
-  Future<ProfileResponse> getProfile() async =>
-      await _networkService.getProfile();
+  Future<ProfileResponse> getProfile() async => _networkService.getProfile();
 
-  Future<CarsResponse> getCars() async => await _networkService.getCars();
+  Future<CarsResponse> getCars() async => _networkService.getCars();
 
-  Future<MarksResponse> getMarks() async => await _networkService.getMarks();
+  Future<MarksResponse> getMarks() async => _networkService.getMarks();
 
   Future<CitiesResponse> getCities() async => _networkService.getCities();
 
   Future<OrdersResponse> acceptedOrders() async =>
-      await _networkService.acceptedOrders();
+      _networkService.acceptedOrders();
 
   Future<OrdersResponse> getOrdersByCities({
     String? cityId,
@@ -61,37 +72,47 @@ class GlobalRepository {
       _networkService.getOrdersByCities(cityId: cityId);
 
   Future<void> verify(PersonalInfoVModel vModel) async =>
-      await _networkService.verify(vModel);
+      _networkService.verify(vModel);
 
   Future<OrderData> acceptOrder(int orderId) async =>
-      await _networkService.acceptOrder(orderId);
+      _networkService.acceptOrder(orderId);
 
   Future<OrderPointsResponse> orderPoints(int orderId) async =>
-      await _networkService.orderPoints(orderId);
+      _networkService.orderPoints(orderId);
 
   Future<OrderPoint> orderPointProducts(int pointId) async =>
-      await _networkService.orderPointProducts(pointId);
+      _networkService.orderPointProducts(pointId);
 
   Future<OrderPoint> orderProductFinish(int productId, String code) async =>
-      await _networkService.orderProductFinish(productId, code);
+      _networkService.orderProductFinish(productId, code);
 
-  Future<OrderData> stopOrder(int orderId, String cause) async =>
-      await _networkService.stopOrder(orderId, cause);
+  Future<OrderData> stopOrder(
+    int orderId,
+    String cause, {
+    UserDTO? emptyDriver,
+  }) async =>
+      _networkService.stopOrder(
+        orderId,
+        cause,
+        emptyDriver: emptyDriver,
+      );
 
   Future<OrderData> resumeOrder(int orderId) async =>
-      await _networkService.resumeOrder(orderId);
+      _networkService.resumeOrder(orderId);
 
   Future<OrderHistoryResponse> orderHistory(
-          String startDate, String endDate) async =>
-      await _networkService.orderHistory(startDate, endDate);
+    String startDate,
+    String endDate,
+  ) async =>
+      _networkService.orderHistory(startDate, endDate);
 
   Future<PositionsResponse> getPositions() async =>
-      await _networkService.getPositions();
+      _networkService.getPositions();
 
   Future<void> editProfile(
     PersonalDataVModel vModel,
   ) async =>
-      await _networkService.editProfile(vModel);
+      _networkService.editProfile(vModel);
 
   // Future<void> sendDeviceToken(String deviceOs, String deviceToken) async =>
   //     await _networkService.sendDeviceToken(deviceOs, deviceToken);
@@ -100,4 +121,9 @@ class GlobalRepository {
       _networkService.sendDeviceToken(deviceToken: deviceToken);
 
   Future<void> logout() async => _networkService.logout();
+
+  Future<List<NotificationDTO>> getNotifications() async => _networkService.getNotifications();
+
+  Future<List<UserDTO>> getEmptyDrivers() async =>
+      _networkService.getEmptyDrivers();
 }

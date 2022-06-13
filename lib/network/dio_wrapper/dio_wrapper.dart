@@ -75,7 +75,7 @@ class DioWrapper {
     return await _dio.download(urlPath, savePath);
   }
 
-  Future<dynamic> sendRequest({
+  Future<Response<dynamic>> sendRequest({
     required String path,
     required NetworkMethod method,
     Encodable? request,
@@ -136,8 +136,8 @@ class DioWrapper {
           queryParameters: queryParameters,
         );
         return response;
-      default:
-        return null;
+      // default:
+      //   return null;
     }
   }
 
@@ -265,6 +265,7 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
     RequestInterceptorHandler handler,
   ) async {
     options.followRedirects = false;
+    options.headers['Accept'] = "application/json";
     options.headers["Authorization"] = 'Bearer ${tokensRepository.accessToken}';
     return super.onRequest(options, handler);
   }

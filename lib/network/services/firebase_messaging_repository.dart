@@ -48,7 +48,7 @@ class FirebaseMessagingRepository {
         onData?.call(message);
       },
       onError: (error) {
-        _logException("on Message Opened App", error);
+        _logException("on Message Opened App", error as Object);
       },
     );
   }
@@ -94,10 +94,10 @@ class FirebaseMessagingRepository {
     }
   }
 
-    Future<String?> generateNewToken() async {
+  Future<String?> generateNewToken() async {
     try {
-       _token = await FirebaseMessaging.instance.getToken();
-       return _token;
+      _token = await FirebaseMessaging.instance.getToken();
+      return _token;
     } catch (e) {
       _logException('OnDeleteFirebaseToken', e.toString());
     }

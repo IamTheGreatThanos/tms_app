@@ -6,7 +6,9 @@ import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/map_screen/map.dart';
+import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/order_card.dart';
+import 'package:europharm_flutter/screens/order_card/ui/order_detail_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
@@ -24,7 +26,7 @@ class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
 
   @override
-  _OrdersScreenState createState() => _OrdersScreenState();
+  State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
@@ -172,7 +174,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             splashRadius: 30,
-                            onPressed: () {},
+                            onPressed: () {
+                              AppRouter.push(
+                                context,
+                                const NotificationsPage(),
+                                rootNavigator: true,
+                              );
+                            },
                             icon: SvgPicture.asset(
                               "assets/images/svg/notifications.svg",
                               color: ColorPalette.main,
@@ -372,6 +380,9 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
         onTap: () {
           AppRouter.push(
             context,
+            // OrderDetailPage(
+            //   order: widget.order,
+            // ),
             OrderCard(
               order: widget.order,
             ),

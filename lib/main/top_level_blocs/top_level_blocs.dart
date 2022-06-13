@@ -5,11 +5,11 @@ import 'package:europharm_flutter/network/tokens_repository/tokens_repository.da
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
 import 'package:europharm_flutter/screens/documents_screen/bloc/bloc_documents_screen.dart';
-import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
+import 'package:europharm_flutter/screens/notifications_screen/bloc/notifications_bloc.dart';
+import 'package:europharm_flutter/screens/order_card/bloc/empty_drivers_cubit.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_history.dart';
-import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,13 +61,25 @@ class TopLevelBlocs extends StatelessWidget {
         BlocProvider(
           create: (context) => BlocProfileScreen(
             repository: context.read<GlobalRepository>(),
-            firebaseMessagingRepository: context.read<FirebaseMessagingRepository>(),
+            firebaseMessagingRepository:
+                context.read<FirebaseMessagingRepository>(),
           )..add(EventProfileInitial()),
         ),
         BlocProvider(
           create: (context) => BlocPersonalData(
             repository: context.read<GlobalRepository>(),
           )..add(EventInitialPersonalData()),
+        ),
+        BlocProvider<EmptyDriversCubit>(
+          create: (context) => EmptyDriversCubit(
+            globalRepository: context.read<GlobalRepository>(),
+          ),
+        ),
+
+        BlocProvider<NotificationsBloc>(
+          create: (context) => NotificationsBloc(
+            globalRepository: context.read<GlobalRepository>(),
+          ),
         ),
       ],
       child: child,

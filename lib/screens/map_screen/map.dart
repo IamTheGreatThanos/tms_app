@@ -62,7 +62,7 @@ class _SessionState extends State<SessionPage> {
                           // longitude: widget.orderData.fromLong!,
                           // latitude: widget.orderData.fromLat!,
                         ),
-                        zoom: 5,
+                        zoom: 10,
                       ),
                     ),
                     animation: const MapAnimation(duration: 2.0),

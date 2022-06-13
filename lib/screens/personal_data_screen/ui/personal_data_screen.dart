@@ -21,7 +21,7 @@ class PersonalDataScreen extends StatefulWidget {
   const PersonalDataScreen({Key? key}) : super(key: key);
 
   @override
-  _PersonalDataScreenState createState() => _PersonalDataScreenState();
+  State<PersonalDataScreen> createState() => _PersonalDataScreenState();
 }
 
 class _PersonalDataScreenState extends State<PersonalDataScreen> {
@@ -170,7 +170,9 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                         height: 25,
                       ),
                       MainButton(
-                        onTap: () => context.read<BlocPersonalData>().add(EventEditProfile(vModel: _vmodel)),
+                        onTap: () => context
+                            .read<BlocPersonalData>()
+                            .add(EventEditProfile(vModel: _vmodel)),
                         color: ColorPalette.green,
                         title: "Сохранить",
                       ),

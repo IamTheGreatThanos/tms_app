@@ -11,8 +11,12 @@ class EventInitialOrderCard extends EventBlocOrderCard {
 
 class EventStopOrder extends EventBlocOrderCard {
   final String cause;
+  final UserDTO? emptyDriver;
 
-  EventStopOrder({required this.cause});
+  EventStopOrder({
+    required this.cause,
+    this.emptyDriver
+  });
 }
 
 class EventStartOrder extends EventBlocOrderCard {}
