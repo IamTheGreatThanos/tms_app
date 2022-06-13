@@ -64,11 +64,15 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                           onChangedDates:
                                               (DateTime? start, DateTime? end) {
                                             context.read<BlocRideHistory>().add(
-                                                EventReadRideHistory(
-                                                    from: start, to: end));
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop();
+                                                  EventReadRideHistory(
+                                                    from: start,
+                                                    to: end,
+                                                  ),
+                                                );
+                                            Navigator.of(
+                                              context,
+                                              rootNavigator: true,
+                                            ).pop();
                                           },
                                           startDate: state.from,
                                           endDate: state.to,
@@ -129,7 +133,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                         "Всего",
                                         style: ProjectTextStyles.ui_16Medium
                                             .copyWith(
-                                                color: ColorPalette.commonGrey),
+                                          color: ColorPalette.commonGrey,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -181,7 +186,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                         "Отменен",
                                         style: ProjectTextStyles.ui_16Medium
                                             .copyWith(
-                                                color: ColorPalette.commonGrey),
+                                          color: ColorPalette.commonGrey,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -192,119 +198,135 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                         ),
                       ),
                       ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.history.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (state.history[index].showTime)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Text(
-                                      DateFormat("dd MMMM").format(
-                                          state.history[index].createdAt!),
-                                      style: ProjectTextStyles.ui_16Medium
-                                          .copyWith(
-                                        color: ColorPalette.commonGrey,
-                                      ),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.history.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (state.history[index].showTime)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: Text(
+                                    DateFormat("dd MMMM").format(
+                                      state.history[index].createdAt!,
+                                    ),
+                                    style:
+                                        ProjectTextStyles.ui_16Medium.copyWith(
+                                      color: ColorPalette.commonGrey,
                                     ),
                                   ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            state.history[index].showTime
-                                                ? 20
-                                                : 0),
-                                        topRight: Radius.circular(
-                                            state.history[index].showTime
-                                                ? 20
-                                                : 0),
-                                        bottomLeft: Radius.circular(
-                                            state.history.length == 1 ||
-                                                    (index != state.history.length - 1 &&
-                                                        state.history[index + 1]
-                                                            .showTime)
-                                                ? 20
-                                                : 0),
-                                        bottomRight:
-                                            Radius.circular(state.history.length == 1 || (index != state.history.length - 1 && state.history[index + 1].showTime) ? 20 : 0)),
-                                    color: ColorPalette.white,
-                                  ),
-                                  child: AppListTile(
-                                    leading: const CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 10,
-                                      backgroundImage: AssetImage(
-                                          "assets/images/svg/history_item.svg"),
-                                    ),
-                                    title: state
-                                        .history[index].order!.description!,
-                                    subtitle: DateFormat("dd.MM.yyyy в kk:mm")
-                                        .format(
-                                            state.history[index].createdAt!),
-                                    trailing: SvgPicture.asset(
-                                        "assets/images/svg/chevrone_right.svg"),
-                                    contentPadding: const EdgeInsets.all(15.0),
-                                  ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Row(
-                                  //       children: [
-                                  //         Container(
-                                  //             decoration: BoxDecoration(
-                                  //                 borderRadius:
-                                  //                     BorderRadius.circular(
-                                  //                         100),
-                                  //                 color:
-                                  //                     ColorPalette.lightGrey),
-                                  //             padding: const EdgeInsets.all(8),
-                                  //             child: SvgPicture.asset(
-                                  //                 "assets/images/svg/history_item.svg")),
-                                  //         const SizedBox(
-                                  //           width: 10,
-                                  //         ),
-                                  //         Column(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.start,
-                                  //           children: [
-                                  //             Text(
-                                  //               state.history[index].order!.description!,
-                                  //               style: ProjectTextStyles
-                                  //                   .ui_16Medium,
-                                  //               overflow: TextOverflow.ellipsis,
-                                  //             ),
-                                  //             const SizedBox(
-                                  //               height: 3,
-                                  //             ),
-                                  //             Text(
-                                  //               DateFormat("dd.MM.yyyy в kk:mm")
-                                  //                   .format(state
-                                  //                       .history[index].createdAt!),
-                                  //               style: ProjectTextStyles
-                                  //                   .ui_12Medium
-                                  //                   .copyWith(
-                                  //                       color: ColorPalette
-                                  //                           .commonGrey),
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //     SvgPicture.asset(
-                                  //         "assets/images/svg/chevrone_right.svg"),
-                                  //   ],
-                                  // ),
                                 ),
-                              ],
-                            );
-                          })
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(
+                                      state.history[index].showTime ? 20 : 0,
+                                    ),
+                                    topRight: Radius.circular(
+                                      state.history[index].showTime ? 20 : 0,
+                                    ),
+                                    bottomLeft: Radius.circular(
+                                      state.history.length == 1 ||
+                                              (index !=
+                                                      state.history.length -
+                                                          1 &&
+                                                  state.history[index + 1]
+                                                      .showTime)
+                                          ? 20
+                                          : 0,
+                                    ),
+                                    bottomRight: Radius.circular(
+                                      state.history.length == 1 ||
+                                              (index !=
+                                                      state.history.length -
+                                                          1 &&
+                                                  state.history[index + 1]
+                                                      .showTime)
+                                          ? 20
+                                          : 0,
+                                    ),
+                                  ),
+                                  color: ColorPalette.white,
+                                ),
+                                child: AppListTile(
+                                  leading: const CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    radius: 10,
+                                    backgroundImage: AssetImage(
+                                      "assets/images/svg/history_item.svg",
+                                    ),
+                                  ),
+                                  title:
+                                      state.history[index].order!.description!,
+                                  subtitle:
+                                      DateFormat("dd.MM.yyyy в kk:mm").format(
+                                    state.history[index].createdAt!,
+                                  ),
+                                  trailing: SvgPicture.asset(
+                                    "assets/images/svg/chevrone_right.svg",
+                                  ),
+                                  contentPadding: const EdgeInsets.all(15.0),
+                                ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Row(
+                                //       children: [
+                                //         Container(
+                                //             decoration: BoxDecoration(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(
+                                //                         100),
+                                //                 color:
+                                //                     ColorPalette.lightGrey),
+                                //             padding: const EdgeInsets.all(8),
+                                //             child: SvgPicture.asset(
+                                //                 "assets/images/svg/history_item.svg")),
+                                //         const SizedBox(
+                                //           width: 10,
+                                //         ),
+                                //         Column(
+                                //           crossAxisAlignment:
+                                //               CrossAxisAlignment.start,
+                                //           children: [
+                                //             Text(
+                                //               state.history[index].order!.description!,
+                                //               style: ProjectTextStyles
+                                //                   .ui_16Medium,
+                                //               overflow: TextOverflow.ellipsis,
+                                //             ),
+                                //             const SizedBox(
+                                //               height: 3,
+                                //             ),
+                                //             Text(
+                                //               DateFormat("dd.MM.yyyy в kk:mm")
+                                //                   .format(state
+                                //                       .history[index].createdAt!),
+                                //               style: ProjectTextStyles
+                                //                   .ui_12Medium
+                                //                   .copyWith(
+                                //                       color: ColorPalette
+                                //                           .commonGrey),
+                                //             )
+                                //           ],
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     SvgPicture.asset(
+                                //         "assets/images/svg/chevrone_right.svg"),
+                                //   ],
+                                // ),
+                              ),
+                            ],
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),

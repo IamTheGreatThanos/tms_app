@@ -41,7 +41,7 @@ class ScrollingYearsCalendar extends StatefulWidget {
   final TextStyle? monthTitleStyle;
 
   @override
-  _ScrollingYearsCalendarState createState() => _ScrollingYearsCalendarState();
+  State<ScrollingYearsCalendar> createState() => _ScrollingYearsCalendarState();
 }
 
 class _ScrollingYearsCalendarState extends State<ScrollingYearsCalendar> {
@@ -60,18 +60,18 @@ class _ScrollingYearsCalendarState extends State<ScrollingYearsCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final int _itemCount = widget.lastDate.year - widget.firstDate.year + 1;
-    final num _initialOffset =
+    final int itemCount = widget.lastDate.year - widget.firstDate.year + 1;
+    final num initialOffset =
         (widget.initialDate.year - widget.firstDate.year) *
             getYearViewHeight(context);
-    final ScrollController _scrollController =
-        ScrollController(initialScrollOffset: _initialOffset.toDouble());
+    final ScrollController scrollController =
+        ScrollController(initialScrollOffset: initialOffset.toDouble());
 
     return ListView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.only(bottom: 0.0),
-      controller: _scrollController,
-      itemCount: _itemCount,
+      controller: scrollController,
+      itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
         final int year = index + widget.firstDate.year;
         return _getYearView(year);

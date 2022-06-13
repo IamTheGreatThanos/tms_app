@@ -66,13 +66,9 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
     final dayFormat = DateFormat.d();
     final monthFormat = DateFormat.LLLL();
     if (toDate == null && fromDate != null) {
-      return dayFormat.format(fromDate) +
-          " " +
-          monthFormat.format(fromDate).substring(0, 3);
+      return "${dayFormat.format(fromDate)} ${monthFormat.format(fromDate).substring(0, 3)}";
     } else if (toDate != null && fromDate == null) {
-      return dayFormat.format(toDate) +
-          " " +
-          monthFormat.format(toDate).substring(0, 3);
+      return "${dayFormat.format(toDate)} ${monthFormat.format(toDate).substring(0, 3)}";
     } else if (toDate != null && fromDate != null) {
       return dayFormat.format(fromDate) +
           " " +

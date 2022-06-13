@@ -1,13 +1,12 @@
-import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
+import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-import 'data/bloc/map_cubit.dart';
-import 'data/bloc/map_state.dart';
 
 class SessionPage extends StatefulWidget {
   final int orderId;
@@ -24,7 +23,7 @@ class _SessionState extends State<SessionPage> {
   YandexMapController? controller;
 
   late final List<MapObject> mapObjects = [];
-  final placemarks = [];
+  final List<PlacemarkMapObject> placemarks = [];
   final List<RequestPoint> points = [];
   final List<DrivingSessionResult> results = [];
 
@@ -49,9 +48,11 @@ class _SessionState extends State<SessionPage> {
             return YandexMap(
               onMapCreated: (YandexMapController yandexMapController) async {
                 controller = yandexMapController;
-                final double? lat = double.tryParse(state.loadedMap.first.lat!);
+                final double? lat = double.tryParse(
+                  state.loadedMap.first.lat!.toString(),
+                ); // FIXME
                 final double? long =
-                    double.tryParse(state.loadedMap.first.long!);
+                    double.tryParse(state.loadedMap.first.long!.toString());
                 if (lat != null && long != null) {
                   controller!.moveCamera(
                     CameraUpdate.newCameraPosition(
@@ -65,7 +66,7 @@ class _SessionState extends State<SessionPage> {
                         zoom: 10,
                       ),
                     ),
-                    animation: const MapAnimation(duration: 2.0),
+                    animation: const MapAnimation(),
                   );
                 }
               },
@@ -113,10 +114,13 @@ class _SessionState extends State<SessionPage> {
               latitude: lat, // data[i].lat as double,
               longitude: long, // data[i].long as double,
             ),
-            icon: PlacemarkIcon.single(PlacemarkIconStyle(
+            icon: PlacemarkIcon.single(
+              PlacemarkIconStyle(
                 image: BitmapDescriptor.fromAssetImage(
-                    'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png'),
-                scale: 1)),
+                  'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png',
+                ),
+              ),
+            ),
           ),
         );
       }
@@ -159,7 +163,7 @@ class _SessionState extends State<SessionPage> {
 
         if (i == result.routes!.length - 1) {
           final state = BlocProvider.of<MapCubit>(context);
-          state.emit(MapInitState());
+          state.changeToMapInitState(); // state.emit(MapInitState());
         }
       }
     }

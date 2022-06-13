@@ -73,7 +73,8 @@ class _TransferOrderBottomSheetState extends State<TransferOrderBottomSheet> {
                         } else {
                           BlocProvider.of<EmptyDriversCubit>(context)
                               .searchDrivers(
-                                  searchText: textEditingController.text);
+                            searchText: textEditingController.text,
+                          );
                         }
                       },
                       onSubmitted: (value) {
@@ -83,7 +84,8 @@ class _TransferOrderBottomSheetState extends State<TransferOrderBottomSheet> {
                         } else {
                           BlocProvider.of<EmptyDriversCubit>(context)
                               .searchDrivers(
-                                  searchText: textEditingController.text);
+                            searchText: textEditingController.text,
+                          );
                         }
                       },
                       controller: textEditingController,
@@ -100,45 +102,48 @@ class _TransferOrderBottomSheetState extends State<TransferOrderBottomSheet> {
                       },
                       builder: (context, state) {
                         return state.maybeWhen(
-                            loadedState: (List<UserDTO> drivers) {
-                          return ListView.separated(
-                            itemCount: drivers.length,
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.onDrag,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
+                          loadedState: (List<UserDTO> drivers) {
+                            return ListView.separated(
+                              itemCount: drivers.length,
+                              keyboardDismissBehavior:
+                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
                                     top: 8.0,
                                     bottom:
-                                        drivers.length - 1 == index ? 60 : 8),
-                                child: EmployerCard(
-                                  driver: drivers[index],
-                                  isChosen: chosenDriver != null &&
-                                      drivers[index].id == chosenDriver!.id,
-                                  callBack: ({required UserDTO emptyDriver}) {
-                                    setState(() {
-                                      chosenDriver = emptyDriver;
-                                    });
-                                  },
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider(
-                                thickness: 1,
-                                height: 2,
-                                color: ColorPalette.lightGrey,
-                              );
-                            },
-                          );
-                        }, orElse: () {
-                          return const SizedBox(
-                            height: 400,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        });
+                                        drivers.length - 1 == index ? 60 : 8,
+                                  ),
+                                  child: EmployerCard(
+                                    driver: drivers[index],
+                                    isChosen: chosenDriver != null &&
+                                        drivers[index].id == chosenDriver!.id,
+                                    callBack: ({required UserDTO emptyDriver}) {
+                                      setState(() {
+                                        chosenDriver = emptyDriver;
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const Divider(
+                                  thickness: 1,
+                                  height: 2,
+                                  color: ColorPalette.lightGrey,
+                                );
+                              },
+                            );
+                          },
+                          orElse: () {
+                            return const SizedBox(
+                              height: 400,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        );
                       },
                     ),
                   ),

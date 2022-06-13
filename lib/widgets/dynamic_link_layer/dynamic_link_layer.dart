@@ -2,10 +2,9 @@ import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/screens/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:europharm_flutter/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:europharm_flutter/widgets/custom_loading_page.dart';
+import 'package:europharm_flutter/widgets/dynamic_link_layer/bloc/dynamic_link_layer_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'bloc/dynamic_link_layer_bloc.dart';
 
 class DynamicLinkLayer extends StatelessWidget {
   final bool isAuthenticated;
@@ -41,7 +40,7 @@ class DynamicLinkLayer extends StatelessWidget {
   }
 }
 
-Future openDialog(BuildContext ctx, dynamic dialog) =>
+Future openDialog(BuildContext ctx, Widget dialog) =>
     Navigator.of(ctx, rootNavigator: true).push(
       MaterialPageRoute<bool>(
         builder: (BuildContext context) {

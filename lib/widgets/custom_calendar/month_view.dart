@@ -1,10 +1,8 @@
-import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
 
 import 'day_number.dart';
 import 'month_title.dart';
 import 'utils/dates.dart';
-import 'utils/screen_sizes.dart';
 
 class MonthView extends StatelessWidget {
   const MonthView({

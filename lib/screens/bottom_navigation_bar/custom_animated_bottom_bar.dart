@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomAnimatedBottomBar extends StatelessWidget {
-  CustomAnimatedBottomBar({
+  const CustomAnimatedBottomBar({
     Key? key,
     this.selectedIndex = 0,
     this.showElevation = true,
@@ -56,7 +56,7 @@ class CustomAnimatedBottomBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: mainAxisAlignment,
             children: items.map((item) {
-              var index = items.indexOf(item);
+              final index = items.indexOf(item);
               return GestureDetector(
                 onTap: () => onItemSelected(index),
                 child: _ItemWidget(
@@ -113,14 +113,12 @@ class _ItemWidget extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             width: isSelected ? 130 : 50,
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Row(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SvgPicture.asset(
                   item.icon,
@@ -129,7 +127,7 @@ class _ItemWidget extends StatelessWidget {
                 if (isSelected)
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: DefaultTextStyle.merge(
                         style: TextStyle(
                           color: item.activeColor,

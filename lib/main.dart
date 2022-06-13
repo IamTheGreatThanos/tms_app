@@ -1,6 +1,19 @@
 import 'package:europharm_flutter/firebase_options.dart';
+import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main/dependency_initializer/dependency_initializer.dart';
+import 'package:europharm_flutter/main/dependency_provider/dependency_provider.dart';
+import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
+import 'package:europharm_flutter/main/top_level_blocs/top_level_blocs.dart';
+import 'package:europharm_flutter/managers/secure_storage_manager/secure_storage_manager.dart';
+import 'package:europharm_flutter/managers/user_store.dart';
+import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:europharm_flutter/network/services/network_service.dart';
+import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/utils/scroll_glow_disable.dart';
+import 'package:europharm_flutter/widgets/dynamic_link_layer/dynamic_link_layer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +22,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'generated/l10n.dart';
-import 'main/dependency_initializer/dependency_initializer.dart';
-import 'main/dependency_provider/dependency_provider.dart';
-import 'main/login_bloc/login_bloc.dart';
-import 'main/top_level_blocs/top_level_blocs.dart';
-import 'managers/secure_storage_manager/secure_storage_manager.dart';
-import 'managers/user_store.dart';
-import 'network/dio_wrapper/dio_wrapper.dart';
-import 'network/repository/global_repository.dart';
-import 'network/repository/hive_repository.dart';
-import 'network/services/network_service.dart';
-import 'network/tokens_repository/tokens_repository.dart';
-import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
 
 const String baseUrl = 'http://185.129.50.172/api/v1/';
 
@@ -135,9 +134,10 @@ class MainAuthorization extends StatelessWidget {
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       },
-      buildWhen: (p, c) => (c is LoadingLoginState ||
+      buildWhen: (p, c) =>
+          c is LoadingLoginState ||
           c is UnauthorizedState ||
-          c is AuthorizedState),
+          c is AuthorizedState,
       builder: (context, state) {
         if (state is LoadingLoginState) {
           return const Material(
@@ -150,13 +150,13 @@ class MainAuthorization extends StatelessWidget {
         }
         if (state is UnauthorizedState) {
           return const Application(
-            false,
+            isAuthenticated: false,
             key: ValueKey(0),
           );
         }
         if (state is AuthorizedState) {
           return const Application(
-            true,
+            isAuthenticated: true,
             key: ValueKey(1),
           );
         }
@@ -169,8 +169,8 @@ class MainAuthorization extends StatelessWidget {
 class Application extends StatelessWidget {
   final bool isAuthenticated;
 
-  const Application(
-    this.isAuthenticated, {
+  const Application({
+    required this.isAuthenticated,
     Key? key,
   }) : super(key: key);
 

@@ -1,19 +1,20 @@
 class MapModel {
   MapModel({
-      bool? success, 
-      int? statusCode, 
-      String? message, 
-      List<Data>? data,}){
+    bool? success,
+    int? statusCode,
+    String? message,
+    List<Data>? data,
+  }) {
     _success = success;
     _statusCode = statusCode;
     _message = message;
     _data = data;
-}
+  }
 
   MapModel.fromJson(dynamic json) {
-    _success = json['success'];
-    _statusCode = json['statusCode'];
-    _message = json['message'];
+    _success = json['success'] as bool?;
+    _statusCode = json['statusCode'] as int?;
+    _message = json['message'] as String?;
     if (json['data'] != null) {
       _data = [];
       json['data'].forEach((v) {
@@ -41,26 +42,26 @@ class MapModel {
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      int? id, 
-      String? name, 
-      String? address, 
-      String? status, 
-      String? date, 
-      String? from, 
-      String? to, 
-      double? lat, 
-      double? long, 
-      String? type, 
-      String? eta, 
-      List<Products>? products, 
-      int? countProducts, 
-      String? createdAt, 
-      String? updatedAt,}){
+    int? id,
+    String? name,
+    String? address,
+    String? status,
+    String? date,
+    String? from,
+    String? to,
+    double? lat,
+    double? long,
+    String? type,
+    String? eta,
+    List<Products>? products,
+    int? countProducts,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _name = name;
     _address = address;
@@ -76,7 +77,7 @@ class Data {
     _countProducts = countProducts;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -153,18 +154,18 @@ class Data {
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }
 
 class Products {
   Products({
-      int? id, 
-      int? point, 
-      String? name, 
-      String? code, 
-      String? status, 
-      String? createdAt, 
-      String? updatedAt,}){
+    int? id,
+    int? point,
+    String? name,
+    String? code,
+    String? status,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _point = point;
     _name = name;
@@ -172,7 +173,7 @@ class Products {
     _status = status;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Products.fromJson(dynamic json) {
     _id = json['id'];
@@ -210,5 +211,4 @@ class Products {
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

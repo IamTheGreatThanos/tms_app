@@ -1,6 +1,5 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
@@ -8,10 +7,7 @@ import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/map_screen/map.dart';
 import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/order_card.dart';
-import 'package:europharm_flutter/screens/order_card/ui/order_detail_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
-import 'package:europharm_flutter/screens/user_confirmation/bloc/bloc_verification.dart';
-import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';

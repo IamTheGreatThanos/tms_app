@@ -176,7 +176,9 @@ class NetworkService {
         "order_id": orderId,
       }),
     );
-    print(response);
+    log('#####acceptOrder api::: ${response.toString()}',
+        name: _networkService);
+
     return OrderData.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
@@ -207,7 +209,7 @@ class NetworkService {
         if (emptyDriver != null) 'user_id': emptyDriver.id,
       }),
     );
-    print(response);
+    log('#####stopOrder api::: ${response.toString()}', name: _networkService);
     return OrderData.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
@@ -223,7 +225,11 @@ class NetworkService {
         "order_id": orderId,
       }),
     );
-    print(response);
+    log(
+      '#####resumeOrder api::: ${response.toString()}',
+      name: _networkService,
+    );
+
     return OrderData.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
@@ -301,7 +307,10 @@ class NetworkService {
       method: NetworkMethod.post,
       formData: FormData.fromMap(await vModel.toJson()),
     );
-    print(response);
+    log(
+      '#####editProfile api::: ${response.toString()}',
+      name: _networkService,
+    );
   }
 
   Future<void> logout() async {
@@ -317,10 +326,12 @@ class NetworkService {
       method: NetworkMethod.get,
     );
 
-    log('##### getNotifications api:: ${response.statusCode}',
-        name: _networkService);
+    log(
+      '##### getNotifications api:: ${response.statusCode}',
+      name: _networkService,
+    );
 
-    List<NotificationDTO> notifications =
+    final List<NotificationDTO> notifications =
         await compute<List, List<NotificationDTO>>(
       (List list) {
         return list
@@ -340,10 +351,12 @@ class NetworkService {
       path: 'empty-users',
       method: NetworkMethod.get,
     );
-    log('##### getEmptyDrivers api:: ${response.statusCode}',
-        name: _networkService);
+    log(
+      '##### getEmptyDrivers api:: ${response.statusCode}',
+      name: _networkService,
+    );
 
-    List<UserDTO> drivers = await compute<List, List<UserDTO>>(
+    final List<UserDTO> drivers = await compute<List, List<UserDTO>>(
       (List list) {
         return list
             .map((e) => UserDTO.fromJson(e as Map<String, dynamic>))

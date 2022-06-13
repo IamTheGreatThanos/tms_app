@@ -25,4 +25,8 @@ class MapCubit extends Cubit<MapState> {
       emit(MapErrorState(messsage: e.toString()));
     }
   }
+
+  Future<void> changeToMapInitState() async {
+    emit(MapInitState());
+  }
 }
