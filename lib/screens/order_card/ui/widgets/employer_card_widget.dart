@@ -27,10 +27,11 @@ class _EmployerCardState extends State<EmployerCard> {
       },
       child: Row(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.all(8.0),
+          //   child: CircleAvatar(),
+          // ),
+          const SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,11 +39,11 @@ class _EmployerCardState extends State<EmployerCard> {
                 "${widget.driver.name} ${widget.driver.surname}",
                 style: ProjectTextStyles.ui_16Regular,
               ),
-              Text(
-                "Водитель-экспедитор",
-                style: ProjectTextStyles.ui_12Regular
-                    .copyWith(color: ColorPalette.gray),
-              ),
+              // Text(
+              //   "Водитель-экспедитор",
+              //   style: ProjectTextStyles.ui_12Regular
+              //       .copyWith(color: ColorPalette.gray),
+              // ),
             ],
           ),
           const Spacer(),

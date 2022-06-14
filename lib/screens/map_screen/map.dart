@@ -104,8 +104,9 @@ class _SessionState extends State<SessionPage> {
 
   Future<void> _requestRoutes(List<OrderPoint> data) async {
     for (int i = 0; i < data.length; i++) {
-      final double? lat = double.tryParse(data[i].lat as String);
-      final double? long = double.tryParse(data[i].long as String);
+      /// FIXME
+      final double? lat = double.tryParse(data[i].lat.toString());
+      final double? long = double.tryParse(data[i].long.toString());
       if (lat != null && long != null) {
         placemarks.add(
           PlacemarkMapObject(

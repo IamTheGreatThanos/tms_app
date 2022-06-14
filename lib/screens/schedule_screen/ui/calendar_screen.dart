@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -41,10 +39,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           'Выберите дату',
           style: Theme.of(context).textTheme.headline6,
         ),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: SvgPicture.asset('assets/svg/icon_x.svg'),
-        ),
+
         // actions: [
         //   TextButton(
         //     onPressed: () {

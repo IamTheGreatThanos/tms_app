@@ -288,15 +288,21 @@ class NetworkService {
     String startDate,
     String endDate,
   ) async {
-    final response = await _dioWrapper.sendRequest(
-      path: "order/history",
-      method: NetworkMethod.post,
-      formData: FormData.fromMap({
-        "start_date": startDate,
-        "end_date": endDate,
-      }),
-    );
-    return OrderHistoryResponse.fromJson(response.data as Map<String, dynamic>);
+    try {
+      final Response<dynamic> response = await _dioWrapper.sendRequest(
+        path: "order/history",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap({
+          "start_date": startDate,
+          "end_date": endDate,
+        }),
+      );
+      return OrderHistoryResponse.fromJson(
+          response.data as Map<String, dynamic>);
+    } catch (e) {
+      log('### orderHistory ::: $e', name: _networkService);
+      throw Exception(e);
+    }
   }
 
   Future<void> editProfile(

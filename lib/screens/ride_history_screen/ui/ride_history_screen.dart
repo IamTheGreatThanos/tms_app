@@ -262,7 +262,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     ),
                                   ),
                                   title:
-                                      state.history[index].order!.description!,
+                                      '${state.history[index].order}', /// FIXME
                                   subtitle:
                                       DateFormat("dd.MM.yyyy в kk:mm").format(
                                     state.history[index].createdAt!,
