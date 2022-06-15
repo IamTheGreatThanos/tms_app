@@ -97,6 +97,17 @@ class GlobalRepository {
         emptyDriver: emptyDriver,
       );
 
+  Future<OrderData> stopOrderAndChangeDriver(
+    int orderId,
+    String cause, {
+    UserDTO? emptyDriver,
+  }) async =>
+      _networkService.stopOrderAndChangeDriver(
+        orderId,
+        cause,
+        emptyDriver: emptyDriver,
+      );
+
   Future<OrderData> resumeOrder(int orderId) async =>
       _networkService.resumeOrder(orderId);
 
@@ -122,7 +133,8 @@ class GlobalRepository {
 
   Future<void> logout() async => _networkService.logout();
 
-  Future<List<NotificationDTO>> getNotifications() async => _networkService.getNotifications();
+  Future<List<NotificationDTO>> getNotifications() async =>
+      _networkService.getNotifications();
 
   Future<List<UserDTO>> getEmptyDrivers() async =>
       _networkService.getEmptyDrivers();

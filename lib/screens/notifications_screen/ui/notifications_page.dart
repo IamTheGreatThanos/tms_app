@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
 import 'package:europharm_flutter/screens/notifications_screen/bloc/notifications_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,6 +51,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
         child: BlocConsumer<NotificationsBloc, NotificationsState>(
           listener: (context, state) {
             state.whenOrNull(errorState: (AppError error) {});
+          },
+          buildWhen: (p, c) {
+            return c.maybeWhen(
+              loadedState: (List<NotificationDTO> notifications) => true,
+              orElse: () => false,
+            );
           },
           builder: (context, state) {
             return state.maybeWhen(
@@ -104,9 +113,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 );
               },
               orElse: () {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Platform.isIOS
+                    ? const Center(child: CupertinoActivityIndicator())
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      );
               },
             );
           },

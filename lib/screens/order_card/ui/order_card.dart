@@ -94,6 +94,232 @@ class _OrderCardState extends State<OrderCard> {
               },
             ),
           ),
+
+          body: BlocConsumer<BlocOrderCard, StateBlocOrderCard>(
+            listener: (context, state) {
+              if (state is StateLoadingOrderCard) {
+                context.loaderOverlay.show();
+              } else {
+                context.loaderOverlay.hide();
+              }
+              if (state is StateOrderCardError) {
+                showAppDialog(context, body: state.error.message);
+              }
+              if (state is StateStartSuccess) {
+                showAppDialog(context, body: "заказ успешно принят");
+                Navigator.of(context).pop();
+                setState(() {
+                  widget.order.status = "accepted";
+                  widget.order.isCurrent = true;
+                });
+              }
+              if (state is StateResumeSuccess) {
+                showAppDialog(context, body: "заказ успешно запущен");
+                Navigator.of(context).pop();
+                setState(() {
+                  widget.order.status = "accepted";
+                });
+              }
+              if (state is StateShowTimerInitial) {
+                final time = state.startTimer.isBefore(DateTime.now())
+                    ? Duration.zero
+                    : state.startTimer.difference(DateTime.now());
+                showAppBottomSheet(
+                  context,
+                  useRootNavigator: true,
+                  isDismissible: false,
+                  enableDrag: false,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Перерыв",
+                        style: ProjectTextStyles.ui_20Medium,
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: 100,
+                        child: TimerPage(
+                          duration: time,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 18.0,
+                          horizontal: 10,
+                        ),
+                        child: Row(
+                          children: [
+                            MainButton(
+                              width: 80,
+                              icon: "assets/images/svg/arrow_left.svg",
+                              iconColor: ColorPalette.white,
+                              onTap: () {
+                                Navigator.popUntil(
+                                  context,
+                                  (route) => route.isFirst,
+                                );
+                              },
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            MainButton(
+                              width:
+                                  MediaQuery.of(context).size.width - 90 - 20,
+                              onTap: () {
+                                context
+                                    .read<BlocOrderCard>()
+                                    .add(EventResumeOrder());
+                                Navigator.pop(context);
+                              },
+                              title: "Выйти на линию",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              if (state is StateStopSuccess) {
+                showAppDialog(context, body: "заказ успешно остановлен");
+                Navigator.of(context).pop();
+                setState(() {
+                  widget.order.status = "stopped";
+                });
+              }
+
+              if (state is StateChangedDriverOrderCard) {
+                Navigator.pop(context);
+              }
+            },
+            buildWhen: (p, c) => c is StateLoadDataOrderCard,
+            builder: (context, state) {
+              if (state is StateLoadDataOrderCard) {
+                return Column(
+                  children: [
+                    Expanded(
+                      flex: 8,
+                      child: Column(
+                        children: [
+                          Visibility(
+                            visible: state.order.isCurrent,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      //height: 300,
+                                      decoration: BoxDecoration(
+                                        color: ColorPalette.white,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: BlocProvider(
+                                        create: (_) => MapCubit(
+                                          mapRepository: MapRepository(),
+                                          repository:
+                                              context.read<GlobalRepository>(),
+                                        ),
+                                        child: SessionPage(
+                                          orderId: state.order.id!,
+                                          orderData: state.order,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Text(
+                                      DateFormat("dd MMMM, hh:mm")
+                                          .format(state.order.startDate!),
+                                      style: ProjectTextStyles.ui_12Medium
+                                          .copyWith(
+                                        color: ColorPalette.commonGrey,
+                                      ),
+                                    ),
+                                    Text(state.order.from!),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      DateFormat("dd MMMM, hh:mm")
+                                          .format(state.order.endDate!),
+                                      style: ProjectTextStyles.ui_12Medium
+                                          .copyWith(
+                                        color: ColorPalette.commonGrey,
+                                      ),
+                                    ),
+                                    Text(state.order.to!),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  const Divider(
+                                    color: ColorPalette.lightGrey,
+                                    thickness: 2,
+                                  ),
+                                  _BuildOrderItem(
+                                    order: state.order,
+                                    callback: ({
+                                      required bool isOpened,
+                                      required OrderPoint orderPoint,
+                                    }) {
+                                      log('isOpened in _BuildOrderItem : $isOpened');
+                                      setState(() {
+                                        isScan = isOpened;
+                                        point = orderPoint;
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox(); // const Center(child: CircularProgressIndicator());
+            },
+          ),
+
+          ///
+          ///
+          /// FAB section
+          ///
+          ///
           floatingActionButton: BlocBuilder<BlocOrderCard, StateBlocOrderCard>(
             builder: (context, state) {
               if (state is StateLoadDataOrderCard) {
@@ -370,221 +596,6 @@ class _OrderCardState extends State<OrderCard> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          body: BlocConsumer<BlocOrderCard, StateBlocOrderCard>(
-            listener: (context, state) {
-              if (state is StateLoadingOrderCard) {
-                context.loaderOverlay.show();
-              } else {
-                context.loaderOverlay.hide();
-              }
-              if (state is StateOrderCardError) {
-                showAppDialog(context, body: state.error.message);
-              }
-              if (state is StateStartSuccess) {
-                showAppDialog(context, body: "заказ успешно принят");
-                Navigator.of(context).pop();
-                setState(() {
-                  widget.order.status = "accepted";
-                  widget.order.isCurrent = true;
-                });
-              }
-              if (state is StateResumeSuccess) {
-                showAppDialog(context, body: "заказ успешно запущен");
-                Navigator.of(context).pop();
-                setState(() {
-                  widget.order.status = "accepted";
-                });
-              }
-              if (state is StateShowTimerInitial) {
-                final time = state.startTimer.isBefore(DateTime.now())
-                    ? Duration.zero
-                    : state.startTimer.difference(DateTime.now());
-                showAppBottomSheet(
-                  context,
-                  useRootNavigator: true,
-                  isDismissible: false,
-                  enableDrag: false,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Перерыв",
-                        style: ProjectTextStyles.ui_20Medium,
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 100,
-                        child: TimerPage(
-                          duration: time,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 18.0,
-                          horizontal: 10,
-                        ),
-                        child: Row(
-                          children: [
-                            MainButton(
-                              width: 80,
-                              icon: "assets/images/svg/arrow_left.svg",
-                              iconColor: ColorPalette.white,
-                              onTap: () {
-                                Navigator.popUntil(
-                                  context,
-                                  (route) => route.isFirst,
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            MainButton(
-                              width:
-                                  MediaQuery.of(context).size.width - 90 - 20,
-                              onTap: () {
-                                context
-                                    .read<BlocOrderCard>()
-                                    .add(EventResumeOrder());
-                                Navigator.pop(context);
-                              },
-                              title: "Выйти на линию",
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              if (state is StateStopSuccess) {
-                showAppDialog(context, body: "заказ успешно остановлен");
-                Navigator.of(context).pop();
-                setState(() {
-                  widget.order.status = "stopped";
-                });
-              }
-            },
-            buildWhen: (p, c) => c is StateLoadDataOrderCard,
-            builder: (context, state) {
-              if (state is StateLoadDataOrderCard) {
-                return Column(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Column(
-                        children: [
-                          Visibility(
-                            visible: state.order.isCurrent,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.3,
-                                      //height: 300,
-                                      decoration: BoxDecoration(
-                                        color: ColorPalette.white,
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: BlocProvider(
-                                        create: (_) => MapCubit(
-                                          mapRepository: MapRepository(),
-                                          repository:
-                                              context.read<GlobalRepository>(),
-                                        ),
-                                        child: SessionPage(
-                                          orderId: state.order.id!,
-                                          orderData: state.order,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Text(
-                                      DateFormat("dd MMMM, hh:mm")
-                                          .format(state.order.startDate!),
-                                      style: ProjectTextStyles.ui_12Medium
-                                          .copyWith(
-                                        color: ColorPalette.commonGrey,
-                                      ),
-                                    ),
-                                    Text(state.order.from!),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      DateFormat("dd MMMM, hh:mm")
-                                          .format(state.order.endDate!),
-                                      style: ProjectTextStyles.ui_12Medium
-                                          .copyWith(
-                                        color: ColorPalette.commonGrey,
-                                      ),
-                                    ),
-                                    Text(state.order.to!),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  const Divider(
-                                    color: ColorPalette.lightGrey,
-                                    thickness: 2,
-                                  ),
-                                  _BuildOrderItem(
-                                    order: state.order,
-                                    callback: ({
-                                      required bool isOpened,
-                                      required OrderPoint orderPoint,
-                                    }) {
-                                      log('isOpened in _BuildOrderItem : $isOpened');
-                                      setState(() {
-                                        isScan = isOpened;
-                                        point = orderPoint;
-                                      });
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-              return const SizedBox(); // const Center(child: CircularProgressIndicator());
-            },
-          ),
         ),
       ),
     );

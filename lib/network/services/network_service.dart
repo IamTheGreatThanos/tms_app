@@ -215,6 +215,26 @@ class NetworkService {
     );
   }
 
+  Future<OrderData> stopOrderAndChangeDriver(
+    int orderId,
+    String cause, {
+    UserDTO? emptyDriver,
+  }) async {
+    final response = await _dioWrapper.sendRequest(
+      path: "order/change/user",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "order_id": orderId,
+        // "stop_reason": cause,
+        if (emptyDriver != null) 'user_id': emptyDriver.id,
+      }),
+    );
+    log('#####stopOrderAndChangeDriver api::: ${response.toString()}', name: _networkService);
+    return OrderData.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
+  }
+
   Future<OrderData> resumeOrder(
     int orderId,
   ) async {

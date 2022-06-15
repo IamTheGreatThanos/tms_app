@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+const _tag = 'SessionPage';
+
 class SessionPage extends StatefulWidget {
   final int orderId;
   final OrderData orderData;
@@ -16,7 +19,7 @@ class SessionPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SessionState createState() => _SessionState();
+  State<SessionPage> createState() => _SessionState();
 }
 
 class _SessionState extends State<SessionPage> {
@@ -63,7 +66,7 @@ class _SessionState extends State<SessionPage> {
                           // longitude: widget.orderData.fromLong!,
                           // latitude: widget.orderData.fromLat!,
                         ),
-                        zoom: 10,
+                        zoom: 12,
                       ),
                     ),
                     animation: const MapAnimation(),
@@ -103,70 +106,77 @@ class _SessionState extends State<SessionPage> {
   }
 
   Future<void> _requestRoutes(List<OrderPoint> data) async {
-    for (int i = 0; i < data.length; i++) {
-      /// FIXME
-      final double? lat = double.tryParse(data[i].lat.toString());
-      final double? long = double.tryParse(data[i].long.toString());
-      if (lat != null && long != null) {
-        placemarks.add(
-          PlacemarkMapObject(
-            mapId: MapObjectId('placeMark $i'),
-            point: Point(
-              latitude: lat, // data[i].lat as double,
-              longitude: long, // data[i].long as double,
-            ),
-            icon: PlacemarkIcon.single(
-              PlacemarkIconStyle(
-                image: BitmapDescriptor.fromAssetImage(
-                  'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png',
+    try {
+      for (int i = 0; i < data.length; i++) {
+        /// FIXME
+        final double? lat = double.tryParse(data[i].lat.toString());
+        final double? long = double.tryParse(data[i].long.toString());
+        if (lat != null && long != null) {
+          placemarks.add(
+            PlacemarkMapObject(
+              mapId: MapObjectId('placeMark $i'),
+              point: Point(
+                latitude: lat, // data[i].lat as double,
+                longitude: long, // data[i].long as double,
+              ),
+              icon: PlacemarkIcon.single(
+                PlacemarkIconStyle(
+                  image: BitmapDescriptor.fromAssetImage(
+                    'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png',
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }
-    }
-
-    for (int i = 0; i < placemarks.length; i++) {
-      mapObjects.add(placemarks[i]);
-      points.add(
-        RequestPoint(
-          point: placemarks[i].point,
-          requestPointType: RequestPointType.wayPoint,
-        ),
-      );
-    }
-
-    final DrivingSessionResult result = await YandexDriving.requestRoutes(
-      points: points,
-      drivingOptions: const DrivingOptions(
-        initialAzimuth: 0,
-        routesCount: 1,
-        avoidTolls: false,
-      ),
-    ).result;
-
-    if (result.routes != null) {
-      results.add(result);
-      for (int i = 0; i < result.routes!.length; i++) {
-        mapObjects.add(
-          PolylineMapObject(
-            mapId: MapObjectId('route_${i}_polyline'),
-            polyline: Polyline(
-              points: result.routes![i].geometry,
-            ),
-            // coordinates: result.routes![i].geometry,
-            strokeColor:
-                Colors.primaries[Random().nextInt(Colors.primaries.length)],
-            strokeWidth: 3,
-          ),
-        );
-
-        if (i == result.routes!.length - 1) {
-          final state = BlocProvider.of<MapCubit>(context);
-          state.changeToMapInitState(); // state.emit(MapInitState());
+          );
         }
       }
+
+      for (int i = 0; i < placemarks.length; i++) {
+        mapObjects.add(placemarks[i]);
+        points.add(
+          RequestPoint(
+            point: placemarks[i].point,
+            requestPointType: RequestPointType.wayPoint,
+          ),
+        );
+      }
+
+      final DrivingSessionResult result = await YandexDriving.requestRoutes(
+        points: points,
+        drivingOptions: const DrivingOptions(
+          initialAzimuth: 0,
+          routesCount: 1,
+          avoidTolls: false,
+        ),
+      ).result;
+
+      dev.log('YandexDriving.requestRoutes response ::: ${result.error}', name: _tag);
+
+      if (result.routes != null) {
+        results.add(result);
+        for (int i = 0; i < result.routes!.length; i++) {
+          mapObjects.add(
+            PolylineMapObject(
+              mapId: MapObjectId('route_${i}_polyline'),
+              polyline: Polyline(
+                points: result.routes![i].geometry,
+              ),
+              // coordinates: result.routes![i].geometry,
+              strokeColor:
+                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
+              strokeWidth: 3,
+            ),
+          );
+
+          if (i == result.routes!.length - 1) {
+            if (!mounted) return;
+            final state = BlocProvider.of<MapCubit>(context);
+            state.changeToMapInitState(); // state.emit(MapInitState());
+          }
+        }
+      }
+    } catch (e) {
+      dev.log('_requestRoutes error ::: $e', name: _tag);
     }
   }
 }

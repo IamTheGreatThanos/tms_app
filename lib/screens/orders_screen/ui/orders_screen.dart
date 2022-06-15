@@ -1,10 +1,8 @@
+import 'dart:async';
+
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
-import 'package:europharm_flutter/network/repository/global_repository.dart';
-import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
-import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
-import 'package:europharm_flutter/screens/map_screen/map.dart';
 import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/order_card.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
@@ -16,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -28,189 +27,196 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   String? selectedValue;
   // int cityId = 1;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void initState() {
+    // add(
+    //         EventInitialOrdersScreen(cityId: "23"),
+    //       ),
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
-      child: BlocProvider(
-        create: (context) => OrdersBloc(
-          repository: context.read<GlobalRepository>(),
-        )..add(
-            EventInitialOrdersScreen(cityId: "23"),
-          ),
-        child: Scaffold(
-          backgroundColor: ColorPalette.background,
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: BlocConsumer<OrdersBloc, StateBlocOrdersScreen>(
-                buildWhen: (p, c) => c is StateLoadDataOrdersScreen,
-                listener: (context, state) {
-                  if (state is StateLoadingOrdersScreen) {
-                    context.loaderOverlay.show();
-                  } else {
-                    context.loaderOverlay.hide();
-                  }
-                  if (state is StateOrdersScreenError) {
-                    showAppDialog(
-                      context,
-                      body: state.error.message,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is StateLoadDataOrdersScreen) {
-                    return Column(
-                      children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        /// Выберите город. Али алып тастау керек деп айтты
-                        // Row(
-                        //   children: [
-                        //     SvgPicture.asset(
-                        //       "assets/images/svg/location.svg",
-                        //       color: ColorPalette.main,
-                        //     ),
-                        //     SizedBox(
-                        //       width: 200,
-                        //       child: DropdownButtonFormField(
-                        //         iconSize: 0,
-                        //         value:
-                        //             selectedValue ?? state.cities.first.name,
-                        //         decoration: InputDecoration(
-                        //           suffixIcon: SvgPicture.asset(
-                        //             "assets/images/svg/dropdown_arrow.svg",
-                        //           ),
-                        //           suffixIconConstraints: const BoxConstraints(
-                        //             maxWidth: 24,
-                        //             maxHeight: 24,
-                        //           ),
-                        //           isDense: false,
-                        //           hintStyle: ProjectTextStyles.ui_16Medium,
-                        //           enabledBorder: const OutlineInputBorder(
-                        //             borderRadius:
-                        //                 BorderRadius.all(Radius.circular(30)),
-                        //             borderSide: BorderSide.none,
-                        //           ),
-                        //           filled: true,
-                        //           contentPadding: const EdgeInsets.all(16),
-                        //           fillColor: ColorPalette.background,
-                        //         ),
-                        //         items: state.cities.map((CityData city) {
-                        //           return DropdownMenuItem<String>(
-                        //             value: city.name,
-                        //             child: Text(
-                        //               city.name!,
-                        //             ),
-                        //           );
-                        //         }).toList(),
-                        //         validator: (value) {
-                        //           if (value == null) {
-                        //             return 'Выберите город';
-                        //           }
-                        //           return null;
-                        //         },
-                        //         onChanged: (e) {
-                        //           setState(() {
-                        //             cityId = state.cities
-                        //                 .firstWhere(
-                        //                   (element) => element.name == e,
-                        //                 )
-                        //                 .id!;
-                        //           });
-                        //           selectedValue = e.toString();
-                        //           context.read<BlocOrdersScreen>().add(
-                        //                 EventInitialOrdersScreen(
-                        //                   cityId: state.cities
-                        //                       .firstWhere(
-                        //                         (element) =>
-                        //                             element.name == e,
-                        //                       )
-                        //                       .id
-                        //                       .toString(),
-                        //                 ),
-                        //               );
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     /// Али алып тастау керек деп айтты. фильтр кнопка
-                        //     // SvgPicture.asset(
-                        //     //   "assets/images/svg/filter.svg",
-                        //     //   color: ColorPalette.main,
-                        //     // ),
-                        //     // const SizedBox(
-                        //     //   width: 22,
-                        //     // ),
-                        //     SvgPicture.asset(
-                        //       "assets/images/svg/notifications.svg",
-                        //       color: ColorPalette.main,
-                        //     ),
-                        //   ],
-                        // )
-                        //   ],
-                        // ),
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: ColorPalette.background,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: BlocConsumer<OrdersBloc, StateBlocOrdersScreen>(
+              buildWhen: (p, c) => c is StateLoadDataOrdersScreen,
+              listener: (context, state) {
+                if (state is StateLoadingOrdersScreen) {
+                  context.loaderOverlay.show();
+                } else {
+                  context.loaderOverlay.hide();
+                }
+                if (state is StateOrdersScreenError) {
+                  showAppDialog(
+                    context,
+                    body: state.error.message,
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is StateLoadDataOrdersScreen) {
+                  return Column(
+                    children: [
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      /// Выберите город. Али алып тастау керек деп айтты
+                      // Row(
+                      //   children: [
+                      //     SvgPicture.asset(
+                      //       "assets/images/svg/location.svg",
+                      //       color: ColorPalette.main,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 200,
+                      //       child: DropdownButtonFormField(
+                      //         iconSize: 0,
+                      //         value:
+                      //             selectedValue ?? state.cities.first.name,
+                      //         decoration: InputDecoration(
+                      //           suffixIcon: SvgPicture.asset(
+                      //             "assets/images/svg/dropdown_arrow.svg",
+                      //           ),
+                      //           suffixIconConstraints: const BoxConstraints(
+                      //             maxWidth: 24,
+                      //             maxHeight: 24,
+                      //           ),
+                      //           isDense: false,
+                      //           hintStyle: ProjectTextStyles.ui_16Medium,
+                      //           enabledBorder: const OutlineInputBorder(
+                      //             borderRadius:
+                      //                 BorderRadius.all(Radius.circular(30)),
+                      //             borderSide: BorderSide.none,
+                      //           ),
+                      //           filled: true,
+                      //           contentPadding: const EdgeInsets.all(16),
+                      //           fillColor: ColorPalette.background,
+                      //         ),
+                      //         items: state.cities.map((CityData city) {
+                      //           return DropdownMenuItem<String>(
+                      //             value: city.name,
+                      //             child: Text(
+                      //               city.name!,
+                      //             ),
+                      //           );
+                      //         }).toList(),
+                      //         validator: (value) {
+                      //           if (value == null) {
+                      //             return 'Выберите город';
+                      //           }
+                      //           return null;
+                      //         },
+                      //         onChanged: (e) {
+                      //           setState(() {
+                      //             cityId = state.cities
+                      //                 .firstWhere(
+                      //                   (element) => element.name == e,
+                      //                 )
+                      //                 .id!;
+                      //           });
+                      //           selectedValue = e.toString();
+                      //           context.read<BlocOrdersScreen>().add(
+                      //                 EventInitialOrdersScreen(
+                      //                   cityId: state.cities
+                      //                       .firstWhere(
+                      //                         (element) =>
+                      //                             element.name == e,
+                      //                       )
+                      //                       .id
+                      //                       .toString(),
+                      //                 ),
+                      //               );
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     /// Али алып тастау керек деп айтты. фильтр кнопка
+                      //     // SvgPicture.asset(
+                      //     //   "assets/images/svg/filter.svg",
+                      //     //   color: ColorPalette.main,
+                      //     // ),
+                      //     // const SizedBox(
+                      //     //   width: 22,
+                      //     // ),
+                      //     SvgPicture.asset(
+                      //       "assets/images/svg/notifications.svg",
+                      //       color: ColorPalette.main,
+                      //     ),
+                      //   ],
+                      // )
+                      //   ],
+                      // ),
 
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 4,
-                          ),
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            splashRadius: 30,
-                            onPressed: () {
-                              AppRouter.push(
-                                context,
-                                const NotificationsPage(),
-                                rootNavigator: true,
-                              );
-                            },
-                            icon: SvgPicture.asset(
-                              "assets/images/svg/notifications.svg",
-                              color: ColorPalette.main,
-                            ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                        ),
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          splashRadius: 30,
+                          onPressed: () {
+                            AppRouter.push(
+                              context,
+                              const NotificationsPage(),
+                              rootNavigator: true,
+                            );
+                          },
+                          icon: SvgPicture.asset(
+                            "assets/images/svg/notifications.svg",
+                            color: ColorPalette.main,
                           ),
                         ),
+                      ),
 
-                        // const SizedBox(
-                        //   height: 23,
-                        // ),
-                        // if (kDebugMode)
-                        //   GestureDetector(
-                        //     child: const Text("Map test"),
-                        //     onTap: () {
-                        //       // AppRouter.push(context, const DrivingPage(),
-                        //       //     rootNavigator: true);
-                        //       AppRouter.push(
-                        //           context,
-                        //           BlocProvider(
-                        //             create: (_) => MapCubit(
-                        //                 mapRepository: MapRepository(),
-                        //                 repository:
-                        //                     context.read<GlobalRepository>()),
-                        //             child: SessionPage(
-                        //               orderId: 5,
-                        //             ),
-                        //           ),
-                        //           rootNavigator: true);
-                        //     },
-                        //   ),
-                        // const SizedBox(
-                        //   height: 23,
-                        // ),
-                        Expanded(
+                      // const SizedBox(
+                      //   height: 23,
+                      // ),
+                      // if (kDebugMode)
+                      //   GestureDetector(
+                      //     child: const Text("Map test"),
+                      //     onTap: () {
+                      //       // AppRouter.push(context, const DrivingPage(),
+                      //       //     rootNavigator: true);
+                      //       AppRouter.push(
+                      //           context,
+                      //           BlocProvider(
+                      //             create: (_) => MapCubit(
+                      //                 mapRepository: MapRepository(),
+                      //                 repository:
+                      //                     context.read<GlobalRepository>()),
+                      //             child: SessionPage(
+                      //               orderId: 5,
+                      //             ),
+                      //           ),
+                      //           rootNavigator: true);
+                      //     },
+                      //   ),
+                      // const SizedBox(
+                      //   height: 23,
+                      // ),
+                      Expanded(
+                        child: LiquidPullToRefresh(
+                          color: ColorPalette.background,
+                          backgroundColor: ColorPalette.main,
+                          key: _refreshIndicatorKey,
+                          onRefresh: _handleRefresh,
+                          showChildOpacityTransition: false,
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
@@ -339,17 +345,43 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             ),
                           ),
                         ),
-                      ],
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
+                      ),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _handleRefresh() async {
+    BlocProvider.of<OrdersBloc>(context).add(
+      EventInitialOrdersScreen(cityId: "23"),
+    );
+    final Completer<void> completer = Completer<void>();
+
+    Timer(const Duration(seconds: 1), () {
+      completer.complete();
+    });
+
+    return completer.future;
+    // .then<void>((_) {
+    //   ScaffoldMessenger.of(_scaffoldKey.currentState!.context).showSnackBar(
+    //     SnackBar(
+    //       content: const Text('Refresh complete'),
+    //       action: SnackBarAction(
+    //         label: 'RETRY',
+    //         onPressed: () {
+    //           _refreshIndicatorKey.currentState!.show();
+    //         },
+    //       ),
+    //     ),
+    //   );
+    // });
   }
 }
 
@@ -446,76 +478,83 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     )
                 ],
               ),
-              if (widget.order.status?.toLowerCase() == "accepted" ||
-                  widget.order.status?.toLowerCase() == "in_process" ||
-                  widget.order.status?.toLowerCase() == "stopped")
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      width: double.infinity,
-                      height: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Stack(
-                        children: [
-                          BlocProvider(
-                            create: (_) => MapCubit(
-                              mapRepository: MapRepository(),
-                              repository: context.read<GlobalRepository>(),
-                            ),
-                            child: SessionPage(
-                              orderId: widget.order.id!,
-                              orderData: widget.order,
-                            ),
-                          ),
-                          // const YandexMap(
-                          //   tiltGesturesEnabled: false,
-                          //   zoomGesturesEnabled: false,
-                          //   rotateGesturesEnabled: false,
-                          //   scrollGesturesEnabled: false,
-                          //   modelsEnabled: false,
-                          // ),
-                          Positioned(
-                            right: 5,
-                            top: 5,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: ColorPalette.white,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4.5,
-                                horizontal: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 6,
-                                    width: 6,
-                                    decoration: BoxDecoration(
-                                      color: ColorPalette.red,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  const Text(
-                                    "LIVE",
-                                    style: ProjectTextStyles.ui_12Medium,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+
+              ///
+              ///
+              /// Убираем карту с карточки заказа на главной странице
+              ///
+              ///
+              // if (widget.order.status?.toLowerCase() == "accepted" ||
+              //     widget.order.status?.toLowerCase() == "in_process" ||
+              //     widget.order.status?.toLowerCase() == "stopped")
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(vertical: 12.0),
+              //     child: ClipRRect(
+              //       borderRadius: BorderRadius.circular(16),
+              //       child: Container(
+              //         width: double.infinity,
+              //         height: 160,
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(16),
+              //         ),
+              //         child: Stack(
+              //           children: [
+              //             BlocProvider(
+              //               create: (_) => MapCubit(
+              //                 mapRepository: MapRepository(),
+              //                 repository: context.read<GlobalRepository>(),
+              //               ),
+              //               child: SessionPage(
+              //                 orderId: widget.order.id!,
+              //                 orderData: widget.order,
+              //               ),
+              //             ),
+              //             // const YandexMap(
+              //             //   tiltGesturesEnabled: false,
+              //             //   zoomGesturesEnabled: false,
+              //             //   rotateGesturesEnabled: false,
+              //             //   scrollGesturesEnabled: false,
+              //             //   modelsEnabled: false,
+              //             // ),
+              //             Positioned(
+              //               right: 5,
+              //               top: 5,
+              //               child: Container(
+              //                 decoration: BoxDecoration(
+              //                   color: ColorPalette.white,
+              //                   borderRadius: BorderRadius.circular(40),
+              //                 ),
+              //                 padding: const EdgeInsets.symmetric(
+              //                   vertical: 4.5,
+              //                   horizontal: 8,
+              //                 ),
+              //                 child: Row(
+              //                   children: [
+              //                     Container(
+              //                       height: 6,
+              //                       width: 6,
+              //                       decoration: BoxDecoration(
+              //                         color: ColorPalette.red,
+              //                         borderRadius: BorderRadius.circular(100),
+              //                       ),
+              //                     ),
+              //                     const SizedBox(
+              //                       width: 5,
+              //                     ),
+              //                     const Text(
+              //                       "LIVE",
+              //                       style: ProjectTextStyles.ui_12Medium,
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+
               const Divider(
                 thickness: 2,
                 color: ColorPalette.lightGrey,

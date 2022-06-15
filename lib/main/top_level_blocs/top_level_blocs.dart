@@ -7,6 +7,7 @@ import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav
 import 'package:europharm_flutter/screens/documents_screen/bloc/bloc_documents_screen.dart';
 import 'package:europharm_flutter/screens/notifications_screen/bloc/notifications_bloc.dart';
 import 'package:europharm_flutter/screens/order_card/bloc/empty_drivers_cubit.dart';
+import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_history.dart';
@@ -80,6 +81,14 @@ class TopLevelBlocs extends StatelessWidget {
           create: (context) => NotificationsBloc(
             globalRepository: context.read<GlobalRepository>(),
           ),
+        ),
+
+        BlocProvider<OrdersBloc>(
+          create: (context) => OrdersBloc(
+            repository: context.read<GlobalRepository>(),
+          )..add(
+              EventInitialOrdersScreen(cityId: "23"),
+            ),
         ),
       ],
       child: child,

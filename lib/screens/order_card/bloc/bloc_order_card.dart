@@ -8,6 +8,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/orders_resp
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
 part 'events.dart';
@@ -106,6 +107,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   Future<void> _start(
       EventStartOrder event, Emitter<StateBlocOrderCard> emit) async {
     try {
+      emit(StateLoadingOrderCard());
       final result = await repository.acceptOrder(orderId!);
       orderDetails = result;
       orderDetails.isCurrent = true;
@@ -130,22 +132,37 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
     Emitter<StateBlocOrderCard> emit,
   ) async {
     try {
-      final result = await repository.stopOrder(
-        orderId!,
-        event.cause,
-        emptyDriver: event.emptyDriver,
-      );
-      result.isCurrent = true;
-      orderDetails = result;
+      if (event.cause == 'change_driver') {
+        final result = await repository.stopOrderAndChangeDriver(
+          orderId!,
+          event.cause,
+          emptyDriver: event.emptyDriver,
+        );
+        result.isCurrent = true;
+        orderDetails = result;
+      } else {
+        final result = await repository.stopOrder(
+          orderId!,
+          event.cause,
+          emptyDriver: event.emptyDriver,
+        );
+        result.isCurrent = true;
+        orderDetails = result;
+      }
+
       // if(orderDetails.status == "stopped"){
       //   emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
       // }
-      emit(StateStopSuccess());
-      add(EventInitialOrderCard(orderId!));
+      if (event.cause == 'change_driver') {
+        emit(StateChangedDriverOrderCard());
+      } else {
+        emit(StateStopSuccess());
+        add(EventInitialOrderCard(orderId!));
+      }
     } catch (e) {
       emit(
         StateOrderCardError(
-          error: const AppError(message: "Что то пошло не так 4"),
+          error: const AppError(message: "Что то пошло не так (_stop method)"),
         ),
       );
     }

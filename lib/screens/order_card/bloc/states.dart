@@ -11,6 +11,8 @@ class StateStartSuccess extends StateBlocOrderCard {}
 
 class StateResumeSuccess extends StateBlocOrderCard {}
 
+class StateChangedDriverOrderCard extends StateBlocOrderCard {}
+
 class StateLoadOrderDetails extends StateBlocOrderCard {
   final OrderData order;
 
@@ -44,3 +46,20 @@ class StateOrderCardError extends StateBlocOrderCard {
     required this.error,
   });
 }
+
+// @freezed
+// class BlocOrderCardState with _$BlocOrderCardState {
+//   const factory BlocOrderCardState.loadingState() = _LoadingState;
+
+//   const factory BlocOrderCardState.startedState() = _StartedState;
+
+//   const factory BlocOrderCardState.stopedState() = _StopedState;
+
+//   const factory BlocOrderCardState.resumedState() = _ResumedState;
+
+//   const factory BlocOrderCardState.loadingState() = _LoadingState;
+
+//   const factory BlocOrderCardState.loadingState() = _LoadingState;
+
+//   const factory BlocOrderCardState.loadingState() = _LoadingState;
+// }
