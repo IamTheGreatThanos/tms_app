@@ -37,10 +37,21 @@ mixin _$OrderDTO {
   double? get toLong => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'start_date')
-  String? get startDate => throw _privateConstructorUsedError;
+  DateTime? get startDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'end_date')
-  String? get endDate => throw _privateConstructorUsedError;
+  DateTime? get endDate => throw _privateConstructorUsedError;
   String? get payment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'from_city_id')
+  CityDTO? get fromCity => throw _privateConstructorUsedError;
+  @JsonKey(name: 'to_city_id')
+  CityDTO? get toCity => throw _privateConstructorUsedError;
+  List<PointDTO>? get points => throw _privateConstructorUsedError;
+  @JsonKey(name: 'count_points')
+  int? get countPoints => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_status')
+  OrderStatusDTO? get orderStatus =>
+      throw _privateConstructorUsedError; // String? status,
+  bool get isCurrent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,9 +75,19 @@ abstract class $OrderDTOCopyWith<$Res> {
       @JsonKey(name: 'to_lat') double? toLat,
       @JsonKey(name: 'to_long') double? toLong,
       String? status,
-      @JsonKey(name: 'start_date') String? startDate,
-      @JsonKey(name: 'end_date') String? endDate,
-      String? payment});
+      @JsonKey(name: 'start_date') DateTime? startDate,
+      @JsonKey(name: 'end_date') DateTime? endDate,
+      String? payment,
+      @JsonKey(name: 'from_city_id') CityDTO? fromCity,
+      @JsonKey(name: 'to_city_id') CityDTO? toCity,
+      List<PointDTO>? points,
+      @JsonKey(name: 'count_points') int? countPoints,
+      @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
+      bool isCurrent});
+
+  $CityDTOCopyWith<$Res>? get fromCity;
+  $CityDTOCopyWith<$Res>? get toCity;
+  $OrderStatusDTOCopyWith<$Res>? get orderStatus;
 }
 
 /// @nodoc
@@ -93,6 +114,12 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? payment = freezed,
+    Object? fromCity = freezed,
+    Object? toCity = freezed,
+    Object? points = freezed,
+    Object? countPoints = freezed,
+    Object? orderStatus = freezed,
+    Object? isCurrent = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -142,16 +169,73 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       endDate: endDate == freezed
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       payment: payment == freezed
           ? _value.payment
           : payment // ignore: cast_nullable_to_non_nullable
               as String?,
+      fromCity: fromCity == freezed
+          ? _value.fromCity
+          : fromCity // ignore: cast_nullable_to_non_nullable
+              as CityDTO?,
+      toCity: toCity == freezed
+          ? _value.toCity
+          : toCity // ignore: cast_nullable_to_non_nullable
+              as CityDTO?,
+      points: points == freezed
+          ? _value.points
+          : points // ignore: cast_nullable_to_non_nullable
+              as List<PointDTO>?,
+      countPoints: countPoints == freezed
+          ? _value.countPoints
+          : countPoints // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orderStatus: orderStatus == freezed
+          ? _value.orderStatus
+          : orderStatus // ignore: cast_nullable_to_non_nullable
+              as OrderStatusDTO?,
+      isCurrent: isCurrent == freezed
+          ? _value.isCurrent
+          : isCurrent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
+  }
+
+  @override
+  $CityDTOCopyWith<$Res>? get fromCity {
+    if (_value.fromCity == null) {
+      return null;
+    }
+
+    return $CityDTOCopyWith<$Res>(_value.fromCity!, (value) {
+      return _then(_value.copyWith(fromCity: value));
+    });
+  }
+
+  @override
+  $CityDTOCopyWith<$Res>? get toCity {
+    if (_value.toCity == null) {
+      return null;
+    }
+
+    return $CityDTOCopyWith<$Res>(_value.toCity!, (value) {
+      return _then(_value.copyWith(toCity: value));
+    });
+  }
+
+  @override
+  $OrderStatusDTOCopyWith<$Res>? get orderStatus {
+    if (_value.orderStatus == null) {
+      return null;
+    }
+
+    return $OrderStatusDTOCopyWith<$Res>(_value.orderStatus!, (value) {
+      return _then(_value.copyWith(orderStatus: value));
+    });
   }
 }
 
@@ -173,9 +257,22 @@ abstract class _$$_OrderDTOCopyWith<$Res> implements $OrderDTOCopyWith<$Res> {
       @JsonKey(name: 'to_lat') double? toLat,
       @JsonKey(name: 'to_long') double? toLong,
       String? status,
-      @JsonKey(name: 'start_date') String? startDate,
-      @JsonKey(name: 'end_date') String? endDate,
-      String? payment});
+      @JsonKey(name: 'start_date') DateTime? startDate,
+      @JsonKey(name: 'end_date') DateTime? endDate,
+      String? payment,
+      @JsonKey(name: 'from_city_id') CityDTO? fromCity,
+      @JsonKey(name: 'to_city_id') CityDTO? toCity,
+      List<PointDTO>? points,
+      @JsonKey(name: 'count_points') int? countPoints,
+      @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
+      bool isCurrent});
+
+  @override
+  $CityDTOCopyWith<$Res>? get fromCity;
+  @override
+  $CityDTOCopyWith<$Res>? get toCity;
+  @override
+  $OrderStatusDTOCopyWith<$Res>? get orderStatus;
 }
 
 /// @nodoc
@@ -204,6 +301,12 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? payment = freezed,
+    Object? fromCity = freezed,
+    Object? toCity = freezed,
+    Object? points = freezed,
+    Object? countPoints = freezed,
+    Object? orderStatus = freezed,
+    Object? isCurrent = freezed,
   }) {
     return _then(_$_OrderDTO(
       id: id == freezed
@@ -253,15 +356,39 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       endDate: endDate == freezed
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as DateTime?,
       payment: payment == freezed
           ? _value.payment
           : payment // ignore: cast_nullable_to_non_nullable
               as String?,
+      fromCity: fromCity == freezed
+          ? _value.fromCity
+          : fromCity // ignore: cast_nullable_to_non_nullable
+              as CityDTO?,
+      toCity: toCity == freezed
+          ? _value.toCity
+          : toCity // ignore: cast_nullable_to_non_nullable
+              as CityDTO?,
+      points: points == freezed
+          ? _value._points
+          : points // ignore: cast_nullable_to_non_nullable
+              as List<PointDTO>?,
+      countPoints: countPoints == freezed
+          ? _value.countPoints
+          : countPoints // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orderStatus: orderStatus == freezed
+          ? _value.orderStatus
+          : orderStatus // ignore: cast_nullable_to_non_nullable
+              as OrderStatusDTO?,
+      isCurrent: isCurrent == freezed
+          ? _value.isCurrent
+          : isCurrent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -283,7 +410,14 @@ class _$_OrderDTO implements _OrderDTO {
       this.status,
       @JsonKey(name: 'start_date') this.startDate,
       @JsonKey(name: 'end_date') this.endDate,
-      this.payment});
+      this.payment,
+      @JsonKey(name: 'from_city_id') this.fromCity,
+      @JsonKey(name: 'to_city_id') this.toCity,
+      final List<PointDTO>? points,
+      @JsonKey(name: 'count_points') this.countPoints,
+      @JsonKey(name: 'order_status') this.orderStatus,
+      this.isCurrent = false})
+      : _points = points;
 
   factory _$_OrderDTO.fromJson(Map<String, dynamic> json) =>
       _$$_OrderDTOFromJson(json);
@@ -318,16 +452,41 @@ class _$_OrderDTO implements _OrderDTO {
   final String? status;
   @override
   @JsonKey(name: 'start_date')
-  final String? startDate;
+  final DateTime? startDate;
   @override
   @JsonKey(name: 'end_date')
-  final String? endDate;
+  final DateTime? endDate;
   @override
   final String? payment;
+  @override
+  @JsonKey(name: 'from_city_id')
+  final CityDTO? fromCity;
+  @override
+  @JsonKey(name: 'to_city_id')
+  final CityDTO? toCity;
+  final List<PointDTO>? _points;
+  @override
+  List<PointDTO>? get points {
+    final value = _points;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  @JsonKey(name: 'count_points')
+  final int? countPoints;
+  @override
+  @JsonKey(name: 'order_status')
+  final OrderStatusDTO? orderStatus;
+// String? status,
+  @override
+  @JsonKey()
+  final bool isCurrent;
 
   @override
   String toString() {
-    return 'OrderDTO(id: $id, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment)';
+    return 'OrderDTO(id: $id, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent)';
   }
 
   @override
@@ -350,27 +509,42 @@ class _$_OrderDTO implements _OrderDTO {
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.startDate, startDate) &&
             const DeepCollectionEquality().equals(other.endDate, endDate) &&
-            const DeepCollectionEquality().equals(other.payment, payment));
+            const DeepCollectionEquality().equals(other.payment, payment) &&
+            const DeepCollectionEquality().equals(other.fromCity, fromCity) &&
+            const DeepCollectionEquality().equals(other.toCity, toCity) &&
+            const DeepCollectionEquality().equals(other._points, _points) &&
+            const DeepCollectionEquality()
+                .equals(other.countPoints, countPoints) &&
+            const DeepCollectionEquality()
+                .equals(other.orderStatus, orderStatus) &&
+            const DeepCollectionEquality().equals(other.isCurrent, isCurrent));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(day),
-      const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(regionName),
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to),
-      const DeepCollectionEquality().hash(fromLat),
-      const DeepCollectionEquality().hash(fromLong),
-      const DeepCollectionEquality().hash(toLat),
-      const DeepCollectionEquality().hash(toLong),
-      const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(startDate),
-      const DeepCollectionEquality().hash(endDate),
-      const DeepCollectionEquality().hash(payment));
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(day),
+        const DeepCollectionEquality().hash(description),
+        const DeepCollectionEquality().hash(regionName),
+        const DeepCollectionEquality().hash(from),
+        const DeepCollectionEquality().hash(to),
+        const DeepCollectionEquality().hash(fromLat),
+        const DeepCollectionEquality().hash(fromLong),
+        const DeepCollectionEquality().hash(toLat),
+        const DeepCollectionEquality().hash(toLong),
+        const DeepCollectionEquality().hash(status),
+        const DeepCollectionEquality().hash(startDate),
+        const DeepCollectionEquality().hash(endDate),
+        const DeepCollectionEquality().hash(payment),
+        const DeepCollectionEquality().hash(fromCity),
+        const DeepCollectionEquality().hash(toCity),
+        const DeepCollectionEquality().hash(_points),
+        const DeepCollectionEquality().hash(countPoints),
+        const DeepCollectionEquality().hash(orderStatus),
+        const DeepCollectionEquality().hash(isCurrent)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -396,9 +570,15 @@ abstract class _OrderDTO implements OrderDTO {
       @JsonKey(name: 'to_lat') final double? toLat,
       @JsonKey(name: 'to_long') final double? toLong,
       final String? status,
-      @JsonKey(name: 'start_date') final String? startDate,
-      @JsonKey(name: 'end_date') final String? endDate,
-      final String? payment}) = _$_OrderDTO;
+      @JsonKey(name: 'start_date') final DateTime? startDate,
+      @JsonKey(name: 'end_date') final DateTime? endDate,
+      final String? payment,
+      @JsonKey(name: 'from_city_id') final CityDTO? fromCity,
+      @JsonKey(name: 'to_city_id') final CityDTO? toCity,
+      final List<PointDTO>? points,
+      @JsonKey(name: 'count_points') final int? countPoints,
+      @JsonKey(name: 'order_status') final OrderStatusDTO? orderStatus,
+      final bool isCurrent}) = _$_OrderDTO;
 
   factory _OrderDTO.fromJson(Map<String, dynamic> json) = _$_OrderDTO.fromJson;
 
@@ -431,14 +611,308 @@ abstract class _OrderDTO implements OrderDTO {
   String? get status => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'start_date')
-  String? get startDate => throw _privateConstructorUsedError;
+  DateTime? get startDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'end_date')
-  String? get endDate => throw _privateConstructorUsedError;
+  DateTime? get endDate => throw _privateConstructorUsedError;
   @override
   String? get payment => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'from_city_id')
+  CityDTO? get fromCity => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'to_city_id')
+  CityDTO? get toCity => throw _privateConstructorUsedError;
+  @override
+  List<PointDTO>? get points => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'count_points')
+  int? get countPoints => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'order_status')
+  OrderStatusDTO? get orderStatus => throw _privateConstructorUsedError;
+  @override // String? status,
+  bool get isCurrent => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$$_OrderDTOCopyWith<_$_OrderDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+OrderStatusDTO _$OrderStatusDTOFromJson(Map<String, dynamic> json) {
+  return _OrderStatusDTO.fromJson(json);
+}
+
+/// @nodoc
+mixin _$OrderStatusDTO {
+  int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_id')
+  int get orderId => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'stop_reason')
+  String? get stopReason => throw _privateConstructorUsedError;
+  @JsonKey(name: 'stop_timer')
+  DateTime? get stopTimer => throw _privateConstructorUsedError;
+  String? get order => throw _privateConstructorUsedError;
+  @JsonKey(name: 'order_status')
+  String? get orderStatus => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $OrderStatusDTOCopyWith<OrderStatusDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $OrderStatusDTOCopyWith<$Res> {
+  factory $OrderStatusDTOCopyWith(
+          OrderStatusDTO value, $Res Function(OrderStatusDTO) then) =
+      _$OrderStatusDTOCopyWithImpl<$Res>;
+  $Res call(
+      {int id,
+      @JsonKey(name: 'order_id') int orderId,
+      String? status,
+      @JsonKey(name: 'stop_reason') String? stopReason,
+      @JsonKey(name: 'stop_timer') DateTime? stopTimer,
+      String? order,
+      @JsonKey(name: 'order_status') String? orderStatus});
+}
+
+/// @nodoc
+class _$OrderStatusDTOCopyWithImpl<$Res>
+    implements $OrderStatusDTOCopyWith<$Res> {
+  _$OrderStatusDTOCopyWithImpl(this._value, this._then);
+
+  final OrderStatusDTO _value;
+  // ignore: unused_field
+  final $Res Function(OrderStatusDTO) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? orderId = freezed,
+    Object? status = freezed,
+    Object? stopReason = freezed,
+    Object? stopTimer = freezed,
+    Object? order = freezed,
+    Object? orderStatus = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      orderId: orderId == freezed
+          ? _value.orderId
+          : orderId // ignore: cast_nullable_to_non_nullable
+              as int,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stopReason: stopReason == freezed
+          ? _value.stopReason
+          : stopReason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stopTimer: stopTimer == freezed
+          ? _value.stopTimer
+          : stopTimer // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orderStatus: orderStatus == freezed
+          ? _value.orderStatus
+          : orderStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_OrderStatusDTOCopyWith<$Res>
+    implements $OrderStatusDTOCopyWith<$Res> {
+  factory _$$_OrderStatusDTOCopyWith(
+          _$_OrderStatusDTO value, $Res Function(_$_OrderStatusDTO) then) =
+      __$$_OrderStatusDTOCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int id,
+      @JsonKey(name: 'order_id') int orderId,
+      String? status,
+      @JsonKey(name: 'stop_reason') String? stopReason,
+      @JsonKey(name: 'stop_timer') DateTime? stopTimer,
+      String? order,
+      @JsonKey(name: 'order_status') String? orderStatus});
+}
+
+/// @nodoc
+class __$$_OrderStatusDTOCopyWithImpl<$Res>
+    extends _$OrderStatusDTOCopyWithImpl<$Res>
+    implements _$$_OrderStatusDTOCopyWith<$Res> {
+  __$$_OrderStatusDTOCopyWithImpl(
+      _$_OrderStatusDTO _value, $Res Function(_$_OrderStatusDTO) _then)
+      : super(_value, (v) => _then(v as _$_OrderStatusDTO));
+
+  @override
+  _$_OrderStatusDTO get _value => super._value as _$_OrderStatusDTO;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? orderId = freezed,
+    Object? status = freezed,
+    Object? stopReason = freezed,
+    Object? stopTimer = freezed,
+    Object? order = freezed,
+    Object? orderStatus = freezed,
+  }) {
+    return _then(_$_OrderStatusDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      orderId: orderId == freezed
+          ? _value.orderId
+          : orderId // ignore: cast_nullable_to_non_nullable
+              as int,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stopReason: stopReason == freezed
+          ? _value.stopReason
+          : stopReason // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stopTimer: stopTimer == freezed
+          ? _value.stopTimer
+          : stopTimer // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      order: order == freezed
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orderStatus: orderStatus == freezed
+          ? _value.orderStatus
+          : orderStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_OrderStatusDTO implements _OrderStatusDTO {
+  const _$_OrderStatusDTO(
+      {required this.id,
+      @JsonKey(name: 'order_id') required this.orderId,
+      this.status,
+      @JsonKey(name: 'stop_reason') this.stopReason,
+      @JsonKey(name: 'stop_timer') this.stopTimer,
+      this.order,
+      @JsonKey(name: 'order_status') this.orderStatus});
+
+  factory _$_OrderStatusDTO.fromJson(Map<String, dynamic> json) =>
+      _$$_OrderStatusDTOFromJson(json);
+
+  @override
+  final int id;
+  @override
+  @JsonKey(name: 'order_id')
+  final int orderId;
+  @override
+  final String? status;
+  @override
+  @JsonKey(name: 'stop_reason')
+  final String? stopReason;
+  @override
+  @JsonKey(name: 'stop_timer')
+  final DateTime? stopTimer;
+  @override
+  final String? order;
+  @override
+  @JsonKey(name: 'order_status')
+  final String? orderStatus;
+
+  @override
+  String toString() {
+    return 'OrderStatusDTO(id: $id, orderId: $orderId, status: $status, stopReason: $stopReason, stopTimer: $stopTimer, order: $order, orderStatus: $orderStatus)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_OrderStatusDTO &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.orderId, orderId) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality()
+                .equals(other.stopReason, stopReason) &&
+            const DeepCollectionEquality().equals(other.stopTimer, stopTimer) &&
+            const DeepCollectionEquality().equals(other.order, order) &&
+            const DeepCollectionEquality()
+                .equals(other.orderStatus, orderStatus));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(orderId),
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(stopReason),
+      const DeepCollectionEquality().hash(stopTimer),
+      const DeepCollectionEquality().hash(order),
+      const DeepCollectionEquality().hash(orderStatus));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_OrderStatusDTOCopyWith<_$_OrderStatusDTO> get copyWith =>
+      __$$_OrderStatusDTOCopyWithImpl<_$_OrderStatusDTO>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_OrderStatusDTOToJson(this);
+  }
+}
+
+abstract class _OrderStatusDTO implements OrderStatusDTO {
+  const factory _OrderStatusDTO(
+          {required final int id,
+          @JsonKey(name: 'order_id') required final int orderId,
+          final String? status,
+          @JsonKey(name: 'stop_reason') final String? stopReason,
+          @JsonKey(name: 'stop_timer') final DateTime? stopTimer,
+          final String? order,
+          @JsonKey(name: 'order_status') final String? orderStatus}) =
+      _$_OrderStatusDTO;
+
+  factory _OrderStatusDTO.fromJson(Map<String, dynamic> json) =
+      _$_OrderStatusDTO.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'order_id')
+  int get orderId => throw _privateConstructorUsedError;
+  @override
+  String? get status => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'stop_reason')
+  String? get stopReason => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'stop_timer')
+  DateTime? get stopTimer => throw _privateConstructorUsedError;
+  @override
+  String? get order => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'order_status')
+  String? get orderStatus => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_OrderStatusDTOCopyWith<_$_OrderStatusDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

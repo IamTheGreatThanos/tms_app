@@ -35,6 +35,7 @@ mixin _$PointDTO {
   int? get countProducts => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
+  List<ProductDTO>? get products => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +60,8 @@ abstract class $PointDTOCopyWith<$Res> {
       dynamic type,
       dynamic avatar,
       @JsonKey(name: 'count_products') int? countProducts,
-      @JsonKey(name: 'created_at') String? createdAt});
+      @JsonKey(name: 'created_at') String? createdAt,
+      List<ProductDTO>? products});
 }
 
 /// @nodoc
@@ -85,6 +87,7 @@ class _$PointDTOCopyWithImpl<$Res> implements $PointDTOCopyWith<$Res> {
     Object? avatar = freezed,
     Object? countProducts = freezed,
     Object? createdAt = freezed,
+    Object? products = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -139,6 +142,10 @@ class _$PointDTOCopyWithImpl<$Res> implements $PointDTOCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      products: products == freezed
+          ? _value.products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductDTO>?,
     ));
   }
 }
@@ -162,7 +169,8 @@ abstract class _$$_PointDTOCopyWith<$Res> implements $PointDTOCopyWith<$Res> {
       dynamic type,
       dynamic avatar,
       @JsonKey(name: 'count_products') int? countProducts,
-      @JsonKey(name: 'created_at') String? createdAt});
+      @JsonKey(name: 'created_at') String? createdAt,
+      List<ProductDTO>? products});
 }
 
 /// @nodoc
@@ -190,6 +198,7 @@ class __$$_PointDTOCopyWithImpl<$Res> extends _$PointDTOCopyWithImpl<$Res>
     Object? avatar = freezed,
     Object? countProducts = freezed,
     Object? createdAt = freezed,
+    Object? products = freezed,
   }) {
     return _then(_$_PointDTO(
       id: id == freezed
@@ -244,6 +253,10 @@ class __$$_PointDTOCopyWithImpl<$Res> extends _$PointDTOCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      products: products == freezed
+          ? _value._products
+          : products // ignore: cast_nullable_to_non_nullable
+              as List<ProductDTO>?,
     ));
   }
 }
@@ -264,7 +277,9 @@ class _$_PointDTO implements _PointDTO {
       this.type,
       this.avatar,
       @JsonKey(name: 'count_products') this.countProducts,
-      @JsonKey(name: 'created_at') this.createdAt});
+      @JsonKey(name: 'created_at') this.createdAt,
+      final List<ProductDTO>? products})
+      : _products = products;
 
   factory _$_PointDTO.fromJson(Map<String, dynamic> json) =>
       _$$_PointDTOFromJson(json);
@@ -297,10 +312,18 @@ class _$_PointDTO implements _PointDTO {
   @override
   @JsonKey(name: 'created_at')
   final String? createdAt;
+  final List<ProductDTO>? _products;
+  @override
+  List<ProductDTO>? get products {
+    final value = _products;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'PointDTO(id: $id, name: $name, address: $address, status: $status, date: $date, from: $from, to: $to, lat: $lat, long: $long, type: $type, avatar: $avatar, countProducts: $countProducts, createdAt: $createdAt)';
+    return 'PointDTO(id: $id, name: $name, address: $address, status: $status, date: $date, from: $from, to: $to, lat: $lat, long: $long, type: $type, avatar: $avatar, countProducts: $countProducts, createdAt: $createdAt, products: $products)';
   }
 
   @override
@@ -321,7 +344,8 @@ class _$_PointDTO implements _PointDTO {
             const DeepCollectionEquality().equals(other.avatar, avatar) &&
             const DeepCollectionEquality()
                 .equals(other.countProducts, countProducts) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt));
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other._products, _products));
   }
 
   @JsonKey(ignore: true)
@@ -340,7 +364,8 @@ class _$_PointDTO implements _PointDTO {
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(avatar),
       const DeepCollectionEquality().hash(countProducts),
-      const DeepCollectionEquality().hash(createdAt));
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(_products));
 
   @JsonKey(ignore: true)
   @override
@@ -367,7 +392,8 @@ abstract class _PointDTO implements PointDTO {
       final dynamic type,
       final dynamic avatar,
       @JsonKey(name: 'count_products') final int? countProducts,
-      @JsonKey(name: 'created_at') final String? createdAt}) = _$_PointDTO;
+      @JsonKey(name: 'created_at') final String? createdAt,
+      final List<ProductDTO>? products}) = _$_PointDTO;
 
   factory _PointDTO.fromJson(Map<String, dynamic> json) = _$_PointDTO.fromJson;
 
@@ -400,7 +426,214 @@ abstract class _PointDTO implements PointDTO {
   @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
   @override
+  List<ProductDTO>? get products => throw _privateConstructorUsedError;
+  @override
   @JsonKey(ignore: true)
   _$$_PointDTOCopyWith<_$_PointDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ProductDTO _$ProductDTOFromJson(Map<String, dynamic> json) {
+  return _ProductDTO.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ProductDTO {
+  int get id => throw _privateConstructorUsedError;
+  int? get point => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get code => throw _privateConstructorUsedError;
+  String? get status => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ProductDTOCopyWith<ProductDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProductDTOCopyWith<$Res> {
+  factory $ProductDTOCopyWith(
+          ProductDTO value, $Res Function(ProductDTO) then) =
+      _$ProductDTOCopyWithImpl<$Res>;
+  $Res call({int id, int? point, String? name, String? code, String? status});
+}
+
+/// @nodoc
+class _$ProductDTOCopyWithImpl<$Res> implements $ProductDTOCopyWith<$Res> {
+  _$ProductDTOCopyWithImpl(this._value, this._then);
+
+  final ProductDTO _value;
+  // ignore: unused_field
+  final $Res Function(ProductDTO) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? point = freezed,
+    Object? name = freezed,
+    Object? code = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      point: point == freezed
+          ? _value.point
+          : point // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      code: code == freezed
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_ProductDTOCopyWith<$Res>
+    implements $ProductDTOCopyWith<$Res> {
+  factory _$$_ProductDTOCopyWith(
+          _$_ProductDTO value, $Res Function(_$_ProductDTO) then) =
+      __$$_ProductDTOCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, int? point, String? name, String? code, String? status});
+}
+
+/// @nodoc
+class __$$_ProductDTOCopyWithImpl<$Res> extends _$ProductDTOCopyWithImpl<$Res>
+    implements _$$_ProductDTOCopyWith<$Res> {
+  __$$_ProductDTOCopyWithImpl(
+      _$_ProductDTO _value, $Res Function(_$_ProductDTO) _then)
+      : super(_value, (v) => _then(v as _$_ProductDTO));
+
+  @override
+  _$_ProductDTO get _value => super._value as _$_ProductDTO;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? point = freezed,
+    Object? name = freezed,
+    Object? code = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_$_ProductDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      point: point == freezed
+          ? _value.point
+          : point // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      code: code == freezed
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ProductDTO implements _ProductDTO {
+  const _$_ProductDTO(
+      {required this.id, this.point, this.name, this.code, this.status});
+
+  factory _$_ProductDTO.fromJson(Map<String, dynamic> json) =>
+      _$$_ProductDTOFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int? point;
+  @override
+  final String? name;
+  @override
+  final String? code;
+  @override
+  final String? status;
+
+  @override
+  String toString() {
+    return 'ProductDTO(id: $id, point: $point, name: $name, code: $code, status: $status)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ProductDTO &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.point, point) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.code, code) &&
+            const DeepCollectionEquality().equals(other.status, status));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(point),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(code),
+      const DeepCollectionEquality().hash(status));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_ProductDTOCopyWith<_$_ProductDTO> get copyWith =>
+      __$$_ProductDTOCopyWithImpl<_$_ProductDTO>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ProductDTOToJson(this);
+  }
+}
+
+abstract class _ProductDTO implements ProductDTO {
+  const factory _ProductDTO(
+      {required final int id,
+      final int? point,
+      final String? name,
+      final String? code,
+      final String? status}) = _$_ProductDTO;
+
+  factory _ProductDTO.fromJson(Map<String, dynamic> json) =
+      _$_ProductDTO.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  int? get point => throw _privateConstructorUsedError;
+  @override
+  String? get name => throw _privateConstructorUsedError;
+  @override
+  String? get code => throw _privateConstructorUsedError;
+  @override
+  String? get status => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_ProductDTOCopyWith<_$_ProductDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

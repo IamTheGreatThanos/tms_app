@@ -21,6 +21,9 @@ _$_PointDTO _$$_PointDTOFromJson(Map<String, dynamic> json) => _$_PointDTO(
       avatar: json['avatar'],
       countProducts: json['count_products'] as int?,
       createdAt: json['created_at'] as String?,
+      products: (json['products'] as List<dynamic>?)
+          ?.map((e) => ProductDTO.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_PointDTOToJson(_$_PointDTO instance) =>
@@ -38,4 +41,23 @@ Map<String, dynamic> _$$_PointDTOToJson(_$_PointDTO instance) =>
       'avatar': instance.avatar,
       'count_products': instance.countProducts,
       'created_at': instance.createdAt,
+      'products': instance.products,
+    };
+
+_$_ProductDTO _$$_ProductDTOFromJson(Map<String, dynamic> json) =>
+    _$_ProductDTO(
+      id: json['id'] as int,
+      point: json['point'] as int?,
+      name: json['name'] as String?,
+      code: json['code'] as String?,
+      status: json['status'] as String?,
+    );
+
+Map<String, dynamic> _$$_ProductDTOToJson(_$_ProductDTO instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'point': instance.point,
+      'name': instance.name,
+      'code': instance.code,
+      'status': instance.status,
     };

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/order_detail_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
@@ -333,7 +334,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     shrinkWrap: true,
                                     itemCount: state.orders.length,
                                     itemBuilder: (context, index) {
-                                      return _BuildOrderItem(
+                                      return _OrderItemWidget(
                                         order: state.orders[index],
                                       );
                                     },
@@ -385,21 +386,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 }
 
-class _BuildOrderItem extends StatefulWidget {
-  final OrderData order;
+class _OrderItemWidget extends StatefulWidget {
+  final OrderDTO order;
   // final int cityId;
 
-  const _BuildOrderItem({
+  const _OrderItemWidget({
     Key? key,
     required this.order,
     // required this.cityId,
   }) : super(key: key);
 
   @override
-  State<_BuildOrderItem> createState() => _BuildOrderItemState();
+  State<_OrderItemWidget> createState() => _OrderItemWidgetState();
 }
 
-class _BuildOrderItemState extends State<_BuildOrderItem> {
+class _OrderItemWidgetState extends State<_OrderItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(

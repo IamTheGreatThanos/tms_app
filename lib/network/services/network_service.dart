@@ -14,6 +14,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_regis
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
@@ -147,7 +148,7 @@ class NetworkService {
     return CitiesResponse.fromJson(response.data);
   }
 
-  Future<OrdersResponse> getOrdersByCities({
+  Future<List<OrderDTO>> getOrdersByCities({
     String? cityId,
   }) async {
     final response = await _dioWrapper.sendRequest(
@@ -157,7 +158,23 @@ class NetworkService {
       }),
       method: NetworkMethod.post,
     );
-    return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
+
+    // return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
+    log(
+      '##### getOrdersByCities api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<OrderDTO> orders = await compute<List, List<OrderDTO>>(
+      (List list) {
+        return list
+            .map((e) => OrderDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    return orders;
   }
 
   Future<void> verify(PersonalInfoVModel vModel) async {
@@ -168,7 +185,7 @@ class NetworkService {
     );
   }
 
-  Future<OrderData> acceptOrder(int orderId) async {
+  Future<OrderDTO> acceptOrder(int orderId) async {
     final response = await _dioWrapper.sendRequest(
       path: "/order/accept",
       method: NetworkMethod.post,
@@ -179,7 +196,7 @@ class NetworkService {
     log('#####acceptOrder api::: ${response.toString()}',
         name: _networkService);
 
-    return OrderData.fromJson(
+    return OrderDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
@@ -195,7 +212,7 @@ class NetworkService {
   //   print(response);
   // }
 
-  Future<OrderData> stopOrder(
+  Future<OrderDTO> stopOrder(
     int orderId,
     String cause, {
     UserDTO? emptyDriver,
@@ -209,13 +226,13 @@ class NetworkService {
         if (emptyDriver != null) 'user_id': emptyDriver.id,
       }),
     );
-    log('#####stopOrder api::: ${response.toString()}', name: _networkService);
-    return OrderData.fromJson(
+    log('#####stopOrder api::: ${response.statusCode}', name: _networkService);
+    return OrderDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
 
-  Future<OrderData> stopOrderAndChangeDriver(
+  Future<OrderDTO> stopOrderAndChangeDriver(
     int orderId,
     String cause, {
     UserDTO? emptyDriver,
@@ -229,14 +246,14 @@ class NetworkService {
         if (emptyDriver != null) 'user_id': emptyDriver.id,
       }),
     );
-    log('#####stopOrderAndChangeDriver api::: ${response.toString()}',
+    log('#####stopOrderAndChangeDriver api::: ${response.statusCode}',
         name: _networkService);
-    return OrderData.fromJson(
+    return OrderDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
 
-  Future<OrderData> resumeOrder(
+  Future<OrderDTO> resumeOrder(
     int orderId,
   ) async {
     final response = await _dioWrapper.sendRequest(
@@ -247,11 +264,11 @@ class NetworkService {
       }),
     );
     log(
-      '#####resumeOrder api::: ${response.toString()}',
+      '#####resumeOrder api::: ${response.statusCode}',
       name: _networkService,
     );
 
-    return OrderData.fromJson(
+    return OrderDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
@@ -313,12 +330,28 @@ class NetworkService {
     );
   }
 
-  Future<OrdersResponse> acceptedOrders() async {
+  Future<List<OrderDTO>> acceptedOrders() async {
     final response = await _dioWrapper.sendRequest(
       path: "/orders/accepted",
       method: NetworkMethod.get,
     );
-    return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
+
+    // return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
+    log(
+      '##### acceptedOrders api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<OrderDTO> orders = await compute<List, List<OrderDTO>>(
+      (List list) {
+        return list
+            .map((e) => OrderDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    return orders;
   }
 
   Future<OrderHistoryResponse> orderHistory(
@@ -442,5 +475,31 @@ class NetworkService {
     // log(points.toString(), name: _networkService);
 
     return points;
+  }
+
+  Future<OrderDTO> getOrderByOrderId({
+    required int orderId,
+  }) async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+      path: 'order-by-id/$orderId',
+      method: NetworkMethod.get,
+      baseUrl: 'http://185.129.50.172/api/web/',
+    );
+
+    log(
+      '##### getOrderByOrderId api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final OrderDTO order = await compute<Map<String, dynamic>, OrderDTO>(
+      (Map<String, dynamic> mapp) {
+        return OrderDTO.fromJson(mapp);
+      },
+      (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+    );
+
+    // log(points.toString(), name: _networkService);
+
+    return order;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
@@ -19,12 +19,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OrderFinish extends StatefulWidget {
-  final OrderData orderData;
+  final OrderDTO order;
   final bool isScan;
 
   const OrderFinish({
     Key? key,
-    required this.orderData,
+    required this.order,
     this.isScan = true,
   }) : super(key: key);
 
@@ -548,8 +548,8 @@ class _OrderFinishState extends State<OrderFinish>
                         repository: context.read<GlobalRepository>(),
                       ),
                       child: SessionPage(
-                        orderId: widget.orderData.id!,
-                        orderData: widget.orderData,
+                        orderId: widget.order.id,
+                        order: widget.order,
                       ),
                     ),
                     // YandexMap(

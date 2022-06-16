@@ -10,6 +10,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_regis
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
@@ -64,10 +65,10 @@ class GlobalRepository {
 
   Future<CitiesResponse> getCities() async => _networkService.getCities();
 
-  Future<OrdersResponse> acceptedOrders() async =>
+  Future<List<OrderDTO>> acceptedOrders() async =>
       _networkService.acceptedOrders();
 
-  Future<OrdersResponse> getOrdersByCities({
+  Future<List<OrderDTO>> getOrdersByCities({
     String? cityId,
   }) async =>
       _networkService.getOrdersByCities(cityId: cityId);
@@ -75,7 +76,7 @@ class GlobalRepository {
   Future<void> verify(PersonalInfoVModel vModel) async =>
       _networkService.verify(vModel);
 
-  Future<OrderData> acceptOrder(int orderId) async =>
+  Future<OrderDTO> acceptOrder(int orderId) async =>
       _networkService.acceptOrder(orderId);
 
   Future<List<PointDTO>> orderPoints(int orderId) async =>
@@ -87,7 +88,7 @@ class GlobalRepository {
   Future<OrderPoint> orderProductFinish(int productId, String code) async =>
       _networkService.orderProductFinish(productId, code);
 
-  Future<OrderData> stopOrder(
+  Future<OrderDTO> stopOrder(
     int orderId,
     String cause, {
     UserDTO? emptyDriver,
@@ -98,7 +99,7 @@ class GlobalRepository {
         emptyDriver: emptyDriver,
       );
 
-  Future<OrderData> stopOrderAndChangeDriver(
+  Future<OrderDTO> stopOrderAndChangeDriver(
     int orderId,
     String cause, {
     UserDTO? emptyDriver,
@@ -109,7 +110,7 @@ class GlobalRepository {
         emptyDriver: emptyDriver,
       );
 
-  Future<OrderData> resumeOrder(int orderId) async =>
+  Future<OrderDTO> resumeOrder(int orderId) async =>
       _networkService.resumeOrder(orderId);
 
   Future<OrderHistoryResponse> orderHistory(
@@ -143,8 +144,16 @@ class GlobalRepository {
   Future<List<PointDTO>> getPointsByDate({
     required String fromDate,
     required String toDate,
-  }) async => _networkService.getPointsByDate(
-    fromDate: fromDate,
-    toDate: toDate,
-  );
+  }) async =>
+      _networkService.getPointsByDate(
+        fromDate: fromDate,
+        toDate: toDate,
+      );
+
+  Future<OrderDTO> getOrderByOrderId({
+    required int orderId,
+  }) async =>
+      _networkService.getOrderByOrderId(
+        orderId: orderId,
+      );
 }

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:developer' as dev;
 
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
@@ -14,9 +14,9 @@ const _tag = 'SessionPage';
 
 class SessionPage extends StatefulWidget {
   final int orderId;
-  final OrderData orderData;
+  final OrderDTO order;
 
-  const SessionPage({Key? key, required this.orderId, required this.orderData})
+  const SessionPage({Key? key, required this.orderId, required this.order})
       : super(key: key);
 
   @override
@@ -34,6 +34,7 @@ class _SessionState extends State<SessionPage> {
   @override
   void initState() {
     super.initState();
+    dev.log('message');
     BlocProvider.of<MapCubit>(context).getMap(widget.orderId);
   }
 

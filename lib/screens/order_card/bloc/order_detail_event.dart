@@ -22,3 +22,11 @@ class EventStopOrder extends OrderDetailEvent {
 class EventStartOrder extends OrderDetailEvent {}
 
 class EventResumeOrder extends OrderDetailEvent {}
+
+class OrderDetailRefreshEvent extends OrderDetailEvent {
+  final int orderId;
+
+  OrderDetailRefreshEvent({
+    required this.orderId,
+  });
+}

@@ -1,5 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:europharm_flutter/network/models/city_dto.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'order_dto.freezed.dart';
@@ -19,14 +21,34 @@ class OrderDTO with _$OrderDTO {
     @JsonKey(name: 'to_lat') double? toLat,
     @JsonKey(name: 'to_long') double? toLong,
     String? status,
-    @JsonKey(name: 'start_date') String? startDate,
-    @JsonKey(name: 'end_date') String? endDate,
+    @JsonKey(name: 'start_date') DateTime? startDate,
+    @JsonKey(name: 'end_date') DateTime? endDate,
     String? payment,
-    // String? type,
-    // dynamic avatar,
+    @JsonKey(name: 'from_city_id') CityDTO? fromCity,
+    @JsonKey(name: 'to_city_id') CityDTO? toCity,
+    List<PointDTO>? points,
+    @JsonKey(name: 'count_points') int? countPoints,
+    @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
     // String? status,
+    @Default(false) bool isCurrent,
   }) = _OrderDTO;
 
   factory OrderDTO.fromJson(Map<String, dynamic> json) =>
       _$OrderDTOFromJson(json);
+}
+
+@freezed
+class OrderStatusDTO with _$OrderStatusDTO {
+  const factory OrderStatusDTO({
+    required int id,
+    @JsonKey(name: 'order_id') required int orderId,
+    String? status,
+    @JsonKey(name: 'stop_reason') String? stopReason,
+    @JsonKey(name: 'stop_timer') DateTime? stopTimer,
+    String? order,
+    @JsonKey(name: 'order_status') String? orderStatus,
+  }) = _OrderStatusDTO;
+
+  factory OrderStatusDTO.fromJson(Map<String, dynamic> json) =>
+      _$OrderStatusDTOFromJson(json);
 }

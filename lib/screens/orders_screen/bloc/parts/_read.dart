@@ -6,9 +6,9 @@ extension Read on OrdersBloc {
     Emitter<StateBlocOrdersScreen> emit,
   ) async {
     CitiesResponse citiesResponse = CitiesResponse();
-    OrdersResponse ordersResponse = OrdersResponse();
-    OrdersResponse currentOrders = OrdersResponse();
-    List<OrderData> overallOrders = [];
+    List<OrderDTO> ordersResponse = [];
+    List<OrderDTO> currentOrders = [];
+    List<OrderDTO> overallOrders = [];
     try {
       emit(StateLoadingOrdersScreen());
       citiesResponse = await repository.getCities();
@@ -27,16 +27,18 @@ extension Read on OrdersBloc {
           print(e);
         }
       }
-      if (currentOrders.data != null) {
-        for (int i = 0; i < currentOrders.data!.length; i++) {
-          currentOrders.data![i].isCurrent = true;
-          // if (currentOrders.data![i].fromCityId!.id.toString() ==
-          //     event.cityId) {
-          overallOrders.add(currentOrders.data![i]);
-          // }
-        }
+      for (int i = 0; i < currentOrders.length; i++) {
+        // currentOrders[i].isCurrent = true;
+        currentOrders[i] = currentOrders[i].copyWith(isCurrent: true);
+        // if (currentOrders.data![i].fromCityId!.id.toString() ==
+        //     event.cityId) {
+        overallOrders.add(currentOrders[i]);
+        // }
       }
-      overallOrders.addAll(ordersResponse.data!.toList());
+
+      overallOrders.addAll(ordersResponse);
+
+      // log(overallOrders.map((e) => e.isCurrent).toList().toString());
       emit(
         StateLoadDataOrdersScreen(
           orders: overallOrders,

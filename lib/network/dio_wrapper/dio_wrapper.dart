@@ -78,6 +78,7 @@ class DioWrapper {
   Future<Response<dynamic>> sendRequest({
     required String path,
     required NetworkMethod method,
+    String? baseUrl,
     Encodable? request,
     FormData? formData,
     Map<String, dynamic>? queryParameters,
@@ -95,6 +96,7 @@ class DioWrapper {
           method,
           queryParameters: queryParameters,
           isUrlEncoded: isUrlEncoded,
+          baseUrl: baseUrl,
         );
         return response;
       case NetworkMethod.post:
@@ -217,23 +219,36 @@ class DioWrapper {
     NetworkMethod method, {
     Map<String, dynamic>? queryParameters,
     bool isUrlEncoded = true,
+    String? baseUrl,
 
     /// disables encoding of URI if false in accordance with header 'application/x-www-form-urlencoded'
   }) async {
-    if (!isUrlEncoded && queryParameters != null) {
-      path = path + '?' + _transformQueryParametersToString(queryParameters);
+    String tempUrl = _dio.options.baseUrl;
+    if (baseUrl != null) {
+      _dio.options.baseUrl = baseUrl;
     }
-    var response =
-        _dio.get(path, queryParameters: isUrlEncoded ? queryParameters : null);
+    if (!isUrlEncoded && queryParameters != null) {
+      path = '$path?${_transformQueryParametersToString(queryParameters)}';
+    }
+    var response = _dio.get(
+      path,
+      queryParameters: isUrlEncoded ? queryParameters : null,
+    );
+
+    if (baseUrl != null) {
+      _dio.options.baseUrl = tempUrl;
+    }
     return response;
   }
 
   String _transformQueryParametersToString(
-      Map<String, dynamic> queryParameters) {
+    Map<String, dynamic> queryParameters,
+  ) {
     String _query = '';
     queryParameters.forEach((key, value) {
       _query += '$key=${value.toString()}&';
     });
+
     return _query.substring(0, _query.length - 1);
   }
 }

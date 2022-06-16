@@ -23,7 +23,7 @@ class StateChangedDriverOrderCard extends OrderDetailState {}
 
 class StateLoadDataOrderCard extends OrderDetailState {
   final List<PointDTO> orderPoints;
-  final OrderData order;
+  final OrderDTO order; // order;
 
   StateLoadDataOrderCard({
     required this.orderPoints,

@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../repo_map.dart';
 import 'map_state.dart';
 
+const _tag = 'MapCubit';
+
 class MapCubit extends Cubit<MapState> {
   final MapRepository mapRepository;
   final GlobalRepository _repository;
@@ -20,6 +22,7 @@ class MapCubit extends Cubit<MapState> {
     try {
       emit(MapLoadingState());
       final List<PointDTO> result = await _repository.orderPoints(orderId);
+      log('wasvdbbsdbsb');
       emit(MapLoadedState(loadedMap: result));
     } catch (e) {
       log(e.toString());
@@ -29,5 +32,11 @@ class MapCubit extends Cubit<MapState> {
 
   Future<void> changeToMapInitState() async {
     emit(MapInitState());
+  }
+
+  @override
+  void onChange(Change<MapState> change) {
+    log('$change', name: _tag);
+    super.onChange(change);
   }
 }
