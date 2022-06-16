@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:developer' as dev;
 
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
 import 'package:flutter/foundation.dart';
@@ -51,26 +52,29 @@ class _SessionState extends State<SessionPage> {
             return YandexMap(
               onMapCreated: (YandexMapController yandexMapController) async {
                 controller = yandexMapController;
-                final double? lat = double.tryParse(
-                  state.loadedMap.first.lat!.toString(),
-                ); // FIXME
-                final double? long =
-                    double.tryParse(state.loadedMap.first.long!.toString());
-                if (lat != null && long != null) {
-                  controller!.moveCamera(
-                    CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                        target: Point(
-                          longitude: long,
-                          latitude: lat,
-                          // longitude: widget.orderData.fromLong!,
-                          // latitude: widget.orderData.fromLat!,
+
+                if (state.loadedMap.isNotEmpty) {
+                  final double? lat = double.tryParse(
+                    state.loadedMap.first.lat!.toString(),
+                  ); // FIXME
+                  final double? long =
+                      double.tryParse(state.loadedMap.first.long!.toString());
+                  if (lat != null && long != null) {
+                    controller!.moveCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target: Point(
+                            longitude: long,
+                            latitude: lat,
+                            // longitude: widget.orderData.fromLong!,
+                            // latitude: widget.orderData.fromLat!,
+                          ),
+                          zoom: 12,
                         ),
-                        zoom: 12,
                       ),
-                    ),
-                    animation: const MapAnimation(),
-                  );
+                      animation: const MapAnimation(),
+                    );
+                  }
                 }
               },
               mapObjects: mapObjects,
@@ -105,7 +109,9 @@ class _SessionState extends State<SessionPage> {
     );
   }
 
-  Future<void> _requestRoutes(List<OrderPoint> data) async {
+  Future<void> _requestRoutes(List<PointDTO> data) async {
+    if (data.isEmpty) return;
+
     try {
       for (int i = 0; i < data.length; i++) {
         /// FIXME
@@ -150,7 +156,8 @@ class _SessionState extends State<SessionPage> {
         ),
       ).result;
 
-      dev.log('YandexDriving.requestRoutes response ::: ${result.error}', name: _tag);
+      dev.log('YandexDriving.requestRoutes response ::: ${result.error}',
+          name: _tag);
 
       if (result.routes != null) {
         results.add(result);

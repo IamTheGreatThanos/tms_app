@@ -1,23 +1,19 @@
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
-
-import '../map_model.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 
 abstract class MapState {}
 
-class MapInitState extends MapState{}
-
+class MapInitState extends MapState {}
 
 class MapLoadingState extends MapState {}
 
-
-class MapLoadedState extends MapState{
-  List<OrderPoint> loadedMap;
-  MapLoadedState({required this.loadedMap}) : assert(loadedMap != null);
+class MapLoadedState extends MapState {
+  List<PointDTO> loadedMap;
+  MapLoadedState({required this.loadedMap});
 }
 
-class MapErrorState extends MapState{
+class MapErrorState extends MapState {
   String messsage;
-  MapErrorState({required this.messsage}) : assert(messsage != null);
+  MapErrorState({required this.messsage});
 }
 
-class MapLostConnectState extends MapState{}
+class MapLostConnectState extends MapState {}

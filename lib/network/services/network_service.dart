@@ -8,13 +8,13 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
@@ -229,7 +229,8 @@ class NetworkService {
         if (emptyDriver != null) 'user_id': emptyDriver.id,
       }),
     );
-    log('#####stopOrderAndChangeDriver api::: ${response.toString()}', name: _networkService);
+    log('#####stopOrderAndChangeDriver api::: ${response.toString()}',
+        name: _networkService);
     return OrderData.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
@@ -255,7 +256,7 @@ class NetworkService {
     );
   }
 
-  Future<OrderPointsResponse> orderPoints(int orderId) async {
+  Future<List<PointDTO>> orderPoints(int orderId) async {
     final response = await _dioWrapper.sendRequest(
       path: "/order/points",
       method: NetworkMethod.post,
@@ -266,7 +267,23 @@ class NetworkService {
       ),
     );
 
-    return OrderPointsResponse.fromJson(response.data);
+    log(
+      '##### orderPoints api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<PointDTO> points = await compute<List, List<PointDTO>>(
+      (List list) {
+        return list
+            .map((e) => PointDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    // log(points.toString(), name: _networkService);
+
+    return points;
   }
 
   Future<OrderPoint> orderPointProducts(int pointId) async {
@@ -394,5 +411,36 @@ class NetworkService {
     // log(drivers.toString(), name: _networkService);
 
     return drivers;
+  }
+
+  Future<List<PointDTO>> getPointsByDate({
+    required String fromDate,
+    required String toDate,
+  }) async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+        path: 'getPointsByDate',
+        method: NetworkMethod.get,
+        queryParameters: {
+          'from': fromDate,
+          'to': toDate,
+        });
+
+    log(
+      '##### getPointsByDate api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<PointDTO> points = await compute<List, List<PointDTO>>(
+      (List list) {
+        return list
+            .map((e) => PointDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    // log(points.toString(), name: _networkService);
+
+    return points;
   }
 }

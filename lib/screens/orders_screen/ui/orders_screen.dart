@@ -4,7 +4,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
-import 'package:europharm_flutter/screens/order_card/ui/order_card.dart';
+import 'package:europharm_flutter/screens/order_card/ui/order_detail_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
@@ -360,7 +360,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   Future<void> _handleRefresh() async {
     BlocProvider.of<OrdersBloc>(context).add(
-      EventInitialOrdersScreen(cityId: "23"),
+      EventInitialOrdersScreen(),
     );
     final Completer<void> completer = Completer<void>();
 
@@ -411,7 +411,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
             // OrderDetailPage(
             //   order: widget.order,
             // ),
-            OrderCard(
+            OrderDetailPage(
               order: widget.order,
             ),
             rootNavigator: true,

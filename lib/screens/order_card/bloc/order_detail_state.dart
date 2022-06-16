@@ -1,28 +1,28 @@
-part of 'bloc_order_card.dart';
+part of 'order_detail_bloc.dart';
 
 @immutable
-abstract class StateBlocOrderCard {}
+abstract class OrderDetailState {}
 
-class StateLoadingOrderCard extends StateBlocOrderCard {}
+class StateLoadingOrderCard extends OrderDetailState {}
 
-class StateStopSuccess extends StateBlocOrderCard {}
+class StateStopSuccess extends OrderDetailState {}
 
-class StateStartSuccess extends StateBlocOrderCard {}
+class StateStartSuccess extends OrderDetailState {}
 
-class StateResumeSuccess extends StateBlocOrderCard {}
+class StateResumeSuccess extends OrderDetailState {}
 
-class StateChangedDriverOrderCard extends StateBlocOrderCard {}
+class StateChangedDriverOrderCard extends OrderDetailState {}
 
-class StateLoadOrderDetails extends StateBlocOrderCard {
-  final OrderData order;
+// class StateLoadOrderDetails extends StateBlocOrderCard {
+//   final OrderData order;
 
-  StateLoadOrderDetails({
-    required this.order,
-  });
-}
+//   StateLoadOrderDetails({
+//     required this.order,
+//   });
+// }
 
-class StateLoadDataOrderCard extends StateBlocOrderCard {
-  final OrderPointsResponse orderPoints;
+class StateLoadDataOrderCard extends OrderDetailState {
+  final List<PointDTO> orderPoints;
   final OrderData order;
 
   StateLoadDataOrderCard({
@@ -31,7 +31,7 @@ class StateLoadDataOrderCard extends StateBlocOrderCard {
   });
 }
 
-class StateShowTimerInitial extends StateBlocOrderCard {
+class StateShowTimerInitial extends OrderDetailState {
   final DateTime startTimer;
 
   StateShowTimerInitial({
@@ -39,7 +39,7 @@ class StateShowTimerInitial extends StateBlocOrderCard {
   });
 }
 
-class StateOrderCardError extends StateBlocOrderCard {
+class StateOrderCardError extends OrderDetailState {
   final AppError error;
 
   StateOrderCardError({
@@ -57,7 +57,9 @@ class StateOrderCardError extends StateBlocOrderCard {
 
 //   const factory BlocOrderCardState.resumedState() = _ResumedState;
 
-//   const factory BlocOrderCardState.loadingState() = _LoadingState;
+//   const factory BlocOrderCardState.loadedState({
+
+//   }) = _LoadingState;
 
 //   const factory BlocOrderCardState.loadingState() = _LoadingState;
 

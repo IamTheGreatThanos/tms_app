@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../repo_map.dart';
@@ -18,8 +19,8 @@ class MapCubit extends Cubit<MapState> {
   Future<void> getMap(int orderId) async {
     try {
       emit(MapLoadingState());
-      final result = await _repository.orderPoints(orderId);
-      emit(MapLoadedState(loadedMap: result.data!));
+      final List<PointDTO> result = await _repository.orderPoints(orderId);
+      emit(MapLoadedState(loadedMap: result));
     } catch (e) {
       log(e.toString());
       emit(MapErrorState(messsage: e.toString()));

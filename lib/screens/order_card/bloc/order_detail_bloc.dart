@@ -3,22 +3,22 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:meta/meta.dart';
 
-part 'events.dart';
+part 'order_detail_event.dart';
 
-part 'states.dart';
+part 'order_detail_state.dart';
 
 const _tag = 'bloc_order_card.dart';
 
-class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
-  BlocOrderCard({
+class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
+  OrderDetailBloc({
     required this.repository,
     required this.orderDetails,
   }) : super(StateLoadingOrderCard()) {
@@ -38,11 +38,11 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   ///
   ///
   Future<void> _read(
-      EventInitialOrderCard event, Emitter<StateBlocOrderCard> emit) async {
+      EventInitialOrderCard event, Emitter<OrderDetailState> emit) async {
     try {
       emit(StateLoadingOrderCard());
       bool isFinished = true;
-      final response = await repository.orderPoints(event.orderId);
+      final List<PointDTO> response = await repository.orderPoints(event.orderId);
       orderId = event.orderId;
 
       if (orderDetails.status == "stopped") {
@@ -85,7 +85,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   }
 
   Future<void> _resume(
-      EventResumeOrder event, Emitter<StateBlocOrderCard> emit) async {
+      EventResumeOrder event, Emitter<OrderDetailState> emit) async {
     try {
       final result = await repository.resumeOrder(orderId!);
       result.isCurrent = true;
@@ -105,7 +105,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
   }
 
   Future<void> _start(
-      EventStartOrder event, Emitter<StateBlocOrderCard> emit) async {
+      EventStartOrder event, Emitter<OrderDetailState> emit) async {
     try {
       emit(StateLoadingOrderCard());
       final result = await repository.acceptOrder(orderId!);
@@ -129,7 +129,7 @@ class BlocOrderCard extends Bloc<EventBlocOrderCard, StateBlocOrderCard> {
 
   Future<void> _stop(
     EventStopOrder event,
-    Emitter<StateBlocOrderCard> emit,
+    Emitter<OrderDetailState> emit,
   ) async {
     try {
       if (event.cause == 'change_driver') {

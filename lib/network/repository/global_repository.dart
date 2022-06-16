@@ -10,6 +10,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/phone_regis
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
@@ -77,7 +78,7 @@ class GlobalRepository {
   Future<OrderData> acceptOrder(int orderId) async =>
       _networkService.acceptOrder(orderId);
 
-  Future<OrderPointsResponse> orderPoints(int orderId) async =>
+  Future<List<PointDTO>> orderPoints(int orderId) async =>
       _networkService.orderPoints(orderId);
 
   Future<OrderPoint> orderPointProducts(int pointId) async =>
@@ -138,4 +139,12 @@ class GlobalRepository {
 
   Future<List<UserDTO>> getEmptyDrivers() async =>
       _networkService.getEmptyDrivers();
+
+  Future<List<PointDTO>> getPointsByDate({
+    required String fromDate,
+    required String toDate,
+  }) async => _networkService.getPointsByDate(
+    fromDate: fromDate,
+    toDate: toDate,
+  );
 }
