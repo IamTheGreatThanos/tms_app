@@ -22,12 +22,14 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   OrderDetailBloc({
     required this.repository,
     // required this.currentOrder,
-  }) : super(StateLoadingOrderCard()) {
-    on<EventInitialOrderCard>(_read);
-    on<EventStopOrder>(_stop);
-    on<EventStartOrder>(_start);
-    on<EventResumeOrder>(_resume);
+  }) : super(OrderDetailStateLoading()) {
+    on<OrderDetailEventInitial>(_read);
+    on<OrderDetailEventStop>(_stop);
+    on<OrderDetailEventStart>(_start);
+    on<OrderDetailEventResume>(_resume);
     on<OrderDetailRefreshEvent>(_refresh);
+    on<OrderDetailEventReset>(_dispose);
+    on<OrderDetailEventFinishOrder>(_finishOrder);
   }
 
   final GlobalRepository repository;
@@ -43,12 +45,19 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     currentOrder = ord;
   }
 
+  void _dispose(
+    OrderDetailEventReset event,
+    Emitter<OrderDetailState> emit,
+  ) {
+    emit(OrderDetailStateLoading());
+  }
+
   Future<void> _read(
-    EventInitialOrderCard event,
+    OrderDetailEventInitial event,
     Emitter<OrderDetailState> emit,
   ) async {
     try {
-      emit(StateLoadingOrderCard());
+      emit(OrderDetailStateLoading());
       //bool isFinished = true;
       final List<PointDTO> response =
           await repository.orderPoints(event.orderId);
@@ -58,7 +67,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
         if (currentOrder.orderStatus == null ||
             currentOrder.orderStatus!.stopTimer == null) {
           emit(
-            StateOrderCardError(
+            OrderDetailStateError(
               error: AppError(
                 message:
                     "orderDetails.orderStatus - ${currentOrder.orderStatus}",
@@ -66,7 +75,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
             ),
           );
         } else {
-          emit(StateShowTimerInitial(
+          emit(OrderDetailStateShowTimer(
               startTimer: currentOrder.orderStatus!.stopTimer!));
         }
       }
@@ -83,11 +92,11 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
       //     // orderDetails.points![i].status = "finished";
       //   }
       // }
-      emit(StateLoadDataOrderCard(orderPoints: response, order: currentOrder));
+      emit(OrderDetailStateLoaded(orderPoints: response, order: currentOrder));
     } catch (e) {
       log('$e', name: _tag);
       emit(
-        StateOrderCardError(
+        OrderDetailStateError(
           error: const AppError(message: "Что то пошло не так 1"),
         ),
       );
@@ -95,10 +104,10 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   }
 
   Future<void> _resume(
-    EventResumeOrder event,
+    OrderDetailEventResume event,
     Emitter<OrderDetailState> emit,
   ) async {
-    emit(StateLoadingOrderCard());
+    emit(OrderDetailStateLoading());
 
     try {
       final OrderDTO result = await repository.resumeOrder(orderId!);
@@ -106,11 +115,11 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
       // if(orderDetails.status == "stopped"){
       //   emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
       // }
-      emit(StateResumeSuccess());
+      emit(OrderDetailStateResumeSuccess());
       // add(EventInitialOrderCard(orderId!));
     } catch (e) {
       emit(
-        StateOrderCardError(
+        OrderDetailStateError(
           error: const AppError(message: "Что то пошло не так 2"),
         ),
       );
@@ -118,25 +127,25 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   }
 
   Future<void> _start(
-    EventStartOrder event,
+    OrderDetailEventStart event,
     Emitter<OrderDetailState> emit,
   ) async {
-    emit(StateLoadingOrderCard());
+    emit(OrderDetailStateLoading());
 
     try {
-      emit(StateLoadingOrderCard());
+      emit(OrderDetailStateLoading());
       final result = await repository.acceptOrder(orderId!);
       currentOrder = result.copyWith(isCurrent: true);
       // currentOrder.isCurrent = true;
-      emit(StateStartSuccess());
+      emit(OrderDetailStateStartSuccess());
       // add(EventInitialOrderCard(orderId!));
     } catch (e) {
       if (e is DioError && e.response!.statusCode == 500) {
-        emit(StateStartSuccess());
+        emit(OrderDetailStateStartSuccess());
         // add(EventInitialOrderCard(orderId!));
       } else {
         emit(
-          StateOrderCardError(
+          OrderDetailStateError(
             error: const AppError(message: "Что то пошло не так 3"),
           ),
         );
@@ -145,10 +154,10 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   }
 
   Future<void> _stop(
-    EventStopOrder event,
+    OrderDetailEventStop event,
     Emitter<OrderDetailState> emit,
   ) async {
-    emit(StateLoadingOrderCard());
+    emit(OrderDetailStateLoading());
 
     try {
       if (event.cause == 'change_driver') {
@@ -173,14 +182,14 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
       //   emit(StateShowTimerInitial(startTimer: orderDetails.orderStatus!.stopTimer!));
       // }
       if (event.cause == 'change_driver') {
-        emit(StateChangedDriverOrderCard());
+        emit(OrderDetailStateChangedDriverOrderCard());
       } else {
-        emit(StateStopSuccess());
+        emit(OrderDetailStateStopSuccess());
         // add(EventInitialOrderCard(orderId!));
       }
     } catch (e) {
       emit(
-        StateOrderCardError(
+        OrderDetailStateError(
           error: const AppError(message: "Что то пошло не так (_stop method)"),
         ),
       );
@@ -192,7 +201,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     Emitter<OrderDetailState> emit,
   ) async {
     try {
-      emit(StateLoadingOrderCard());
+      emit(OrderDetailStateLoading());
       //bool isFinished = true;
       final OrderDTO refreshedOrder = await repository.getOrderByOrderId(
         orderId: event.orderId,
@@ -204,7 +213,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
         if (currentOrder.orderStatus == null ||
             currentOrder.orderStatus!.stopTimer == null) {
           emit(
-            StateOrderCardError(
+            OrderDetailStateError(
               error: AppError(
                 message:
                     "orderDetails.orderStatus - ${currentOrder.orderStatus}",
@@ -212,14 +221,14 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
             ),
           );
         } else {
-          emit(StateShowTimerInitial(
+          emit(OrderDetailStateShowTimer(
               startTimer: currentOrder.orderStatus!.stopTimer!));
         }
       }
 
       final List<PointDTO> points = await repository.orderPoints(event.orderId);
       emit(
-        StateLoadDataOrderCard(
+        OrderDetailStateLoaded(
           orderPoints: points,
           order: currentOrder.copyWith(
             isCurrent: currentOrder.status == 'accepted' ||
@@ -231,11 +240,33 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     } catch (e) {
       log('$e', name: _tag);
       emit(
-        StateOrderCardError(
+        OrderDetailStateError(
           error:
               const AppError(message: "Что то пошло не так (_refresh method)"),
         ),
       );
+    }
+  }
+
+  Future<void> _finishOrder(
+    OrderDetailEventFinishOrder event,
+    Emitter<OrderDetailState> emit,
+  ) async {
+    emit(OrderDetailStateLoading());
+
+    try {
+      String message = await repository.orderFinish(orderId: event.orderId);
+
+      emit(OrderDetailStateChangedDriverOrderCard());
+    } on DioError catch (e) {
+      log('$e', name: _tag);
+      emit(
+        OrderDetailStateError(
+          error: AppError(
+              message: "${e.response?.data?['message']} (_finishOrder method)"),
+        ),
+      );
+      add(OrderDetailRefreshEvent(orderId: event.orderId));
     }
   }
 }

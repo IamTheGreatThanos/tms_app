@@ -15,9 +15,14 @@ const _tag = 'SessionPage';
 class SessionPage extends StatefulWidget {
   final int orderId;
   final OrderDTO order;
+  final List<PointDTO> orderPoints;
 
-  const SessionPage({Key? key, required this.orderId, required this.order})
-      : super(key: key);
+  const SessionPage({
+    Key? key,
+    required this.orderId,
+    required this.order,
+    required this.orderPoints,
+  }) : super(key: key);
 
   @override
   State<SessionPage> createState() => _SessionState();
@@ -35,7 +40,10 @@ class _SessionState extends State<SessionPage> {
   void initState() {
     super.initState();
     dev.log('message');
-    BlocProvider.of<MapCubit>(context).getMap(widget.orderId);
+    BlocProvider.of<MapCubit>(context).getMap(
+      orderId: widget.orderId,
+      orderPoints: widget.orderPoints,
+    );
   }
 
   @override
@@ -112,7 +120,7 @@ class _SessionState extends State<SessionPage> {
 
   Future<void> _requestRoutes(List<PointDTO> data) async {
     if (data.isEmpty) return;
-
+    if (data.length < 2) return;
     try {
       for (int i = 0; i < data.length; i++) {
         /// FIXME

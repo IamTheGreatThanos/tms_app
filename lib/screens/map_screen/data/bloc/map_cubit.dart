@@ -18,14 +18,22 @@ class MapCubit extends Cubit<MapState> {
   })  : _repository = repository,
         super(MapInitState());
 
-  Future<void> getMap(int orderId) async {
+  Future<void> getMap({
+    required int orderId,
+    required List<PointDTO> orderPoints,
+  }) async {
     try {
       emit(MapLoadingState());
-      final List<PointDTO> result = await _repository.orderPoints(orderId);
-      log('wasvdbbsdbsb');
-      emit(MapLoadedState(loadedMap: result));
+
+      if (orderPoints.isEmpty) {
+        final List<PointDTO> result = await _repository.orderPoints(orderId);
+        log('wasvdbbsdbsb');
+        emit(MapLoadedState(loadedMap: result));
+      } else {
+        emit(MapLoadedState(loadedMap: orderPoints));
+      }
     } catch (e) {
-      log(e.toString());
+      log(e.toString(), name: _tag);
       emit(MapErrorState(messsage: e.toString()));
     }
   }

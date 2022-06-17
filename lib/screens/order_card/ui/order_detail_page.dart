@@ -15,6 +15,7 @@ import 'package:europharm_flutter/screens/order_card/ui/widgets/timer.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/transfer_order_bottom_sheet.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/point_page_bloc.dart';
 import 'package:europharm_flutter/screens/order_finish/ui/point_page.dart';
+import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/app_router.dart';
@@ -43,6 +44,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   @override
   void initState() {
+    BlocProvider.of<OrderDetailBloc>(context).add(OrderDetailEventReset());
     BlocProvider.of<OrderDetailBloc>(context).getCurrentOrder(widget.order);
     BlocProvider.of<EmptyDriversCubit>(context).getEmptyDrivers();
     BlocProvider.of<OrderDetailBloc>(context).add(
@@ -103,220 +105,249 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         /// Scaffold Body
         ///
         ///
-        body: BlocConsumer<OrderDetailBloc, OrderDetailState>(
-          listener: (context, state) {
-            if (state is StateLoadingOrderCard) {
-              context.loaderOverlay.show();
-            } else {
-              context.loaderOverlay.hide();
-            }
-            if (state is StateOrderCardError) {
-              showAppDialog(context, body: state.error.message);
-            }
-            if (state is StateStartSuccess) {
-              showAppDialog(context, body: "заказ успешно принят");
-              // Navigator.of(context).pop();
-              // setState(() {
-              //   widget.order.status = "accepted";
-              //   widget.order.isCurrent = true;
-              // });
-
-              BlocProvider.of<OrderDetailBloc>(context).add(
-                OrderDetailRefreshEvent(orderId: widget.order.id),
-              );
-            }
-            if (state is StateResumeSuccess) {
-              showAppDialog(context, body: "заказ успешно запущен");
-              Navigator.of(context).pop();
-              BlocProvider.of<OrderDetailBloc>(context).add(
-                OrderDetailRefreshEvent(orderId: widget.order.id),
-              );
-              // setState(() {
-              //   widget.order.status = "accepted";
-              // });
-            }
-            if (state is StateShowTimerInitial) {
-              final time = state.startTimer.isBefore(DateTime.now())
-                  ? Duration.zero
-                  : state.startTimer.difference(DateTime.now());
-              showAppBottomSheet(
-                context,
-                useRootNavigator: true,
-                isDismissible: false,
-                enableDrag: false,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Перерыв",
-                      style: ProjectTextStyles.ui_20Medium,
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 100,
-                      child: TimerPage(
-                        duration: time,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 18.0,
-                        horizontal: 10,
-                      ),
-                      child: Row(
-                        children: [
-                          MainButton(
-                            width: 80,
-                            icon: "assets/images/svg/arrow_left.svg",
-                            iconColor: ColorPalette.white,
-                            onTap: () {
-                              Navigator.popUntil(
-                                context,
-                                (route) => route.isFirst,
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          MainButton(
-                            width: MediaQuery.of(context).size.width - 90 - 20,
-                            onTap: () {
-                              context
-                                  .read<OrderDetailBloc>()
-                                  .add(EventResumeOrder());
-                              Navigator.pop(context);
-                            },
-                            title: "Выйти на линию",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-            if (state is StateStopSuccess) {
-              showAppDialog(context, body: "заказ успешно остановлен");
-              Navigator.of(context).pop();
-              // setState(() {
-              //   widget.order.status = "stopped";
-              // });
-              BlocProvider.of<OrderDetailBloc>(context).add(
-                OrderDetailRefreshEvent(orderId: widget.order.id),
-              );
-            }
-
-            if (state is StateChangedDriverOrderCard) {
-              Navigator.pop(context);
-            }
-          },
-          buildWhen: (p, c) => c is StateLoadDataOrderCard,
-          builder: (context, state) {
-            if (state is StateLoadDataOrderCard) {
-              return Column(
+        body: Column(
+          children: [
+            Visibility(
+              visible: widget.order.isCurrent,
+              child: Column(
                 children: [
-                  Visibility(
-                    visible: state.order.isCurrent,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              //height: 300,
-                              decoration: BoxDecoration(
-                                color: ColorPalette.white,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: BlocProvider<MapCubit>(
-                                create: (_) => MapCubit(
-                                  mapRepository: MapRepository(),
-                                  repository: context.read<GlobalRepository>(),
-                                ),
-                                child: SessionPage(
-                                  orderId: state.order.id,
-                                  order: state.order,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                      ],
-                    ),
-                  ),
                   Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Text(
-                              DateFormat("dd MMMM, hh:mm")
-                                  .format(state.order.startDate!),
-                              style: ProjectTextStyles.ui_12Medium.copyWith(
-                                color: ColorPalette.commonGrey,
-                              ),
-                            ),
-                            Text(state.order.from!),
-                          ],
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        //height: 300,
+                        decoration: BoxDecoration(
+                          color: ColorPalette.white,
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              DateFormat("dd MMMM, hh:mm")
-                                  .format(state.order.endDate!),
-                              style: ProjectTextStyles.ui_12Medium.copyWith(
-                                color: ColorPalette.commonGrey,
-                              ),
-                            ),
-                            Text(state.order.to!),
-                          ],
-                        )
-                      ],
+                        child: BlocProvider<MapCubit>(
+                          create: (_) => MapCubit(
+                            mapRepository: MapRepository(),
+                            repository: context.read<GlobalRepository>(),
+                          ),
+                          child: SessionPage(
+                            orderId: widget.order.id,
+                            order: widget.order,
+                            orderPoints: [],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
+                  const SizedBox(height: 15),
+                ],
+              ),
+            ),
+            Expanded(
+              child: BlocConsumer<OrderDetailBloc, OrderDetailState>(
+                listener: (context, state) {
+                  if (state is OrderDetailStateLoading) {
+                    context.loaderOverlay.show();
+                  } else {
+                    context.loaderOverlay.hide();
+                  }
+                  if (state is OrderDetailStateError) {
+                    showAppDialog(context, body: state.error.message);
+                  }
+                  if (state is OrderDetailStateStartSuccess) {
+                    showAppDialog(context, body: "заказ успешно принят");
+                    // Navigator.of(context).pop();
+                    // setState(() {
+                    //   widget.order.status = "accepted";
+                    //   widget.order.isCurrent = true;
+                    // });
+
+                    BlocProvider.of<OrderDetailBloc>(context).add(
+                      OrderDetailRefreshEvent(orderId: widget.order.id),
+                    );
+                    BlocProvider.of<OrdersBloc>(context).add(
+                      EventInitialOrdersScreen(),
+                    );
+                  }
+                  if (state is OrderDetailStateResumeSuccess) {
+                    showAppDialog(context, body: "заказ успешно запущен");
+                    Navigator.of(context).pop();
+                    BlocProvider.of<OrderDetailBloc>(context).add(
+                      OrderDetailRefreshEvent(orderId: widget.order.id),
+                    );
+                    // setState(() {
+                    //   widget.order.status = "accepted";
+                    // });
+                  }
+                  if (state is OrderDetailStateShowTimer) {
+                    final time = state.startTimer.isBefore(DateTime.now())
+                        ? Duration.zero
+                        : state.startTimer.difference(DateTime.now());
+                    showAppBottomSheet(
+                      context,
+                      useRootNavigator: true,
+                      isDismissible: false,
+                      enableDrag: false,
                       child: Column(
                         children: [
-                          const Divider(
-                            color: ColorPalette.lightGrey,
-                            thickness: 2,
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Перерыв",
+                            style: ProjectTextStyles.ui_20Medium,
                           ),
-                          _BuildOrderItem(
-                            order: state.order,
-                            callback: ({
-                              required bool isOpened,
-                              required PointDTO orderPoint,
-                            }) {
-                              log('isOpened in _BuildOrderItem : $isOpened');
-                              setState(() {
-                                isScan = isOpened;
-                                point = orderPoint;
-                              });
-                            },
-                          )
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 100,
+                            child: TimerPage(
+                              duration: time,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 18.0,
+                              horizontal: 10,
+                            ),
+                            child: Row(
+                              children: [
+                                MainButton(
+                                  width: 80,
+                                  icon: "assets/images/svg/arrow_left.svg",
+                                  iconColor: ColorPalette.white,
+                                  onTap: () {
+                                    Navigator.popUntil(
+                                      context,
+                                      (route) => route.isFirst,
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                MainButton(
+                                  width: MediaQuery.of(context).size.width -
+                                      90 -
+                                      20,
+                                  onTap: () {
+                                    context
+                                        .read<OrderDetailBloc>()
+                                        .add(OrderDetailEventResume());
+                                    Navigator.pop(context);
+                                  },
+                                  title: "Выйти на линию",
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                ],
-              );
-            }
-            return const SizedBox(); // const Center(child: CircularProgressIndicator());
-          },
+                    );
+                  }
+                  if (state is OrderDetailStateStopSuccess) {
+                    showAppDialog(context, body: "заказ успешно остановлен");
+                    Navigator.of(context).pop();
+                    // setState(() {
+                    //   widget.order.status = "stopped";
+                    // });
+                    BlocProvider.of<OrderDetailBloc>(context).add(
+                      OrderDetailRefreshEvent(orderId: widget.order.id),
+                    );
+                  }
+
+                  if (state is OrderDetailStateChangedDriverOrderCard) {
+                    BlocProvider.of<OrdersBloc>(context).add(
+                      EventInitialOrdersScreen(),
+                    );
+                    Navigator.pop(context);
+                  }
+                },
+                buildWhen: (p, c) {
+                  if (c is OrderDetailStateLoaded) {
+                    return true;
+                  }
+                  // else if (p is OrderDetailStateLoaded &&
+                  //     c is OrderDetailStateLoading) {
+                  //   return true;
+                  // }
+                  else {
+                    return false;
+                  }
+                },
+                builder: (context, state) {
+                  if (state is OrderDetailStateLoaded) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Text(
+                                    DateFormat("dd MMMM, hh:mm")
+                                        .format(state.order.startDate!),
+                                    style:
+                                        ProjectTextStyles.ui_12Medium.copyWith(
+                                      color: ColorPalette.commonGrey,
+                                    ),
+                                  ),
+                                  Text(state.order.from!),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    DateFormat("dd MMMM, hh:mm")
+                                        .format(state.order.endDate!),
+                                    style:
+                                        ProjectTextStyles.ui_12Medium.copyWith(
+                                      color: ColorPalette.commonGrey,
+                                    ),
+                                  ),
+                                  Text(state.order.to!),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const Divider(
+                                  color: ColorPalette.lightGrey,
+                                  thickness: 2,
+                                ),
+                                _BuildOrderItem(
+                                  order: state.order,
+                                  callback: ({
+                                    required bool isOpened,
+                                    required PointDTO orderPoint,
+                                  }) {
+                                    log('isOpened in _BuildOrderItem : $isOpened');
+                                    setState(() {
+                                      isScan = isOpened;
+                                      point = orderPoint;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox(); // const Center(child: CircularProgressIndicator());
+                },
+              ),
+            ),
+          ],
         ),
 
         ///
@@ -326,7 +357,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         ///
         floatingActionButton: BlocBuilder<OrderDetailBloc, OrderDetailState>(
           builder: (context, state) {
-            if (state is StateLoadDataOrderCard) {
+            if (state is OrderDetailStateLoaded) {
               return Padding(
                 padding: const EdgeInsets.only(
                   left: 10,
@@ -732,97 +763,138 @@ class _FABWidget extends StatelessWidget {
     ///
     ///
     else if (order.status == "accepted" || order.status == "in_process") {
-      return GestureDetector(
-        onTap: () async {
-          await showAppBottomSheet(
-            context,
-            initialChildSize: 0.45,
-            useRootNavigator: true,
-            child: const BuildCauses(),
-          ).then(
-            (value) async {
-              if (value != null) {
-                if (value == items[0] ||
-                    value == items[1] ||
-                    value == items[2]) {
-                  context.read<OrderDetailBloc>().add(
-                        EventStopOrder(
-                          cause: value == items[0]
-                              ? "snack"
-                              : value == items[1]
-                                  ? "sleep"
-                                  : "relax",
-                        ),
-                      );
-                }
-                if (value == items[4]) {
-                  /// FIXME
-                  // context.read<BlocOrderCard>().add(
-                  //       EventStopOrder(
-                  //         cause: "change_driver",
-                  //       ),
-                  //     );
-                  await showModalBottomSheet(
-                    useRootNavigator: true,
-                    context: context,
-                    isScrollControlled: true,
-                    isDismissible: true,
-                    backgroundColor: const Color(0xFFFFFFFF),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(16),
+      return Row(
+        children: [
+          Expanded(
+            child: Material(
+              color: ColorPalette.main,
+              borderRadius: BorderRadius.circular(10),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () async {
+                  BlocProvider.of<OrderDetailBloc>(context)
+                      .add(OrderDetailEventFinishOrder(orderId: order.id));
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    // color: ColorPalette.main,
+                    borderRadius: BorderRadius.circular(10),
+                    // border: Border.all(
+                    //   color: ColorPalette.main,
+                    // ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Завершить маршрут',
+                      style: ProjectTextStyles.ui_16Medium.copyWith(
+                        color: ColorPalette.white,
                       ),
                     ),
-                    builder: (context) {
-                      return const TransferOrderBottomSheet();
-                    },
-                  ).then(
-                    (value) => context.read<OrderDetailBloc>().add(
-                          EventStopOrder(
-                            cause: "change_driver",
-                            emptyDriver: value,
-                          ),
-                        ),
-                  );
-                }
-              }
-            },
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-          ),
-          decoration: BoxDecoration(
-            color: ColorPalette.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: ColorPalette.main,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Center(
-                child: Text(
-                  "Стоп",
-                  style: ProjectTextStyles.ui_16Medium.copyWith(
-                    color: ColorPalette.main,
                   ),
                 ),
               ),
-              Positioned(
-                top: 3,
-                right: 15,
-                child: SvgPicture.asset(
-                  "assets/images/svg/chevrone_down.svg",
-                  width: 24,
-                  height: 24,
-                  color: ColorPalette.main,
-                ),
-              )
-            ],
+            ),
           ),
-        ),
+          const SizedBox(width: 4),
+          Expanded(
+            child: GestureDetector(
+              onTap: () async {
+                await showAppBottomSheet(
+                  context,
+                  initialChildSize: 0.45,
+                  useRootNavigator: true,
+                  child: const BuildCauses(),
+                ).then(
+                  (value) async {
+                    if (value != null) {
+                      if (value == items[0] ||
+                          value == items[1] ||
+                          value == items[2]) {
+                        context.read<OrderDetailBloc>().add(
+                              OrderDetailEventStop(
+                                cause: value == items[0]
+                                    ? "snack"
+                                    : value == items[1]
+                                        ? "sleep"
+                                        : "relax",
+                              ),
+                            );
+                      }
+                      if (value == items[4]) {
+                        /// FIXME
+                        // context.read<BlocOrderCard>().add(
+                        //       EventStopOrder(
+                        //         cause: "change_driver",
+                        //       ),
+                        //     );
+                        await showModalBottomSheet(
+                          useRootNavigator: true,
+                          context: context,
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          backgroundColor: const Color(0xFFFFFFFF),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16),
+                            ),
+                          ),
+                          builder: (context) {
+                            return const TransferOrderBottomSheet();
+                          },
+                        ).then(
+                          (value) => context.read<OrderDetailBloc>().add(
+                                OrderDetailEventStop(
+                                  cause: "change_driver",
+                                  emptyDriver: value,
+                                ),
+                              ),
+                        );
+                      }
+                    }
+                  },
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: ColorPalette.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: ColorPalette.main,
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Стоп",
+                        style: ProjectTextStyles.ui_16Medium.copyWith(
+                          color: ColorPalette.main,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 3,
+                      right: 15,
+                      child: SvgPicture.asset(
+                        "assets/images/svg/chevrone_down.svg",
+                        width: 24,
+                        height: 24,
+                        color: ColorPalette.main,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     }
 
@@ -834,7 +906,7 @@ class _FABWidget extends StatelessWidget {
     else if (order.status == "stopped") {
       return GestureDetector(
         onTap: () {
-          context.read<OrderDetailBloc>().add(EventResumeOrder());
+          context.read<OrderDetailBloc>().add(OrderDetailEventResume());
         },
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -875,7 +947,7 @@ class _FABWidget extends StatelessWidget {
     else {
       return GestureDetector(
         onTap: () {
-          context.read<OrderDetailBloc>().add(EventStartOrder());
+          context.read<OrderDetailBloc>().add(OrderDetailEventStart());
         },
         child: Container(
           padding: const EdgeInsets.symmetric(

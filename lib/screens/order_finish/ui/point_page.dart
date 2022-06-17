@@ -224,10 +224,10 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                   height: 8,
                                 ), //state.orderPoint.products?.length,
                                 itemBuilder: (context, index) {
-                                  return Container(
-                                    color: Colors.black,
-                                    height: 100,
-                                  );
+                                  // return Container(
+                                  //   color: Colors.black,
+                                  //   height: 100,
+                                  // );
 
                                   return Padding(
                                     padding: const EdgeInsets.only(
@@ -665,6 +665,7 @@ class _MapSection extends StatelessWidget {
                 child: SessionPage(
                   orderId: order.id,
                   order: order,
+                  orderPoints: [], // TODO
                 ),
               ),
               // YandexMap(

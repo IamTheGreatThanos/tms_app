@@ -3,15 +3,15 @@ part of 'order_detail_bloc.dart';
 @immutable
 abstract class OrderDetailState {}
 
-class StateLoadingOrderCard extends OrderDetailState {}
+class OrderDetailStateLoading extends OrderDetailState {}
 
-class StateStopSuccess extends OrderDetailState {}
+class OrderDetailStateStopSuccess extends OrderDetailState {}
 
-class StateStartSuccess extends OrderDetailState {}
+class OrderDetailStateStartSuccess extends OrderDetailState {}
 
-class StateResumeSuccess extends OrderDetailState {}
+class OrderDetailStateResumeSuccess extends OrderDetailState {}
 
-class StateChangedDriverOrderCard extends OrderDetailState {}
+class OrderDetailStateChangedDriverOrderCard extends OrderDetailState {}
 
 // class StateLoadOrderDetails extends StateBlocOrderCard {
 //   final OrderData order;
@@ -21,28 +21,28 @@ class StateChangedDriverOrderCard extends OrderDetailState {}
 //   });
 // }
 
-class StateLoadDataOrderCard extends OrderDetailState {
+class OrderDetailStateLoaded extends OrderDetailState {
   final List<PointDTO> orderPoints;
   final OrderDTO order; // order;
 
-  StateLoadDataOrderCard({
+  OrderDetailStateLoaded({
     required this.orderPoints,
     required this.order,
   });
 }
 
-class StateShowTimerInitial extends OrderDetailState {
+class OrderDetailStateShowTimer extends OrderDetailState {
   final DateTime startTimer;
 
-  StateShowTimerInitial({
+  OrderDetailStateShowTimer({
     required this.startTimer,
   });
 }
 
-class StateOrderCardError extends OrderDetailState {
+class OrderDetailStateError extends OrderDetailState {
   final AppError error;
 
-  StateOrderCardError({
+  OrderDetailStateError({
     required this.error,
   });
 }

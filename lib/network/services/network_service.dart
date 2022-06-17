@@ -523,4 +523,23 @@ class NetworkService {
 
     return order;
   }
+
+  Future<String> orderFinish({
+    required int orderId,
+  }) async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+      path: 'order/finish',
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "order_id": orderId,
+      }), // baseUrl: 'http://185.129.50.172/api/web/',
+    );
+
+    log(
+      '##### orderFinish api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    return (response.data as Map<String, dynamic>)['message'] as String;
+  }
 }

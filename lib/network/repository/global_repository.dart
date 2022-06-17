@@ -3,7 +3,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/order_points_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
@@ -90,7 +89,8 @@ class GlobalRepository {
 
   Future<PointDTO> orderPointFinish({
     required int pointId,
-  }) async => _networkService.orderPointFinish(pointId: pointId);
+  }) async =>
+      _networkService.orderPointFinish(pointId: pointId);
 
   Future<OrderDTO> stopOrder(
     int orderId,
@@ -158,6 +158,13 @@ class GlobalRepository {
     required int orderId,
   }) async =>
       _networkService.getOrderByOrderId(
+        orderId: orderId,
+      );
+
+  Future<String> orderFinish({
+    required int orderId,
+  }) async =>
+      _networkService.orderFinish(
         orderId: orderId,
       );
 }
