@@ -24,7 +24,7 @@ mixin _$CityDTO {
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'region_id')
   int? get regionId => throw _privateConstructorUsedError;
-  dynamic get lat => throw _privateConstructorUsedError;
+  dynamic get lat => throw _privateConstructorUsedError; // FIXME
   dynamic get long => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -163,6 +163,7 @@ class _$_CityDTO implements _CityDTO {
   final int? regionId;
   @override
   final dynamic lat;
+// FIXME
   @override
   final dynamic long;
 
@@ -223,7 +224,7 @@ abstract class _CityDTO implements CityDTO {
   int? get regionId => throw _privateConstructorUsedError;
   @override
   dynamic get lat => throw _privateConstructorUsedError;
-  @override
+  @override // FIXME
   dynamic get long => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

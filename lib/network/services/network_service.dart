@@ -542,4 +542,33 @@ class NetworkService {
 
     return (response.data as Map<String, dynamic>)['message'] as String;
   }
+
+  Future<List<OrderDTO>> getOrdersByDate({
+    required String startDate,
+    required String endDate,
+  }) async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+        path: 'points-by-date',
+        method: NetworkMethod.get,
+        queryParameters: {
+          'from': startDate,
+          'to': endDate,
+        });
+
+    log(
+      '##### getOrdersByDate api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<OrderDTO> orders = await compute<List, List<OrderDTO>>(
+      (List list) {
+        return list
+            .map((e) => OrderDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    return orders;
+  }
 }

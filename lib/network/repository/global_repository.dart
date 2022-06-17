@@ -167,4 +167,13 @@ class GlobalRepository {
       _networkService.orderFinish(
         orderId: orderId,
       );
+
+  Future<List<OrderDTO>> getOrdersByDate({
+    required String startDate,
+    required String endDate,
+  }) async =>
+      _networkService.getOrdersByDate(
+        startDate: startDate,
+        endDate: endDate,
+      );
 }

@@ -12,6 +12,7 @@ import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_history.dart';
+import 'package:europharm_flutter/screens/schedule_screen/bloc/calendar_orders_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -95,6 +96,12 @@ class TopLevelBlocs extends StatelessWidget {
         BlocProvider<OrderDetailBloc>(
           create: (context) => OrderDetailBloc(
             repository: context.read<GlobalRepository>(),
+          ),
+        ),
+
+        BlocProvider<CalendarOrdersCubit>(
+          create: (context) => CalendarOrdersCubit(
+            globalRepository: context.read<GlobalRepository>(),
           ),
         ),
       ],
