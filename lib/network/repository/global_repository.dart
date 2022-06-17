@@ -88,6 +88,10 @@ class GlobalRepository {
   Future<OrderPoint> orderProductFinish(int productId, String code) async =>
       _networkService.orderProductFinish(productId, code);
 
+  Future<PointDTO> orderPointFinish({
+    required int pointId,
+  }) async => _networkService.orderPointFinish(pointId: pointId);
+
   Future<OrderDTO> stopOrder(
     int orderId,
     String cause, {

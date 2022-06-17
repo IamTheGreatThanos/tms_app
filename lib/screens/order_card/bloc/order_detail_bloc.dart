@@ -21,7 +21,7 @@ const _tag = 'bloc_order_card.dart';
 class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   OrderDetailBloc({
     required this.repository,
-    required this.currentOrder,
+    // required this.currentOrder,
   }) : super(StateLoadingOrderCard()) {
     on<EventInitialOrderCard>(_read);
     on<EventStopOrder>(_stop);
@@ -31,7 +31,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   }
 
   final GlobalRepository repository;
-  OrderDTO currentOrder;
+  late OrderDTO currentOrder;
   int? orderId;
 
   ///
@@ -39,6 +39,10 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
   /// METHODS
   ///
   ///
+  void getCurrentOrder(OrderDTO ord) {
+    currentOrder = ord;
+  }
+
   Future<void> _read(
     EventInitialOrderCard event,
     Emitter<OrderDetailState> emit,

@@ -1,16 +1,16 @@
-part of "../bloc_order_finish.dart";
+part of '../point_page_bloc.dart';
 
-extension Finish on BlocOrderFinish {
+extension Finish on PointPageBloc {
   Future<void> _finish(
-    EventOrderProductFinish event,
-    Emitter<StateBlocOrderFinish> emit,
+    PointPageEventProductFinish event,
+    Emitter<PointPageState> emit,
   ) async {
     try {
       await repository.orderProductFinish(event.productId, event.code);
-      add(EventOrderFinishInitial(pointId: pointId!));
+      add(PointPageEventLoadProducts(pointId: pointId!));
     } catch (e) {
       emit(
-        StateOrderFinishError(
+        PointPageStateError(
           error: AppError(
             message: e.dioErrorMessage,
             code: e.dioErrorStatusCode,

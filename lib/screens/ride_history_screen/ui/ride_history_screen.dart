@@ -15,7 +15,7 @@ class RideHistoryScreen extends StatefulWidget {
   const RideHistoryScreen({Key? key}) : super(key: key);
 
   @override
-  _RideHistoryScreenState createState() => _RideHistoryScreenState();
+  State<RideHistoryScreen> createState() => _RideHistoryScreenState();
 }
 
 class _RideHistoryScreenState extends State<RideHistoryScreen> {
@@ -261,8 +261,9 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                       "assets/images/svg/history_item.svg",
                                     ),
                                   ),
-                                  title:
-                                      '${state.history[index].order}', /// FIXME
+                                  title: '${state.history[index].order}',
+
+                                  /// FIXME
                                   subtitle:
                                       DateFormat("dd.MM.yyyy в kk:mm").format(
                                     state.history[index].createdAt!,

@@ -311,6 +311,11 @@ class NetworkService {
         "point_id": pointId,
       }),
     );
+    log(
+      '##### orderPointProducts api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
     return OrderPoint.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
@@ -326,6 +331,22 @@ class NetworkService {
       }),
     );
     return OrderPoint.fromJson(
+      (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
+    );
+  }
+
+  Future<PointDTO> orderPointFinish({
+    required int pointId,
+  }) async {
+    final Response<dynamic> response = await _dioWrapper.sendRequest(
+      path: "point-finish",
+      method: NetworkMethod.post,
+      formData: FormData.fromMap({
+        "point_id": pointId,
+      }),
+    );
+
+    return PointDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
