@@ -1,8 +1,6 @@
-import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'dynamic_link_layer_event.dart';
 
@@ -14,8 +12,7 @@ class DynamicLinkLayerBloc
   bool isAuthorized;
   final HiveRepository _hiveRepository;
 
-  DynamicLinkLayerBloc(
-      this._hiveRepository, this.isAuthorized)
+  DynamicLinkLayerBloc(this._hiveRepository, this.isAuthorized)
       : super(DynamicLinkLayerInitial()) {
     on<InitialDynamicLinkLayerEvent>(
         (event, emit) => _buildInitialEvent(event, emit));

@@ -1,12 +1,9 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'after_login_layer_event.dart';
 
@@ -30,9 +27,7 @@ class AfterLoginLayerBloc
 
   _onInitialAfterLoginEvent(
       InitialAfterLoginEvent event, Emitter<AfterLoginLayerState> emit) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       if (kDebugMode) {
         rethrow;
       }
@@ -40,4 +35,3 @@ class AfterLoginLayerBloc
     }
   }
 }
-

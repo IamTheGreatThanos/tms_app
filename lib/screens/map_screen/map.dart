@@ -69,6 +69,7 @@ class _SessionState extends State<SessionPage> {
                   final double? long =
                       double.tryParse(state.loadedMap.first.long!.toString());
                   if (lat != null && long != null) {
+                    dev.log('YandexMap: 1');
                     controller!.moveCamera(
                       CameraUpdate.newCameraPosition(
                         CameraPosition(
@@ -78,7 +79,24 @@ class _SessionState extends State<SessionPage> {
                             // longitude: widget.orderData.fromLong!,
                             // latitude: widget.orderData.fromLat!,
                           ),
-                          zoom: 12,
+                          zoom: 15,
+                        ),
+                      ),
+                      animation: const MapAnimation(),
+                    );
+                  } else {
+                    dev.log('YandexMap: 2');
+
+                    controller!.moveCamera(
+                      CameraUpdate.newCameraPosition(
+                        const CameraPosition(
+                          target: Point(
+                            longitude: 43.238949,
+                            latitude: 76.889709,
+                            // longitude: widget.orderData.fromLong!,
+                            // latitude: widget.orderData.fromLat!,
+                          ),
+                          zoom: 9,
                         ),
                       ),
                       animation: const MapAnimation(),

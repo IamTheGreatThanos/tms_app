@@ -12,7 +12,7 @@ class IdVerificationScreen extends StatefulWidget {
   const IdVerificationScreen({Key? key}) : super(key: key);
 
   @override
-  _IdVerificationScreenState createState() {
+  State<IdVerificationScreen> createState() {
     return _IdVerificationScreenState();
   }
 }
@@ -99,7 +99,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     Logger().i("|||||CAMERA is initialized id_verification|||");
 
     var cameras = await availableCameras();
-    print("|||||CAMERA is initialized id_verification 2");
+    debugPrint("|||||CAMERA is initialized id_verification 2");
 
     controller = CameraController(cameras[0], ResolutionPreset.max);
     // controller!.initialize().then((_) {
@@ -108,7 +108,7 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     //   }
     //   setState(() {});
     // });
-    print("|||||CAMERA is initialized id_verification 3");
+    debugPrint("|||||CAMERA is initialized id_verification 3");
 
     await controller!.initialize();
     await controller!
@@ -120,14 +120,14 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
     await controller!
         .getMaxZoomLevel()
         .then((value) => _maxAvailableZoom = value);
-    print("camera is initialized id_verification");
+    debugPrint("camera is initialized id_verification");
 
     await controller!
         .getMinZoomLevel()
         .then((value) => _minAvailableZoom = value);
     setState(() {
       isCameraInitialized = true;
-      print("|||||CAMERA is initialized id_verification 4");
+      debugPrint("|||||CAMERA is initialized id_verification 4");
     });
   }
 
@@ -343,10 +343,10 @@ class _IdVerificationScreenState extends State<IdVerificationScreen>
 
     // final CameraController cameraController = controller!;
 
-    final offset = Offset(
-      details.localPosition.dx / constraints.maxWidth,
-      details.localPosition.dy / constraints.maxHeight,
-    );
+    // final offset = Offset(
+    //   details.localPosition.dx / constraints.maxWidth,
+    //   details.localPosition.dy / constraints.maxHeight,
+    // );
     // cameraController.setExposurePoint(offset);
     // cameraController.setFocusPoint(offset);
   }

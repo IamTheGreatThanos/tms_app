@@ -78,10 +78,8 @@ class CameraShaper extends ShapeBorder {
     final width = rect.width;
     final height = rect.height;
     final borderOffset = borderWidth / 2;
-    final _cutOutWidth =
-        paintWidth;
-    final _cutOutHeight =
-        paintHeight;
+    final cutOutWidth = paintWidth;
+    final cutOutHeight = paintHeight;
 
     final backgroundPaint = Paint()
       ..color = overlayColor
@@ -92,14 +90,14 @@ class CameraShaper extends ShapeBorder {
       ..blendMode = BlendMode.dstOut;
 
     final cutOutRect = Rect.fromLTWH(
-      rect.left + width / 2 - _cutOutWidth / 2 + borderOffset,
+      rect.left + width / 2 - cutOutWidth / 2 + borderOffset,
       -cutOutBottomOffset +
           rect.top +
           height / 2 -
-          _cutOutHeight / 2 +
+          cutOutHeight / 2 +
           borderOffset,
-      _cutOutWidth - borderOffset * 2,
-      _cutOutHeight - borderOffset * 2,
+      cutOutWidth - borderOffset * 2,
+      cutOutHeight - borderOffset * 2,
     );
 
     canvas

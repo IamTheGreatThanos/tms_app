@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'calendar_builders.dart';
-import 'calendar_header.dart';
 import 'styles.dart';
 import 'cell_content.dart';
 import 'table_calendar_base.dart';
@@ -267,7 +266,7 @@ class TableCalendar<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  _TableCalendarState<T> createState() => _TableCalendarState<T>();
+  State<TableCalendar<T>> createState() => _TableCalendarState<T>();
 }
 
 class _TableCalendarState<T> extends State<TableCalendar<T>> {
@@ -308,15 +307,15 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
   bool get _isRangeSelectionToggleable =>
       _rangeSelectionMode == RangeSelectionMode.toggledOn ||
-          _rangeSelectionMode == RangeSelectionMode.toggledOff;
+      _rangeSelectionMode == RangeSelectionMode.toggledOff;
 
   bool get _isRangeSelectionOn =>
       _rangeSelectionMode == RangeSelectionMode.toggledOn ||
-          _rangeSelectionMode == RangeSelectionMode.enforced;
+      _rangeSelectionMode == RangeSelectionMode.enforced;
 
   bool get _shouldBlockOutsideDays =>
       !widget.calendarStyle.outsideDaysVisible &&
-          widget.calendarFormat == CalendarFormat.month;
+      widget.calendarFormat == CalendarFormat.month;
 
   void _swipeCalendarFormat(SwipeDirection direction) {
     if (widget.onFormatChanged != null) {
@@ -425,19 +424,19 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     }
   }
 
-  void _onLeftChevronTap() {
-    _pageController.previousPage(
-      duration: widget.pageAnimationDuration,
-      curve: widget.pageAnimationCurve,
-    );
-  }
+  // void _onLeftChevronTap() {
+  //   _pageController.previousPage(
+  //     duration: widget.pageAnimationDuration,
+  //     curve: widget.pageAnimationCurve,
+  //   );
+  // }
 
-  void _onRightChevronTap() {
-    _pageController.nextPage(
-      duration: widget.pageAnimationDuration,
-      curve: widget.pageAnimationCurve,
-    );
-  }
+  // void _onRightChevronTap() {
+  //   _pageController.nextPage(
+  //     duration: widget.pageAnimationDuration,
+  //     curve: widget.pageAnimationCurve,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -475,15 +474,15 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           },
           dowBuilder: (BuildContext context, DateTime day) {
             Widget? dowCell =
-            widget.calendarBuilders.dowBuilder?.call(context, day);
+                widget.calendarBuilders.dowBuilder?.call(context, day);
 
             if (dowCell == null) {
               final weekdayString = widget.daysOfWeekStyle.dowTextFormatter
-                  ?.call(day, widget.locale) ??
+                      ?.call(day, widget.locale) ??
                   DateFormat.E(widget.locale).format(day);
 
               final isWeekend =
-              _isWeekend(day, weekendDays: widget.weekendDays);
+                  _isWeekend(day, weekendDays: widget.weekendDays);
 
               dowCell = Center(
                 child: ExcludeSemantics(
@@ -546,8 +545,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                   end: isRangeEnd ? constraints.maxWidth * 0.5 : 0.0,
                 ),
                 height:
-                (shorterSide - widget.calendarStyle.cellMargin.vertical) *
-                    widget.calendarStyle.rangeHighlightScale,
+                    (shorterSide - widget.calendarStyle.cellMargin.vertical) *
+                        widget.calendarStyle.rangeHighlightScale,
                 color: widget.calendarStyle.rangeHighlightColor,
               ),
             );
@@ -585,7 +584,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         if (!isDisabled) {
           final events = widget.eventLoader?.call(day) ?? [];
           Widget? markerWidget =
-          widget.calendarBuilders.markerBuilder?.call(context, day, events);
+              widget.calendarBuilders.markerBuilder?.call(context, day, events);
 
           if (events.isNotEmpty && markerWidget == null) {
             final center = constraints.maxHeight / 2;
@@ -639,7 +638,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
   Widget _buildSingleMarker(DateTime day, T event, double markerSize) {
     return widget.calendarBuilders.singleMarkerBuilder
-        ?.call(context, day, event) ??
+            ?.call(context, day, event) ??
         Container(
           width: markerSize,
           height: markerSize,
@@ -700,9 +699,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   }
 
   bool _isWeekend(
-      DateTime day, {
-        List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
-      }) {
+    DateTime day, {
+    List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
+  }) {
     return weekendDays.contains(day.weekday);
   }
 }
