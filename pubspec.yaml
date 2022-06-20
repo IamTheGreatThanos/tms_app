@@ -6,14 +6,14 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0"
-  flutter: ">=3.0.0"
+  sdk: ">=2.17.3"
+  flutter: ">=3.0.2"
 
 dependencies:
   another_flushbar: ^1.10.24
   another_xlider: ^1.1.0
   cached_network_image: ^3.1.0
-  camera: ^0.9.7+1
+  # camera: ^0.9.8+1
   change_app_package_name: ^1.1.0
   code_field: ^1.22.0
   # convex_bottom_bar: ^3.0.0
@@ -41,6 +41,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   flutter_svg: ^1.1.0
   freezed_annotation: ^2.0.3
+  get_it: ^7.2.0
   hive: ^2.2.1
   hive_flutter: ^1.1.0
   image_picker: ^0.8.5+3
@@ -51,10 +52,11 @@ dependencies:
   loader_overlay: ^2.0.4
   logger: ^1.1.0
   mask_text_input_formatter: ^2.1.0
+  meta: ^1.7.0
   path_provider: ^2.0.11
   pin_code_fields: ^7.3.0
   provider: ^6.0.3
-  pull_to_refresh: ^2.0.0
+  # pull_to_refresh: ^2.0.0
   # qr_code_scanner: ^1.0.0
   qr_flutter: ^4.0.0
   shared_preferences: ^2.0.15

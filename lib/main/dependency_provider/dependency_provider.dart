@@ -1,5 +1,4 @@
 import 'package:europharm_flutter/managers/error_handler/error_handler.dart';
-import 'package:europharm_flutter/managers/secure_storage_manager/secure_storage_manager.dart';
 import 'package:europharm_flutter/managers/url_manager/url_manager.dart';
 import 'package:europharm_flutter/managers/user_store.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
@@ -45,9 +44,9 @@ class DependenciesProvider extends StatelessWidget {
         RepositoryProvider(
           create: (_) => ErrorHandler(),
         ),
-        RepositoryProvider(
-          create: (_) => SecureStorage(),
-        ),
+        // RepositoryProvider(
+        //   create: (_) => SecureStorage(),
+        // ),
         RepositoryProvider(
           create: (_) => FirebaseMessagingRepository(),
         ),

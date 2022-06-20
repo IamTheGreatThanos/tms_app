@@ -9,13 +9,9 @@ class HiveRepository {
   Future<void> init() async {
     registerAdapters();
     _stringsBox = await Hive.openBox<String>(BoxNames.stringBox);
-
   }
 
-  void registerAdapters() {
-
-  }
-
+  void registerAdapters() {}
 
   Future<void> saveTokens(String accessToken, String refreshToken) async {
     await _stringsBox.put(BoxKeys.access_token_key, accessToken);

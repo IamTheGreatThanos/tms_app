@@ -10,7 +10,6 @@ part 'point_page_event.dart';
 
 part 'point_page_state.dart';
 
-part 'parts/_read.dart';
 part 'parts/_finish.dart';
 
 class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {

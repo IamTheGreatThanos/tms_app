@@ -2,7 +2,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/constants.dart';
 import 'package:europharm_flutter/widgets/main_text_field/app_text_field.dart';
@@ -41,7 +40,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
         child: CountryCodePicker(
           onChanged: (value) {},
           initialSelection: 'KZ',
-          favorite: ['+7', 'KZ'],
+          favorite: const ['+7', 'KZ'],
           flagWidth: 19,
           padding: EdgeInsets.zero,
           alignLeft: true,
@@ -179,11 +178,12 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     };
   }
 
-  PersonalDataVModel() : super(
-    const _StateVModel(
-      isValidated: false,
-    ),
-  );
+  PersonalDataVModel()
+      : super(
+          const _StateVModel(
+            isValidated: false,
+          ),
+        );
 
   List<String> _passwordValidator(String value) {
     List<String> output = [];

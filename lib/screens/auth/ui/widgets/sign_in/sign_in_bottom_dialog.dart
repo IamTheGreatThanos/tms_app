@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
@@ -16,8 +15,12 @@ import 'package:europharm_flutter/utils/custom_phone_input_formatter.dart';
 part '_vmodel.dart';
 
 void showSignInBottomDialog(BuildContext context) {
-  showAppBottomSheet(context,
-      initialChildSize: 0.45, useRootNavigator: true, child: _BuildLogin());
+  showAppBottomSheet(
+    context,
+    initialChildSize: 0.45,
+    useRootNavigator: true,
+    child: const _BuildLogin(),
+  );
 }
 
 class _BuildLogin extends StatefulWidget {
@@ -58,12 +61,12 @@ class _BuildLoginState extends State<_BuildLogin> {
                 body: state.error.message,
               );
             }
-            if(state is StateSuccessSignIn){
+            if (state is StateSuccessSignIn) {
               context.read<LoginBloc>().add(
-                LogInEvent(
-                  state.accessToken,
-                ),
-              );
+                    LogInEvent(
+                      state.accessToken,
+                    ),
+                  );
             }
           },
           builder: (context, state) {

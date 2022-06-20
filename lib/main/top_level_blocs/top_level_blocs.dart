@@ -10,7 +10,7 @@ import 'package:europharm_flutter/screens/order_card/bloc/empty_drivers_cubit.da
 import 'package:europharm_flutter/screens/order_card/bloc/order_detail_bloc.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
-import 'package:europharm_flutter/screens/profile_screen/bloc/bloc_profile_screen.dart';
+import 'package:europharm_flutter/screens/profile_screen/bloc/profile_bloc.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/bloc/bloc_ride_history.dart';
 import 'package:europharm_flutter/screens/schedule_screen/bloc/calendar_orders_cubit.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +62,11 @@ class TopLevelBlocs extends StatelessWidget {
         //   )..add(EventInitialOrdersScreen(cityId: "1")),
         // ),
         BlocProvider(
-          create: (context) => BlocProfileScreen(
+          create: (context) => ProfileBloc(
             repository: context.read<GlobalRepository>(),
             firebaseMessagingRepository:
                 context.read<FirebaseMessagingRepository>(),
-          )..add(EventProfileInitial()),
+          )..add(ProfileEventInitial()),
         ),
         BlocProvider(
           create: (context) => BlocPersonalData(
@@ -102,6 +102,13 @@ class TopLevelBlocs extends StatelessWidget {
         BlocProvider<CalendarOrdersCubit>(
           create: (context) => CalendarOrdersCubit(
             globalRepository: context.read<GlobalRepository>(),
+          ),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(
+            repository: context.read<GlobalRepository>(),
+            firebaseMessagingRepository:
+                context.read<FirebaseMessagingRepository>(),
           ),
         ),
       ],

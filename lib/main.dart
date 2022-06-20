@@ -45,7 +45,7 @@ void main() async {
       // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
-      await context.read<SecureStorage>().init();
+      // await context.read<SecureStorage>().init();
       await context.read<HiveRepository>().init();
       await context.read<UserStore>().init(context.read<HiveRepository>());
       await context
