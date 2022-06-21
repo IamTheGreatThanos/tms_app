@@ -1,9 +1,9 @@
 part of 'orders_bloc.dart';
 
 @immutable
-abstract class EventBlocOrdersScreen {}
+abstract class OrdersEvent {}
 
-class EventInitialOrdersScreen extends EventBlocOrdersScreen {
+class EventInitialOrdersScreen extends OrdersEvent {
   final String? cityId;
 
   EventInitialOrdersScreen({

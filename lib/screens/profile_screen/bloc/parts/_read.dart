@@ -6,7 +6,7 @@ extension Read on ProfileBloc {
     Emitter<ProfileState> emit,
   ) async {
     try {
-      final profile = await repository.getProfile();
+      final UserDTO profile = await repository.getProfile();
       // String? deviceToken =
       //     await firebaseMessagingRepository.generateNewToken();
       // print(deviceToken);

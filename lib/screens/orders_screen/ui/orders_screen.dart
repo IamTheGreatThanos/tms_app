@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/screens/notifications_screen/ui/notifications_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/order_detail_page.dart';
@@ -26,17 +25,12 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  String? selectedValue;
-  // int cityId = 1;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
       GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void initState() {
-    // add(
-    //         EventInitialOrdersScreen(cityId: "23"),
-    //       ),
     super.initState();
   }
 
@@ -52,10 +46,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
               left: 20,
               right: 20,
             ),
-            child: BlocConsumer<OrdersBloc, StateBlocOrdersScreen>(
+            child: BlocConsumer<OrdersBloc, OrdersState>(
               buildWhen: (p, c) => c is StateLoadDataOrdersScreen,
               listener: (context, state) {
-                if (state is StateLoadingOrdersScreen) {
+                if (state is OrdersStateLoading) {
                   context.loaderOverlay.show();
                 } else {
                   context.loaderOverlay.hide();
@@ -340,7 +334,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     },
                                   ),
                                 const SizedBox(
-                                  height: 85,
+                                  height: 100,
                                 )
                               ],
                             ),

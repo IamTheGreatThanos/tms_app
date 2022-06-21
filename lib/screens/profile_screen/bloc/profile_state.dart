@@ -14,7 +14,7 @@ class ProfileStateError extends ProfileState {
 }
 
 class ProfileStateLoaded extends ProfileState {
-  final ProfileResponse profile;
+  final UserDTO profile;
 
   ProfileStateLoaded({
     required this.profile,

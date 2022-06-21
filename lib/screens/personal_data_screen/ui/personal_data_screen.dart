@@ -3,9 +3,9 @@ import 'dart:ui';
 
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
-import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
@@ -18,7 +18,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PersonalDataScreen extends StatefulWidget {
-  const PersonalDataScreen({Key? key}) : super(key: key);
+  final UserDTO? user;
+  const PersonalDataScreen({
+    this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<PersonalDataScreen> createState() => _PersonalDataScreenState();
@@ -26,6 +30,13 @@ class PersonalDataScreen extends StatefulWidget {
 
 class _PersonalDataScreenState extends State<PersonalDataScreen> {
   final PersonalDataVModel _vmodel = PersonalDataVModel();
+
+  @override
+  void initState() {
+    _vmodel.user = widget.user;
+    _vmodel.initUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,9 +181,11 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                         height: 25,
                       ),
                       MainButton(
-                        onTap: () => context
-                            .read<BlocPersonalData>()
-                            .add(EventEditProfile(vModel: _vmodel)),
+                        onTap: () => context.read<BlocPersonalData>().add(
+                              EventEditProfile(
+                                vModel: _vmodel,
+                              ),
+                            ),
                         color: ColorPalette.green,
                         title: "Сохранить",
                       ),
@@ -255,44 +268,46 @@ class _BuildAvatarState extends State<_BuildAvatar> {
                 fit: BoxFit.cover,
               ),
             Positioned(
-                top: 78,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(50, 50, 50, 0.4),
+              top: 78,
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(50, 50, 50, 0.4),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 10,
+                    sigmaY: 10,
                   ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: 10,
-                      sigmaY: 10,
-                    ),
-                  ),
-                )),
+                ),
+              ),
+            ),
             Positioned.fill(
-                bottom: 6,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset("assets/images/svg/camera.svg"),
-                      const SizedBox(
-                        width: 5,
+              bottom: 6,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset("assets/images/svg/camera.svg"),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      S.of(context).load_data,
+                      textAlign: TextAlign.center,
+                      style: ProjectTextStyles.ui_10Regular.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: ColorPalette.white,
                       ),
-                      Text(
-                        S.of(context).load_data,
-                        textAlign: TextAlign.center,
-                        style: ProjectTextStyles.ui_10Regular.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: ColorPalette.white,
-                        ),
-                      )
-                    ],
-                  ),
-                ))
+                    )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -303,10 +318,14 @@ class _BuildAvatarState extends State<_BuildAvatar> {
 class _BuildPersonalData extends StatefulWidget {
   final PersonalDataVModel vmodel;
   final CitiesResponse cities;
+  final UserDTO? user;
 
-  const _BuildPersonalData(
-      {Key? key, required this.vmodel, required this.cities})
-      : super(key: key);
+  const _BuildPersonalData({
+    Key? key,
+    required this.vmodel,
+    required this.cities,
+    this.user,
+  }) : super(key: key);
 
   @override
   State<_BuildPersonalData> createState() => _BuildPersonalDataState();

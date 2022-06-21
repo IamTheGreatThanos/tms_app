@@ -4,10 +4,12 @@ import 'package:europharm_flutter/network/models/dto_models/response/error.dart'
 import 'package:europharm_flutter/network/models/notification_dto.dart';
 import 'package:europharm_flutter/screens/notifications_screen/bloc/notifications_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
@@ -90,14 +92,77 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Text(
-                              'Причина: ${notifications[index].reason}',
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Опубликовано",
+                                style: ProjectTextStyles.ui_12Medium
+                                    .copyWith(color: ColorPalette.commonGrey),
+                              ),
+                              if (notifications[index].order != null)
+                                Text(
+                                  DateFormat("dd MMMM").format(
+                                      notifications[index].order!.startDate!),
+                                  style: ProjectTextStyles.ui_12Medium.copyWith(
+                                    color: ColorPalette.commonGrey,
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  //widget.order.employee?.name ?? S.of(context).no_data,
+                                  '0000000${notifications[index].order!.id}',
+
+                                  style: ProjectTextStyles.ui_20Medium,
+                                ),
+                              ),
+                              if (notifications[index]
+                                          .order
+                                          ?.status
+                                          ?.toLowerCase() ==
+                                      "accepted" ||
+                                  notifications[index]
+                                          .order
+                                          ?.status
+                                          ?.toLowerCase() ==
+                                      "in_process" ||
+                                  notifications[index]
+                                          .order
+                                          ?.status
+                                          ?.toLowerCase() ==
+                                      "stopped")
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: ColorPalette.grey400,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  padding: const EdgeInsets.all(4),
+                                  child: Text(
+                                    "Текущий Заказ",
+                                    style:
+                                        ProjectTextStyles.ui_10Regular.copyWith(
+                                      color: ColorPalette.white,
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                          const Divider(
+                            thickness: 2,
+                            color: ColorPalette.lightGrey,
                           ),
                           Flexible(
                             child: Text(
-                              'Заказ: #0000000${notifications[index].order?.id}',
+                              'Причина: ${notifications[index].reason}',
+                              style: ProjectTextStyles.ui_16Medium,
                             ),
                           ),
                         ],

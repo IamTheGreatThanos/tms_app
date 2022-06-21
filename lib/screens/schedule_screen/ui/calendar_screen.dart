@@ -5,6 +5,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/error.dart'
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/screens/schedule_screen/bloc/calendar_orders_cubit.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,14 +167,94 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Flexible(
-                                        child: Text(
-                                          'Откуда: ${orders[index].from}',
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Опубликовано",
+                                            style: ProjectTextStyles.ui_12Medium
+                                                .copyWith(
+                                                    color: ColorPalette
+                                                        .commonGrey),
+                                          ),
+                                          Text(
+                                            DateFormat("dd MMMM").format(
+                                                orders[index].startDate!),
+                                            style: ProjectTextStyles.ui_12Medium
+                                                .copyWith(
+                                                    color: ColorPalette
+                                                        .commonGrey),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              //widget.order.employee?.name ?? S.of(context).no_data,
+                                              '0000000${orders[index].id}',
+
+                                              style:
+                                                  ProjectTextStyles.ui_20Medium,
+                                            ),
+                                          ),
+                                          if (orders[index]
+                                                      .status
+                                                      ?.toLowerCase() ==
+                                                  "accepted" ||
+                                              orders[index]
+                                                      .status
+                                                      ?.toLowerCase() ==
+                                                  "in_process" ||
+                                              orders[index]
+                                                      .status
+                                                      ?.toLowerCase() ==
+                                                  "stopped")
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: ColorPalette.grey400,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                              ),
+                                              padding: const EdgeInsets.all(4),
+                                              child: Text(
+                                                "Текущий Заказ",
+                                                style: ProjectTextStyles
+                                                    .ui_10Regular
+                                                    .copyWith(
+                                                  color: ColorPalette.white,
+                                                ),
+                                              ),
+                                            )
+                                        ],
+                                      ),
+                                      const Divider(
+                                        thickness: 2,
+                                        color: ColorPalette.lightGrey,
                                       ),
                                       Flexible(
                                         child: Text(
-                                          'Заказ: #0000000${orders[index].id}',
+                                          'Откуда: ${orders[index].from}',
+                                          style: ProjectTextStyles.ui_16Regular,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text('Куда: ${orders[index].to}',
+                                            style:
+                                                ProjectTextStyles.ui_16Regular),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          'Способ оплаты: ${orders[index].payment}',
+                                          style: ProjectTextStyles.ui_12Medium
+                                              .copyWith(
+                                                  color: ColorPalette.darkGrey),
                                         ),
                                       ),
                                     ],

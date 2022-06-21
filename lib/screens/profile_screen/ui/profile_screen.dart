@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/profile_bloc.dart';
@@ -175,11 +174,11 @@ class _BuildUserInfo extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(13),
-                  child: state.profile.data!.avatar != null
+                  child: state.profile.avatar != null
                       ? CachedNetworkImage(
                           width: 70,
                           height: 70,
-                          imageUrl: state.profile.data!.avatar,
+                          imageUrl: state.profile.avatar,
                           errorWidget: (context, url, error) => const Center(
                             child: Icon(Icons.error),
                           ),
@@ -198,9 +197,10 @@ class _BuildUserInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.profile.data!.isNameFilled
-                          ? "${state.profile.data!.name.isNotEmpty ? state.profile.data!.name : ""} "
-                              "${state.profile.data!.surname.isNotEmpty ? state.profile.data!.surname : ""}"
+                      state.profile.name != null &&
+                              state.profile.surname != null
+                          ? "${state.profile.name} "
+                              "${state.profile.surname}"
                           : S.of(context).no_data,
                       style: ProjectTextStyles.ui_20Medium.copyWith(
                           color: ColorPalette.black,
@@ -265,32 +265,45 @@ class _BuildProfileMenu extends StatelessWidget {
             icon: "personal_data",
             title: S.of(context).personal_data,
             onTap: () {
-              AppRouter.push(
-                context,
-                const PersonalDataScreen(),
-              );
+              final profileState = BlocProvider.of<ProfileBloc>(context).state;
+
+              if (profileState is ProfileStateLoaded) {
+                AppRouter.push(
+                  context,
+                  PersonalDataScreen(
+                    user: profileState.profile,
+                  ),
+                );
+              } else {
+                AppRouter.push(
+                  context,
+                  const PersonalDataScreen(),
+                );
+              }
             },
           ),
           _BuildMenuItem(
             icon: "ride_history",
             title: S.of(context).ride_history,
             onTap: () {
+              final bloc = BlocProvider.of<ProfileBloc>(context).state;
+              if (bloc is ProfileStateLoaded) {}
               AppRouter.push(
                 context,
                 const RideHistoryScreen(),
               );
             },
           ),
-          _BuildMenuItem(
-            icon: "documents",
-            title: S.of(context).documents,
-            onTap: () {
-              AppRouter.push(
-                context,
-                const DocumentsScreen(),
-              );
-            },
-          ),
+          // _BuildMenuItem(
+          //   icon: "documents",
+          //   title: S.of(context).documents,
+          //   onTap: () {
+          //     AppRouter.push(
+          //       context,
+          //       const DocumentsScreen(),
+          //     );
+          //   },
+          // ),
           _BuildMenuItem(
             icon: "help",
             title: S.of(context).help,

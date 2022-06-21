@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/utils/constants.dart';
@@ -178,12 +179,23 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     };
   }
 
-  PersonalDataVModel()
-      : super(
+  UserDTO? user;
+  PersonalDataVModel({
+    this.user,
+  }) : super(
           const _StateVModel(
             isValidated: false,
           ),
         );
+
+  void initUser() {
+    if (user != null && user!.name != null) {
+      name.controller.text = user!.name!;
+    }
+    if (user != null && user!.surname != null) {
+      lastName.controller.text = user!.surname!;
+    }
+  }
 
   List<String> _passwordValidator(String value) {
     List<String> output = [];

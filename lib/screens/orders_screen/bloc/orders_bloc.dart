@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
@@ -9,14 +8,14 @@ import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'events.dart';
+part 'orders_event.dart';
 part 'parts/_read.dart';
-part 'states.dart';
+part 'orders_state.dart';
 
-class OrdersBloc extends Bloc<EventBlocOrdersScreen, StateBlocOrdersScreen> {
+class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
   OrdersBloc({
     required this.repository,
-  }) : super(StateLoadingOrdersScreen()) {
+  }) : super(OrdersStateLoading()) {
     on<EventInitialOrdersScreen>(_read);
   }
 

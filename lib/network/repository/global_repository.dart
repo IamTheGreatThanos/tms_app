@@ -7,7 +7,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/orders_resp
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
@@ -56,7 +55,7 @@ class GlobalRepository {
         deviceToken,
       );
 
-  Future<ProfileResponse> getProfile() async => _networkService.getProfile();
+  Future<UserDTO> getProfile() async => _networkService.getProfile();
 
   Future<CarsResponse> getCars() async => _networkService.getCars();
 

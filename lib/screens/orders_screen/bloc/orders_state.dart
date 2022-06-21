@@ -1,11 +1,11 @@
 part of 'orders_bloc.dart';
 
 @immutable
-abstract class StateBlocOrdersScreen {}
+abstract class OrdersState {}
 
-class StateLoadingOrdersScreen extends StateBlocOrdersScreen {}
+class OrdersStateLoading extends OrdersState {}
 
-class StateLoadDataOrdersScreen extends StateBlocOrdersScreen {
+class StateLoadDataOrdersScreen extends OrdersState {
   final List<OrderDTO> orders;
   final List<CityData> cities;
 
@@ -15,7 +15,7 @@ class StateLoadDataOrdersScreen extends StateBlocOrdersScreen {
   });
 }
 
-class StateOrdersScreenError extends StateBlocOrdersScreen {
+class StateOrdersScreenError extends OrdersState {
   final AppError error;
 
   StateOrdersScreenError({

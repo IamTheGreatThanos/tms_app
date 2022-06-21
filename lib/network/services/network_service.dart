@@ -12,7 +12,6 @@ import 'package:europharm_flutter/network/models/dto_models/response/orders_resp
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
@@ -108,12 +107,19 @@ class NetworkService {
     log('$response', name: _networkService);
   }
 
-  Future<ProfileResponse> getProfile() async {
+  Future<UserDTO> getProfile() async {
     final response = await _dioWrapper.sendRequest(
       path: "profile",
       method: NetworkMethod.get,
     );
-    return ProfileResponse.fromJson(response.data);
+
+    log(
+      '##### getProfile api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    return UserDTO.fromJson(response.data['data'] as Map<String, dynamic>);
+    // return ProfileResponse.fromJson(response.data);
   }
 
   Future<PositionsResponse> getPositions() async {

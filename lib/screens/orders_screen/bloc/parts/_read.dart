@@ -3,14 +3,14 @@ part of '../orders_bloc.dart';
 extension Read on OrdersBloc {
   Future<void> _read(
     EventInitialOrdersScreen event,
-    Emitter<StateBlocOrdersScreen> emit,
+    Emitter<OrdersState> emit,
   ) async {
     CitiesResponse citiesResponse = CitiesResponse();
     List<OrderDTO> ordersResponse = [];
     List<OrderDTO> currentOrders = [];
     List<OrderDTO> overallOrders = [];
     try {
-      emit(StateLoadingOrdersScreen());
+      emit(OrdersStateLoading());
       citiesResponse = await repository.getCities();
       try {
         ordersResponse =

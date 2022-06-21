@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/profile_response.dart';
+import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

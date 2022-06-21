@@ -10,6 +10,7 @@ import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/map_screen/map.dart';
 import 'package:europharm_flutter/screens/order_card/bloc/order_detail_bloc.dart';
 import 'package:europharm_flutter/screens/order_card/bloc/empty_drivers_cubit.dart';
+import 'package:europharm_flutter/screens/order_card/provider/order_detail_provider.dart';
 import 'package:europharm_flutter/screens/order_card/ui/cause_bottom_sheet.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/timer.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/transfer_order_bottom_sheet.dart';
@@ -27,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final OrderDTO order;
@@ -39,11 +41,12 @@ class OrderDetailPage extends StatefulWidget {
 
 class _OrderDetailPageState extends State<OrderDetailPage> {
   // double _lowerValue = 0;
-  PointDTO? point;
-  bool isScan = false;
+  // PointDTO? point;
+  // bool isScan = false;
 
   @override
   void initState() {
+    Provider.of<OrderDetailProvider>(context, listen: false).init();
     BlocProvider.of<OrderDetailBloc>(context).add(OrderDetailEventReset());
     BlocProvider.of<OrderDetailBloc>(context).getCurrentOrder(widget.order);
     BlocProvider.of<EmptyDriversCubit>(context).getEmptyDrivers();
@@ -133,7 +136,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           child: SessionPage(
                             orderId: widget.order.id,
                             order: widget.order,
-                            orderPoints: [],
+                            orderPoints: const [],
                           ),
                         ),
                       ),
@@ -315,28 +318,32 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             ],
                           ),
                         ),
+                        const Divider(
+                          color: ColorPalette.lightGrey,
+                          thickness: 2,
+                        ),
                         Expanded(
                           child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const Divider(
-                                  color: ColorPalette.lightGrey,
-                                  thickness: 2,
-                                ),
-                                _BuildOrderItem(
-                                  order: state.order,
-                                  callback: ({
-                                    required bool isOpened,
-                                    required PointDTO orderPoint,
-                                  }) {
-                                    log('isOpened in _BuildOrderItem : $isOpened');
-                                    setState(() {
-                                      isScan = isOpened;
-                                      point = orderPoint;
-                                    });
-                                  },
-                                )
-                              ],
+                            child: _BuildOrderItem(
+                              order: state.order,
+                              callback: ({
+                                required bool isOpened,
+                                required PointDTO orderPoint,
+                              }) {
+                                log('isOpened in _BuildOrderItem : $isOpened');
+                                // setState(() {
+                                //   isScan = isOpened;
+                                //   Provider.of<OrderDetailProvider>(context,
+                                //           listen: false)
+                                //       .point = orderPoint;
+                                // });
+                                Provider.of<OrderDetailProvider>(context,
+                                        listen: false)
+                                    .isScan = isOpened;
+                                Provider.of<OrderDetailProvider>(context,
+                                        listen: false)
+                                    .point = orderPoint;
+                              },
                             ),
                           ),
                         ),
@@ -369,8 +376,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     maxHeight: 60,
                   ),
                   child: _FABWidget(
-                    isScan: isScan,
-                    point: point,
+                    isScan: Provider.of<OrderDetailProvider>(context).isScan,
+                    point: Provider.of<OrderDetailProvider>(context).point,
                     order: state.order,
                   ),
                   //   child: isScan &&
@@ -1000,7 +1007,7 @@ class _BuildOrderItem extends StatefulWidget {
 }
 
 class _BuildOrderItemState extends State<_BuildOrderItem> {
-  int selected = -1;
+  // int selected = -1;
 
   @override
   void initState() {
@@ -1019,17 +1026,13 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           _BuildPointItem(
             icon: "orders_geo",
             city: widget.order.from,
             date: widget.order.startDate,
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -1037,65 +1040,39 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
             itemBuilder: (context, index) {
               return _BuildExpandablePointItem(
                 point: widget.order.points![index],
-                isExpanded: index == selected,
+                isExpanded:
+                    index == Provider.of<OrderDetailProvider>(context).selected,
                 onExpansionChanged: (bool isOpened) {
-                  setState(() {
-                    if (isOpened) {
-                      selected = index;
-                    } else {
-                      selected = -1;
-                    }
-                    // if (widget.order.points![i].status == "finished") {
-                    widget.callback.call(
-                      isOpened: widget.order.points![index].status ==
-                                  "finished" ||
-                              (index != 0 &&
-                                  widget.order.points![0].status != "finished")
-                          ? false
-                          : isOpened,
-                      orderPoint: widget.order.points![index],
-                    );
-                    // }
-                  });
+                  if (isOpened) {
+                    Provider.of<OrderDetailProvider>(context, listen: false)
+                        .selected = index;
+                  } else {
+                    Provider.of<OrderDetailProvider>(context, listen: false)
+                        .selected = -1;
+                  }
+                  // if (widget.order.points![i].status == "finished") {
+                  widget.callback.call(
+                    isOpened: widget.order.points![index].status ==
+                                "finished" ||
+                            (index != 0 &&
+                                widget.order.points![0].status != "finished")
+                        ? false
+                        : isOpened,
+                    orderPoint: widget.order.points![index],
+                  );
+                  // }
+                  // setState(() {});
                 },
               );
             },
           ),
-          // for (int i = 0; i < widget.order.points!.length; i++)
-          //   _BuildExpandablePointItem(
-          //     point: widget.order.points![i],
-          //     isExpanded: i == selected,
-          //     onExpansionChanged: (bool isOpened) {
-          //       setState(() {
-          //         if (isOpened) {
-          //           selected = i;
-          //         } else {
-          //           selected = -1;
-          //         }
-          //         // if (widget.order.points![i].status == "finished") {
-          //         widget.callback.call(
-          //           isOpened: widget.order.points![i].status == "finished" ||
-          //                   (i != 0 &&
-          //                       widget.order.points![0].status != "finished")
-          //               ? false
-          //               : isOpened,
-          //           orderPoint: widget.order.points![i],
-          //         );
-          //         // }
-          //       });
-          //     },
-          //   ),
-          const SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           _BuildPointItem(
             icon: "orders_geo_done",
             city: widget.order.to,
             date: widget.order.endDate,
           ),
-          const SizedBox(
-            height: 120,
-          ),
+          const SizedBox(height: 120),
         ],
       ),
     );

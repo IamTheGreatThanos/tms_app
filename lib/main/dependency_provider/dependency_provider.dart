@@ -7,6 +7,7 @@ import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
+import 'package:europharm_flutter/screens/order_card/provider/order_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,9 @@ class DependenciesProvider extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => UserStore(),
         ),
+        ChangeNotifierProvider<OrderDetailProvider>(
+          create: (_) => OrderDetailProvider(),
+        )
       ],
       child: child,
     );
