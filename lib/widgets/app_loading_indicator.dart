@@ -1,6 +1,4 @@
 import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
 
 

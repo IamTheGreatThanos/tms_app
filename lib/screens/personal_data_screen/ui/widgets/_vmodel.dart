@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PersonalDataVModel extends Cubit<_StateVModel> {
   String image = "";
-  late int cityId;
+  int? cityId;
   late final name = AppTextField(
     fillColor: ColorPalette.white,
     enabledBorder: defaultBorder,
@@ -22,16 +22,16 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     enabledBorder: defaultBorder,
     focusedBorder: defaultBorder,
   );
-  late final companyName = AppTextField(
-    fillColor: ColorPalette.white,
-    enabledBorder: defaultBorder,
-    focusedBorder: defaultBorder,
-  );
-  late final email = AppTextField(
-    fillColor: ColorPalette.white,
-    enabledBorder: defaultBorder,
-    focusedBorder: defaultBorder,
-  );
+  // late final companyName = AppTextField(
+  //   fillColor: ColorPalette.white,
+  //   enabledBorder: defaultBorder,
+  //   focusedBorder: defaultBorder,
+  // );
+  // late final email = AppTextField(
+  //   fillColor: ColorPalette.white,
+  //   enabledBorder: defaultBorder,
+  //   focusedBorder: defaultBorder,
+  // );
   late final phoneController = TextEditingController();
   late final phoneNumber = Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,47 +62,49 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     ],
   );
 
-  late final referalCode = AppTextField(
-    fillColor: ColorPalette.lightGrey,
-    readonly: true,
-    style: ProjectTextStyles.ui_16Medium.copyWith(
-      color: ColorPalette.darkGrey,
-    ),
-    controller:
-        TextEditingController(text: "SATTI-N000001-D01202114-T1229-C1..."),
-  );
-  late final country = DropdownButtonFormField(
-    iconSize: 24,
-    value: countryValue,
-    decoration: const InputDecoration(
-      hintStyle: ProjectTextStyles.ui_16Medium,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(
-          color: ColorPalette.commonGrey,
-          width: 1,
-        ),
-      ),
-      filled: true,
-      contentPadding: EdgeInsets.all(16),
-      fillColor: Colors.white,
-    ),
-    items: countries.map((String country) {
-      return DropdownMenuItem<String>(
-        value: country,
-        child: Text(country),
-      );
-    }).toList(),
-    validator: (value) {
-      if (value == null) {
-        return 'Выберите страну';
-      }
-      return null;
-    },
-    onChanged: (e) {
-      countryValue = e.toString();
-    },
-  );
+  // late final referalCode = AppTextField(
+  //   fillColor: ColorPalette.lightGrey,
+  //   readonly: true,
+  //   style: ProjectTextStyles.ui_16Medium.copyWith(
+  //     color: ColorPalette.darkGrey,
+  //   ),
+  //   controller:
+  //       TextEditingController(text: "SATTI-N000001-D01202114-T1229-C1..."),
+  // );
+
+  // late final country = DropdownButtonFormField(
+  //   iconSize: 24,
+  //   value: countryValue,
+  //   decoration: const InputDecoration(
+  //     hintStyle: ProjectTextStyles.ui_16Medium,
+  //     enabledBorder: OutlineInputBorder(
+  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+  //       borderSide: BorderSide(
+  //         color: ColorPalette.commonGrey,
+  //         width: 1,
+  //       ),
+  //     ),
+  //     filled: true,
+  //     contentPadding: EdgeInsets.all(16),
+  //     fillColor: Colors.white,
+  //   ),
+  //   items: countries.map((String country) {
+  //     return DropdownMenuItem<String>(
+  //       value: country,
+  //       child: Text(country),
+  //     );
+  //   }).toList(),
+  //   validator: (value) {
+  //     if (value == null) {
+  //       return 'Выберите страну';
+  //     }
+  //     return null;
+  //   },
+  //   onChanged: (e) {
+  //     countryValue = e.toString();
+  //   },
+  // );
+
   late final city = DropdownButtonFormField(
     iconSize: 24,
     value: cityValue,
@@ -145,6 +147,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
     isVisibleObscureButton: true,
     textCapitalization: TextCapitalization.none,
   );
+
   late final newPassword = AppTextField(
     fillColor: ColorPalette.white,
     enabledBorder: defaultBorder,
@@ -169,13 +172,16 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
 
   Future<Map<String, dynamic>> toJson() async {
     return {
-      "name": name.controller.text,
-      "surname": lastName.controller.text,
-      "city_id": cityId,
-      "phone": phoneController.text,
-      "old_password": currentPassword.controller.text,
-      "new_password": newPassword.controller.text,
-      "avatar": await MultipartFile.fromFile(image),
+      if (name.controller.text.isNotEmpty) "name": name.controller.text,
+      if (lastName.controller.text.isNotEmpty)
+        "surname": lastName.controller.text,
+      if (cityId != null) "city_id": cityId,
+      if (phoneController.text.isNotEmpty) "phone": phoneController.text,
+      if (currentPassword.controller.text.isNotEmpty)
+        "old_password": currentPassword.controller.text,
+      if (newPassword.controller.text.isNotEmpty)
+        "new_password": newPassword.controller.text,
+      if (image.isNotEmpty) "avatar": await MultipartFile.fromFile(image),
     };
   }
 

@@ -24,7 +24,6 @@ class DioWrapper {
   }) async {
     _dio.options.baseUrl = baseURL;
 
-    ///TODO must be removed
     // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
     //     (HttpClient client) {
     //   client.badCertificateCallback =
@@ -244,12 +243,12 @@ class DioWrapper {
   String _transformQueryParametersToString(
     Map<String, dynamic> queryParameters,
   ) {
-    String _query = '';
+    String query = '';
     queryParameters.forEach((key, value) {
-      _query += '$key=${value.toString()}&';
+      query += '$key=${value.toString()}&';
     });
 
-    return _query.substring(0, _query.length - 1);
+    return query.substring(0, query.length - 1);
   }
 }
 
@@ -266,7 +265,6 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
   }) : dioRefresher = Dio(baseDio.options) {
     dioRefresher.interceptors.add(LogInterceptor(requestBody: true));
 
-    ///TODO must be removed
     (dioRefresher.httpClientAdapter as DefaultHttpClientAdapter)
         .onHttpClientCreate = (HttpClient client) {
       client.badCertificateCallback =
@@ -310,16 +308,22 @@ class AuthInterceptor extends QueuedInterceptorsWrapper {
     handler.next(err);
   }
 
-  Future<DTOTokensResponse?> refreshTokens(String refreshToken) async {
+  Future<DTOTokensResponse?> refreshTokens(
+    String refreshToken,
+  ) async {
     try {
-      final response = await dioRefresher
-          .get('auth/refresh', queryParameters: {"token": refreshToken});
+      final response = await dioRefresher.get(
+        'auth/refresh',
+        queryParameters: {"token": refreshToken},
+      );
+
       return DTOTokensResponse.fromJson(response.data);
     } catch (e) {
       if (e is DioError && e.response?.statusCode == 404) {
         loginBloc.add(LogOutEvent());
         return null;
       }
+      throw Exception(e);
     }
   }
 }

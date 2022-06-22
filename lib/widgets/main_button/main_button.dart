@@ -113,7 +113,7 @@ class MainButton extends StatelessWidget {
                           fontSize: fontSize,
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),

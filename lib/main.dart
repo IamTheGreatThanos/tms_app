@@ -4,7 +4,6 @@ import 'package:europharm_flutter/main/dependency_initializer/dependency_initial
 import 'package:europharm_flutter/main/dependency_provider/dependency_provider.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/main/top_level_blocs/top_level_blocs.dart';
-import 'package:europharm_flutter/managers/secure_storage_manager/secure_storage_manager.dart';
 import 'package:europharm_flutter/managers/user_store.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';

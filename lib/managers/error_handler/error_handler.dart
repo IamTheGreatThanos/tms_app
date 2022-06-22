@@ -1,7 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-
-import 'error_handler_constants.dart';
 
 class ErrorHandler {
   late final S _lang;
@@ -15,12 +15,12 @@ class ErrorHandler {
   String handleError(error, {ErrorAction? action}) {
     try {
       if (error is DioError) {
-        int responseCode = error.response?.statusCode ?? 9999;
-        String errorMessage = error.response?.data['message'] ?? '';
-        if (error.type == DioErrorType.receiveTimeout || error.type == DioErrorType.connectTimeout) {
+        // int responseCode = error.response?.statusCode ?? 9999;
+        // String errorMessage = error.response?.data['message'] ?? '';
+        if (error.type == DioErrorType.receiveTimeout ||
+            error.type == DioErrorType.connectTimeout) {
           return _lang.server_is_not_reachable;
-        }
-        else if (error.type == DioErrorType.response) {
+        } else if (error.type == DioErrorType.response) {
           // if (responseCode == ErrorHandlerConstants.unauthorized) {
           //   return _lang.wrong_data_auth;
           // }
@@ -55,13 +55,12 @@ class ErrorHandler {
           //     return _lang.wrong_confirmation_code;
           //   }
           // }
-        }
-        else {
+        } else {
           return _lang.problem_connecting_to_the_server;
         }
       }
     } catch (e) {
-      print(e);
+      log('$e', name: 'ErrorHandler');
     }
     return error.toString();
   }

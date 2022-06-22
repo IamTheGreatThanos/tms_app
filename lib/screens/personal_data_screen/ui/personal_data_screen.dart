@@ -6,6 +6,7 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
+import 'package:europharm_flutter/screens/profile_screen/bloc/profile_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
@@ -33,6 +34,7 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
 
   @override
   void initState() {
+    BlocProvider.of<BlocPersonalData>(context).add(EventInitialPersonalData());
     _vmodel.user = widget.user;
     _vmodel.initUser();
     super.initState();
@@ -58,6 +60,11 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                 context,
                 body: state.error.message,
               );
+            }
+
+            if (state is StateSuccessfullyEditedProfile) {
+              Navigator.pop(context);
+              BlocProvider.of<ProfileBloc>(context).add(ProfileEventInitial());
             }
           },
           buildWhen: (p, c) => c is StateReadDataPersonalInfo,
@@ -103,17 +110,17 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                             const SizedBox(
                               height: 15,
                             ),
-                            Text(
-                              S.of(context).email,
-                              style: ProjectTextStyles.ui_16Medium,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            _vmodel.email,
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            // Text(
+                            //   S.of(context).email,
+                            //   style: ProjectTextStyles.ui_16Medium,
+                            // ),
+                            // const SizedBox(
+                            //   height: 5,
+                            // ),
+                            // _vmodel.email,
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
                             Text(
                               S.of(context).phone_number,
                               style: ProjectTextStyles.ui_16Medium,
@@ -318,13 +325,11 @@ class _BuildAvatarState extends State<_BuildAvatar> {
 class _BuildPersonalData extends StatefulWidget {
   final PersonalDataVModel vmodel;
   final CitiesResponse cities;
-  final UserDTO? user;
 
   const _BuildPersonalData({
     Key? key,
     required this.vmodel,
     required this.cities,
-    this.user,
   }) : super(key: key);
 
   @override
@@ -380,17 +385,17 @@ class _BuildPersonalDataState extends State<_BuildPersonalData> {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            S.of(context).country,
-            style: ProjectTextStyles.ui_16Medium,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          widget.vmodel.country,
-          const SizedBox(
-            height: 15,
-          ),
+          // Text(
+          //   S.of(context).country,
+          //   style: ProjectTextStyles.ui_16Medium,
+          // ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          // widget.vmodel.country,
+          // const SizedBox(
+          //   height: 15,
+          // ),
           Text(
             S.of(context).city,
             style: ProjectTextStyles.ui_16Medium,
@@ -439,25 +444,25 @@ class _BuildPersonalDataState extends State<_BuildPersonalData> {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            S.of(context).company_name,
-            style: ProjectTextStyles.ui_16Medium,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          widget.vmodel.companyName,
-          const SizedBox(
-            height: 15,
-          ),
-          Text(
-            S.of(context).referal_code,
-            style: ProjectTextStyles.ui_16Medium,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          widget.vmodel.referalCode,
+          // Text(
+          //   S.of(context).company_name,
+          //   style: ProjectTextStyles.ui_16Medium,
+          // ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          // widget.vmodel.companyName,
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // Text(
+          //   S.of(context).referal_code,
+          //   style: ProjectTextStyles.ui_16Medium,
+          // ),
+          // const SizedBox(
+          //   height: 5,
+          // ),
+          // widget.vmodel.referalCode,
         ],
       ),
     );
