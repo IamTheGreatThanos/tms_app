@@ -28,7 +28,7 @@ void showPhoneBottomDialog(BuildContext context) {
   showAppBottomSheet(context,
       initialChildSize: 0.45,
       useRootNavigator: true,
-      child: _BuildPhoneField());
+      child: const _BuildPhoneField());
 }
 
 class _BuildPhoneField extends StatefulWidget {

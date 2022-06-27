@@ -11,6 +11,12 @@ part 'order_dto.g.dart';
 class OrderDTO with _$OrderDTO {
   const factory OrderDTO({
     required int id,
+    @JsonKey(name: 'crossdocking_id') int? crossdockingId,
+    @JsonKey(name: 'crossdocking_city_id') int? crossdockingCityId,
+    @JsonKey(name: 'crossdocking_number') int? crossdockingNumber,
+    @JsonKey(name: 'crossdocking_name') String? crossdockName,
+    @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+    @JsonKey(name: 'crossdocking_long') String? crossdockLong,
     dynamic day, // FIXME
     String? description,
     @JsonKey(name: 'region_name') String? regionName,

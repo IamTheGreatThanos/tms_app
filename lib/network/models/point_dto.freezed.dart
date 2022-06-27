@@ -23,6 +23,20 @@ mixin _$PointDTO {
   int get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_id')
+  String? get crossdockingId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_name')
+  String? get crossdockName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_lat')
+  String? get crossdockLat => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_long')
+  String? get crossdockLong =>
+      throw _privateConstructorUsedError; /*
+    "crossdocking_id": "402",
+    "crossdocking_name": "Алматы",
+    "crossdocking_lat": "76.77660355",
+    "crossdocking_long": "43.23320956",
+     */
   String? get status => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   String? get from => throw _privateConstructorUsedError;
@@ -51,6 +65,10 @@ abstract class $PointDTOCopyWith<$Res> {
       {int id,
       String? name,
       String? address,
+      @JsonKey(name: 'crossdocking_id') String? crossdockingId,
+      @JsonKey(name: 'crossdocking_name') String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') String? crossdockLong,
       String? status,
       DateTime? date,
       String? from,
@@ -77,6 +95,10 @@ class _$PointDTOCopyWithImpl<$Res> implements $PointDTOCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? address = freezed,
+    Object? crossdockingId = freezed,
+    Object? crossdockName = freezed,
+    Object? crossdockLat = freezed,
+    Object? crossdockLong = freezed,
     Object? status = freezed,
     Object? date = freezed,
     Object? from = freezed,
@@ -101,6 +123,22 @@ class _$PointDTOCopyWithImpl<$Res> implements $PointDTOCopyWith<$Res> {
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockingId: crossdockingId == freezed
+          ? _value.crossdockingId
+          : crossdockingId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockName: crossdockName == freezed
+          ? _value.crossdockName
+          : crossdockName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLat: crossdockLat == freezed
+          ? _value.crossdockLat
+          : crossdockLat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLong: crossdockLong == freezed
+          ? _value.crossdockLong
+          : crossdockLong // ignore: cast_nullable_to_non_nullable
               as String?,
       status: status == freezed
           ? _value.status
@@ -160,6 +198,10 @@ abstract class _$$_PointDTOCopyWith<$Res> implements $PointDTOCopyWith<$Res> {
       {int id,
       String? name,
       String? address,
+      @JsonKey(name: 'crossdocking_id') String? crossdockingId,
+      @JsonKey(name: 'crossdocking_name') String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') String? crossdockLong,
       String? status,
       DateTime? date,
       String? from,
@@ -188,6 +230,10 @@ class __$$_PointDTOCopyWithImpl<$Res> extends _$PointDTOCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? address = freezed,
+    Object? crossdockingId = freezed,
+    Object? crossdockName = freezed,
+    Object? crossdockLat = freezed,
+    Object? crossdockLong = freezed,
     Object? status = freezed,
     Object? date = freezed,
     Object? from = freezed,
@@ -212,6 +258,22 @@ class __$$_PointDTOCopyWithImpl<$Res> extends _$PointDTOCopyWithImpl<$Res>
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockingId: crossdockingId == freezed
+          ? _value.crossdockingId
+          : crossdockingId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockName: crossdockName == freezed
+          ? _value.crossdockName
+          : crossdockName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLat: crossdockLat == freezed
+          ? _value.crossdockLat
+          : crossdockLat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLong: crossdockLong == freezed
+          ? _value.crossdockLong
+          : crossdockLong // ignore: cast_nullable_to_non_nullable
               as String?,
       status: status == freezed
           ? _value.status
@@ -268,6 +330,10 @@ class _$_PointDTO implements _PointDTO {
       {required this.id,
       this.name,
       this.address,
+      @JsonKey(name: 'crossdocking_id') this.crossdockingId,
+      @JsonKey(name: 'crossdocking_name') this.crossdockName,
+      @JsonKey(name: 'crossdocking_lat') this.crossdockLat,
+      @JsonKey(name: 'crossdocking_long') this.crossdockLong,
       this.status,
       this.date,
       this.from,
@@ -290,6 +356,24 @@ class _$_PointDTO implements _PointDTO {
   final String? name;
   @override
   final String? address;
+  @override
+  @JsonKey(name: 'crossdocking_id')
+  final String? crossdockingId;
+  @override
+  @JsonKey(name: 'crossdocking_name')
+  final String? crossdockName;
+  @override
+  @JsonKey(name: 'crossdocking_lat')
+  final String? crossdockLat;
+  @override
+  @JsonKey(name: 'crossdocking_long')
+  final String? crossdockLong;
+/*
+    "crossdocking_id": "402",
+    "crossdocking_name": "Алматы",
+    "crossdocking_lat": "76.77660355",
+    "crossdocking_long": "43.23320956",
+     */
   @override
   final String? status;
   @override
@@ -323,7 +407,7 @@ class _$_PointDTO implements _PointDTO {
 
   @override
   String toString() {
-    return 'PointDTO(id: $id, name: $name, address: $address, status: $status, date: $date, from: $from, to: $to, lat: $lat, long: $long, type: $type, avatar: $avatar, countProducts: $countProducts, createdAt: $createdAt, products: $products)';
+    return 'PointDTO(id: $id, name: $name, address: $address, crossdockingId: $crossdockingId, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, status: $status, date: $date, from: $from, to: $to, lat: $lat, long: $long, type: $type, avatar: $avatar, countProducts: $countProducts, createdAt: $createdAt, products: $products)';
   }
 
   @override
@@ -334,6 +418,14 @@ class _$_PointDTO implements _PointDTO {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockingId, crossdockingId) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockName, crossdockName) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockLat, crossdockLat) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockLong, crossdockLong) &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.from, from) &&
@@ -355,6 +447,10 @@ class _$_PointDTO implements _PointDTO {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(crossdockingId),
+      const DeepCollectionEquality().hash(crossdockName),
+      const DeepCollectionEquality().hash(crossdockLat),
+      const DeepCollectionEquality().hash(crossdockLong),
       const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(from),
@@ -383,6 +479,10 @@ abstract class _PointDTO implements PointDTO {
       {required final int id,
       final String? name,
       final String? address,
+      @JsonKey(name: 'crossdocking_id') final String? crossdockingId,
+      @JsonKey(name: 'crossdocking_name') final String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') final String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') final String? crossdockLong,
       final String? status,
       final DateTime? date,
       final String? from,
@@ -404,6 +504,23 @@ abstract class _PointDTO implements PointDTO {
   @override
   String? get address => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'crossdocking_id')
+  String? get crossdockingId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_name')
+  String? get crossdockName => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_lat')
+  String? get crossdockLat => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_long')
+  String? get crossdockLong => throw _privateConstructorUsedError;
+  @override /*
+    "crossdocking_id": "402",
+    "crossdocking_name": "Алматы",
+    "crossdocking_lat": "76.77660355",
+    "crossdocking_long": "43.23320956",
+     */
   String? get status => throw _privateConstructorUsedError;
   @override
   DateTime? get date => throw _privateConstructorUsedError;

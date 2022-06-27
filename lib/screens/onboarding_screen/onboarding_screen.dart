@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/auth/ui/widgets/sign_in/sign_in_bottom_dialog.dart';
 import 'package:europharm_flutter/screens/auth/ui/widgets/signup/phone_bottom_dialog.dart';
@@ -126,7 +128,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        print('privacy_policy');
+                        log('privacy_policy');
                       }),
                 const TextSpan(text: ' & '),
                 TextSpan(
@@ -136,7 +138,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        print('terms_of_use');
+                        log('terms_of_use');
                       }),
               ],
             ),

@@ -1029,43 +1029,44 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
           const SizedBox(height: 12),
           _BuildPointItem(
             icon: "orders_geo",
-            city: widget.order.from,
+            city: widget.order.crossdockName ?? widget.order.from,
             date: widget.order.startDate,
           ),
           const SizedBox(height: 10),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: widget.order.points!.length,
-            itemBuilder: (context, index) {
-              return _BuildExpandablePointItem(
-                point: widget.order.points![index],
-                isExpanded:
-                    index == Provider.of<OrderDetailProvider>(context).selected,
-                onExpansionChanged: (bool isOpened) {
-                  if (isOpened) {
-                    Provider.of<OrderDetailProvider>(context, listen: false)
-                        .selected = index;
-                  } else {
-                    Provider.of<OrderDetailProvider>(context, listen: false)
-                        .selected = -1;
-                  }
-                  // if (widget.order.points![i].status == "finished") {
-                  widget.callback.call(
-                    isOpened: widget.order.points![index].status ==
-                                "finished" ||
-                            (index != 0 &&
-                                widget.order.points![0].status != "finished")
-                        ? false
-                        : isOpened,
-                    orderPoint: widget.order.points![index],
-                  );
-                  // }
-                  // setState(() {});
-                },
-              );
-            },
-          ),
+          if (widget.order.points != null && widget.order.points!.isNotEmpty)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.order.points!.length,
+              itemBuilder: (context, index) {
+                return _BuildExpandablePointItem(
+                  point: widget.order.points![index],
+                  isExpanded: index ==
+                      Provider.of<OrderDetailProvider>(context).selected,
+                  onExpansionChanged: (bool isOpened) {
+                    if (isOpened) {
+                      Provider.of<OrderDetailProvider>(context, listen: false)
+                          .selected = index;
+                    } else {
+                      Provider.of<OrderDetailProvider>(context, listen: false)
+                          .selected = -1;
+                    }
+                    // if (widget.order.points![i].status == "finished") {
+                    widget.callback.call(
+                      isOpened: widget.order.points![index].status ==
+                                  "finished" ||
+                              (index != 0 &&
+                                  widget.order.points![0].status != "finished")
+                          ? false
+                          : isOpened,
+                      orderPoint: widget.order.points![index],
+                    );
+                    // }
+                    // setState(() {});
+                  },
+                );
+              },
+            ),
           const SizedBox(height: 10),
           _BuildPointItem(
             icon: "orders_geo_done",
@@ -1186,7 +1187,9 @@ class _BuildExpandablePointItem extends StatelessWidget {
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
                   Text(
-                    point.name ?? S.of(context).no_data,
+                    point.crossdockName != null
+                        ? '${point.crossdockName} (Кроссдок)'
+                        : (point.name ?? S.of(context).no_data),
                     style: ProjectTextStyles.ui_16Medium,
                   ),
                   const SizedBox(

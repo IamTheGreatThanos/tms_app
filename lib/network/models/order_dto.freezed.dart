@@ -21,6 +21,18 @@ OrderDTO _$OrderDTOFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OrderDTO {
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_id')
+  int? get crossdockingId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_city_id')
+  int? get crossdockingCityId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_number')
+  int? get crossdockingNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_name')
+  String? get crossdockName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_lat')
+  String? get crossdockLat => throw _privateConstructorUsedError;
+  @JsonKey(name: 'crossdocking_long')
+  String? get crossdockLong => throw _privateConstructorUsedError;
   dynamic get day => throw _privateConstructorUsedError; // FIXME
   String? get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'region_name')
@@ -65,6 +77,12 @@ abstract class $OrderDTOCopyWith<$Res> {
       _$OrderDTOCopyWithImpl<$Res>;
   $Res call(
       {int id,
+      @JsonKey(name: 'crossdocking_id') int? crossdockingId,
+      @JsonKey(name: 'crossdocking_city_id') int? crossdockingCityId,
+      @JsonKey(name: 'crossdocking_number') int? crossdockingNumber,
+      @JsonKey(name: 'crossdocking_name') String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') String? crossdockLong,
       dynamic day,
       String? description,
       @JsonKey(name: 'region_name') String? regionName,
@@ -101,6 +119,12 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? crossdockingId = freezed,
+    Object? crossdockingCityId = freezed,
+    Object? crossdockingNumber = freezed,
+    Object? crossdockName = freezed,
+    Object? crossdockLat = freezed,
+    Object? crossdockLong = freezed,
     Object? day = freezed,
     Object? description = freezed,
     Object? regionName = freezed,
@@ -126,6 +150,30 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      crossdockingId: crossdockingId == freezed
+          ? _value.crossdockingId
+          : crossdockingId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockingCityId: crossdockingCityId == freezed
+          ? _value.crossdockingCityId
+          : crossdockingCityId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockingNumber: crossdockingNumber == freezed
+          ? _value.crossdockingNumber
+          : crossdockingNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockName: crossdockName == freezed
+          ? _value.crossdockName
+          : crossdockName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLat: crossdockLat == freezed
+          ? _value.crossdockLat
+          : crossdockLat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLong: crossdockLong == freezed
+          ? _value.crossdockLong
+          : crossdockLong // ignore: cast_nullable_to_non_nullable
+              as String?,
       day: day == freezed
           ? _value.day
           : day // ignore: cast_nullable_to_non_nullable
@@ -247,6 +295,12 @@ abstract class _$$_OrderDTOCopyWith<$Res> implements $OrderDTOCopyWith<$Res> {
   @override
   $Res call(
       {int id,
+      @JsonKey(name: 'crossdocking_id') int? crossdockingId,
+      @JsonKey(name: 'crossdocking_city_id') int? crossdockingCityId,
+      @JsonKey(name: 'crossdocking_number') int? crossdockingNumber,
+      @JsonKey(name: 'crossdocking_name') String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') String? crossdockLong,
       dynamic day,
       String? description,
       @JsonKey(name: 'region_name') String? regionName,
@@ -288,6 +342,12 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? crossdockingId = freezed,
+    Object? crossdockingCityId = freezed,
+    Object? crossdockingNumber = freezed,
+    Object? crossdockName = freezed,
+    Object? crossdockLat = freezed,
+    Object? crossdockLong = freezed,
     Object? day = freezed,
     Object? description = freezed,
     Object? regionName = freezed,
@@ -313,6 +373,30 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      crossdockingId: crossdockingId == freezed
+          ? _value.crossdockingId
+          : crossdockingId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockingCityId: crossdockingCityId == freezed
+          ? _value.crossdockingCityId
+          : crossdockingCityId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockingNumber: crossdockingNumber == freezed
+          ? _value.crossdockingNumber
+          : crossdockingNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      crossdockName: crossdockName == freezed
+          ? _value.crossdockName
+          : crossdockName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLat: crossdockLat == freezed
+          ? _value.crossdockLat
+          : crossdockLat // ignore: cast_nullable_to_non_nullable
+              as String?,
+      crossdockLong: crossdockLong == freezed
+          ? _value.crossdockLong
+          : crossdockLong // ignore: cast_nullable_to_non_nullable
+              as String?,
       day: day == freezed
           ? _value.day
           : day // ignore: cast_nullable_to_non_nullable
@@ -398,6 +482,12 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
 class _$_OrderDTO implements _OrderDTO {
   const _$_OrderDTO(
       {required this.id,
+      @JsonKey(name: 'crossdocking_id') this.crossdockingId,
+      @JsonKey(name: 'crossdocking_city_id') this.crossdockingCityId,
+      @JsonKey(name: 'crossdocking_number') this.crossdockingNumber,
+      @JsonKey(name: 'crossdocking_name') this.crossdockName,
+      @JsonKey(name: 'crossdocking_lat') this.crossdockLat,
+      @JsonKey(name: 'crossdocking_long') this.crossdockLong,
       this.day,
       this.description,
       @JsonKey(name: 'region_name') this.regionName,
@@ -424,6 +514,24 @@ class _$_OrderDTO implements _OrderDTO {
 
   @override
   final int id;
+  @override
+  @JsonKey(name: 'crossdocking_id')
+  final int? crossdockingId;
+  @override
+  @JsonKey(name: 'crossdocking_city_id')
+  final int? crossdockingCityId;
+  @override
+  @JsonKey(name: 'crossdocking_number')
+  final int? crossdockingNumber;
+  @override
+  @JsonKey(name: 'crossdocking_name')
+  final String? crossdockName;
+  @override
+  @JsonKey(name: 'crossdocking_lat')
+  final String? crossdockLat;
+  @override
+  @JsonKey(name: 'crossdocking_long')
+  final String? crossdockLong;
   @override
   final dynamic day;
 // FIXME
@@ -486,7 +594,7 @@ class _$_OrderDTO implements _OrderDTO {
 
   @override
   String toString() {
-    return 'OrderDTO(id: $id, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent)';
+    return 'OrderDTO(id: $id, crossdockingId: $crossdockingId, crossdockingCityId: $crossdockingCityId, crossdockingNumber: $crossdockingNumber, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent)';
   }
 
   @override
@@ -495,6 +603,18 @@ class _$_OrderDTO implements _OrderDTO {
         (other.runtimeType == runtimeType &&
             other is _$_OrderDTO &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockingId, crossdockingId) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockingCityId, crossdockingCityId) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockingNumber, crossdockingNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockName, crossdockName) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockLat, crossdockLat) &&
+            const DeepCollectionEquality()
+                .equals(other.crossdockLong, crossdockLong) &&
             const DeepCollectionEquality().equals(other.day, day) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -525,6 +645,12 @@ class _$_OrderDTO implements _OrderDTO {
   int get hashCode => Object.hashAll([
         runtimeType,
         const DeepCollectionEquality().hash(id),
+        const DeepCollectionEquality().hash(crossdockingId),
+        const DeepCollectionEquality().hash(crossdockingCityId),
+        const DeepCollectionEquality().hash(crossdockingNumber),
+        const DeepCollectionEquality().hash(crossdockName),
+        const DeepCollectionEquality().hash(crossdockLat),
+        const DeepCollectionEquality().hash(crossdockLong),
         const DeepCollectionEquality().hash(day),
         const DeepCollectionEquality().hash(description),
         const DeepCollectionEquality().hash(regionName),
@@ -560,6 +686,12 @@ class _$_OrderDTO implements _OrderDTO {
 abstract class _OrderDTO implements OrderDTO {
   const factory _OrderDTO(
       {required final int id,
+      @JsonKey(name: 'crossdocking_id') final int? crossdockingId,
+      @JsonKey(name: 'crossdocking_city_id') final int? crossdockingCityId,
+      @JsonKey(name: 'crossdocking_number') final int? crossdockingNumber,
+      @JsonKey(name: 'crossdocking_name') final String? crossdockName,
+      @JsonKey(name: 'crossdocking_lat') final String? crossdockLat,
+      @JsonKey(name: 'crossdocking_long') final String? crossdockLong,
       final dynamic day,
       final String? description,
       @JsonKey(name: 'region_name') final String? regionName,
@@ -584,6 +716,24 @@ abstract class _OrderDTO implements OrderDTO {
 
   @override
   int get id => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_id')
+  int? get crossdockingId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_city_id')
+  int? get crossdockingCityId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_number')
+  int? get crossdockingNumber => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_name')
+  String? get crossdockName => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_lat')
+  String? get crossdockLat => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(name: 'crossdocking_long')
+  String? get crossdockLong => throw _privateConstructorUsedError;
   @override
   dynamic get day => throw _privateConstructorUsedError;
   @override // FIXME

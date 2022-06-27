@@ -280,33 +280,37 @@ class NetworkService {
   }
 
   Future<List<PointDTO>> orderPoints(int orderId) async {
-    final response = await _dioWrapper.sendRequest(
-      path: "/order/points",
-      method: NetworkMethod.post,
-      formData: FormData.fromMap(
-        {
-          "order_id": orderId,
+    try {
+      final response = await _dioWrapper.sendRequest(
+        path: "/order/points",
+        method: NetworkMethod.post,
+        formData: FormData.fromMap(
+          {
+            "order_id": orderId,
+          },
+        ),
+      );
+
+      log(
+        '##### orderPoints api:: ${response.statusCode}',
+        name: _networkService,
+      );
+
+      final List<PointDTO> points = await compute<List, List<PointDTO>>(
+        (List list) {
+          return list
+              .map((e) => PointDTO.fromJson(e as Map<String, dynamic>))
+              .toList();
         },
-      ),
-    );
+        (response.data as Map<String, dynamic>)['data'] as List,
+      );
 
-    log(
-      '##### orderPoints api:: ${response.statusCode}',
-      name: _networkService,
-    );
+      // log(points.toString(), name: _networkService);
 
-    final List<PointDTO> points = await compute<List, List<PointDTO>>(
-      (List list) {
-        return list
-            .map((e) => PointDTO.fromJson(e as Map<String, dynamic>))
-            .toList();
-      },
-      (response.data as Map<String, dynamic>)['data'] as List,
-    );
-
-    // log(points.toString(), name: _networkService);
-
-    return points;
+      return points;
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future<OrderPoint> orderPointProducts(int pointId) async {

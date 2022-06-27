@@ -11,9 +11,13 @@ part 'after_login_layer_state.dart';
 
 class AfterLoginLayerBloc
     extends Bloc<AfterLoginLayerEvent, AfterLoginLayerState> {
-  GlobalRepository _repository;
-  TokensRepository _tokensRepository;
+  // ignore: unused_field
+  final GlobalRepository _repository;
+  // ignore: unused_field
+  final TokensRepository _tokensRepository;
+  // ignore: unused_field
   final S _lang;
+  // ignore: unused_field
   final HiveRepository _hiveRepository;
 
   AfterLoginLayerBloc(

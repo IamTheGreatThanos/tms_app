@@ -32,6 +32,7 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
   //   enabledBorder: defaultBorder,
   //   focusedBorder: defaultBorder,
   // );
+  String? countyCode = '+7';
   late final phoneController = TextEditingController();
   late final phoneNumber = Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +40,9 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
       SizedBox(
         width: 120,
         child: CountryCodePicker(
-          onChanged: (value) {},
+          onChanged: (value) {
+            countyCode = value.code;
+          },
           initialSelection: 'KZ',
           favorite: const ['+7', 'KZ'],
           flagWidth: 19,
@@ -176,7 +179,13 @@ class PersonalDataVModel extends Cubit<_StateVModel> {
       if (lastName.controller.text.isNotEmpty)
         "surname": lastName.controller.text,
       if (cityId != null) "city_id": cityId,
-      if (phoneController.text.isNotEmpty) "phone": phoneController.text,
+      if (phoneController.text.isNotEmpty)
+        "phone": countyCode!.replaceAll('+', '') +
+            phoneController.text
+                .replaceAll(' ', '')
+                .replaceAll(r'(', '')
+                .replaceAll(r')', '')
+                .replaceAll(r'-', ''),
       if (currentPassword.controller.text.isNotEmpty)
         "old_password": currentPassword.controller.text,
       if (newPassword.controller.text.isNotEmpty)

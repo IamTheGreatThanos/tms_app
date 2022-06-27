@@ -11,6 +11,16 @@ class PointDTO with _$PointDTO {
     required int id,
     String? name,
     String? address,
+    @JsonKey(name: 'crossdocking_id') String? crossdockingId,
+    @JsonKey(name: 'crossdocking_name') String? crossdockName,
+    @JsonKey(name: 'crossdocking_lat') String? crossdockLat,
+    @JsonKey(name: 'crossdocking_long') String? crossdockLong,
+    /*
+    "crossdocking_id": "402",
+    "crossdocking_name": "Алматы",
+    "crossdocking_lat": "76.77660355",
+    "crossdocking_long": "43.23320956",
+     */
     String? status,
     DateTime? date,
     String? from,

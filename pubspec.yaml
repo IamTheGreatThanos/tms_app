@@ -12,9 +12,9 @@ environment:
 dependencies:
   another_flushbar: ^1.10.24
   another_xlider: ^1.1.0
-  cached_network_image: ^3.1.0
+  cached_network_image: ^3.2.1
   # camera: ^0.9.8+1
-  change_app_package_name: ^1.1.0
+  # change_app_package_name: ^1.1.0
   code_field: ^1.22.0
   # convex_bottom_bar: ^3.0.0
   country_code_picker: ^2.0.2
@@ -36,7 +36,7 @@ dependencies:
   flutter_local_notifications: ^9.5.0
   flutter_localizations:
     sdk: flutter
-  flutter_masked_text: 0.8.0
+  # flutter_masked_text: 0.8.0
   flutter_multi_formatter: ^2.4.1
   flutter_secure_storage: ^5.0.2
   flutter_svg: ^1.1.0
@@ -47,7 +47,7 @@ dependencies:
   image_picker: ^0.8.5+3
   intl: ^0.17.0
   json_annotation: ^4.5.0
-  json_serializable: ^6.1.6
+  json_serializable: ^6.2.0
   liquid_pull_to_refresh: ^3.0.1
   loader_overlay: ^2.0.4
   logger: ^1.1.0
@@ -69,7 +69,7 @@ dependencies:
   yandex_mapkit: ^3.0.0
 
 dev_dependencies:
-  build_runner: ^2.1.10
+  build_runner: ^2.1.11
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter

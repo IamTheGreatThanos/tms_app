@@ -8,6 +8,12 @@ part of 'order_dto.dart';
 
 _$_OrderDTO _$$_OrderDTOFromJson(Map<String, dynamic> json) => _$_OrderDTO(
       id: json['id'] as int,
+      crossdockingId: json['crossdocking_id'] as int?,
+      crossdockingCityId: json['crossdocking_city_id'] as int?,
+      crossdockingNumber: json['crossdocking_number'] as int?,
+      crossdockName: json['crossdocking_name'] as String?,
+      crossdockLat: json['crossdocking_lat'] as String?,
+      crossdockLong: json['crossdocking_long'] as String?,
       day: json['day'],
       description: json['description'] as String?,
       regionName: json['region_name'] as String?,
@@ -45,6 +51,12 @@ _$_OrderDTO _$$_OrderDTOFromJson(Map<String, dynamic> json) => _$_OrderDTO(
 Map<String, dynamic> _$$_OrderDTOToJson(_$_OrderDTO instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'crossdocking_id': instance.crossdockingId,
+      'crossdocking_city_id': instance.crossdockingCityId,
+      'crossdocking_number': instance.crossdockingNumber,
+      'crossdocking_name': instance.crossdockName,
+      'crossdocking_lat': instance.crossdockLat,
+      'crossdocking_long': instance.crossdockLong,
       'day': instance.day,
       'description': instance.description,
       'region_name': instance.regionName,
