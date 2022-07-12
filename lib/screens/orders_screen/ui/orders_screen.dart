@@ -206,140 +206,157 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       //   height: 23,
                       // ),
                       Expanded(
-                        child: LiquidPullToRefresh(
-                          color: ColorPalette.background,
-                          backgroundColor: ColorPalette.main,
-                          key: _refreshIndicatorKey,
-                          onRefresh: _handleRefresh,
-                          showChildOpacityTransition: false,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                // TODO пройти верификацию
-                                // Container(
-                                //   padding: const EdgeInsets.all(15),
-                                //   decoration: BoxDecoration(
-                                //     color: ColorPalette.commonBlue,
-                                //     borderRadius: BorderRadius.circular(10),
-                                //   ),
-                                //   child: Column(
-                                //     mainAxisAlignment: MainAxisAlignment.center,
-                                //     children: [
-                                //       Container(
-                                //         padding: const EdgeInsets.all(8),
-                                //         decoration: BoxDecoration(
-                                //           color: ColorPalette.main,
-                                //           borderRadius:
-                                //               BorderRadius.circular(10),
-                                //         ),
-                                //         child: SvgPicture.asset(
-                                //           "assets/images/svg/user_confirmation.svg",
-                                //         ),
-                                //       ),
-                                //       const SizedBox(
-                                //         height: 15,
-                                //       ),
-                                //       Text(
-                                //         S.of(context).confirm_identity,
-                                //         style: ProjectTextStyles.ui_20Medium,
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                //       const SizedBox(
-                                //         height: 5,
-                                //       ),
-                                //       Text(
-                                //         S.of(context).get_access,
-                                //         style: ProjectTextStyles.ui_16Medium
-                                //             .copyWith(
-                                //           color: ColorPalette.darkGrey,
-                                //         ),
-                                //         textAlign: TextAlign.center,
-                                //       ),
-                                //       const SizedBox(
-                                //         height: 15,
-                                //       ),
-                                //       GestureDetector(
-                                //         onTap: () {
-                                //           AppRouter.push(
-                                //             context,
-                                //             const PersonalInfoVerification(),
-                                //             rootNavigator: true,
-                                //           ).then((value) {
-                                //             context
-                                //                 .read<BlocVerification>()
-                                //                 .add(
-                                //                     EventInitialVerification());
-                                //           });
-                                //         },
-                                //         child: Container(
-                                //           padding: const EdgeInsets.symmetric(
-                                //             vertical: 16,
-                                //           ),
-                                //           decoration: BoxDecoration(
-                                //             color: ColorPalette.main,
-                                //             borderRadius:
-                                //                 BorderRadius.circular(10),
-                                //           ),
-                                //           child: Stack(
-                                //             children: [
-                                //               Center(
-                                //                 child: Text(
-                                //                   S.of(context).do_verification,
-                                //                   style: ProjectTextStyles
-                                //                       .ui_16Medium
-                                //                       .copyWith(
-                                //                     color: Colors.white,
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //               Positioned(
-                                //                 top: 3,
-                                //                 right: 15,
-                                //                 child: SvgPicture.asset(
-                                //                   "assets/images/svg/arrow_right.svg",
-                                //                 ),
-                                //               )
-                                //             ],
-                                //           ),
-                                //         ),
-                                //       ),
-                                //       // MainButton(
-                                //       //   onTap: () {},
-                                //       //   title: S.of(context).do_verification,
-                                //       // )
-                                //     ],
-                                //   ),
-                                // ),
+                        child:
+                            //  Column(
+                            //   children: [
+                            // TODO пройти верификацию
+                            // Container(
+                            //   padding: const EdgeInsets.all(15),
+                            //   decoration: BoxDecoration(
+                            //     color: ColorPalette.commonBlue,
+                            //     borderRadius: BorderRadius.circular(10),
+                            //   ),
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: [
+                            //       Container(
+                            //         padding: const EdgeInsets.all(8),
+                            //         decoration: BoxDecoration(
+                            //           color: ColorPalette.main,
+                            //           borderRadius:
+                            //               BorderRadius.circular(10),
+                            //         ),
+                            //         child: SvgPicture.asset(
+                            //           "assets/images/svg/user_confirmation.svg",
+                            //         ),
+                            //       ),
+                            //       const SizedBox(
+                            //         height: 15,
+                            //       ),
+                            //       Text(
+                            //         S.of(context).confirm_identity,
+                            //         style: ProjectTextStyles.ui_20Medium,
+                            //         textAlign: TextAlign.center,
+                            //       ),
+                            //       const SizedBox(
+                            //         height: 5,
+                            //       ),
+                            //       Text(
+                            //         S.of(context).get_access,
+                            //         style: ProjectTextStyles.ui_16Medium
+                            //             .copyWith(
+                            //           color: ColorPalette.darkGrey,
+                            //         ),
+                            //         textAlign: TextAlign.center,
+                            //       ),
+                            //       const SizedBox(
+                            //         height: 15,
+                            //       ),
+                            //       GestureDetector(
+                            //         onTap: () {
+                            //           AppRouter.push(
+                            //             context,
+                            //             const PersonalInfoVerification(),
+                            //             rootNavigator: true,
+                            //           ).then((value) {
+                            //             context
+                            //                 .read<BlocVerification>()
+                            //                 .add(
+                            //                     EventInitialVerification());
+                            //           });
+                            //         },
+                            //         child: Container(
+                            //           padding: const EdgeInsets.symmetric(
+                            //             vertical: 16,
+                            //           ),
+                            //           decoration: BoxDecoration(
+                            //             color: ColorPalette.main,
+                            //             borderRadius:
+                            //                 BorderRadius.circular(10),
+                            //           ),
+                            //           child: Stack(
+                            //             children: [
+                            //               Center(
+                            //                 child: Text(
+                            //                   S.of(context).do_verification,
+                            //                   style: ProjectTextStyles
+                            //                       .ui_16Medium
+                            //                       .copyWith(
+                            //                     color: Colors.white,
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //               Positioned(
+                            //                 top: 3,
+                            //                 right: 15,
+                            //                 child: SvgPicture.asset(
+                            //                   "assets/images/svg/arrow_right.svg",
+                            //                 ),
+                            //               )
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ),
+                            //       // MainButton(
+                            //       //   onTap: () {},
+                            //       //   title: S.of(context).do_verification,
+                            //       // )
+                            //     ],
+                            //   ),
+                            // ),
 
-                                if (state.orders.isEmpty)
-                                  Center(
-                                    child: Text(
-                                      S.of(context).no_orders,
-                                      style: ProjectTextStyles.ui_16Medium
-                                          .copyWith(
-                                        color: ColorPalette.commonGrey,
-                                      ),
+                            (state.orders.isEmpty)
+                                ? LiquidPullToRefresh(
+                                    color: ColorPalette.background,
+                                    backgroundColor: ColorPalette.main,
+                                    key: _refreshIndicatorKey,
+                                    onRefresh: _handleRefresh,
+                                    showChildOpacityTransition: false,
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      // physics:
+                                      //     const NeverScrollableScrollPhysics(),
+                                      children: [
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.3,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            S.of(context).no_orders,
+                                            style: ProjectTextStyles.ui_16Medium
+                                                .copyWith(
+                                              color: ColorPalette.commonGrey,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   )
-                                else
-                                  ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: state.orders.length,
-                                    itemBuilder: (context, index) {
-                                      return _OrderItemWidget(
-                                        order: state.orders[index],
-                                      );
-                                    },
+                                : LiquidPullToRefresh(
+                                    color: ColorPalette.background,
+                                    backgroundColor: ColorPalette.main,
+                                    key: _refreshIndicatorKey,
+                                    onRefresh: _handleRefresh,
+                                    showChildOpacityTransition: false,
+                                    child: ListView.builder(
+                                      // physics:
+                                      //     const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding:
+                                          const EdgeInsets.only(bottom: 100),
+                                      itemCount: state.orders.length,
+                                      itemBuilder: (context, index) {
+                                        return _OrderItemWidget(
+                                          order: state.orders[index],
+                                        );
+                                      },
+                                    ),
                                   ),
-                                const SizedBox(
-                                  height: 100,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                        //   ],
+                        // ),
                       ),
                     ],
                   );

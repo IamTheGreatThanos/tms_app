@@ -74,11 +74,15 @@ class NetworkService {
     return PhoneCodeRegisterResponse.fromJson(response.data);
   }
 
-  Future<LoginResponse> login(String phone, String password) async {
+  Future<LoginResponse> login(
+    String phone,
+    String password,
+  ) async {
     final response = await _dioWrapper.sendRequest(
       formData: FormData.fromMap({
         "phone": phone,
         "password": password,
+        'type': 'mobile',
       }),
       path: "login",
       method: NetworkMethod.post,

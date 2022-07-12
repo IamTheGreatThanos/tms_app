@@ -30,6 +30,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+const _tag = 'order_detail_page.dart';
+
 class OrderDetailPage extends StatefulWidget {
   final OrderDTO order;
 
@@ -114,33 +116,87 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               visible: widget.order.isCurrent,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        //height: 300,
-                        decoration: BoxDecoration(
-                          color: ColorPalette.white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: BlocProvider<MapCubit>(
-                          create: (_) => MapCubit(
-                            mapRepository: MapRepository(),
-                            repository: context.read<GlobalRepository>(),
+                  BlocConsumer<OrderDetailBloc, OrderDetailState>(
+                    listener: (context, state) {
+                      // TODO: implement listener
+                    },
+                    buildWhen: (p, c) {
+                      if (c is OrderDetailStateLoaded) {
+                        return true;
+                      } 
+                      // else if (c is OrderDetailStateLoading) {
+                      //   // else if (p is OrderDetailStateLoaded &&
+                      //   //     c is OrderDetailStateLoading) {
+                      //   //   return true;
+                      //   // }
+                      //   return true;
+                      // } 
+                      else {
+                        return false;
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is OrderDetailStateLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
                           ),
-                          child: SessionPage(
-                            orderId: widget.order.id,
-                            order: widget.order,
-                            orderPoints: const [],
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              //height: 300,
+                              decoration: BoxDecoration(
+                                color: ColorPalette.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: BlocProvider<MapCubit>(
+                                create: (_) => MapCubit(
+                                  mapRepository: MapRepository(),
+                                  repository: context.read<GlobalRepository>(),
+                                ),
+                                child: SessionPage(
+                                  orderId: widget.order.id,
+                                  order: state.order,
+                                  orderPoints: const [],
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                        );
+                      } else {
+                        return SizedBox();
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              //height: 300,
+                              decoration: BoxDecoration(
+                                color: ColorPalette.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: BlocProvider<MapCubit>(
+                                create: (_) => MapCubit(
+                                  mapRepository: MapRepository(),
+                                  repository: context.read<GlobalRepository>(),
+                                ),
+                                child: SessionPage(
+                                  orderId: widget.order.id,
+                                  order: widget.order,
+                                  orderPoints: const [],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(height: 15),
                 ],
@@ -330,7 +386,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 required bool isOpened,
                                 required PointDTO orderPoint,
                               }) {
-                                log('isOpened in _BuildOrderItem : $isOpened');
+                                log('isOpened in _BuildOrderItem : $isOpened',
+                                    name: _tag);
                                 // setState(() {
                                 //   isScan = isOpened;
                                 //   Provider.of<OrderDetailProvider>(context,
@@ -704,7 +761,9 @@ class _FABWidget extends StatelessWidget {
     ///
     ///
     if (isScan &&
-        (order.status == "accepted" || order.status == "in_process")) {
+        (order.status == "accepted" ||
+            order.status == "in_process" ||
+            order.status == 'В пути')) {
       return GestureDetector(
         onTap: () {
           AppRouter.push(
@@ -769,7 +828,9 @@ class _FABWidget extends StatelessWidget {
     /// Стоп
     ///
     ///
-    else if (order.status == "accepted" || order.status == "in_process") {
+    else if (order.status == "accepted" ||
+        order.status == "in_process" ||
+        order.status == 'В пути') {
       return Row(
         children: [
           Expanded(
@@ -1044,6 +1105,11 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                   isExpanded: index ==
                       Provider.of<OrderDetailProvider>(context).selected,
                   onExpansionChanged: (bool isOpened) {
+                    log('isOpened: $isOpened', name: _tag);
+                    log('index: $index', name: _tag);
+                    log('selected from provider: ${Provider.of<OrderDetailProvider>(context, listen: false).selected}',
+                        name: _tag);
+                    log('status: ${widget.order.points![index].status}');
                     if (isOpened) {
                       Provider.of<OrderDetailProvider>(context, listen: false)
                           .selected = index;
@@ -1051,14 +1117,20 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                       Provider.of<OrderDetailProvider>(context, listen: false)
                           .selected = -1;
                     }
+                    setState(() {});
                     // if (widget.order.points![i].status == "finished") {
                     widget.callback.call(
-                      isOpened: widget.order.points![index].status ==
-                                  "finished" ||
-                              (index != 0 &&
-                                  widget.order.points![0].status != "finished")
-                          ? false
-                          : isOpened,
+                      isOpened:
+                          (widget.order.points![index].status == "finished" ||
+                                      widget.order.points![index].status ==
+                                          "Завершен") ||
+                                  (index != 0 &&
+                                      widget.order.points![0].status !=
+                                          "finished" &&
+                                      widget.order.points![index].status ==
+                                          "Завершен")
+                              ? false
+                              : isOpened,
                       orderPoint: widget.order.points![index],
                     );
                     // }
@@ -1158,14 +1230,16 @@ class _BuildExpandablePointItem extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(7),
               decoration: BoxDecoration(
-                color: point.status == "finished"
+                color: point.status == "finished" || point.status == 'Завершен'
                     ? ColorPalette.main
                     : ColorPalette.lightGrey,
                 borderRadius: BorderRadius.circular(100),
               ),
               child: SvgPicture.asset(
                 "assets/images/svg/order_item.svg",
-                color: point.status == "finished" ? ColorPalette.white : null,
+                color: point.status == "finished" || point.status == 'Завершен'
+                    ? ColorPalette.white
+                    : null,
                 width: 12,
                 height: 12,
               ),
@@ -1201,7 +1275,8 @@ class _BuildExpandablePointItem extends StatelessWidget {
                       if (!isExpanded)
                         SvgPicture.asset(
                           "assets/images/svg/pin-location.svg",
-                          color: point.status == "finished"
+                          color: point.status == "finished" ||
+                                  point.status == "Завершен"
                               ? ColorPalette.main
                               : null,
                         ),

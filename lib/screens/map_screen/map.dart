@@ -43,6 +43,7 @@ class _SessionState extends State<SessionPage> {
     BlocProvider.of<MapCubit>(context).getMap(
       orderId: widget.orderId,
       orderPoints: widget.orderPoints,
+      startPoint: widget.order.points?.first,
     );
   }
 
@@ -53,6 +54,7 @@ class _SessionState extends State<SessionPage> {
         listener: (context, state) {
           if (state is MapLoadedState) {
             _requestRoutes(state.loadedMap);
+            dev.log('mapmapmap :::: ${state.loadedMap}');
           }
         },
         builder: (context, state) {

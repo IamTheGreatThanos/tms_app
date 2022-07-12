@@ -1,14 +1,15 @@
 class CitiesResponse {
   CitiesResponse({
-      this.success, 
-      this.statusCode, 
-      this.message, 
-      this.data,});
+    this.success,
+    this.statusCode,
+    this.message,
+    this.data,
+  });
 
   CitiesResponse.fromJson(dynamic json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    message = json['message'];
+    success = json['success'] as bool?;
+    statusCode = json['statusCode'] as int?;
+    message = json['message'] as String?;
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
@@ -31,23 +32,23 @@ class CitiesResponse {
     }
     return map;
   }
-
 }
 
 class CityData {
   CityData({
-      this.id, 
-      this.name, 
-      this.countryId, 
-      this.createdAt, 
-      this.updatedAt,});
+    this.id,
+    this.name,
+    this.countryId,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   CityData.fromJson(dynamic json) {
-    id = json['id'];
-    name = json['name'];
-    countryId = json['country_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    id = json['id'] as int?;
+    name = json['name'] as String?;
+    countryId = json['country_id'] as int?;
+    createdAt = json['created_at'] as String?;
+    updatedAt = json['updated_at'] as String?;
   }
   int? id;
   String? name;
@@ -64,5 +65,4 @@ class CityData {
     map['updated_at'] = updatedAt;
     return map;
   }
-
 }

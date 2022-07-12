@@ -20,6 +20,7 @@ class MapCubit extends Cubit<MapState> {
 
   Future<void> getMap({
     required int orderId,
+    required PointDTO? startPoint, // sklad
     required List<PointDTO> orderPoints,
   }) async {
     try {
@@ -27,9 +28,20 @@ class MapCubit extends Cubit<MapState> {
 
       if (orderPoints.isEmpty) {
         final List<PointDTO> result = await _repository.orderPoints(orderId);
-        log('wasvdbbsdbsb');
+        log('wasvdbbsdbsb $startPoint');
+        if (startPoint != null) {
+          if (result.first.id != startPoint.id) {
+            result.insert(0, startPoint);
+          }
+          log('getMap1: ${result.length}', name: _tag);
+        }
+
         emit(MapLoadedState(loadedMap: result));
       } else {
+        // if (orderPoints.first.id == startPoint.id) {
+        //   orderPoints.insert(0, startPoint);
+        // }
+        log('getMap2: ${orderPoints.length}', name: _tag);
         emit(MapLoadedState(loadedMap: orderPoints));
       }
     } catch (e) {
