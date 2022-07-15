@@ -117,20 +117,18 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               child: Column(
                 children: [
                   BlocConsumer<OrderDetailBloc, OrderDetailState>(
-                    listener: (context, state) {
-                      // TODO: implement listener
-                    },
+                    listener: (context, state) {},
                     buildWhen: (p, c) {
                       if (c is OrderDetailStateLoaded) {
                         return true;
-                      } 
+                      }
                       // else if (c is OrderDetailStateLoading) {
                       //   // else if (p is OrderDetailStateLoaded &&
                       //   //     c is OrderDetailStateLoading) {
                       //   //   return true;
                       //   // }
                       //   return true;
-                      // } 
+                      // }
                       else {
                         return false;
                       }
@@ -167,34 +165,34 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                         );
                       } else {
                         return SizedBox();
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              //height: 300,
-                              decoration: BoxDecoration(
-                                color: ColorPalette.white,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: BlocProvider<MapCubit>(
-                                create: (_) => MapCubit(
-                                  mapRepository: MapRepository(),
-                                  repository: context.read<GlobalRepository>(),
-                                ),
-                                child: SessionPage(
-                                  orderId: widget.order.id,
-                                  order: widget.order,
-                                  orderPoints: const [],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
+                        // return Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //     horizontal: 10,
+                        //   ),
+                        //   child: ClipRRect(
+                        //     borderRadius: BorderRadius.circular(12),
+                        //     child: Container(
+                        //       width: double.infinity,
+                        //       height: MediaQuery.of(context).size.height * 0.3,
+                        //       //height: 300,
+                        //       decoration: BoxDecoration(
+                        //         color: ColorPalette.white,
+                        //         borderRadius: BorderRadius.circular(16),
+                        //       ),
+                        //       child: BlocProvider<MapCubit>(
+                        //         create: (_) => MapCubit(
+                        //           mapRepository: MapRepository(),
+                        //           repository: context.read<GlobalRepository>(),
+                        //         ),
+                        //         child: SessionPage(
+                        //           orderId: widget.order.id,
+                        //           order: widget.order,
+                        //           orderPoints: const [],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // );
                       }
                     },
                   ),
@@ -354,7 +352,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       color: ColorPalette.commonGrey,
                                     ),
                                   ),
-                                  Text(state.order.from!),
+                                  Text(state.order.from ??
+                                      S.of(context).no_data),
                                 ],
                               ),
                               Column(
@@ -368,7 +367,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       color: ColorPalette.commonGrey,
                                     ),
                                   ),
-                                  Text(state.order.to!),
+                                  Text(state.order.to ?? S.of(context).no_data),
                                 ],
                               )
                             ],
@@ -437,266 +436,6 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     point: Provider.of<OrderDetailProvider>(context).point,
                     order: state.order,
                   ),
-                  //   child: isScan &&
-                  //           // point!.products!.isNotEmpty && // TODO
-                  //           (state.order.status == "accepted" ||
-                  //               state.order.status == "in_process")
-                  //       ? GestureDetector(
-                  //           onTap: () {
-                  //             AppRouter.push(
-                  //               context,
-                  //               BlocProvider<BlocOrderFinish>(
-                  //                 create: (context) => BlocOrderFinish(
-                  //                   repository:
-                  //                       context.read<GlobalRepository>(),
-                  //                 )..add(
-                  //                     EventOrderFinishInitial(
-                  //                       pointId: point!.id,
-                  //                     ),
-                  //                   ),
-                  //                 child: OrderFinish(
-                  //                   order: state.order,
-                  //                   isScan: widget.order.points!.first.id ==
-                  //                       point!.id,
-                  //                   // isScan: ,
-                  //                 ),
-                  //               ),
-                  //             ).then(
-                  //               (value) {
-                  //                 context.read<OrderDetailBloc>().add(
-                  //                       EventInitialOrderCard(
-                  //                         state.order.id,
-                  //                       ),
-                  //                     );
-                  //               },
-                  //             );
-                  //           },
-                  //           child: Container(
-                  //             padding: const EdgeInsets.symmetric(vertical: 16),
-                  //             decoration: BoxDecoration(
-                  //               color: ColorPalette.main,
-                  //               borderRadius: BorderRadius.circular(10),
-                  //             ),
-                  //             child: Stack(
-                  //               children: [
-                  //                 Center(
-                  //                   child: Text(
-                  //                     "Приехал",
-                  //                     style: ProjectTextStyles.ui_16Medium
-                  //                         .copyWith(
-                  //                       color: Colors.white,
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 Positioned(
-                  //                   top: 3,
-                  //                   right: 15,
-                  //                   child: SvgPicture.asset(
-                  //                     "assets/images/svg/arrow_right.svg",
-                  //                   ),
-                  //                 )
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         )
-                  //       : state.order.status == "accepted" ||
-                  //               state.order.status == "in_process"
-                  //           ? GestureDetector(
-                  //               onTap: () async {
-                  //                 // showModalBottomSheet(
-                  //                 //   context: context,
-                  //                 //   isScrollControlled: true,
-                  //                 //   isDismissible: true,
-                  //                 //   backgroundColor: const Color(0xFFFFFFFF),
-                  //                 //   shape: const RoundedRectangleBorder(
-                  //                 //     borderRadius: BorderRadius.vertical(
-                  //                 //       top: Radius.circular(16),
-                  //                 //     ),
-                  //                 //   ),
-                  //                 //   builder: (context) {
-                  //                 //     return const TransferOrderBottomSheet();
-                  //                 //   },
-                  //                 // );
-                  //                 // return;
-                  //                 await showAppBottomSheet(
-                  //                   context,
-                  //                   initialChildSize: 0.45,
-                  //                   useRootNavigator: true,
-                  //                   child: const BuildCauses(),
-                  //                 ).then(
-                  //                   (value) async {
-                  //                     if (value != null) {
-                  //                       if (value == items[0] ||
-                  //                           value == items[1] ||
-                  //                           value == items[2]) {
-                  //                         context.read<OrderDetailBloc>().add(
-                  //                               EventStopOrder(
-                  //                                 cause: value == items[0]
-                  //                                     ? "snack"
-                  //                                     : value == items[1]
-                  //                                         ? "sleep"
-                  //                                         : "relax",
-                  //                               ),
-                  //                             );
-                  //                       }
-                  //                       if (value == items[4]) {
-                  //                         /// FIXME
-                  //                         // context.read<BlocOrderCard>().add(
-                  //                         //       EventStopOrder(
-                  //                         //         cause: "change_driver",
-                  //                         //       ),
-                  //                         //     );
-                  //                         await showModalBottomSheet(
-                  //                           useRootNavigator: true,
-                  //                           context: context,
-                  //                           isScrollControlled: true,
-                  //                           isDismissible: true,
-                  //                           backgroundColor:
-                  //                               const Color(0xFFFFFFFF),
-                  //                           shape: const RoundedRectangleBorder(
-                  //                             borderRadius:
-                  //                                 BorderRadius.vertical(
-                  //                               top: Radius.circular(16),
-                  //                             ),
-                  //                           ),
-                  //                           builder: (context) {
-                  //                             return const TransferOrderBottomSheet();
-                  //                           },
-                  //                         ).then(
-                  //                           (value) => context
-                  //                               .read<OrderDetailBloc>()
-                  //                               .add(
-                  //                                 EventStopOrder(
-                  //                                   cause: "change_driver",
-                  //                                   emptyDriver: value,
-                  //                                 ),
-                  //                               ),
-                  //                         );
-                  //                         // showAppBottomSheet(
-                  //                         //   context,
-                  //                         //   // initialChildSize: 0.5,
-                  //                         //   useRootNavigator: true,
-                  //                         //   child:
-                  //                         //       const TransferOrderBottomSheet(),
-                  //                         // );
-                  //                       }
-                  //                     }
-                  //                   },
-                  //                 );
-                  //               },
-                  //               child: Container(
-                  //                 padding: const EdgeInsets.symmetric(
-                  //                   vertical: 16,
-                  //                 ),
-                  //                 decoration: BoxDecoration(
-                  //                   color: ColorPalette.white,
-                  //                   borderRadius: BorderRadius.circular(10),
-                  //                   border: Border.all(
-                  //                     color: ColorPalette.main,
-                  //                   ),
-                  //                 ),
-                  //                 child: Stack(
-                  //                   children: [
-                  //                     Center(
-                  //                       child: Text(
-                  //                         "Стоп",
-                  //                         style: ProjectTextStyles.ui_16Medium
-                  //                             .copyWith(
-                  //                           color: ColorPalette.main,
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                     Positioned(
-                  //                       top: 3,
-                  //                       right: 15,
-                  //                       child: SvgPicture.asset(
-                  //                         "assets/images/svg/chevrone_down.svg",
-                  //                         width: 24,
-                  //                         height: 24,
-                  //                         color: ColorPalette.main,
-                  //                       ),
-                  //                     )
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             )
-                  //           : state.order.status == "stopped"
-                  //               ? GestureDetector(
-                  //                   onTap: () {
-                  //                     context
-                  //                         .read<OrderDetailBloc>()
-                  //                         .add(EventResumeOrder());
-                  //                   },
-                  //                   child: Container(
-                  //                     padding: const EdgeInsets.symmetric(
-                  //                       vertical: 16,
-                  //                     ),
-                  //                     decoration: BoxDecoration(
-                  //                       color: ColorPalette.main,
-                  //                       borderRadius: BorderRadius.circular(10),
-                  //                     ),
-                  //                     child: Stack(
-                  //                       children: [
-                  //                         Center(
-                  //                           child: Text(
-                  //                             "Выйти на линию",
-                  //                             style: ProjectTextStyles
-                  //                                 .ui_16Medium
-                  //                                 .copyWith(
-                  //                               color: Colors.white,
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                         Positioned(
-                  //                           top: 3,
-                  //                           right: 15,
-                  //                           child: SvgPicture.asset(
-                  //                             "assets/images/svg/arrow_right.svg",
-                  //                           ),
-                  //                         )
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 )
-                  //               : GestureDetector(
-                  //                   onTap: () {
-                  //                     context
-                  //                         .read<OrderDetailBloc>()
-                  //                         .add(EventStartOrder());
-                  //                   },
-                  //                   child: Container(
-                  //                     padding: const EdgeInsets.symmetric(
-                  //                       vertical: 16,
-                  //                     ),
-                  //                     decoration: BoxDecoration(
-                  //                       color: ColorPalette.main,
-                  //                       borderRadius: BorderRadius.circular(10),
-                  //                     ),
-                  //                     child: Stack(
-                  //                       children: [
-                  //                         Center(
-                  //                           child: Text(
-                  //                             "Поехали",
-                  //                             style: ProjectTextStyles
-                  //                                 .ui_16Medium
-                  //                                 .copyWith(
-                  //                               color: Colors.white,
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                         Positioned(
-                  //                           top: 3,
-                  //                           right: 15,
-                  //                           child: SvgPicture.asset(
-                  //                             "assets/images/svg/arrow_right.svg",
-                  //                           ),
-                  //                         )
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-
-                  // //
                 ),
               );
             } else {
@@ -893,12 +632,6 @@ class _FABWidget extends StatelessWidget {
                             );
                       }
                       if (value == items[4]) {
-                        /// FIXME
-                        // context.read<BlocOrderCard>().add(
-                        //       EventStopOrder(
-                        //         cause: "change_driver",
-                        //       ),
-                        //     );
                         await showModalBottomSheet(
                           useRootNavigator: true,
                           context: context,

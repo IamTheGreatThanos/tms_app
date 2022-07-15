@@ -166,6 +166,7 @@ class _SessionState extends State<SessionPage> {
         }
       }
 
+      if (placemarks.length < 2) return;
       for (int i = 0; i < placemarks.length; i++) {
         mapObjects.add(placemarks[i]);
         points.add(
