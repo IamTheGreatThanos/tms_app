@@ -32,6 +32,7 @@ class PointDTO with _$PointDTO {
     @JsonKey(name: 'count_products') int? countProducts,
     @JsonKey(name: 'created_at') String? createdAt,
     List<ProductDTO>? products,
+    List<ContainerDTO>? containers,
   }) = _PointDTO;
 
   factory PointDTO.fromJson(Map<String, dynamic> json) =>
@@ -52,6 +53,25 @@ class ProductDTO with _$ProductDTO {
 
   factory ProductDTO.fromJson(Map<String, dynamic> json) =>
       _$ProductDTOFromJson(json);
+}
+
+
+@freezed
+class ContainerDTO with _$ContainerDTO {
+  const factory ContainerDTO({
+    required int id,
+    @JsonKey(name: "point_id") int? pointId,
+    String? code,
+    @JsonKey(name: "created_at") String? createdAt,
+    @JsonKey(name: "updated_at") String? updatedAt,
+    bool? isScanned,
+
+
+    // @JsonKey(name: 'created_at') String? createdAt,
+  }) = _ContainerDTO;
+
+  factory ContainerDTO.fromJson(Map<String, dynamic> json) =>
+      _$ContainerDTOFromJson(json);
 }
 
 

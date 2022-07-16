@@ -16,6 +16,7 @@ import 'package:europharm_flutter/screens/order_card/ui/widgets/timer.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/transfer_order_bottom_sheet.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/point_page_bloc.dart';
 import 'package:europharm_flutter/screens/order_finish/ui/point_page.dart';
+import 'package:europharm_flutter/screens/order_finish/ui/warehouse_page.dart';
 import 'package:europharm_flutter/screens/orders_screen/bloc/orders_bloc.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
@@ -499,10 +500,10 @@ class _FABWidget extends StatelessWidget {
     /// Приехал
     ///
     ///
-    if (isScan &&
-        (order.status == "accepted" ||
-            order.status == "in_process" ||
-            order.status == 'В пути')) {
+    if ((isScan &&
+            (order.status == "accepted" ||
+                order.status == "in_process" ||
+                order.status == 'В пути'))) {
       return GestureDetector(
         onTap: () {
           AppRouter.push(
@@ -515,12 +516,16 @@ class _FABWidget extends StatelessWidget {
                     pointId: point!.id,
                   ),
                 ),
-              child: PointPage(
-                order: order,
-                point: point!,
-                isScan: order.points!.first.id == point!.id,
-                // isScan: ,
-              ),
+              child: 
+              point!.id == order.points!.first.id
+                  ? WarehousePage(order: order, isScan: isScan, point: point!)
+                  :
+                   PointPage(
+                      order: order,
+                      point: point!,
+                      isScan: order.points!.first.id == point!.id,
+                      // isScan: ,
+                    ),
             ),
           );
           // .then(

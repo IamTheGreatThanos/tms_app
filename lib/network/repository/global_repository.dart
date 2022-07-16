@@ -80,10 +80,16 @@ class GlobalRepository {
   Future<List<PointDTO>> orderPoints(int orderId) async =>
       _networkService.orderPoints(orderId);
 
-  Future<OrderPoint> orderPointProducts(int pointId) async =>
-      _networkService.orderPointProducts(pointId);
+  Future<PointDTO> orderPointProducts(int pointId) async {
+    PointDTO pointDTO = await _networkService.orderPointProducts(pointId);
+    List<ContainerDTO> containers = pointDTO.containers ?? [];
+    for (ContainerDTO e in containers) {
+      e.copyWith(isScanned: false);
+    }
+    return pointDTO.copyWith(containers: containers);
+  }
 
-  Future<OrderPoint> orderProductFinish(int productId, String code) async =>
+  Future<PointDTO> orderProductFinish(int productId, String code) async =>
       _networkService.orderProductFinish(productId, code);
 
   Future<PointDTO> orderPointFinish({

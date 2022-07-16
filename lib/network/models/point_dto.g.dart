@@ -28,6 +28,9 @@ _$_PointDTO _$$_PointDTOFromJson(Map<String, dynamic> json) => _$_PointDTO(
       products: (json['products'] as List<dynamic>?)
           ?.map((e) => ProductDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
+      containers: (json['containers'] as List<dynamic>?)
+          ?.map((e) => ContainerDTO.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_PointDTOToJson(_$_PointDTO instance) =>
@@ -50,6 +53,7 @@ Map<String, dynamic> _$$_PointDTOToJson(_$_PointDTO instance) =>
       'count_products': instance.countProducts,
       'created_at': instance.createdAt,
       'products': instance.products,
+      'containers': instance.containers,
     };
 
 _$_ProductDTO _$$_ProductDTOFromJson(Map<String, dynamic> json) =>
@@ -68,4 +72,24 @@ Map<String, dynamic> _$$_ProductDTOToJson(_$_ProductDTO instance) =>
       'name': instance.name,
       'code': instance.code,
       'status': instance.status,
+    };
+
+_$_ContainerDTO _$$_ContainerDTOFromJson(Map<String, dynamic> json) =>
+    _$_ContainerDTO(
+      id: json['id'] as int,
+      pointId: json['point_id'] as int?,
+      code: json['code'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      isScanned: json['isScanned'] as bool?,
+    );
+
+Map<String, dynamic> _$$_ContainerDTOToJson(_$_ContainerDTO instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'point_id': instance.pointId,
+      'code': instance.code,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'isScanned': instance.isScanned,
     };

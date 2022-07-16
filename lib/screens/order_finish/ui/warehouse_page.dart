@@ -6,6 +6,7 @@ import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/map_screen/map.dart';
 import 'package:europharm_flutter/screens/order_card/bloc/order_detail_bloc.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/point_page_bloc.dart';
+import 'package:europharm_flutter/screens/order_finish/ui/scan_choose_page.dart';
 import 'package:europharm_flutter/screens/order_finish/ui/widgets/success_order_finished.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
@@ -23,23 +24,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PointPage extends StatefulWidget {
+class WarehousePage extends StatefulWidget {
   final OrderDTO order;
   final bool isScan;
   final PointDTO point;
-
-  const PointPage({
-    Key? key,
-    required this.order,
-    required this.point,
-    this.isScan = true,
-  }) : super(key: key);
+  const WarehousePage(
+      {Key? key,
+      required this.order,
+      required this.isScan,
+      required this.point})
+      : super(key: key);
 
   @override
-  State<PointPage> createState() => _PointPageState();
+  State<WarehousePage> createState() => _WarehousePageState();
 }
 
-class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
+class _WarehousePageState extends State<WarehousePage>
+    with TickerProviderStateMixin {
   List<String> buttonText = [
     "Дальше в путь",
     "Принять оплату",
@@ -153,7 +154,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 Text(
-                                  "${widget.order.from}",
+                                  "${widget.point.name} в ${widget.point.from}",
                                   // order.customerName ?? S.of(context).no_data,
                                   style: ProjectTextStyles.ui_16Medium,
                                 ),
@@ -214,11 +215,11 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                             setState(() {});
                           },
                           children: [
-                            if (state.orderPoint.products != null &&
-                                state.orderPoint.products!.isNotEmpty)
+                            if (state.orderPoint.containers != null &&
+                                state.orderPoint.containers!.isNotEmpty)
                               ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: 10,
+                                itemCount: state.orderPoint.containers!.length,
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(
                                   height: 8,
@@ -241,12 +242,14 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                           : () {
                                               setState(() {
                                                 if (productId ==
-                                                    state.orderPoint
-                                                        .products?[index].id) {
+                                                    state
+                                                        .orderPoint
+                                                        .containers?[index]
+                                                        .id) {
                                                   productId = 0;
                                                 } else {
                                                   productId = state.orderPoint
-                                                      .products?[index].id;
+                                                      .containers?[index].id;
                                                 }
                                               });
                                             },
@@ -256,7 +259,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                           borderRadius:
                                               BorderRadius.circular(50),
                                           color: state.orderPoint
-                                                      .products?[index].id ==
+                                                      .containers?[index].id ==
                                                   productId
                                               ? ColorPalette.main
                                                   .withOpacity(0.1)
@@ -293,8 +296,8 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                 Text(
                                                   state
                                                           .orderPoint
-                                                          .products?[index]
-                                                          .name ??
+                                                          .containers?[index]
+                                                          .code ??
                                                       "No data",
                                                   style: ProjectTextStyles
                                                       .ui_14Medium
@@ -304,12 +307,14 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                 )
                                               ],
                                             ),
-                                            if (state.orderPoint
-                                                    .products?[index].status ==
-                                                "finished")
-                                              SvgPicture.asset(
-                                                "assets/images/svg/ic_check.svg",
-                                              ),
+                                            //FIXME Need status of containers
+
+                                            // if (state.orderPoint
+                                            //         .containers?[index].status ==
+                                            //     "finished")
+                                            //   SvgPicture.asset(
+                                            //     "assets/images/svg/ic_check.svg",
+                                            //   ),
                                           ],
                                         ),
                                       ),
@@ -437,13 +442,13 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                         right: 10,
                         bottom: 10,
                       ),
-                      child: _current ==
+                      child: _current !=
                               0 //  !isScan || (state.areAllFinished && _current == 0)
                           ? GestureDetector(
                               onTap: () {
                                 if (!isScan) {
                                   for (var element
-                                      in state.orderPoint.products!) {
+                                      in state.orderPoint.containers!) {
                                     context.read<PointPageBloc>().add(
                                           PointPageEventProductFinish(
                                             productId: element.id,
@@ -495,21 +500,23 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                             )
                           : _current == 0
                               ? GestureDetector(
-                                  onTap: productId != 0
-                                      ? () {
-                                          showCreatePasswordBottomDialog(
-                                            context,
-                                            productId!,
-                                          );
-                                        }
-                                      : null,
+                                  onTap: () {
+                                    AppRouter.push(
+                                        context,
+                                        ScanChoosePage(
+                                          order: widget.order,
+                                        ));
+
+                                    // showCreatePasswordBottomDialog(
+                                    //   context,
+                                    //   productId!,
+                                    // );
+                                  },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 16),
                                     decoration: BoxDecoration(
-                                      color: productId != 0
-                                          ? ColorPalette.main
-                                          : ColorPalette.lightGrey,
+                                      color: ColorPalette.main,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Stack(

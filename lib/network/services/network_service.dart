@@ -317,7 +317,7 @@ class NetworkService {
     }
   }
 
-  Future<OrderPoint> orderPointProducts(int pointId) async {
+  Future<PointDTO> orderPointProducts(int pointId) async {
     final response = await _dioWrapper.sendRequest(
       path: "/order/point/products",
       method: NetworkMethod.post,
@@ -330,12 +330,12 @@ class NetworkService {
       name: _networkService,
     );
 
-    return OrderPoint.fromJson(
+    return PointDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }
 
-  Future<OrderPoint> orderProductFinish(int productId, String code) async {
+  Future<PointDTO> orderProductFinish(int productId, String code) async {
     final response = await _dioWrapper.sendRequest(
       path: "/order/point/product/finish",
       method: NetworkMethod.post,
@@ -344,7 +344,7 @@ class NetworkService {
         "code": code,
       }),
     );
-    return OrderPoint.fromJson(
+    return PointDTO.fromJson(
       (response.data as Map<String, dynamic>)["data"] as Map<String, dynamic>,
     );
   }

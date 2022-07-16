@@ -6,7 +6,7 @@ abstract class PointPageState {}
 class PointPageStateLoading extends PointPageState {}
 
 class PointPageStateLoaded extends PointPageState {
-  final OrderPoint orderPoint;
+  final PointDTO orderPoint;
   final bool areAllFinished;
 
   PointPageStateLoaded({

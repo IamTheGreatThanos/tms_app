@@ -28,3 +28,11 @@ class PointPageEventFinishingPoint extends PointPageEvent {
     required this.pointId,
   });
 }
+
+class PointPageEventScanBarcode extends PointPageEvent {
+  final String code;
+
+  PointPageEventScanBarcode({
+    required this.code,
+  });
+}
