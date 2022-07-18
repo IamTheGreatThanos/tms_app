@@ -307,14 +307,11 @@ class _WarehousePageState extends State<WarehousePage>
                                                 )
                                               ],
                                             ),
-                                            //FIXME Need status of containers
-
-                                            // if (state.orderPoint
-                                            //         .containers?[index].status ==
-                                            //     "finished")
-                                            //   SvgPicture.asset(
-                                            //     "assets/images/svg/ic_check.svg",
-                                            //   ),
+                                            if (state.orderPoint
+                                                .containers![index].isScanned)
+                                              SvgPicture.asset(
+                                                "assets/images/svg/ic_check.svg",
+                                              ),
                                           ],
                                         ),
                                       ),
@@ -499,52 +496,122 @@ class _WarehousePageState extends State<WarehousePage>
                               ),
                             )
                           : _current == 0
-                              ? GestureDetector(
-                                  onTap: () {
-                                    AppRouter.push(
-                                        context,
-                                        ScanChoosePage(
-                                          order: widget.order,
-                                        ));
-
-                                    // showCreatePasswordBottomDialog(
-                                    //   context,
-                                    //   productId!,
-                                    // );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
-                                    decoration: BoxDecoration(
-                                      color: ColorPalette.main,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Stack(
-                                      children: [
-                                        Center(
-                                          child: Text(
-                                            "Отсканировать",
-                                            style: ProjectTextStyles.ui_16Medium
-                                                .copyWith(
-                                              color: Colors.white,
+                              ? Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          AppRouter.push(
+                                            context,
+                                            ScanChoosePage(
+                                              order: widget.order,
+                                              pointPageBloc: BlocProvider.of<
+                                                  PointPageBloc>(context),
                                             ),
+                                          );
+
+                                          // showCreatePasswordBottomDialog(
+                                          //   context,
+                                          //   productId!,
+                                          // );
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          decoration: BoxDecoration(
+                                            color: ColorPalette.main,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              Center(
+                                                child: Text(
+                                                  "Отсканировать",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              // Positioned(
+                                              //   left: 18,
+                                              //   child: SvgPicture.asset(
+                                              //     "assets/images/svg/scan.svg",
+                                              //   ),
+                                              // )
+                                            ],
                                           ),
                                         ),
-                                        Positioned(
-                                          left: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/images/svg/scan.svg",
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          BlocProvider.of<PointPageBloc>(
+                                                  context)
+                                              .add(
+                                            PointPageEventFinishingPoint(
+                                              pointId: widget.point.id,
+                                              containers:
+                                                  widget.point.containers ?? [],
+                                            ),
+                                          );
+
+                                          // setState(() {
+                                          //   _current = 2;
+                                          //   pageController.animateToPage(
+                                          //     _current,
+                                          //     duration: const Duration(
+                                          //       milliseconds: 50,
+                                          //     ),
+                                          //     curve: Curves.ease,
+                                          //   );
+                                          //   _tabController.animateTo(_current);
+                                          // });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 16,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: ColorPalette.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: ColorPalette.main,
+                                            ),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              Center(
+                                                child: Text(
+                                                  "Принять и подписать",
+                                                  style: ProjectTextStyles
+                                                      .ui_16Medium
+                                                      .copyWith(
+                                                    color: ColorPalette.main,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 )
                               : GestureDetector(
                                   onTap: () {
                                     BlocProvider.of<PointPageBloc>(context).add(
                                       PointPageEventFinishingPoint(
                                         pointId: widget.point.id,
+                                        containers:
+                                            widget.point.containers ?? [],
                                       ),
                                     );
 

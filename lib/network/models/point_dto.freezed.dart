@@ -793,14 +793,23 @@ ContainerDTO _$ContainerDTOFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ContainerDTO {
   int get id => throw _privateConstructorUsedError;
+  set id(int value) => throw _privateConstructorUsedError;
   @JsonKey(name: "point_id")
   int? get pointId => throw _privateConstructorUsedError;
+  @JsonKey(name: "point_id")
+  set pointId(int? value) => throw _privateConstructorUsedError;
   String? get code => throw _privateConstructorUsedError;
+  set code(String? value) => throw _privateConstructorUsedError;
   @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: "created_at")
+  set createdAt(String? value) => throw _privateConstructorUsedError;
   @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError;
-  bool? get isScanned => throw _privateConstructorUsedError;
+  @JsonKey(name: "updated_at")
+  set updatedAt(String? value) => throw _privateConstructorUsedError;
+  bool get isScanned => throw _privateConstructorUsedError;
+  set isScanned(bool value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -819,7 +828,7 @@ abstract class $ContainerDTOCopyWith<$Res> {
       String? code,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
-      bool? isScanned});
+      bool isScanned});
 }
 
 /// @nodoc
@@ -863,7 +872,7 @@ class _$ContainerDTOCopyWithImpl<$Res> implements $ContainerDTOCopyWith<$Res> {
       isScanned: isScanned == freezed
           ? _value.isScanned
           : isScanned // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
     ));
   }
 }
@@ -881,7 +890,7 @@ abstract class _$$_ContainerDTOCopyWith<$Res>
       String? code,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
-      bool? isScanned});
+      bool isScanned});
 }
 
 /// @nodoc
@@ -928,7 +937,7 @@ class __$$_ContainerDTOCopyWithImpl<$Res>
       isScanned: isScanned == freezed
           ? _value.isScanned
           : isScanned // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
     ));
   }
 }
@@ -936,61 +945,38 @@ class __$$_ContainerDTOCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ContainerDTO implements _ContainerDTO {
-  const _$_ContainerDTO(
+  _$_ContainerDTO(
       {required this.id,
       @JsonKey(name: "point_id") this.pointId,
       this.code,
       @JsonKey(name: "created_at") this.createdAt,
       @JsonKey(name: "updated_at") this.updatedAt,
-      this.isScanned});
+      this.isScanned = false});
 
   factory _$_ContainerDTO.fromJson(Map<String, dynamic> json) =>
       _$$_ContainerDTOFromJson(json);
 
   @override
-  final int id;
+  int id;
   @override
   @JsonKey(name: "point_id")
-  final int? pointId;
+  int? pointId;
   @override
-  final String? code;
+  String? code;
   @override
   @JsonKey(name: "created_at")
-  final String? createdAt;
+  String? createdAt;
   @override
   @JsonKey(name: "updated_at")
-  final String? updatedAt;
+  String? updatedAt;
   @override
-  final bool? isScanned;
+  @JsonKey()
+  bool isScanned;
 
   @override
   String toString() {
     return 'ContainerDTO(id: $id, pointId: $pointId, code: $code, createdAt: $createdAt, updatedAt: $updatedAt, isScanned: $isScanned)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ContainerDTO &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.pointId, pointId) &&
-            const DeepCollectionEquality().equals(other.code, code) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
-            const DeepCollectionEquality().equals(other.isScanned, isScanned));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(pointId),
-      const DeepCollectionEquality().hash(code),
-      const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(updatedAt),
-      const DeepCollectionEquality().hash(isScanned));
 
   @JsonKey(ignore: true)
   @override
@@ -1004,13 +990,13 @@ class _$_ContainerDTO implements _ContainerDTO {
 }
 
 abstract class _ContainerDTO implements ContainerDTO {
-  const factory _ContainerDTO(
-      {required final int id,
-      @JsonKey(name: "point_id") final int? pointId,
-      final String? code,
-      @JsonKey(name: "created_at") final String? createdAt,
-      @JsonKey(name: "updated_at") final String? updatedAt,
-      final bool? isScanned}) = _$_ContainerDTO;
+  factory _ContainerDTO(
+      {required int id,
+      @JsonKey(name: "point_id") int? pointId,
+      String? code,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(name: "updated_at") String? updatedAt,
+      bool isScanned}) = _$_ContainerDTO;
 
   factory _ContainerDTO.fromJson(Map<String, dynamic> json) =
       _$_ContainerDTO.fromJson;
@@ -1029,7 +1015,7 @@ abstract class _ContainerDTO implements ContainerDTO {
   @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError;
   @override
-  bool? get isScanned => throw _privateConstructorUsedError;
+  bool get isScanned => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ContainerDTOCopyWith<_$_ContainerDTO> get copyWith =>

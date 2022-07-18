@@ -538,6 +538,8 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                     BlocProvider.of<PointPageBloc>(context).add(
                                       PointPageEventFinishingPoint(
                                         pointId: widget.point.id,
+                                        containers:
+                                            widget.point.containers ?? [],
                                       ),
                                     );
 

@@ -56,15 +56,15 @@ class ProductDTO with _$ProductDTO {
 }
 
 
-@freezed
+@unfreezed
 class ContainerDTO with _$ContainerDTO {
-  const factory ContainerDTO({
+ factory ContainerDTO({
     required int id,
     @JsonKey(name: "point_id") int? pointId,
     String? code,
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(name: "updated_at") String? updatedAt,
-    bool? isScanned,
+    @Default(false) bool isScanned,
 
 
     // @JsonKey(name: 'created_at') String? createdAt,

@@ -23,9 +23,11 @@ class PointPageEventProductFinish extends PointPageEvent {
 
 class PointPageEventFinishingPoint extends PointPageEvent {
   final int pointId;
+  final List<ContainerDTO> containers;
 
   PointPageEventFinishingPoint({
     required this.pointId,
+    required this.containers,
   });
 }
 

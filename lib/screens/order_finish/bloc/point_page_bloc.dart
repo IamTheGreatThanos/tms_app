@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/services/firebase_messaging_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
@@ -39,18 +41,21 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
       final result = await repository.orderPointProducts(event.pointId);
       pointId = event.pointId;
       currentPoint = result;
+      log("IS SCANNED::::::${currentPoint?.containers?.first.isScanned}");
       for (var element in currentPoint!.containers!) {
-        if (!element.isScanned!) {
+      
+        if (!element.isScanned) {
           areAllFinished = false;
         }
       }
       emit(
         PointPageStateLoaded(
-          orderPoint: currentPoint!,
+          orderPoint:currentPoint!,
           areAllFinished: areAllFinished,
         ),
       );
     } catch (e) {
+     // log('znc.wnckadajkc');
       emit(
         PointPageStateError(
           error: AppError(
@@ -70,6 +75,7 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
 
     try {
       await repository.orderPointFinish(pointId: event.pointId);
+      await repository.sendContainers(event.containers);
       emit(PointPageStateFinished());
     } catch (e) {
       emit(
@@ -94,12 +100,13 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
     for (ContainerDTO e in currentPoint?.containers ?? []) {
       if (e.code == event.code) {
         flag = true;
-        e.copyWith(isScanned: true);
+        e.isScanned = true;
         break;
       }
     }
     for (var element in currentPoint!.containers!) {
-      if (!element.isScanned!) {
+      log('${element.isScanned}');
+      if (!element.isScanned) {
         areAllFinished = false;
       }
     }
