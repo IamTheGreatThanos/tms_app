@@ -237,22 +237,23 @@ class _WarehousePageState extends State<WarehousePage>
                                       right: 10,
                                     ),
                                     child: GestureDetector(
-                                      onTap: !isScan
-                                          ? null
-                                          : () {
-                                              setState(() {
-                                                if (productId ==
-                                                    state
-                                                        .orderPoint
-                                                        .containers?[index]
-                                                        .id) {
-                                                  productId = 0;
-                                                } else {
-                                                  productId = state.orderPoint
-                                                      .containers?[index].id;
-                                                }
-                                              });
-                                            },
+                                      onTap: null,
+                                      //  !isScan
+                                      //     ? null
+                                      // : () {
+                                      //     setState(() {
+                                      //       if (productId ==
+                                      //           state
+                                      //               .orderPoint
+                                      //               .containers?[index]
+                                      //               .id) {
+                                      //         productId = 0;
+                                      //       } else {
+                                      //         productId = state.orderPoint
+                                      //             .containers?[index].id;
+                                      //       }
+                                      //     });
+                                      //   },
                                       child: Container(
                                         padding: const EdgeInsets.all(7),
                                         decoration: BoxDecoration(
@@ -439,198 +440,39 @@ class _WarehousePageState extends State<WarehousePage>
                         right: 10,
                         bottom: 10,
                       ),
-                      child: _current !=
-                              0 //  !isScan || (state.areAllFinished && _current == 0)
-                          ? GestureDetector(
-                              onTap: () {
-                                if (!isScan) {
-                                  for (var element
-                                      in state.orderPoint.containers!) {
-                                    context.read<PointPageBloc>().add(
-                                          PointPageEventProductFinish(
-                                            productId: element.id,
-                                            code: element.code!,
-                                          ),
-                                        );
-                                  }
-                                  setState(() {
-                                    isScan = true;
-                                  });
-                                }
-                                setState(() {
-                                  _current = 1;
-                                  pageController.animateToPage(
-                                    _current,
-                                    duration: const Duration(milliseconds: 50),
-                                    curve: Curves.ease,
-                                  );
-                                  _tabController.animateTo(_current);
-                                });
-                              },
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                decoration: BoxDecoration(
-                                  color: ColorPalette.main,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        "Дальше в путь",
-                                        style: ProjectTextStyles.ui_16Medium
-                                            .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/images/svg/arrow_right.svg",
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          : _current == 0
-                              ? Row(
-                                  children: [
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          AppRouter.push(
-                                            context,
-                                            ScanChoosePage(
-                                              order: widget.order,
-                                              pointPageBloc: BlocProvider.of<
-                                                  PointPageBloc>(context),
-                                            ),
-                                          );
-
-                                          // showCreatePasswordBottomDialog(
-                                          //   context,
-                                          //   productId!,
-                                          // );
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 16),
-                                          decoration: BoxDecoration(
-                                            color: ColorPalette.main,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Center(
-                                                child: Text(
-                                                  "Отсканировать",
-                                                  style: ProjectTextStyles
-                                                      .ui_16Medium
-                                                      .copyWith(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                              // Positioned(
-                                              //   left: 18,
-                                              //   child: SvgPicture.asset(
-                                              //     "assets/images/svg/scan.svg",
-                                              //   ),
-                                              // )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          BlocProvider.of<PointPageBloc>(
-                                                  context)
-                                              .add(
-                                            PointPageEventFinishingPoint(
-                                              pointId: widget.point.id,
-                                              containers:
-                                                  widget.point.containers ?? [],
-                                            ),
-                                          );
-
-                                          // setState(() {
-                                          //   _current = 2;
-                                          //   pageController.animateToPage(
-                                          //     _current,
-                                          //     duration: const Duration(
-                                          //       milliseconds: 50,
-                                          //     ),
-                                          //     curve: Curves.ease,
-                                          //   );
-                                          //   _tabController.animateTo(_current);
-                                          // });
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 16,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: ColorPalette.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                              color: ColorPalette.main,
-                                            ),
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Center(
-                                                child: Text(
-                                                  "Принять и подписать",
-                                                  style: ProjectTextStyles
-                                                      .ui_16Medium
-                                                      .copyWith(
-                                                    color: ColorPalette.main,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              : GestureDetector(
+                      child: // _current != 0
+                          //  !isScan || (state.areAllFinished && _current == 0)
+                          state.areAllFinished && _current == 0
+                              ? GestureDetector(
                                   onTap: () {
-                                    BlocProvider.of<PointPageBloc>(context).add(
-                                      PointPageEventFinishingPoint(
-                                        pointId: widget.point.id,
-                                        containers:
-                                            widget.point.containers ?? [],
-                                      ),
-                                    );
-
-                                    // setState(() {
-                                    //   _current = 2;
-                                    //   pageController.animateToPage(
-                                    //     _current,
-                                    //     duration: const Duration(
-                                    //       milliseconds: 50,
-                                    //     ),
-                                    //     curve: Curves.ease,
-                                    //   );
-                                    //   _tabController.animateTo(_current);
-                                    // });
+                                    // if (!isScan) {
+                                    //   for (var element
+                                    //       in state.orderPoint.containers!) {
+                                    //     context.read<PointPageBloc>().add(
+                                    //           PointPageEventProductFinish(
+                                    //             productId: element.id,
+                                    //             code: element.code!,
+                                    //           ),
+                                    //         );
+                                    //   }
+                                    //   setState(() {
+                                    //     isScan = true;
+                                    //   });
+                                    // }
+                                    setState(() {
+                                      _current = 1;
+                                      pageController.animateToPage(
+                                        _current,
+                                        duration:
+                                            const Duration(milliseconds: 50),
+                                        curve: Curves.ease,
+                                      );
+                                      _tabController.animateTo(_current);
+                                    });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 16,
-                                    ),
+                                        vertical: 16),
                                     decoration: BoxDecoration(
                                       color: ColorPalette.main,
                                       borderRadius: BorderRadius.circular(10),
@@ -639,17 +481,188 @@ class _WarehousePageState extends State<WarehousePage>
                                       children: [
                                         Center(
                                           child: Text(
-                                            "Принять и подписать",
+                                            "Дальше в путь",
                                             style: ProjectTextStyles.ui_16Medium
                                                 .copyWith(
                                               color: Colors.white,
                                             ),
                                           ),
                                         ),
+                                        Positioned(
+                                          right: 15,
+                                          child: SvgPicture.asset(
+                                            "assets/images/svg/arrow_right.svg",
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
                                 )
+                              : _current == 0
+                                  ? Row(
+                                      children: [
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              AppRouter.push(
+                                                context,
+                                                ScanChoosePage(
+                                                  order: widget.order,
+                                                  pointPageBloc: BlocProvider
+                                                      .of<PointPageBloc>(
+                                                          context),
+                                                ),
+                                              );
+
+                                              // showCreatePasswordBottomDialog(
+                                              //   context,
+                                              //   productId!,
+                                              // );
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16),
+                                              decoration: BoxDecoration(
+                                                color: ColorPalette.main,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      "Отсканировать",
+                                                      style: ProjectTextStyles
+                                                          .ui_16Medium
+                                                          .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // Positioned(
+                                                  //   left: 18,
+                                                  //   child: SvgPicture.asset(
+                                                  //     "assets/images/svg/scan.svg",
+                                                  //   ),
+                                                  // )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                            child: GestureDetector(
+                                          onTap: () {
+                                            // if (!isScan) {
+                                            //   for (var element
+                                            //       in state.orderPoint.containers!) {
+                                            //     context.read<PointPageBloc>().add(
+                                            //           PointPageEventProductFinish(
+                                            //             productId: element.id,
+                                            //             code: element.code!,
+                                            //           ),
+                                            //         );
+                                            //   }
+                                            //   setState(() {
+                                            //     isScan = true;
+                                            //   });
+                                            // }
+                                            setState(() {
+                                              _current = 1;
+                                              pageController.animateToPage(
+                                                _current,
+                                                duration: const Duration(
+                                                    milliseconds: 50),
+                                                curve: Curves.ease,
+                                              );
+                                              _tabController
+                                                  .animateTo(_current);
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 16),
+                                            decoration: BoxDecoration(
+                                              color: ColorPalette.main,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Center(
+                                                  child: Text(
+                                                    "Дальше в путь",
+                                                    style: ProjectTextStyles
+                                                        .ui_16Medium
+                                                        .copyWith(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  right: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/images/svg/arrow_right.svg",
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ))
+                                      ],
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        BlocProvider.of<PointPageBloc>(context)
+                                            .add(
+                                          PointPageEventFinishingPoint(
+                                            pointId: widget.point.id,
+                                            containers:
+                                                widget.point.containers ?? [],
+                                          ),
+                                        );
+
+                                        // setState(() {
+                                        //   _current = 2;
+                                        //   pageController.animateToPage(
+                                        //     _current,
+                                        //     duration: const Duration(
+                                        //       milliseconds: 50,
+                                        //     ),
+                                        //     curve: Curves.ease,
+                                        //   );
+                                        //   _tabController.animateTo(_current);
+                                        // });
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 16,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: ColorPalette.main,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                "Принять и подписать",
+                                                style: ProjectTextStyles
+                                                    .ui_16Medium
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
                       // : GestureDetector(
                       //     onTap: () {
                       //       AppRouter.pushReplacement(

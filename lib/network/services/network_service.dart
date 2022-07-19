@@ -320,25 +320,27 @@ class NetworkService {
   Future<String> sendContainers(
     List<ContainerDTO> containers,
   ) async {
+
+    try{
+
     List<Map<String, dynamic>> temp = [];
 
-    for(int i = 0; i < containers.length; i++) {
-      if(containers[i].isScanned) {
+    for (int i = 0; i < containers.length; i++) {
+      if (containers[i].isScanned) {
         temp.add({
           'point_id': containers[i].pointId,
           'code': containers[i].code,
         });
       }
     }
-    
-    //FIXME send params
 
+    //log('TEMP LENGTH:::: ${temp.length}');
     final response = await _dioWrapper.sendRequest(
       path: "/order/point/containers",
       method: NetworkMethod.post,
-      formData: FormData.fromMap({
+      request: {  
         'containers': temp,
-      }),
+      },
     );
     log(
       '##### sendContainers api:: ${response.statusCode}',
@@ -346,6 +348,10 @@ class NetworkService {
     );
 
     return (response.data as Map<String, dynamic>)["message"].toString();
+    }catch(e){
+      log('MESSAGE::::: $e');
+    throw Exception(e);
+    }
   }
 
   Future<PointDTO> orderPointProducts(int pointId) async {

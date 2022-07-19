@@ -78,15 +78,13 @@ class DioWrapper {
     required String path,
     required NetworkMethod method,
     String? baseUrl,
-    Encodable? request,
+    dynamic request,
     FormData? formData,
     Map<String, dynamic>? queryParameters,
     Options? options,
     bool isUrlEncoded = true,
   }) async {
-    final params = request == null
-        ? (formData == null ? null : FormData.fromMap({}))
-        : request.toJson();
+    final params = request ?? (formData == null ? null : FormData.fromMap({}));
 
     switch (method) {
       case NetworkMethod.get:
@@ -103,7 +101,7 @@ class DioWrapper {
             ? await _postRequest(
                 path,
                 method,
-                data: params,
+                data: request ,// params,
                 queryParameters: queryParameters,
                 options: options,
               )

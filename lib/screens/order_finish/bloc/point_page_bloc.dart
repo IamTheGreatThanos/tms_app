@@ -74,8 +74,9 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
     emit(PointPageStateLoading());
 
     try {
-      await repository.orderPointFinish(pointId: event.pointId);
-      await repository.sendContainers(event.containers);
+      log('fsdgerrgfdp');
+     // await repository.orderPointFinish(pointId: event.pointId);
+      await repository.sendContainers(currentPoint?.containers??[]);
       emit(PointPageStateFinished());
     } catch (e) {
       emit(
