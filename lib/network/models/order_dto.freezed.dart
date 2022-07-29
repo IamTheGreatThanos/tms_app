@@ -64,6 +64,7 @@ mixin _$OrderDTO {
   OrderStatusDTO? get orderStatus =>
       throw _privateConstructorUsedError; // String? status,
   bool get isCurrent => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -101,7 +102,8 @@ abstract class $OrderDTOCopyWith<$Res> {
       List<PointDTO>? points,
       @JsonKey(name: 'count_points') int? countPoints,
       @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
-      bool isCurrent});
+      bool isCurrent,
+      String? address});
 
   $CityDTOCopyWith<$Res>? get fromCity;
   $CityDTOCopyWith<$Res>? get toCity;
@@ -144,6 +146,7 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
     Object? countPoints = freezed,
     Object? orderStatus = freezed,
     Object? isCurrent = freezed,
+    Object? address = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -250,6 +253,10 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -319,7 +326,8 @@ abstract class _$$_OrderDTOCopyWith<$Res> implements $OrderDTOCopyWith<$Res> {
       List<PointDTO>? points,
       @JsonKey(name: 'count_points') int? countPoints,
       @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
-      bool isCurrent});
+      bool isCurrent,
+      String? address});
 
   @override
   $CityDTOCopyWith<$Res>? get fromCity;
@@ -367,6 +375,7 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
     Object? countPoints = freezed,
     Object? orderStatus = freezed,
     Object? isCurrent = freezed,
+    Object? address = freezed,
   }) {
     return _then(_$_OrderDTO(
       id: id == freezed
@@ -473,6 +482,10 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
           ? _value.isCurrent
           : isCurrent // ignore: cast_nullable_to_non_nullable
               as bool,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -506,7 +519,8 @@ class _$_OrderDTO implements _OrderDTO {
       final List<PointDTO>? points,
       @JsonKey(name: 'count_points') this.countPoints,
       @JsonKey(name: 'order_status') this.orderStatus,
-      this.isCurrent = false})
+      this.isCurrent = false,
+      this.address})
       : _points = points;
 
   factory _$_OrderDTO.fromJson(Map<String, dynamic> json) =>
@@ -591,10 +605,12 @@ class _$_OrderDTO implements _OrderDTO {
   @override
   @JsonKey()
   final bool isCurrent;
+  @override
+  final String? address;
 
   @override
   String toString() {
-    return 'OrderDTO(id: $id, crossdockingId: $crossdockingId, crossdockingCityId: $crossdockingCityId, crossdockingNumber: $crossdockingNumber, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent)';
+    return 'OrderDTO(id: $id, crossdockingId: $crossdockingId, crossdockingCityId: $crossdockingCityId, crossdockingNumber: $crossdockingNumber, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent, address: $address)';
   }
 
   @override
@@ -637,7 +653,8 @@ class _$_OrderDTO implements _OrderDTO {
                 .equals(other.countPoints, countPoints) &&
             const DeepCollectionEquality()
                 .equals(other.orderStatus, orderStatus) &&
-            const DeepCollectionEquality().equals(other.isCurrent, isCurrent));
+            const DeepCollectionEquality().equals(other.isCurrent, isCurrent) &&
+            const DeepCollectionEquality().equals(other.address, address));
   }
 
   @JsonKey(ignore: true)
@@ -669,7 +686,8 @@ class _$_OrderDTO implements _OrderDTO {
         const DeepCollectionEquality().hash(_points),
         const DeepCollectionEquality().hash(countPoints),
         const DeepCollectionEquality().hash(orderStatus),
-        const DeepCollectionEquality().hash(isCurrent)
+        const DeepCollectionEquality().hash(isCurrent),
+        const DeepCollectionEquality().hash(address)
       ]);
 
   @JsonKey(ignore: true)
@@ -710,7 +728,8 @@ abstract class _OrderDTO implements OrderDTO {
       final List<PointDTO>? points,
       @JsonKey(name: 'count_points') final int? countPoints,
       @JsonKey(name: 'order_status') final OrderStatusDTO? orderStatus,
-      final bool isCurrent}) = _$_OrderDTO;
+      final bool isCurrent,
+      final String? address}) = _$_OrderDTO;
 
   factory _OrderDTO.fromJson(Map<String, dynamic> json) = _$_OrderDTO.fromJson;
 
@@ -783,6 +802,8 @@ abstract class _OrderDTO implements OrderDTO {
   OrderStatusDTO? get orderStatus => throw _privateConstructorUsedError;
   @override // String? status,
   bool get isCurrent => throw _privateConstructorUsedError;
+  @override
+  String? get address => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_OrderDTOCopyWith<_$_OrderDTO> get copyWith =>

@@ -41,7 +41,7 @@ class PointPage extends StatefulWidget {
 
 class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
   List<String> buttonText = [
-    "Дальше в путь",
+    "Продолжить",
     "Принять оплату",
     "Принять и подписать",
   ];
@@ -81,7 +81,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              "#0000000${widget.order.id}",
+              "${widget.point.name}",
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -142,22 +142,24 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                         padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  DateFormat("dd MMMM, hh:mm")
-                                      .format(widget.order.startDate!),
-                                  style: ProjectTextStyles.ui_12Medium.copyWith(
-                                    color: ColorPalette.commonGrey,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    DateFormat("dd MMMM, hh:mm")
+                                        .format(widget.order.startDate!),
+                                    style: ProjectTextStyles.ui_12Medium.copyWith(
+                                      color: ColorPalette.commonGrey,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "${widget.order.from}",
-                                  // order.customerName ?? S.of(context).no_data,
-                                  style: ProjectTextStyles.ui_16Medium,
-                                ),
-                              ],
+                                  Text(
+                                    "${widget.point.address}",
+                                    // order.customerName ?? S.of(context).no_data,
+                                    style: ProjectTextStyles.ui_16Medium,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -192,7 +194,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                             },
                             tabs: const [
                               Tab(
-                                child: Text("Товар"),
+                                child: Text("Контейнеры"),
                               ),
                               Tab(
                                 child: Text("QR"),
@@ -214,11 +216,11 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                             setState(() {});
                           },
                           children: [
-                            if (state.orderPoint.products != null &&
-                                state.orderPoint.products!.isNotEmpty)
+                            if (state.orderPoint.containers != null &&
+                                state.orderPoint.containers!.isNotEmpty)
                               ListView.separated(
                                 shrinkWrap: true,
-                                itemCount: 10,
+                                itemCount: state.orderPoint.containers!.length,
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(
                                   height: 8,
@@ -242,11 +244,11 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                               setState(() {
                                                 if (productId ==
                                                     state.orderPoint
-                                                        .products?[index].id) {
+                                                        .containers?[index].id) {
                                                   productId = 0;
                                                 } else {
                                                   productId = state.orderPoint
-                                                      .products?[index].id;
+                                                      .containers?[index].id;
                                                 }
                                               });
                                             },
@@ -256,7 +258,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                           borderRadius:
                                               BorderRadius.circular(50),
                                           color: state.orderPoint
-                                                      .products?[index].id ==
+                                                      .containers?[index].id ==
                                                   productId
                                               ? ColorPalette.main
                                                   .withOpacity(0.1)
@@ -293,8 +295,8 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                 Text(
                                                   state
                                                           .orderPoint
-                                                          .products?[index]
-                                                          .name ??
+                                                          .containers?[index]
+                                                          .code ??
                                                       "No data",
                                                   style: ProjectTextStyles
                                                       .ui_14Medium
@@ -304,9 +306,8 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                 )
                                               ],
                                             ),
-                                            if (state.orderPoint
-                                                    .products?[index].status ==
-                                                "finished")
+                                               if (state.orderPoint
+                                                .containers![index].isScanned)
                                               SvgPicture.asset(
                                                 "assets/images/svg/ic_check.svg",
                                               ),
@@ -476,7 +477,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                   children: [
                                     Center(
                                       child: Text(
-                                        "Дальше в путь",
+                                        buttonText[0],
                                         style: ProjectTextStyles.ui_16Medium
                                             .copyWith(
                                           color: Colors.white,

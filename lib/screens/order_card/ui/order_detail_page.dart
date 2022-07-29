@@ -1061,7 +1061,7 @@ class _BuildExpandablePointItem extends StatelessWidget {
               ),
               const SizedBox(width: 4),
               Text(
-                "Количество контейнеров - ${point.countProducts.toString()} ",
+                "Количество контейнеров - ${point.containers?.length} ",
                 textAlign: TextAlign.left,
                 style: ProjectTextStyles.ui_12Medium
                     .copyWith(color: ColorPalette.black),

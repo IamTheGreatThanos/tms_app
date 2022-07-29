@@ -599,11 +599,7 @@ class _OrderItemWidgetState extends State<_OrderItemWidget> {
                       const SizedBox(
                         height: 6,
                       ),
-                      Text(
-                        widget.order.from ?? S.of(context).no_data,
-                        style: ProjectTextStyles.ui_12Medium
-                            .copyWith(color: ColorPalette.commonGrey),
-                      ),
+                    
                     ],
                   ),
                 ],
@@ -641,11 +637,11 @@ class _OrderItemWidgetState extends State<_OrderItemWidget> {
                       const SizedBox(
                         height: 6,
                       ),
-                      Text(
-                        widget.order.to ?? S.of(context).no_data,
-                        style: ProjectTextStyles.ui_12Medium
-                            .copyWith(color: ColorPalette.commonGrey),
-                      ),
+                      // Text(
+                      //   widget.order.to ?? S.of(context).no_data,
+                      //   style: ProjectTextStyles.ui_12Medium
+                      //       .copyWith(color: ColorPalette.commonGrey),
+                      // ),
                     ],
                   ),
                 ],
@@ -667,21 +663,21 @@ class _OrderItemWidgetState extends State<_OrderItemWidget> {
               //   thickness: 2,
               //   color: ColorPalette.lightGrey,
               // ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Способ оплаты",
-                    style: ProjectTextStyles.ui_12Medium
-                        .copyWith(color: ColorPalette.darkGrey),
-                  ),
-                  Text(
-                    widget.order.payment ?? S.of(context).no_data,
-                    style: ProjectTextStyles.ui_12Medium
-                        .copyWith(color: ColorPalette.main),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "Способ оплаты",
+              //       style: ProjectTextStyles.ui_12Medium
+              //           .copyWith(color: ColorPalette.darkGrey),
+              //     ),
+              //     Text(
+              //       widget.order.payment ?? S.of(context).no_data,
+              //       style: ProjectTextStyles.ui_12Medium
+              //           .copyWith(color: ColorPalette.main),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

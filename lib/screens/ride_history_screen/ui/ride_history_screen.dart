@@ -41,7 +41,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
             if (state is StateLoadRideHistory) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.fromLTRB(15,15,15,100),
                   child: Column(
                     children: [
                       Container(
@@ -100,7 +100,6 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     ),
                                   ],
                                 ),
-                                SvgPicture.asset("assets/images/svg/share.svg")
                               ],
                             ),
                             const SizedBox(
@@ -211,7 +210,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     vertical: 10.0,
                                   ),
                                   child: Text(
-                                    DateFormat("dd MMMM").format(
+                                    DateFormat("dd MMMM, hh:mm").format(
                                       state.history[index].createdAt!,
                                     ),
                                     style:

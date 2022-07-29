@@ -145,7 +145,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               itemCount: orders.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  height: 200,
+                                  height: 150,
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -249,14 +249,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             style:
                                                 ProjectTextStyles.ui_16Regular),
                                       ),
-                                      Flexible(
-                                        child: Text(
-                                          'Способ оплаты: ${orders[index].payment}',
-                                          style: ProjectTextStyles.ui_12Medium
-                                              .copyWith(
-                                                  color: ColorPalette.darkGrey),
-                                        ),
-                                      ),
+                                      // Flexible(
+                                      //   child: Text(
+                                      //     'Способ оплаты: ${orders[index].payment}',
+                                      //     style: ProjectTextStyles.ui_12Medium
+                                      //         .copyWith(
+                                      //             color: ColorPalette.darkGrey),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 );

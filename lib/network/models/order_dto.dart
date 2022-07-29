@@ -37,6 +37,7 @@ class OrderDTO with _$OrderDTO {
     @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
     // String? status,
     @Default(false) bool isCurrent,
+    String? address,
   }) = _OrderDTO;
 
   factory OrderDTO.fromJson(Map<String, dynamic> json) =>

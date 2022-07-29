@@ -46,6 +46,7 @@ _$_OrderDTO _$$_OrderDTOFromJson(Map<String, dynamic> json) => _$_OrderDTO(
           : OrderStatusDTO.fromJson(
               json['order_status'] as Map<String, dynamic>),
       isCurrent: json['isCurrent'] as bool? ?? false,
+      address: json['address'] as String?,
     );
 
 Map<String, dynamic> _$$_OrderDTOToJson(_$_OrderDTO instance) =>
@@ -76,6 +77,7 @@ Map<String, dynamic> _$$_OrderDTOToJson(_$_OrderDTO instance) =>
       'count_points': instance.countPoints,
       'order_status': instance.orderStatus,
       'isCurrent': instance.isCurrent,
+      'address': instance.address,
     };
 
 _$_OrderStatusDTO _$$_OrderStatusDTOFromJson(Map<String, dynamic> json) =>

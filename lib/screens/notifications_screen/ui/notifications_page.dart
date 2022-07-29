@@ -119,7 +119,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               Flexible(
                                 child: Text(
                                   //widget.order.employee?.name ?? S.of(context).no_data,
-                                  '0000000${notifications[index].order!.id}',
+                                  '0000000${notifications[index].order?.id}',
 
                                   style: ProjectTextStyles.ui_20Medium,
                                 ),

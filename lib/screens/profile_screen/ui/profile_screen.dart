@@ -193,44 +193,46 @@ class _BuildUserInfo extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.profile.name != null &&
-                              state.profile.surname != null
-                          ? "${state.profile.name} "
-                              "${state.profile.surname}"
-                          : S.of(context).no_data,
-                      style: ProjectTextStyles.ui_20Medium.copyWith(
-                          color: ColorPalette.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      children: [
-                        ...List.generate(5, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 2.0),
-                            child: SvgPicture.asset(
-                              "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg",
-                            ),
-                          );
-                        }),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "Рейтинг 4.78",
-                          style: ProjectTextStyles.ui_14Medium.copyWith(
-                            color: ColorPalette.commonGrey,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        state.profile.name != null &&
+                                state.profile.surname != null
+                            ? "${state.profile.name} "
+                                "${state.profile.surname}"
+                            : S.of(context).no_data,
+                        style: ProjectTextStyles.ui_20Medium.copyWith(
+                            color: ColorPalette.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        children: [
+                          ...List.generate(5, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 2.0),
+                              child: SvgPicture.asset(
+                                "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg",
+                              ),
+                            );
+                          }),
+                          const SizedBox(
+                            width: 8,
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          Text(
+                            "Рейтинг 4.78",
+                            style: ProjectTextStyles.ui_14Medium.copyWith(
+                              color: ColorPalette.commonGrey,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
