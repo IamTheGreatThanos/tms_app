@@ -38,24 +38,26 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
   ) async {
     try {
       bool areAllFinished = true;
+
       final result = await repository.orderPointProducts(event.pointId);
+      log(result.toString());
+
       pointId = event.pointId;
       currentPoint = result;
-      log("IS SCANNED::::::${currentPoint?.containers?.first.isScanned}");
+      // log("IS SCANNED::::::${currentPoint?.containers?.first.isScanned}");
       for (var element in currentPoint!.containers!) {
-      
         if (!element.isScanned) {
           areAllFinished = false;
         }
       }
       emit(
         PointPageStateLoaded(
-          orderPoint:currentPoint!,
+          orderPoint: currentPoint ?? result,
           areAllFinished: areAllFinished,
         ),
       );
     } catch (e) {
-     // log('znc.wnckadajkc');
+      // log('znc.wnckadajkc');
       emit(
         PointPageStateError(
           error: AppError(
@@ -76,7 +78,7 @@ class PointPageBloc extends Bloc<PointPageEvent, PointPageState> {
     try {
       log('fsdgerrgfdp');
       await repository.orderPointFinish(pointId: event.pointId);
-      await repository.sendContainers(currentPoint?.containers??[]);
+      await repository.sendContainers(currentPoint?.containers ?? []);
       emit(PointPageStateFinished());
     } catch (e) {
       emit(
