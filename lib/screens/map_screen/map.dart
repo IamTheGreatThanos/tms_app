@@ -4,8 +4,11 @@ import 'dart:developer' as dev;
 
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
+import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
+import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,25 +46,12 @@ class _SessionState extends State<SessionPage> {
     currentPos = _position;
     dev.log("CURRENT POS: ${_position.latitude} ${_position.longitude}");
     await updateMap(5, _position);
-  }
-
-  Future<void> updateMap(double zoom, Position position) async {
-    final YandexMapController controller = await completer.future;
-    await controller.moveCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target:
-              Point(latitude: position.latitude, longitude: position.longitude),
-          zoom: zoom,
-        ),
-      ),
-    );
 
     placemarks.add(PlacemarkMapObject(
-      mapId:  MapObjectId('placeMark ${placemarks.length-1}'),
+      mapId: MapObjectId('placeMark ${placemarks.length - 1}'),
       point: Point(
-        latitude: position.latitude, // data[i].lat as double,
-        longitude: position.longitude, // data[i].long as double,
+        latitude: _position.latitude, // data[i].lat as double,
+        longitude: _position.longitude, // data[i].long as double,
       ),
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(
@@ -79,9 +69,20 @@ class _SessionState extends State<SessionPage> {
         requestPointType: RequestPointType.wayPoint,
       ),
     );
-    setState(() {
-      
-    });
+    setState(() {});
+  }
+
+  Future<void> updateMap(double zoom, Position position) async {
+    final YandexMapController controller = await completer.future;
+    await controller.moveCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target:
+              Point(latitude: position.latitude, longitude: position.longitude),
+          zoom: zoom,
+        ),
+      ),
+    );
   }
 
   @override
@@ -97,94 +98,123 @@ class _SessionState extends State<SessionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<MapCubit, MapState>(
-        listener: (context, state) {
-          if (state is MapLoadedState) {
-            _requestRoutes(state.loadedMap);
-            initMap();
-            dev.log('mapmapmap :::: ${state.loadedMap}');
-          }
-        },
-        builder: (context, state) {
-          if (state is MapLoadedState) {
-            // _requestRoutes(state.loadedMap);
-            return YandexMap(
-              onMapCreated: (YandexMapController yandexMapController) async {
-                completer.complete(yandexMapController);
-                //initMap();
-                //final Position currentPos = await determinePosition();
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.3,
+            //height: 300,
+            decoration: BoxDecoration(
+              color: ColorPalette.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Scaffold(
+              body: BlocConsumer<MapCubit, MapState>(
+                listener: (context, state) {
+                  if (state is MapLoadedState) {
+                    _requestRoutes(state.loadedMap);
+                    initMap();
+                    dev.log('mapmapmap :::: ${state.loadedMap}');
+                  }
+                },
+                builder: (context, state) {
+                  if (state is MapLoadedState) {
+                    // _requestRoutes(state.loadedMap);
+                    return YandexMap(
+                      onMapCreated:
+                          (YandexMapController yandexMapController) async {
+                        completer.complete(yandexMapController);
+                        initMap();
+                        //final Position currentPos = await determinePosition();
 
-                if (state.loadedMap.isNotEmpty) {
-                  final double? lat = double.tryParse(
-                    state.loadedMap.first.lat!.toString(),
-                  ); // FIXME
-                  final double? long =
-                      double.tryParse(state.loadedMap.first.long!.toString());
-                  if (lat != null && long != null) {
-                    dev.log('YandexMap: 1');
-                    yandexMapController.moveCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: Point(
-                            longitude: long,
-                            latitude: lat,
-                            // longitude: widget.orderData.fromLong!,
-                            // latitude: widget.orderData.fromLat!,
-                          ),
-                          zoom: 15,
-                        ),
-                      ),
-                      animation: const MapAnimation(),
-                    );
-                  } else {
-                    dev.log('YandexMap: 2');
+                        if (state.loadedMap.isNotEmpty) {
+                          final double? lat = double.tryParse(
+                            state.loadedMap.first.lat!.toString(),
+                          ); // FIXME
+                          final double? long = double.tryParse(
+                              state.loadedMap.first.long!.toString());
+                          if (lat != null && long != null) {
+                            dev.log('YandexMap: 1');
+                            yandexMapController.moveCamera(
+                              CameraUpdate.newCameraPosition(
+                                CameraPosition(
+                                  target: Point(
+                                    longitude: long,
+                                    latitude: lat,
+                                    // longitude: widget.orderData.fromLong!,
+                                    // latitude: widget.orderData.fromLat!,
+                                  ),
+                                  zoom: 15,
+                                ),
+                              ),
+                              animation: const MapAnimation(),
+                            );
+                          } else {
+                            dev.log('YandexMap: 2');
 
-                    yandexMapController.moveCamera(
-                      CameraUpdate.newCameraPosition(
-                        const CameraPosition(
-                          target: Point(
-                            longitude: 43.238949,
-                            latitude: 76.889709,
-                            // longitude: widget.orderData.fromLong!,
-                            // latitude: widget.orderData.fromLat!,
-                          ),
-                          zoom: 9,
-                        ),
-                      ),
-                      animation: const MapAnimation(),
+                            yandexMapController.moveCamera(
+                              CameraUpdate.newCameraPosition(
+                                const CameraPosition(
+                                  target: Point(
+                                    longitude: 43.238949,
+                                    latitude: 76.889709,
+                                    // longitude: widget.orderData.fromLong!,
+                                    // latitude: widget.orderData.fromLat!,
+                                  ),
+                                  zoom: 9,
+                                ),
+                              ),
+                              animation: const MapAnimation(),
+                            );
+                          }
+                        }
+                      },
+                      mapObjects: mapObjects,
                     );
                   }
-                }
-              },
-              mapObjects: mapObjects,
-            );
-          }
 
-          if (state is MapInitState) {
-            if (kDebugMode) {
-              print('init');
-            }
-            return YandexMap(
-              mapObjects: mapObjects,
-            );
-          }
+                  if (state is MapInitState) {
+                    if (kDebugMode) {
+                      print('init');
+                    }
+                    return YandexMap(
+                      mapObjects: mapObjects,
+                    );
+                  }
 
-          if (state is MapErrorState) {
-            return Center(
-              child: Text(
-                state.messsage,
-                style: const TextStyle(color: Colors.red),
+                  if (state is MapErrorState) {
+                    return Center(
+                      child: Text(
+                        state.messsage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.indigoAccent,
+                      ),
+                    );
+                  }
+                },
               ),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.indigoAccent,
-              ),
-            );
-          }
-        },
+            ),
+          ),
+          Positioned(
+            bottom: 30,
+            right: 15,
+            child: IconButton(
+                onPressed: () async{
+                   await updateMap(15, currentPos!);
+                },
+                icon: const Icon(
+                  Icons.my_location,
+                  size: 45,
+                )),
+          )
+        ],
       ),
     );
   }

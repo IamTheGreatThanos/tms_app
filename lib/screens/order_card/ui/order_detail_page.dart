@@ -140,27 +140,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.3,
-                              //height: 300,
-                              decoration: BoxDecoration(
-                                color: ColorPalette.white,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: BlocProvider<MapCubit>(
-                                create: (_) => MapCubit(
-                                  mapRepository: MapRepository(),
-                                  repository: context.read<GlobalRepository>(),
-                                ),
-                                child: SessionPage(
-                                  orderId: widget.order.id,
-                                  order: state.order,
-                                  orderPoints: const [],
-                                ),
-                              ),
+                          child: BlocProvider<MapCubit>(
+                            create: (_) => MapCubit(
+                              mapRepository: MapRepository(),
+                              repository: context.read<GlobalRepository>(),
+                            ),
+                            child: SessionPage(
+                              orderId: widget.order.id,
+                              order: state.order,
+                              orderPoints: const [],
                             ),
                           ),
                         );
@@ -242,7 +230,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     if (state.isForth) {
                       time = DateTime.now().difference(state.startTimer);
                     } else {
-                       time = state.startTimer.isBefore(DateTime.now())
+                      time = state.startTimer.isBefore(DateTime.now())
                           ? Duration.zero
                           : state.startTimer.difference(DateTime.now());
                     }
@@ -352,9 +340,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Text(
-                                    state.order.startDate!=null?
-                                    DateFormat("dd MMMM, hh:mm")
-                                        .format(state.order.startDate!):"",
+                                    state.order.startDate != null
+                                        ? DateFormat("dd MMMM, hh:mm")
+                                            .format(state.order.startDate!)
+                                        : "",
                                     style:
                                         ProjectTextStyles.ui_12Medium.copyWith(
                                       color: ColorPalette.commonGrey,
@@ -368,9 +357,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
                                   Text(
-                                    state.order.endDate!=null?
-                                    DateFormat("dd MMMM, hh:mm")
-                                        .format(state.order.endDate!):"",
+                                    state.order.endDate != null
+                                        ? DateFormat("dd MMMM, hh:mm")
+                                            .format(state.order.endDate!)
+                                        : "",
                                     style:
                                         ProjectTextStyles.ui_12Medium.copyWith(
                                       color: ColorPalette.commonGrey,
