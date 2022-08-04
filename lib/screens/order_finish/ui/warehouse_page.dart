@@ -124,7 +124,14 @@ class _WarehousePageState extends State<WarehousePage>
                   showAppDialog(
                     context,
                     title: state.error.message,
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      //Future.delayed(Duration.zero, () {
+                      Navigator.of(context).pop();
+                      //});
+                      // WidgetsBinding.instance.addPostFrameCallback((_) {
+                      //   Navigator.pop(context);
+                      // });
+                    },
                   );
                 }
               },
@@ -147,9 +154,10 @@ class _WarehousePageState extends State<WarehousePage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.order.startDate!=null?
-                                  DateFormat("dd MMMM, hh:mm")
-                                      .format(widget.order.startDate!):"",
+                                  widget.order.startDate != null
+                                      ? DateFormat("dd MMMM, hh:mm")
+                                          .format(widget.order.startDate!)
+                                      : "",
                                   style: ProjectTextStyles.ui_12Medium.copyWith(
                                     color: ColorPalette.commonGrey,
                                   ),
@@ -511,7 +519,105 @@ class _WarehousePageState extends State<WarehousePage>
                             )),
                 );
               } else {
-                return const SizedBox();
+                return SizedBox(
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10.0,
+                      right: 10,
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              AppRouter.push(
+                                context,
+                                ScanChoosePage(
+                                  order: widget.order,
+                                  pointPageBloc:
+                                      BlocProvider.of<PointPageBloc>(context),
+                                ),
+                              );
+
+                              // showCreatePasswordBottomDialog(
+                              //   context,
+                              //   productId!,
+                              // );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              decoration: BoxDecoration(
+                                color: ColorPalette.main,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      "Отсканировать",
+                                      style: ProjectTextStyles.ui_16Medium
+                                          .copyWith(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  // Positioned(
+                                  //   left: 18,
+                                  //   child: SvgPicture.asset(
+                                  //     "assets/images/svg/scan.svg",
+                                  //   ),
+                                  // )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: GestureDetector(
+                          onTap: () {
+                            BlocProvider.of<PointPageBloc>(context).add(
+                              PointPageEventFinishingPoint(
+                                pointId: widget.point.id,
+                                containers: widget.point.containers ?? [],
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            decoration: BoxDecoration(
+                              color: ColorPalette.main,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    "Принять и подписать",
+                                    style:
+                                        ProjectTextStyles.ui_14Medium.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                // Positioned(
+                                //   right: 15,
+                                //   child: SvgPicture.asset(
+                                //     "assets/images/svg/arrow_right.svg",
+                                //   ),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ))
+                      ],
+                    ),
+                  ),
+                );
               }
             },
           ),

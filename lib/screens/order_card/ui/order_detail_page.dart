@@ -25,6 +25,7 @@ import 'package:europharm_flutter/widgets/app_bottom_sheets/app_bottom_sheet.dar
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
+import 'package:europharm_flutter/widgets/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -341,7 +342,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 children: <Widget>[
                                   Text(
                                     state.order.startDate != null
-                                        ? DateFormat("dd MMMM, hh:mm")
+                                        ? DateFormat("dd MMMM, HH:mm")
                                             .format(state.order.startDate!)
                                         : "",
                                     style:
@@ -358,7 +359,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 children: <Widget>[
                                   Text(
                                     state.order.endDate != null
-                                        ? DateFormat("dd MMMM, hh:mm")
+                                        ? DateFormat("dd MMMM, HH:mm")
                                             .format(state.order.endDate!)
                                         : "",
                                     style:
@@ -433,6 +434,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: _FABWidget(
                     isScan: Provider.of<OrderDetailProvider>(context).isScan,
                     point: Provider.of<OrderDetailProvider>(context).point,
+                    index: Provider.of<OrderDetailProvider>(context).selected,
+                    points: state.order.points??[],
                     order: state.order,
                   ),
                 ),
@@ -480,15 +483,42 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   }
 }
 
+bool isRightPoint({
+  required List<PointDTO> points,
+  required PointDTO point,
+}) {
+  int pointpos = 0;
+  for (int i = 0; i < points.length; i++) {
+    if (point.id == points[i].id) {
+      pointpos = i;
+      break;
+    }
+  }
+  if (pointpos == 0) {
+    return true;
+  } else {
+    if (points[pointpos - 1].status == "finished" ||
+        points[pointpos - 1].status == "Завершен") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 class _FABWidget extends StatelessWidget {
   final OrderDTO order;
   final bool isScan;
+  final List<PointDTO> points;
+  final int index;
   final PointDTO? point;
   const _FABWidget({
     required this.order,
     required this.isScan,
     required this.point,
     Key? key,
+    required this.points,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -504,26 +534,32 @@ class _FABWidget extends StatelessWidget {
             order.status == 'В пути'))) {
       return GestureDetector(
         onTap: () {
-          AppRouter.push(
-            context,
-            BlocProvider<PointPageBloc>(
-              create: (context) => PointPageBloc(
-                repository: context.read<GlobalRepository>(),
-              )..add(
-                  PointPageEventLoadProducts(
-                    pointId: point!.id,
-                  ),
-                ),
-              child: point!.id == order.points!.first.id
-                  ? WarehousePage(order: order, isScan: isScan, point: point!)
-                  : PointPage(
-                      order: order,
-                      point: point!,
-                      isScan: order.points!.first.id == point!.id,
-                      // isScan: ,
+          if (index==0||(index>0&&(points[index-1].status=="finished"||points[index-1].status=="Завершен"))) {
+            AppRouter.push(
+              context,
+              BlocProvider<PointPageBloc>(
+                create: (context) => PointPageBloc(
+                  repository: context.read<GlobalRepository>(),
+                )..add(
+                    PointPageEventLoadProducts(
+                      pointId: point!.id,
                     ),
-            ),
-          );
+                  ),
+                child: point!.id == order.points!.first.id
+                    ? WarehousePage(order: order, isScan: isScan, point: point!)
+                    : PointPage(
+                        order: order,
+                        point: point!,
+                        isScan: order.points!.first.id == point!.id,
+                        // isScan: ,
+                      ),
+              ),
+            );
+          } else {
+            showCustomSnackbar(context, 'Сначало завершите предыдущую точку',
+                errorText: 'Сначало завершите предыдущую точку');
+          }
+
           // .then(
           //   (value) {
           //     context.read<OrderDetailBloc>().add(
@@ -925,7 +961,7 @@ class _BuildPointItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                DateFormat("dd MMMM yyyy, в hh:mm")
+                DateFormat("dd MMMM yyyy, в").add_jm()
                     .format(date ?? DateTime.now()),
                 style: ProjectTextStyles.ui_12Medium
                     .copyWith(color: ColorPalette.commonGrey),
@@ -995,7 +1031,7 @@ class _BuildExpandablePointItem extends StatelessWidget {
                     //   color: ColorPalette.lightGrey,
                     // ),
                     Text(
-                      DateFormat("dd MMMM yyyy, в hh:mm")
+                      DateFormat("dd MMMM yyyy, в").add_jm()
                           .format(point.date ?? DateTime.now()),
                       style: ProjectTextStyles.ui_12Medium
                           .copyWith(color: ColorPalette.commonGrey),
