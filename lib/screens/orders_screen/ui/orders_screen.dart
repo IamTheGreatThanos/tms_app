@@ -447,12 +447,13 @@ class _OrderItemWidgetState extends State<_OrderItemWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Опубликовано",
+                    "Дата выезда",
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
                   Text(
-                    DateFormat("dd MMMM").format(widget.order.startDate!),
+                    widget.order.startDate!=null?
+                    DateFormat("dd MMMM, HH:mm").format(widget.order.startDate!):"",
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),

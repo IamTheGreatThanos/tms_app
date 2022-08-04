@@ -74,8 +74,21 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
             ),
           );
         } else {
-          emit(OrderDetailStateShowTimer(
-              startTimer: currentOrder.orderStatus!.stopTimer!));
+          if (currentOrder.orderStatus!.stopReason == "") {
+            String otherTimeStart =
+                await repository.getOtherReasonTimer(orderId: orderId!);
+            if (otherTimeStart == null || otherTimeStart == "") {
+              otherTimeStart = DateTime.now().toString();
+            }
+            emit(OrderDetailStateShowTimer(
+                startTimer: DateTime.parse(otherTimeStart), isForth: true));
+          } else {
+            emit(
+              OrderDetailStateShowTimer(
+                  startTimer: currentOrder.orderStatus!.stopTimer!,
+                  isForth: false),
+            );
+          }
         }
       }
 
@@ -168,6 +181,9 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
         // result.isCurrent = true;
         currentOrder = result.copyWith(isCurrent: true);
       } else {
+        if (event.cause == 'other') {
+          repository.saveOtherReasonTimer(orderId: orderId!);
+        }
         final result = await repository.stopOrder(
           orderId!,
           event.cause,
@@ -220,8 +236,19 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
             ),
           );
         } else {
-          emit(OrderDetailStateShowTimer(
-              startTimer: currentOrder.orderStatus!.stopTimer!));
+          if (currentOrder.orderStatus!.stopReason == "") {
+            String otherTimeStart =
+                await repository.getOtherReasonTimer(orderId: orderId!);
+            if (otherTimeStart == null || otherTimeStart == "") {
+              otherTimeStart = DateTime.now().toString();
+            }
+            emit(OrderDetailStateShowTimer(
+                startTimer: DateTime.parse(otherTimeStart), isForth: true));
+          } else {
+            emit(OrderDetailStateShowTimer(
+                startTimer: currentOrder.orderStatus!.stopTimer!,
+                isForth: false));
+          }
         }
       }
 

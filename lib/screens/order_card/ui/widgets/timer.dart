@@ -1,13 +1,14 @@
-
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class TimerPage extends StatefulWidget {
+  final bool isForth;
   final Duration duration;
 
-  const TimerPage({Key? key, required this.duration}) : super(key: key);
+  const TimerPage({Key? key, required this.duration, required this.isForth})
+      : super(key: key);
 
   @override
   State<TimerPage> createState() => _TimerPageState();
@@ -41,7 +42,9 @@ class _TimerPageState extends State<TimerPage> {
   void addTime() {
     const addSeconds = 1;
     setState(() {
-      final seconds = duration!.inSeconds - addSeconds;
+      final seconds = widget.isForth
+          ? duration!.inSeconds + addSeconds
+          : duration!.inSeconds - addSeconds;
       duration = Duration(seconds: seconds);
     });
   }

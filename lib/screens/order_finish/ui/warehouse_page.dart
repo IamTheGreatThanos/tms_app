@@ -147,8 +147,9 @@ class _WarehousePageState extends State<WarehousePage>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
+                                  widget.order.startDate!=null?
                                   DateFormat("dd MMMM, hh:mm")
-                                      .format(widget.order.startDate!),
+                                      .format(widget.order.startDate!):"",
                                   style: ProjectTextStyles.ui_12Medium.copyWith(
                                     color: ColorPalette.commonGrey,
                                   ),
@@ -163,61 +164,53 @@ class _WarehousePageState extends State<WarehousePage>
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: ColorPalette.background,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          height: 46,
-                          child: TabBar(
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: ColorPalette.main,
-                            ),
-                            labelPadding: EdgeInsets.zero,
-                            labelColor: ColorPalette.white,
-                            labelStyle: ProjectTextStyles.ui_16Medium,
-                            unselectedLabelColor: ColorPalette.commonGrey,
-                            controller: _tabController,
-                            onTap: (index) {
-                              setState(() {
-                                _current = index;
-                                pageController.animateToPage(
-                                  _current,
-                                  duration: const Duration(milliseconds: 50),
-                                  curve: Curves.ease,
-                                );
-                              });
-                            },
-                            tabs: const [
-                              Tab(
-                                child: Text("Товар"),
-                              ),
-                              Tab(
-                                child: Text("QR"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: ColorPalette.background,
+                      //       borderRadius: BorderRadius.circular(100),
+                      //     ),
+                      //     height: 46,
+                      //     child: TabBar(
+                      //       indicator: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(50),
+                      //         color: ColorPalette.main,
+                      //       ),
+                      //       labelPadding: EdgeInsets.zero,
+                      //       labelColor: ColorPalette.white,
+                      //       labelStyle: ProjectTextStyles.ui_16Medium,
+                      //       unselectedLabelColor: ColorPalette.commonGrey,
+                      //       controller: _tabController,
+                      //       onTap: (index) {
+                      //         setState(() {
+                      //           _current = index;
+                      //           pageController.animateToPage(
+                      //             _current,
+                      //             duration: const Duration(milliseconds: 50),
+                      //             curve: Curves.ease,
+                      //           );
+                      //         });
+                      //       },
+                      //       tabs: const [
+                      //         Tab(
+                      //           child: Text("Товар"),
+                      //         ),
+                      //         Tab(
+                      //           child: Text("QR"),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 28,
+                      // ),
                       // _buildOrderData(context),
                       Expanded(
-                        child: PageView(
-                          controller: pageController,
-                          onPageChanged: (int page) {
-                            _current = page;
-                            _tabController.animateTo(page);
-                            setState(() {});
-                          },
-                          children: [
-                            if (state.orderPoint.containers != null &&
-                                state.orderPoint.containers!.isNotEmpty)
-                              ListView.separated(
+                        child: state.orderPoint.containers != null &&
+                                state.orderPoint.containers!.isNotEmpty
+                            ? ListView.separated(
                                 shrinkWrap: true,
                                 itemCount: state.orderPoint.containers!.length,
                                 separatorBuilder: (context, index) =>
@@ -320,99 +313,36 @@ class _WarehousePageState extends State<WarehousePage>
                                   );
                                 },
                               )
-                            else
-                              const Center(
+                            : const Center(
                                 child: Text('Товаров нет'),
                               ),
 
-                            ///
-                            ///
-                            ///
+                        // PageView(
+                        //   controller: pageController,
+                        //   onPageChanged: (int page) {
+                        //     _current = page;
+                        //     _tabController.animateTo(page);
+                        //     setState(() {});
+                        //   },
+                        //   children: [
 
-                            // Padding(
-                            //   padding: const EdgeInsets.symmetric(
-                            //     horizontal: 10.0,
-                            //   ),
-                            //   child: Row(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     children: [
-                            //       Padding(
-                            //         padding: const EdgeInsets.only(top: 8.0),
-                            //         child: Container(
-                            //           padding: const EdgeInsets.all(7),
-                            //           decoration: BoxDecoration(
-                            //             color: ColorPalette.main.withOpacity(0.1),
-                            //             borderRadius: BorderRadius.circular(100),
-                            //           ),
-                            //           child: SvgPicture.asset(
-                            //             "assets/images/svg/payments.svg",
-                            //           ),
-                            //         ),
-                            //       ),
-                            //       const SizedBox(
-                            //         width: 12,
-                            //       ),
-                            //       Column(
-                            //         crossAxisAlignment: CrossAxisAlignment.start,
-                            //         children: [
-                            //           RichText(
-                            //             text: TextSpan(
-                            //               children: [
-                            //                 const TextSpan(
-                            //                   text: "Тип оплаты: ",
-                            //                   style:
-                            //                       ProjectTextStyles.ui_16Medium,
-                            //                 ),
-                            //                 TextSpan(
-                            //                   text: "Наличными",
-                            //                   style: ProjectTextStyles.ui_16Medium
-                            //                       .copyWith(
-                            //                     color: ColorPalette.main,
-                            //                   ),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //           RichText(
-                            //             text: TextSpan(
-                            //               children: [
-                            //                 const TextSpan(
-                            //                   text: "Сумма оплаты: ",
-                            //                   style:
-                            //                       ProjectTextStyles.ui_16Medium,
-                            //                 ),
-                            //                 TextSpan(
-                            //                   text: "95 310. 00 ₸",
-                            //                   style: ProjectTextStyles.ui_16Medium
-                            //                       .copyWith(
-                            //                     color: ColorPalette.main,
-                            //                   ),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       )
-                            //     ],
-                            //   ),
-                            // )
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  // top: 10,
-                                  left: 10,
-                                  right: 10,
-                                  bottom: 80,
-                                ),
-                                child: QrImage(
-                                  data: widget.point.name!,
-                                  version: QrVersions.auto,
-                                  // size: 200.0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        //     Center(
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.only(
+                        //           // top: 10,
+                        //           left: 10,
+                        //           right: 10,
+                        //           bottom: 80,
+                        //         ),
+                        //         child: QrImage(
+                        //           data: widget.point.name!,
+                        //           version: QrVersions.auto,
+                        //           // size: 200.0,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ),
                     ],
                   );
@@ -440,35 +370,70 @@ class _WarehousePageState extends State<WarehousePage>
                         right: 10,
                         bottom: 10,
                       ),
-                      child: // _current != 0
-                          //  !isScan || (state.areAllFinished && _current == 0)
-                          state.areAllFinished && _current == 0
-                              ? GestureDetector(
-                                  onTap: () {
-                                    // if (!isScan) {
-                                    //   for (var element
-                                    //       in state.orderPoint.containers!) {
-                                    //     context.read<PointPageBloc>().add(
-                                    //           PointPageEventProductFinish(
-                                    //             productId: element.id,
-                                    //             code: element.code!,
-                                    //           ),
-                                    //         );
-                                    //   }
-                                    //   setState(() {
-                                    //     isScan = true;
-                                    //   });
-                                    // }
-                                    setState(() {
-                                      _current = 1;
-                                      pageController.animateToPage(
-                                        _current,
-                                        duration:
-                                            const Duration(milliseconds: 50),
-                                        curve: Curves.ease,
+                      child: !state.areAllFinished
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      AppRouter.push(
+                                        context,
+                                        ScanChoosePage(
+                                          order: widget.order,
+                                          pointPageBloc:
+                                              BlocProvider.of<PointPageBloc>(
+                                                  context),
+                                        ),
                                       );
-                                      _tabController.animateTo(_current);
-                                    });
+
+                                      // showCreatePasswordBottomDialog(
+                                      //   context,
+                                      //   productId!,
+                                      // );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      decoration: BoxDecoration(
+                                        color: ColorPalette.main,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              "Отсканировать",
+                                              style: ProjectTextStyles
+                                                  .ui_16Medium
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          // Positioned(
+                                          //   left: 18,
+                                          //   child: SvgPicture.asset(
+                                          //     "assets/images/svg/scan.svg",
+                                          //   ),
+                                          // )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    BlocProvider.of<PointPageBloc>(context).add(
+                                      PointPageEventFinishingPoint(
+                                        pointId: widget.point.id,
+                                        containers:
+                                            widget.point.containers ?? [],
+                                      ),
+                                    );
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -481,219 +446,69 @@ class _WarehousePageState extends State<WarehousePage>
                                       children: [
                                         Center(
                                           child: Text(
-                                            "Дальше в путь",
-                                            style: ProjectTextStyles.ui_16Medium
+                                            "Принять и подписать",
+                                            style: ProjectTextStyles.ui_14Medium
                                                 .copyWith(
                                               color: Colors.white,
                                             ),
                                           ),
                                         ),
-                                        Positioned(
-                                          right: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/images/svg/arrow_right.svg",
-                                          ),
-                                        )
+                                        // Positioned(
+                                        //   right: 15,
+                                        //   child: SvgPicture.asset(
+                                        //     "assets/images/svg/arrow_right.svg",
+                                        //   ),
+                                        // )
                                       ],
                                     ),
                                   ),
-                                )
-                              : _current == 0
-                                  ? Row(
-                                      children: [
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              AppRouter.push(
-                                                context,
-                                                ScanChoosePage(
-                                                  order: widget.order,
-                                                  pointPageBloc: BlocProvider
-                                                      .of<PointPageBloc>(
-                                                          context),
-                                                ),
-                                              );
+                                ))
+                              ],
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                BlocProvider.of<PointPageBloc>(context).add(
+                                  PointPageEventFinishingPoint(
+                                    pointId: widget.point.id,
+                                    containers: widget.point.containers ?? [],
+                                  ),
+                                );
 
-                                              // showCreatePasswordBottomDialog(
-                                              //   context,
-                                              //   productId!,
-                                              // );
-                                            },
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 16),
-                                              decoration: BoxDecoration(
-                                                color: ColorPalette.main,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Stack(
-                                                children: [
-                                                  Center(
-                                                    child: Text(
-                                                      "Отсканировать",
-                                                      style: ProjectTextStyles
-                                                          .ui_16Medium
-                                                          .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  // Positioned(
-                                                  //   left: 18,
-                                                  //   child: SvgPicture.asset(
-                                                  //     "assets/images/svg/scan.svg",
-                                                  //   ),
-                                                  // )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                            child: GestureDetector(
-                                          onTap: () {
-                                            // if (!isScan) {
-                                            //   for (var element
-                                            //       in state.orderPoint.containers!) {
-                                            //     context.read<PointPageBloc>().add(
-                                            //           PointPageEventProductFinish(
-                                            //             productId: element.id,
-                                            //             code: element.code!,
-                                            //           ),
-                                            //         );
-                                            //   }
-                                            //   setState(() {
-                                            //     isScan = true;
-                                            //   });
-                                            // }
-                                            setState(() {
-                                              _current = 1;
-                                              pageController.animateToPage(
-                                                _current,
-                                                duration: const Duration(
-                                                    milliseconds: 50),
-                                                curve: Curves.ease,
-                                              );
-                                              _tabController
-                                                  .animateTo(_current);
-                                            });
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 16),
-                                            decoration: BoxDecoration(
-                                              color: ColorPalette.main,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                Center(
-                                                  child: Text(
-                                                    "Дальше в путь",
-                                                    style: ProjectTextStyles
-                                                        .ui_16Medium
-                                                        .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Positioned(
-                                                  right: 15,
-                                                  child: SvgPicture.asset(
-                                                    "assets/images/svg/arrow_right.svg",
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ))
-                                      ],
-                                    )
-                                  : GestureDetector(
-                                      onTap: () {
-                                        BlocProvider.of<PointPageBloc>(context)
-                                            .add(
-                                          PointPageEventFinishingPoint(
-                                            pointId: widget.point.id,
-                                            containers:
-                                                widget.point.containers ?? [],
-                                          ),
-                                        );
-
-                                        // setState(() {
-                                        //   _current = 2;
-                                        //   pageController.animateToPage(
-                                        //     _current,
-                                        //     duration: const Duration(
-                                        //       milliseconds: 50,
-                                        //     ),
-                                        //     curve: Curves.ease,
-                                        //   );
-                                        //   _tabController.animateTo(_current);
-                                        // });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 16,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: ColorPalette.main,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Stack(
-                                          children: [
-                                            Center(
-                                              child: Text(
-                                                "Принять и подписать",
-                                                style: ProjectTextStyles
-                                                    .ui_16Medium
-                                                    .copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                // setState(() {
+                                //   _current = 2;
+                                //   pageController.animateToPage(
+                                //     _current,
+                                //     duration: const Duration(
+                                //       milliseconds: 50,
+                                //     ),
+                                //     curve: Curves.ease,
+                                //   );
+                                //   _tabController.animateTo(_current);
+                                // });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: ColorPalette.main,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        "Принять и подписать",
+                                        style: ProjectTextStyles.ui_16Medium
+                                            .copyWith(
+                                          color: Colors.white,
                                         ),
                                       ),
-                                    )
-                      // : GestureDetector(
-                      //     onTap: () {
-                      //       AppRouter.pushReplacement(
-                      //         context,
-                      //         const SuccessOrderFinished(),
-                      //       );
-                      //     },
-                      //     child: Container(
-                      //       padding: const EdgeInsets.symmetric(
-                      //         vertical: 16,
-                      //       ),
-                      //       decoration: BoxDecoration(
-                      //         color: ColorPalette.main,
-                      //         borderRadius: BorderRadius.circular(10),
-                      //       ),
-                      //       child: Stack(
-                      //         children: [
-                      //           Center(
-                      //             child: Text(
-                      //               "Принять и подписать",
-                      //               style: ProjectTextStyles.ui_16Medium
-                      //                   .copyWith(
-                      //                 color: Colors.white,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
                 );
               } else {
                 return const SizedBox();

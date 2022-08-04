@@ -33,9 +33,11 @@ class OrderDetailStateLoaded extends OrderDetailState {
 
 class OrderDetailStateShowTimer extends OrderDetailState {
   final DateTime startTimer;
+  final bool isForth;
 
   OrderDetailStateShowTimer({
     required this.startTimer,
+    required this.isForth,
   });
 }
 

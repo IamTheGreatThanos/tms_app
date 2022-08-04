@@ -74,6 +74,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.4,
               child: SfDateRangePicker(
+                enablePastDates: false,
                 headerStyle: const DateRangePickerHeaderStyle(
                   textStyle: TextStyle(
                     color: Colors.black,

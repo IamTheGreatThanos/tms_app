@@ -147,9 +147,12 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    DateFormat("dd MMMM, hh:mm")
-                                        .format(widget.order.startDate!),
-                                    style: ProjectTextStyles.ui_12Medium.copyWith(
+                                    widget.order.startDate != null
+                                        ? DateFormat("dd MMMM, hh:mm")
+                                            .format(widget.order.startDate!)
+                                        : "",
+                                    style:
+                                        ProjectTextStyles.ui_12Medium.copyWith(
                                       color: ColorPalette.commonGrey,
                                     ),
                                   ),
@@ -243,8 +246,10 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                           : () {
                                               setState(() {
                                                 if (productId ==
-                                                    state.orderPoint
-                                                        .containers?[index].id) {
+                                                    state
+                                                        .orderPoint
+                                                        .containers?[index]
+                                                        .id) {
                                                   productId = 0;
                                                 } else {
                                                   productId = state.orderPoint
@@ -306,7 +311,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                 )
                                               ],
                                             ),
-                                               if (state.orderPoint
+                                            if (state.orderPoint
                                                 .containers![index].isScanned)
                                               SvgPicture.asset(
                                                 "assets/images/svg/ic_check.svg",

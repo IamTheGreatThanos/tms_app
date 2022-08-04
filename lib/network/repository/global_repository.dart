@@ -15,6 +15,7 @@ import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalRepository {
   late final NetworkService _networkService;
@@ -80,9 +81,10 @@ class GlobalRepository {
   Future<List<PointDTO>> orderPoints(int orderId) async =>
       _networkService.orderPoints(orderId);
 
-  Future<String> sendContainers(List<ContainerDTO> containers)async{
+  Future<String> sendContainers(List<ContainerDTO> containers) async {
     return _networkService.sendContainers(containers);
   }
+
   Future<PointDTO> orderPointProducts(int pointId) async =>
       _networkService.orderPointProducts(pointId);
 
@@ -178,4 +180,20 @@ class GlobalRepository {
         startDate: startDate,
         endDate: endDate,
       );
+
+  Future<void> saveOtherReasonTimer({
+    required int orderId,
+  }) async {
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+    _preferences.setString('$orderId OTHERTIME', DateTime.now().toString());
+  }
+
+  Future<String> getOtherReasonTimer({
+    required int orderId,
+  }) async {
+    final SharedPreferences _preferences =
+        await SharedPreferences.getInstance();
+    return _preferences.getString('$orderId OTHERTIME') as String;
+  }
 }

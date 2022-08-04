@@ -165,7 +165,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           ),
                         );
                       } else {
-                        return SizedBox();
+                        return const SizedBox();
                         // return Padding(
                         //   padding: const EdgeInsets.symmetric(
                         //     horizontal: 10,
@@ -238,9 +238,14 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     // });
                   }
                   if (state is OrderDetailStateShowTimer) {
-                    final time = state.startTimer.isBefore(DateTime.now())
-                        ? Duration.zero
-                        : state.startTimer.difference(DateTime.now());
+                    Duration time;
+                    if (state.isForth) {
+                      time = DateTime.now().difference(state.startTimer);
+                    } else {
+                       time = state.startTimer.isBefore(DateTime.now())
+                          ? Duration.zero
+                          : state.startTimer.difference(DateTime.now());
+                    }
                     showAppBottomSheet(
                       context,
                       useRootNavigator: true,
@@ -257,6 +262,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           SizedBox(
                             height: 100,
                             child: TimerPage(
+                              isForth: state.isForth,
                               duration: time,
                             ),
                           ),
@@ -346,8 +352,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Text(
+                                    state.order.startDate!=null?
                                     DateFormat("dd MMMM, hh:mm")
-                                        .format(state.order.startDate!),
+                                        .format(state.order.startDate!):"",
                                     style:
                                         ProjectTextStyles.ui_12Medium.copyWith(
                                       color: ColorPalette.commonGrey,
@@ -361,8 +368,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: <Widget>[
                                   Text(
+                                    state.order.endDate!=null?
                                     DateFormat("dd MMMM, hh:mm")
-                                        .format(state.order.endDate!),
+                                        .format(state.order.endDate!):"",
                                     style:
                                         ProjectTextStyles.ui_12Medium.copyWith(
                                       color: ColorPalette.commonGrey,
@@ -501,9 +509,9 @@ class _FABWidget extends StatelessWidget {
     ///
     ///
     if ((isScan &&
-            (order.status == "accepted" ||
-                order.status == "in_process" ||
-                order.status == 'В пути'))) {
+        (order.status == "accepted" ||
+            order.status == "in_process" ||
+            order.status == 'В пути'))) {
       return GestureDetector(
         onTap: () {
           AppRouter.push(
@@ -516,11 +524,9 @@ class _FABWidget extends StatelessWidget {
                     pointId: point!.id,
                   ),
                 ),
-              child: 
-              point!.id == order.points!.first.id
+              child: point!.id == order.points!.first.id
                   ? WarehousePage(order: order, isScan: isScan, point: point!)
-                  :
-                   PointPage(
+                  : PointPage(
                       order: order,
                       point: point!,
                       isScan: order.points!.first.id == point!.id,
@@ -634,6 +640,11 @@ class _FABWidget extends StatelessWidget {
                                         ? "sleep"
                                         : "relax",
                               ),
+                            );
+                      }
+                      if (value == items[3]) {
+                        context.read<OrderDetailBloc>().add(
+                              OrderDetailEventStop(cause: 'other'),
                             );
                       }
                       if (value == items[4]) {
@@ -825,13 +836,13 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 12),
-          _BuildPointItem(
-            icon: "orders_geo",
-            city: widget.order.crossdockName ?? widget.order.from,
-            date: widget.order.startDate,
-          ),
-          const SizedBox(height: 10),
+          // const SizedBox(height: 12),
+          // _BuildPointItem(
+          //   icon: "orders_geo",
+          //   city: widget.order.crossdockName ?? widget.order.from,
+          //   date: widget.order.startDate,
+          // ),
+          // const SizedBox(height: 10),
           if (widget.order.points != null && widget.order.points!.isNotEmpty)
             ListView.builder(
               shrinkWrap: true,
@@ -877,12 +888,12 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                 );
               },
             ),
-          const SizedBox(height: 10),
-          _BuildPointItem(
-            icon: "orders_geo_done",
-            city: widget.order.to,
-            date: widget.order.endDate,
-          ),
+          // const SizedBox(height: 10),
+          // _BuildPointItem(
+          //   icon: "orders_geo_done",
+          //   city: widget.order.to,
+          //   date: widget.order.endDate,
+          // ),
           const SizedBox(height: 120),
         ],
       ),
@@ -971,80 +982,76 @@ class _BuildExpandablePointItem extends StatelessWidget {
                 color: point.status == "finished" || point.status == 'Завершен'
                     ? ColorPalette.main
                     : ColorPalette.lightGrey,
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: SvgPicture.asset(
-                "assets/images/svg/order_item.svg",
+                "assets/images/svg/orders_geo_done.svg",
                 color: point.status == "finished" || point.status == 'Завершен'
                     ? ColorPalette.white
                     : null,
-                width: 12,
-                height: 12,
+                width: 18,
+                height: 18,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 9),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(
-                    thickness: 1,
-                    height: 2,
-                    color: ColorPalette.lightGrey,
-                  ),
-                  Text(
-                    DateFormat("dd MMMM yyyy, в hh:mm")
-                        .format(point.date ?? DateTime.now()),
-                    style: ProjectTextStyles.ui_12Medium
-                        .copyWith(color: ColorPalette.commonGrey),
-                  ),
-                  Text(
-                    point.crossdockName != null
-                        ? '${point.crossdockName} (Кроссдок)'
-                        : (point.name ?? S.of(context).no_data),
-                    style: ProjectTextStyles.ui_16Medium,
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (!isExpanded)
-                        SvgPicture.asset(
-                          "assets/images/svg/pin-location.svg",
-                          color: point.status == "finished" ||
-                                  point.status == "Завершен"
-                              ? ColorPalette.main
-                              : null,
-                        ),
-                      if (!isExpanded)
-                        const SizedBox(
-                          width: 4,
-                        ),
-                      if (!isExpanded)
-                        Text(
-                          point.address == null
-                              ? S.of(context).no_data
-                              : MediaQuery.of(context).size.width < 400
-                                  ? point.address!.length > 20
-                                      ? '${point.address!.substring(0, 20)}...'
-                                      : point.address!
-                                  : point.address!.length > 40
-                                      ? '${point.address!.substring(0, 37)}...'
-                                      : point.address!,
-                          style: ProjectTextStyles.ui_12Medium.copyWith(
-                            color: ColorPalette.commonGrey,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 9),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const Divider(
+                    //   thickness: 1,
+                    //   height: 2,
+                    //   color: ColorPalette.lightGrey,
+                    // ),
+                    Text(
+                      DateFormat("dd MMMM yyyy, в hh:mm")
+                          .format(point.date ?? DateTime.now()),
+                      style: ProjectTextStyles.ui_12Medium
+                          .copyWith(color: ColorPalette.commonGrey),
+                    ),
+                    Text(
+                      point.crossdockName != null
+                          ? '${point.crossdockName} (Кроссдок)'
+                          : (point.name ?? S.of(context).no_data),
+                      style: ProjectTextStyles.ui_16Medium,
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    if (!isExpanded)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/images/svg/pin-location.svg",
+                            color: point.status == "finished" ||
+                                    point.status == "Завершен"
+                                ? ColorPalette.main
+                                : null,
                           ),
-                        ),
-                    ],
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    height: 2,
-                    color: ColorPalette.lightGrey,
-                  ),
-                ],
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Expanded(
+                            child: Text(
+                              point.address == null
+                                  ? S.of(context).no_data
+                                  : '${point.address}',
+                              style: ProjectTextStyles.ui_12Medium.copyWith(
+                                color: ColorPalette.commonGrey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    // const Divider(
+                    //   thickness: 1,
+                    //   height: 2,
+                    //   color: ColorPalette.lightGrey,
+                    // ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -1053,13 +1060,34 @@ class _BuildExpandablePointItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                point.address == null ? S.of(context).no_data : point.address!,
-                style: ProjectTextStyles.ui_12Medium.copyWith(
-                  color: ColorPalette.commonGrey,
-                ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/svg/pin-location.svg",
+                    color:
+                        point.status == "finished" || point.status == "Завершен"
+                            ? ColorPalette.main
+                            : null,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Expanded(
+                    child: Text(
+                      point.address == null
+                          ? S.of(context).no_data
+                          : point.address!,
+                      style: ProjectTextStyles.ui_12Medium.copyWith(
+                        color: ColorPalette.commonGrey,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 25,
+                  ),
+                ],
               ),
-              const SizedBox(width: 4),
+              const SizedBox(height: 4),
               Text(
                 "Количество контейнеров - ${point.containers?.length} ",
                 textAlign: TextAlign.left,
@@ -1073,6 +1101,7 @@ class _BuildExpandablePointItem extends StatelessWidget {
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),
+              const SizedBox(height: 4),
             ],
           ),
         ],

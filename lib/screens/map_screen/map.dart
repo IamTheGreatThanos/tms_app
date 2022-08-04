@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:developer' as dev;
 
@@ -8,6 +9,7 @@ import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 const _tag = 'SessionPage';
@@ -29,12 +31,58 @@ class SessionPage extends StatefulWidget {
 }
 
 class _SessionState extends State<SessionPage> {
-  YandexMapController? controller;
+  Completer<YandexMapController> completer = Completer();
 
   late final List<MapObject> mapObjects = [];
   final List<PlacemarkMapObject> placemarks = [];
   final List<RequestPoint> points = [];
   final List<DrivingSessionResult> results = [];
+  Position? currentPos;
+  Future<void> initMap() async {
+    final Position _position = await _determinePosition();
+    currentPos = _position;
+    dev.log("CURRENT POS: ${_position.latitude} ${_position.longitude}");
+    await updateMap(5, _position);
+  }
+
+  Future<void> updateMap(double zoom, Position position) async {
+    final YandexMapController controller = await completer.future;
+    await controller.moveCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target:
+              Point(latitude: position.latitude, longitude: position.longitude),
+          zoom: zoom,
+        ),
+      ),
+    );
+
+    placemarks.add(PlacemarkMapObject(
+      mapId:  MapObjectId('placeMark ${placemarks.length-1}'),
+      point: Point(
+        latitude: position.latitude, // data[i].lat as double,
+        longitude: position.longitude, // data[i].long as double,
+      ),
+      icon: PlacemarkIcon.single(
+        PlacemarkIconStyle(
+          image: BitmapDescriptor.fromAssetImage(
+            'assets/images/user.png',
+          ),
+        ),
+      ),
+    ));
+
+    mapObjects.add(placemarks.last);
+    points.add(
+      RequestPoint(
+        point: placemarks.last.point,
+        requestPointType: RequestPointType.wayPoint,
+      ),
+    );
+    setState(() {
+      
+    });
+  }
 
   @override
   void initState() {
@@ -54,6 +102,7 @@ class _SessionState extends State<SessionPage> {
         listener: (context, state) {
           if (state is MapLoadedState) {
             _requestRoutes(state.loadedMap);
+            initMap();
             dev.log('mapmapmap :::: ${state.loadedMap}');
           }
         },
@@ -62,7 +111,9 @@ class _SessionState extends State<SessionPage> {
             // _requestRoutes(state.loadedMap);
             return YandexMap(
               onMapCreated: (YandexMapController yandexMapController) async {
-                controller = yandexMapController;
+                completer.complete(yandexMapController);
+                //initMap();
+                //final Position currentPos = await determinePosition();
 
                 if (state.loadedMap.isNotEmpty) {
                   final double? lat = double.tryParse(
@@ -72,7 +123,7 @@ class _SessionState extends State<SessionPage> {
                       double.tryParse(state.loadedMap.first.long!.toString());
                   if (lat != null && long != null) {
                     dev.log('YandexMap: 1');
-                    controller!.moveCamera(
+                    yandexMapController.moveCamera(
                       CameraUpdate.newCameraPosition(
                         CameraPosition(
                           target: Point(
@@ -89,7 +140,7 @@ class _SessionState extends State<SessionPage> {
                   } else {
                     dev.log('YandexMap: 2');
 
-                    controller!.moveCamera(
+                    yandexMapController.moveCamera(
                       CameraUpdate.newCameraPosition(
                         const CameraPosition(
                           target: Point(
@@ -157,7 +208,7 @@ class _SessionState extends State<SessionPage> {
               icon: PlacemarkIcon.single(
                 PlacemarkIconStyle(
                   image: BitmapDescriptor.fromAssetImage(
-                    'assets/images/${i == data.length - 1 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png',
+                    'assets/images/${i == data.length - 2 ? "route_end" : i == 0 ? "route_start" : "route_stop_by"}.png',
                   ),
                 ),
               ),
@@ -215,5 +266,42 @@ class _SessionState extends State<SessionPage> {
     } catch (e) {
       dev.log('_requestRoutes error ::: $e', name: _tag);
     }
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
   }
 }
