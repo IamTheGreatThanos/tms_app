@@ -11,9 +11,10 @@ class OrderDetailEventInitial extends OrderDetailEvent {
 
 class OrderDetailEventStop extends OrderDetailEvent {
   final String cause;
+  final int pointId;
   final UserDTO? emptyDriver;
 
-  OrderDetailEventStop({required this.cause, this.emptyDriver});
+  OrderDetailEventStop({required this.pointId, required this.cause, this.emptyDriver});
 }
 
 class OrderDetailEventStart extends OrderDetailEvent {}

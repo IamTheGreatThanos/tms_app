@@ -20,7 +20,12 @@ class RideHistoryScreen extends StatefulWidget {
 
 class _RideHistoryScreenState extends State<RideHistoryScreen> {
   bool showDate = true;
-
+  Map<String?,String> statuses= {
+    null:"Ошибка статуса",
+    "in_process":"В пути",
+    "finished":"Завершен",
+    "declined":"Отменен",
+  };
   @override
   Widget build(BuildContext context) {
     return AppLoaderOverlay(
@@ -41,7 +46,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
             if (state is StateLoadRideHistory) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15,15,15,100),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 100),
                   child: Column(
                     children: [
                       Container(
@@ -147,7 +152,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   Column(
                                     children: [
                                       Text(
-                                        "0",
+                                        "${state.finishedLength}",
                                         style: ProjectTextStyles.ui_20Medium
                                             .copyWith(
                                           color: ColorPalette.green,
@@ -174,8 +179,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   ),
                                   Column(
                                     children: [
-                                      const Text(
-                                        "0",
+                                       Text(
+                                        "${state.declinedLength}",
                                         style: ProjectTextStyles.ui_20Medium,
                                       ),
                                       const SizedBox(
@@ -252,25 +257,68 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   ),
                                   color: ColorPalette.white,
                                 ),
-                                child: AppListTile(
-                                  leading: const CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    radius: 10,
-                                    backgroundImage: AssetImage(
-                                      "assets/images/svg/history_item.svg",
-                                    ),
-                                  ),
-                                  title: '${state.history[index].order}',
+                                child: Column(
+                                  children: [
+                                    AppListTile(
+                                      leading: const CircleAvatar(
+                                        backgroundColor: Colors.transparent,
+                                        radius: 10,
+                                        backgroundImage: AssetImage(
+                                          "assets/images/svg/history_item.svg",
+                                        ),
+                                      ),
+                                      title: '${state.history[index].order}',
 
-                                  /// FIXME
-                                  subtitle:
-                                      DateFormat("dd.MM.yyyy в kk:mm").format(
-                                    state.history[index].createdAt!,
-                                  ),
-                                  trailing: SvgPicture.asset(
-                                    "assets/images/svg/chevrone_right.svg",
-                                  ),
-                                  contentPadding: const EdgeInsets.all(15.0),
+                                      /// FIXME
+                                      subtitle: DateFormat("dd.MM.yyyy в kk:mm")
+                                          .format(
+                                        state.history[index].createdAt!,
+                                      ),
+                                      trailing: Text(statuses[state.history[index].orderStatus]??"Ошибка статуса"),
+                                      // trailing: SvgPicture.asset(
+                                      //   "assets/images/svg/chevrone_right.svg",
+                                      // ),
+                                      contentPadding:
+                                          const EdgeInsets.all(15.0),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 50),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              state.history[index]
+                                                      .orderTransport?.name ??
+                                                  "Нет данных",
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              state.history[index]
+                                                      .orderTransport?.number ??
+                                                  "Нет данных",
+                                              style: const TextStyle(
+                                                color: ColorPalette.commonGrey,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(
+                                      color: ColorPalette.lightGrey,
+                                      thickness: 2,
+                                    ),
+                                  ],
                                 ),
                                 // Row(
                                 //   mainAxisAlignment:

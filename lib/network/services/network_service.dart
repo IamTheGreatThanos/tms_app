@@ -222,9 +222,10 @@ class NetworkService {
   //   print(response);
   // }
 
-  Future<OrderDTO> stopOrder(
-    int orderId,
-    String cause, {
+  Future<OrderDTO> stopOrder({
+   required int orderId,
+   required int pointId,
+   required String cause, 
     UserDTO? emptyDriver,
   }) async {
     final response = await _dioWrapper.sendRequest(
@@ -232,6 +233,7 @@ class NetworkService {
       method: NetworkMethod.post,
       formData: FormData.fromMap({
         "order_id": orderId,
+        "point_id": pointId,
         "stop_reason": cause,
         if (emptyDriver != null) 'user_id': emptyDriver.id,
       }),
@@ -242,9 +244,9 @@ class NetworkService {
     );
   }
 
-  Future<OrderDTO> stopOrderAndChangeDriver(
-    int orderId,
-    String cause, {
+  Future<OrderDTO> stopOrderAndChangeDriver({
+    required int orderId,
+    required String cause, 
     UserDTO? emptyDriver,
   }) async {
     final response = await _dioWrapper.sendRequest(
@@ -564,8 +566,15 @@ class NetworkService {
     );
 
     final OrderDTO order = await compute<Map<String, dynamic>, OrderDTO>(
+      (Map<String, dynamic> mapp) async{
+        return OrderDTO.fromJson(mapp).copyWith(transport: 
+        await compute<Map<String, dynamic>, TransportDTO>(
       (Map<String, dynamic> mapp) {
-        return OrderDTO.fromJson(mapp);
+        return TransportDTO.fromJson(mapp);
+      },
+      (response.data as Map<String, dynamic>)['data']['transport']['transport'] as Map<String, dynamic>,
+    ),
+        );
       },
       (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
     );

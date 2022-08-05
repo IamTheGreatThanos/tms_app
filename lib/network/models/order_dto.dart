@@ -32,12 +32,13 @@ class OrderDTO with _$OrderDTO {
     String? payment,
     @JsonKey(name: 'from_city_id') CityDTO? fromCity,
     @JsonKey(name: 'to_city_id') CityDTO? toCity,
-    List<PointDTO>? points,
+    List<PointDTO?>? points,
     @JsonKey(name: 'count_points') int? countPoints,
     @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
     // String? status,
     @Default(false) bool isCurrent,
     String? address,
+    TransportDTO? transport,
   }) = _OrderDTO;
 
   factory OrderDTO.fromJson(Map<String, dynamic> json) =>
@@ -59,3 +60,29 @@ class OrderStatusDTO with _$OrderStatusDTO {
   factory OrderStatusDTO.fromJson(Map<String, dynamic> json) =>
       _$OrderStatusDTOFromJson(json);
 }
+
+@freezed
+class TransportDTO with _$TransportDTO {
+  const factory TransportDTO({
+    required int id,
+    TransportModelDTO? model,
+    String? number,
+
+  }) = _TransportDTO;
+
+  factory TransportDTO.fromJson(Map<String, dynamic> json) =>
+      _$TransportDTOFromJson(json);
+}
+
+@freezed
+class TransportModelDTO with _$TransportModelDTO {
+  const factory TransportModelDTO({
+    required int id,
+    String? name,
+
+  }) = _TransportModelDTO;
+
+  factory TransportModelDTO.fromJson(Map<String, dynamic> json) =>
+      _$TransportModelDTOFromJson(json);
+}
+

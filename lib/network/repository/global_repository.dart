@@ -96,25 +96,27 @@ class GlobalRepository {
   }) async =>
       _networkService.orderPointFinish(pointId: pointId);
 
-  Future<OrderDTO> stopOrder(
-    int orderId,
-    String cause, {
+  Future<OrderDTO> stopOrder({
+   required int orderId,
+   required int pointId,
+   required String cause,
     UserDTO? emptyDriver,
-  }) async =>
+}) async =>
       _networkService.stopOrder(
-        orderId,
-        cause,
+        orderId: orderId,
+        pointId: pointId,
+        cause: cause,
         emptyDriver: emptyDriver,
       );
 
-  Future<OrderDTO> stopOrderAndChangeDriver(
-    int orderId,
-    String cause, {
+  Future<OrderDTO> stopOrderAndChangeDriver({
+    required int orderId,
+    required String cause,
     UserDTO? emptyDriver,
   }) async =>
       _networkService.stopOrderAndChangeDriver(
-        orderId,
-        cause,
+        orderId: orderId,
+        cause: cause,
         emptyDriver: emptyDriver,
       );
 

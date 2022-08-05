@@ -25,6 +25,8 @@ class OrderHistoryResponse {
 
 class OrderHistoryData {
   OrderHistoryData({
+    this.orderStatus,
+    this.orderTransport,
     this.id,
     this.order,
     this.user,
@@ -35,7 +37,9 @@ class OrderHistoryData {
 
   final int? id;
   final String? order;
+  final String? orderStatus;
   final User? user;
+  final OrderHistoryTransport? orderTransport;
   final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -44,16 +48,36 @@ class OrderHistoryData {
   factory OrderHistoryData.fromJson(Map<String?, dynamic> json) =>
       OrderHistoryData(
         id: json["id"],
+        orderTransport: json["order_transport"] == null? null:OrderHistoryTransport.fromJson(json["order_transport"]),
         order: json["order"]
             as String?, // == null ? null : Order.fromJson(json["order"]),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         status: json["status"],
+           orderStatus: json["order_status"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+      );
+}
+
+class OrderHistoryTransport {
+  OrderHistoryTransport({
+    this.number,
+    this.name,
+    this.id,
+  });
+
+  final int? id;
+  final String? number;
+  final String? name;
+
+  factory OrderHistoryTransport.fromJson(Map<String?, dynamic> json) => OrderHistoryTransport(
+        id: json["id"],
+        name: json["name"],
+        number: json["number"],
       );
 }
 
@@ -299,6 +323,8 @@ class Product {
 
 class OrderTransport {
   OrderTransport({
+    this.number,
+    this.name,
     this.id,
     this.orderId,
     this.transport,
@@ -310,12 +336,16 @@ class OrderTransport {
   final int? id;
   final int? orderId;
   final TransportTransport? transport;
+  final String? number;
+  final String? name;
   final String? type;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory OrderTransport.fromJson(Map<String?, dynamic> json) => OrderTransport(
         id: json["id"],
+        name: json["name"],
+        number: json["number"],
         orderId: json["order_id"],
         transport: json["transport"] == null
             ? null

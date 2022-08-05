@@ -57,7 +57,7 @@ mixin _$OrderDTO {
   CityDTO? get fromCity => throw _privateConstructorUsedError;
   @JsonKey(name: 'to_city_id')
   CityDTO? get toCity => throw _privateConstructorUsedError;
-  List<PointDTO>? get points => throw _privateConstructorUsedError;
+  List<PointDTO?>? get points => throw _privateConstructorUsedError;
   @JsonKey(name: 'count_points')
   int? get countPoints => throw _privateConstructorUsedError;
   @JsonKey(name: 'order_status')
@@ -65,6 +65,7 @@ mixin _$OrderDTO {
       throw _privateConstructorUsedError; // String? status,
   bool get isCurrent => throw _privateConstructorUsedError;
   String? get address => throw _privateConstructorUsedError;
+  TransportDTO? get transport => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -99,15 +100,17 @@ abstract class $OrderDTOCopyWith<$Res> {
       String? payment,
       @JsonKey(name: 'from_city_id') CityDTO? fromCity,
       @JsonKey(name: 'to_city_id') CityDTO? toCity,
-      List<PointDTO>? points,
+      List<PointDTO?>? points,
       @JsonKey(name: 'count_points') int? countPoints,
       @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
       bool isCurrent,
-      String? address});
+      String? address,
+      TransportDTO? transport});
 
   $CityDTOCopyWith<$Res>? get fromCity;
   $CityDTOCopyWith<$Res>? get toCity;
   $OrderStatusDTOCopyWith<$Res>? get orderStatus;
+  $TransportDTOCopyWith<$Res>? get transport;
 }
 
 /// @nodoc
@@ -147,6 +150,7 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
     Object? orderStatus = freezed,
     Object? isCurrent = freezed,
     Object? address = freezed,
+    Object? transport = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -240,7 +244,7 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
       points: points == freezed
           ? _value.points
           : points // ignore: cast_nullable_to_non_nullable
-              as List<PointDTO>?,
+              as List<PointDTO?>?,
       countPoints: countPoints == freezed
           ? _value.countPoints
           : countPoints // ignore: cast_nullable_to_non_nullable
@@ -257,6 +261,10 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
+      transport: transport == freezed
+          ? _value.transport
+          : transport // ignore: cast_nullable_to_non_nullable
+              as TransportDTO?,
     ));
   }
 
@@ -292,6 +300,17 @@ class _$OrderDTOCopyWithImpl<$Res> implements $OrderDTOCopyWith<$Res> {
       return _then(_value.copyWith(orderStatus: value));
     });
   }
+
+  @override
+  $TransportDTOCopyWith<$Res>? get transport {
+    if (_value.transport == null) {
+      return null;
+    }
+
+    return $TransportDTOCopyWith<$Res>(_value.transport!, (value) {
+      return _then(_value.copyWith(transport: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -323,11 +342,12 @@ abstract class _$$_OrderDTOCopyWith<$Res> implements $OrderDTOCopyWith<$Res> {
       String? payment,
       @JsonKey(name: 'from_city_id') CityDTO? fromCity,
       @JsonKey(name: 'to_city_id') CityDTO? toCity,
-      List<PointDTO>? points,
+      List<PointDTO?>? points,
       @JsonKey(name: 'count_points') int? countPoints,
       @JsonKey(name: 'order_status') OrderStatusDTO? orderStatus,
       bool isCurrent,
-      String? address});
+      String? address,
+      TransportDTO? transport});
 
   @override
   $CityDTOCopyWith<$Res>? get fromCity;
@@ -335,6 +355,8 @@ abstract class _$$_OrderDTOCopyWith<$Res> implements $OrderDTOCopyWith<$Res> {
   $CityDTOCopyWith<$Res>? get toCity;
   @override
   $OrderStatusDTOCopyWith<$Res>? get orderStatus;
+  @override
+  $TransportDTOCopyWith<$Res>? get transport;
 }
 
 /// @nodoc
@@ -376,6 +398,7 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
     Object? orderStatus = freezed,
     Object? isCurrent = freezed,
     Object? address = freezed,
+    Object? transport = freezed,
   }) {
     return _then(_$_OrderDTO(
       id: id == freezed
@@ -469,7 +492,7 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
       points: points == freezed
           ? _value._points
           : points // ignore: cast_nullable_to_non_nullable
-              as List<PointDTO>?,
+              as List<PointDTO?>?,
       countPoints: countPoints == freezed
           ? _value.countPoints
           : countPoints // ignore: cast_nullable_to_non_nullable
@@ -486,6 +509,10 @@ class __$$_OrderDTOCopyWithImpl<$Res> extends _$OrderDTOCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String?,
+      transport: transport == freezed
+          ? _value.transport
+          : transport // ignore: cast_nullable_to_non_nullable
+              as TransportDTO?,
     ));
   }
 }
@@ -516,11 +543,12 @@ class _$_OrderDTO implements _OrderDTO {
       this.payment,
       @JsonKey(name: 'from_city_id') this.fromCity,
       @JsonKey(name: 'to_city_id') this.toCity,
-      final List<PointDTO>? points,
+      final List<PointDTO?>? points,
       @JsonKey(name: 'count_points') this.countPoints,
       @JsonKey(name: 'order_status') this.orderStatus,
       this.isCurrent = false,
-      this.address})
+      this.address,
+      this.transport})
       : _points = points;
 
   factory _$_OrderDTO.fromJson(Map<String, dynamic> json) =>
@@ -586,9 +614,9 @@ class _$_OrderDTO implements _OrderDTO {
   @override
   @JsonKey(name: 'to_city_id')
   final CityDTO? toCity;
-  final List<PointDTO>? _points;
+  final List<PointDTO?>? _points;
   @override
-  List<PointDTO>? get points {
+  List<PointDTO?>? get points {
     final value = _points;
     if (value == null) return null;
     // ignore: implicit_dynamic_type
@@ -607,10 +635,12 @@ class _$_OrderDTO implements _OrderDTO {
   final bool isCurrent;
   @override
   final String? address;
+  @override
+  final TransportDTO? transport;
 
   @override
   String toString() {
-    return 'OrderDTO(id: $id, crossdockingId: $crossdockingId, crossdockingCityId: $crossdockingCityId, crossdockingNumber: $crossdockingNumber, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent, address: $address)';
+    return 'OrderDTO(id: $id, crossdockingId: $crossdockingId, crossdockingCityId: $crossdockingCityId, crossdockingNumber: $crossdockingNumber, crossdockName: $crossdockName, crossdockLat: $crossdockLat, crossdockLong: $crossdockLong, day: $day, description: $description, regionName: $regionName, from: $from, to: $to, fromLat: $fromLat, fromLong: $fromLong, toLat: $toLat, toLong: $toLong, status: $status, startDate: $startDate, endDate: $endDate, payment: $payment, fromCity: $fromCity, toCity: $toCity, points: $points, countPoints: $countPoints, orderStatus: $orderStatus, isCurrent: $isCurrent, address: $address, transport: $transport)';
   }
 
   @override
@@ -654,7 +684,8 @@ class _$_OrderDTO implements _OrderDTO {
             const DeepCollectionEquality()
                 .equals(other.orderStatus, orderStatus) &&
             const DeepCollectionEquality().equals(other.isCurrent, isCurrent) &&
-            const DeepCollectionEquality().equals(other.address, address));
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality().equals(other.transport, transport));
   }
 
   @JsonKey(ignore: true)
@@ -687,7 +718,8 @@ class _$_OrderDTO implements _OrderDTO {
         const DeepCollectionEquality().hash(countPoints),
         const DeepCollectionEquality().hash(orderStatus),
         const DeepCollectionEquality().hash(isCurrent),
-        const DeepCollectionEquality().hash(address)
+        const DeepCollectionEquality().hash(address),
+        const DeepCollectionEquality().hash(transport)
       ]);
 
   @JsonKey(ignore: true)
@@ -725,11 +757,12 @@ abstract class _OrderDTO implements OrderDTO {
       final String? payment,
       @JsonKey(name: 'from_city_id') final CityDTO? fromCity,
       @JsonKey(name: 'to_city_id') final CityDTO? toCity,
-      final List<PointDTO>? points,
+      final List<PointDTO?>? points,
       @JsonKey(name: 'count_points') final int? countPoints,
       @JsonKey(name: 'order_status') final OrderStatusDTO? orderStatus,
       final bool isCurrent,
-      final String? address}) = _$_OrderDTO;
+      final String? address,
+      final TransportDTO? transport}) = _$_OrderDTO;
 
   factory _OrderDTO.fromJson(Map<String, dynamic> json) = _$_OrderDTO.fromJson;
 
@@ -793,7 +826,7 @@ abstract class _OrderDTO implements OrderDTO {
   @JsonKey(name: 'to_city_id')
   CityDTO? get toCity => throw _privateConstructorUsedError;
   @override
-  List<PointDTO>? get points => throw _privateConstructorUsedError;
+  List<PointDTO?>? get points => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'count_points')
   int? get countPoints => throw _privateConstructorUsedError;
@@ -804,6 +837,8 @@ abstract class _OrderDTO implements OrderDTO {
   bool get isCurrent => throw _privateConstructorUsedError;
   @override
   String? get address => throw _privateConstructorUsedError;
+  @override
+  TransportDTO? get transport => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_OrderDTOCopyWith<_$_OrderDTO> get copyWith =>
@@ -1085,5 +1120,342 @@ abstract class _OrderStatusDTO implements OrderStatusDTO {
   @override
   @JsonKey(ignore: true)
   _$$_OrderStatusDTOCopyWith<_$_OrderStatusDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TransportDTO _$TransportDTOFromJson(Map<String, dynamic> json) {
+  return _TransportDTO.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TransportDTO {
+  int get id => throw _privateConstructorUsedError;
+  TransportModelDTO? get model => throw _privateConstructorUsedError;
+  String? get number => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TransportDTOCopyWith<TransportDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TransportDTOCopyWith<$Res> {
+  factory $TransportDTOCopyWith(
+          TransportDTO value, $Res Function(TransportDTO) then) =
+      _$TransportDTOCopyWithImpl<$Res>;
+  $Res call({int id, TransportModelDTO? model, String? number});
+
+  $TransportModelDTOCopyWith<$Res>? get model;
+}
+
+/// @nodoc
+class _$TransportDTOCopyWithImpl<$Res> implements $TransportDTOCopyWith<$Res> {
+  _$TransportDTOCopyWithImpl(this._value, this._then);
+
+  final TransportDTO _value;
+  // ignore: unused_field
+  final $Res Function(TransportDTO) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? model = freezed,
+    Object? number = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      model: model == freezed
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as TransportModelDTO?,
+      number: number == freezed
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+
+  @override
+  $TransportModelDTOCopyWith<$Res>? get model {
+    if (_value.model == null) {
+      return null;
+    }
+
+    return $TransportModelDTOCopyWith<$Res>(_value.model!, (value) {
+      return _then(_value.copyWith(model: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_TransportDTOCopyWith<$Res>
+    implements $TransportDTOCopyWith<$Res> {
+  factory _$$_TransportDTOCopyWith(
+          _$_TransportDTO value, $Res Function(_$_TransportDTO) then) =
+      __$$_TransportDTOCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, TransportModelDTO? model, String? number});
+
+  @override
+  $TransportModelDTOCopyWith<$Res>? get model;
+}
+
+/// @nodoc
+class __$$_TransportDTOCopyWithImpl<$Res>
+    extends _$TransportDTOCopyWithImpl<$Res>
+    implements _$$_TransportDTOCopyWith<$Res> {
+  __$$_TransportDTOCopyWithImpl(
+      _$_TransportDTO _value, $Res Function(_$_TransportDTO) _then)
+      : super(_value, (v) => _then(v as _$_TransportDTO));
+
+  @override
+  _$_TransportDTO get _value => super._value as _$_TransportDTO;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? model = freezed,
+    Object? number = freezed,
+  }) {
+    return _then(_$_TransportDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      model: model == freezed
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as TransportModelDTO?,
+      number: number == freezed
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TransportDTO implements _TransportDTO {
+  const _$_TransportDTO({required this.id, this.model, this.number});
+
+  factory _$_TransportDTO.fromJson(Map<String, dynamic> json) =>
+      _$$_TransportDTOFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final TransportModelDTO? model;
+  @override
+  final String? number;
+
+  @override
+  String toString() {
+    return 'TransportDTO(id: $id, model: $model, number: $number)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_TransportDTO &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.model, model) &&
+            const DeepCollectionEquality().equals(other.number, number));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(model),
+      const DeepCollectionEquality().hash(number));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_TransportDTOCopyWith<_$_TransportDTO> get copyWith =>
+      __$$_TransportDTOCopyWithImpl<_$_TransportDTO>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_TransportDTOToJson(this);
+  }
+}
+
+abstract class _TransportDTO implements TransportDTO {
+  const factory _TransportDTO(
+      {required final int id,
+      final TransportModelDTO? model,
+      final String? number}) = _$_TransportDTO;
+
+  factory _TransportDTO.fromJson(Map<String, dynamic> json) =
+      _$_TransportDTO.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  TransportModelDTO? get model => throw _privateConstructorUsedError;
+  @override
+  String? get number => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_TransportDTOCopyWith<_$_TransportDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TransportModelDTO _$TransportModelDTOFromJson(Map<String, dynamic> json) {
+  return _TransportModelDTO.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TransportModelDTO {
+  int get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TransportModelDTOCopyWith<TransportModelDTO> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TransportModelDTOCopyWith<$Res> {
+  factory $TransportModelDTOCopyWith(
+          TransportModelDTO value, $Res Function(TransportModelDTO) then) =
+      _$TransportModelDTOCopyWithImpl<$Res>;
+  $Res call({int id, String? name});
+}
+
+/// @nodoc
+class _$TransportModelDTOCopyWithImpl<$Res>
+    implements $TransportModelDTOCopyWith<$Res> {
+  _$TransportModelDTOCopyWithImpl(this._value, this._then);
+
+  final TransportModelDTO _value;
+  // ignore: unused_field
+  final $Res Function(TransportModelDTO) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_TransportModelDTOCopyWith<$Res>
+    implements $TransportModelDTOCopyWith<$Res> {
+  factory _$$_TransportModelDTOCopyWith(_$_TransportModelDTO value,
+          $Res Function(_$_TransportModelDTO) then) =
+      __$$_TransportModelDTOCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, String? name});
+}
+
+/// @nodoc
+class __$$_TransportModelDTOCopyWithImpl<$Res>
+    extends _$TransportModelDTOCopyWithImpl<$Res>
+    implements _$$_TransportModelDTOCopyWith<$Res> {
+  __$$_TransportModelDTOCopyWithImpl(
+      _$_TransportModelDTO _value, $Res Function(_$_TransportModelDTO) _then)
+      : super(_value, (v) => _then(v as _$_TransportModelDTO));
+
+  @override
+  _$_TransportModelDTO get _value => super._value as _$_TransportModelDTO;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+  }) {
+    return _then(_$_TransportModelDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TransportModelDTO implements _TransportModelDTO {
+  const _$_TransportModelDTO({required this.id, this.name});
+
+  factory _$_TransportModelDTO.fromJson(Map<String, dynamic> json) =>
+      _$$_TransportModelDTOFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final String? name;
+
+  @override
+  String toString() {
+    return 'TransportModelDTO(id: $id, name: $name)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_TransportModelDTO &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_TransportModelDTOCopyWith<_$_TransportModelDTO> get copyWith =>
+      __$$_TransportModelDTOCopyWithImpl<_$_TransportModelDTO>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_TransportModelDTOToJson(this);
+  }
+}
+
+abstract class _TransportModelDTO implements TransportModelDTO {
+  const factory _TransportModelDTO(
+      {required final int id, final String? name}) = _$_TransportModelDTO;
+
+  factory _TransportModelDTO.fromJson(Map<String, dynamic> json) =
+      _$_TransportModelDTO.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  String? get name => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_TransportModelDTOCopyWith<_$_TransportModelDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

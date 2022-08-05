@@ -38,7 +38,8 @@ _$_OrderDTO _$$_OrderDTOFromJson(Map<String, dynamic> json) => _$_OrderDTO(
           ? null
           : CityDTO.fromJson(json['to_city_id'] as Map<String, dynamic>),
       points: (json['points'] as List<dynamic>?)
-          ?.map((e) => PointDTO.fromJson(e as Map<String, dynamic>))
+          ?.map((e) =>
+              e == null ? null : PointDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
       countPoints: json['count_points'] as int?,
       orderStatus: json['order_status'] == null
@@ -47,6 +48,9 @@ _$_OrderDTO _$$_OrderDTOFromJson(Map<String, dynamic> json) => _$_OrderDTO(
               json['order_status'] as Map<String, dynamic>),
       isCurrent: json['isCurrent'] as bool? ?? false,
       address: json['address'] as String?,
+      transport: json['transport'] == null
+          ? null
+          : TransportDTO.fromJson(json['transport'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_OrderDTOToJson(_$_OrderDTO instance) =>
@@ -78,6 +82,7 @@ Map<String, dynamic> _$$_OrderDTOToJson(_$_OrderDTO instance) =>
       'order_status': instance.orderStatus,
       'isCurrent': instance.isCurrent,
       'address': instance.address,
+      'transport': instance.transport,
     };
 
 _$_OrderStatusDTO _$$_OrderStatusDTOFromJson(Map<String, dynamic> json) =>
@@ -102,4 +107,33 @@ Map<String, dynamic> _$$_OrderStatusDTOToJson(_$_OrderStatusDTO instance) =>
       'stop_timer': instance.stopTimer?.toIso8601String(),
       'order': instance.order,
       'order_status': instance.orderStatus,
+    };
+
+_$_TransportDTO _$$_TransportDTOFromJson(Map<String, dynamic> json) =>
+    _$_TransportDTO(
+      id: json['id'] as int,
+      model: json['model'] == null
+          ? null
+          : TransportModelDTO.fromJson(json['model'] as Map<String, dynamic>),
+      number: json['number'] as String?,
+    );
+
+Map<String, dynamic> _$$_TransportDTOToJson(_$_TransportDTO instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'model': instance.model,
+      'number': instance.number,
+    };
+
+_$_TransportModelDTO _$$_TransportModelDTOFromJson(Map<String, dynamic> json) =>
+    _$_TransportModelDTO(
+      id: json['id'] as int,
+      name: json['name'] as String?,
+    );
+
+Map<String, dynamic> _$$_TransportModelDTOToJson(
+        _$_TransportModelDTO instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
     };

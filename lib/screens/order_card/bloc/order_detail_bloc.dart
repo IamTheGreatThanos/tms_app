@@ -44,6 +44,8 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     currentOrder = ord;
   }
 
+ 
+
   void _dispose(
     OrderDetailEventReset event,
     Emitter<OrderDetailState> emit,
@@ -174,9 +176,9 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
     try {
       if (event.cause == 'change_driver') {
         final OrderDTO result = await repository.stopOrderAndChangeDriver(
-          orderId!,
-          event.cause,
-          emptyDriver: event.emptyDriver,
+          orderId: orderId!,
+         cause: event.cause,
+         emptyDriver: event.emptyDriver,
         );
         // result.isCurrent = true;
         currentOrder = result.copyWith(isCurrent: true);
@@ -185,9 +187,10 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
           repository.saveOtherReasonTimer(orderId: orderId!);
         }
         final result = await repository.stopOrder(
-          orderId!,
-          event.cause,
-          emptyDriver: event.emptyDriver,
+          orderId:orderId!,
+          pointId:event.pointId,
+         cause: event.cause,
+         emptyDriver: event.emptyDriver,
         );
         // result.isCurrent = true;
         currentOrder = result.copyWith(isCurrent: true);

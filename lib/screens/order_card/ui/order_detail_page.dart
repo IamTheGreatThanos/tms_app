@@ -377,13 +377,37 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           color: ColorPalette.lightGrey,
                           thickness: 2,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text("Транспорт:"),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${state.order.transport?.model?.name}",
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(height: 4,),
+                                Text("${state.order.transport?.number}",style: const TextStyle(color: ColorPalette.commonGrey,),)
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          color: ColorPalette.lightGrey,
+                          thickness: 2,
+                        ),
                         Expanded(
                           child: SingleChildScrollView(
                             child: _BuildOrderItem(
                               order: state.order,
                               callback: ({
                                 required bool isOpened,
-                                required PointDTO orderPoint,
+                                required PointDTO? orderPoint,
                               }) {
                                 log('isOpened in _BuildOrderItem : $isOpened',
                                     name: _tag);
@@ -435,7 +459,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     isScan: Provider.of<OrderDetailProvider>(context).isScan,
                     point: Provider.of<OrderDetailProvider>(context).point,
                     index: Provider.of<OrderDetailProvider>(context).selected,
-                    points: state.order.points??[],
+                    points: state.order.points ?? [],
                     order: state.order,
                   ),
                 ),
@@ -506,10 +530,34 @@ bool isRightPoint({
   }
 }
 
+int getLastPointId(OrderDTO currentOrder) {
+  int id = 0;
+  for (int i = 0; i < currentOrder.points!.length; i++) {
+    if (currentOrder.points![i]?.status != "Завершен") {
+      id = currentOrder.points![i]?.id ?? 0;
+      break;
+    }
+  }
+  return id;
+}
+
+bool isAllFinished(OrderDTO currentOrder) {
+  bool flag = true;
+  for (int i = 0; i < currentOrder.points!.length; i++) {
+    if (currentOrder.points![i] != null &&
+        currentOrder.points![i]?.status != "Завершен") {
+      log("${currentOrder.points![i]?.status!}");
+      flag = false;
+      break;
+    }
+  }
+  return flag;
+}
+
 class _FABWidget extends StatelessWidget {
   final OrderDTO order;
   final bool isScan;
-  final List<PointDTO> points;
+  final List<PointDTO?> points;
   final int index;
   final PointDTO? point;
   const _FABWidget({
@@ -534,7 +582,11 @@ class _FABWidget extends StatelessWidget {
             order.status == 'В пути'))) {
       return GestureDetector(
         onTap: () {
-          if (index==0||(index>0&&(points[index-1].status=="finished"||points[index-1].status=="Завершен"))) {
+          if (index == 0 ||
+              points[index - 1] == null ||
+              (index > 0 &&
+                  (points[index - 1]?.status == "finished" ||
+                      points[index - 1]?.status == "Завершен"))) {
             AppRouter.push(
               context,
               BlocProvider<PointPageBloc>(
@@ -545,12 +597,12 @@ class _FABWidget extends StatelessWidget {
                       pointId: point!.id,
                     ),
                   ),
-                child: point!.id == order.points!.first.id
+                child: point!.id == order.points!.first?.id
                     ? WarehousePage(order: order, isScan: isScan, point: point!)
                     : PointPage(
                         order: order,
                         point: point!,
-                        isScan: order.points!.first.id == point!.id,
+                        isScan: order.points!.first?.id == point!.id,
                         // isScan: ,
                       ),
               ),
@@ -616,8 +668,14 @@ class _FABWidget extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
                 onTap: () async {
-                  BlocProvider.of<OrderDetailBloc>(context)
-                      .add(OrderDetailEventFinishOrder(orderId: order.id));
+                  if (isAllFinished(order)) {
+                    // log('isFinished true');
+                    BlocProvider.of<OrderDetailBloc>(context)
+                        .add(OrderDetailEventFinishOrder(orderId: order.id));
+                  } else {
+                    // log('isFinished false');
+                    showCustomSnackbar(context, 'Сначала закончите все точки');
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -660,6 +718,7 @@ class _FABWidget extends StatelessWidget {
                           value == items[2]) {
                         context.read<OrderDetailBloc>().add(
                               OrderDetailEventStop(
+                                pointId: getLastPointId(order),
                                 cause: value == items[0]
                                     ? "snack"
                                     : value == items[1]
@@ -670,7 +729,9 @@ class _FABWidget extends StatelessWidget {
                       }
                       if (value == items[3]) {
                         context.read<OrderDetailBloc>().add(
-                              OrderDetailEventStop(cause: 'other'),
+                              OrderDetailEventStop(
+                                  pointId: getLastPointId(order),
+                                  cause: 'other'),
                             );
                       }
                       if (value == items[4]) {
@@ -691,6 +752,7 @@ class _FABWidget extends StatelessWidget {
                         ).then(
                           (value) => context.read<OrderDetailBloc>().add(
                                 OrderDetailEventStop(
+                                  pointId: getLastPointId(order),
                                   cause: "change_driver",
                                   emptyDriver: value,
                                 ),
@@ -829,7 +891,7 @@ class _BuildOrderItem extends StatefulWidget {
   final OrderDTO order;
   final Function({
     required bool isOpened,
-    required PointDTO orderPoint,
+    required PointDTO? orderPoint,
   }) callback;
 
   const _BuildOrderItem({
@@ -884,7 +946,7 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     log('index: $index', name: _tag);
                     log('selected from provider: ${Provider.of<OrderDetailProvider>(context, listen: false).selected}',
                         name: _tag);
-                    log('status: ${widget.order.points![index].status}');
+                    log('status: ${widget.order.points![index]?.status}');
                     if (isOpened) {
                       Provider.of<OrderDetailProvider>(context, listen: false)
                           .selected = index;
@@ -896,13 +958,13 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     // if (widget.order.points![i].status == "finished") {
                     widget.callback.call(
                       isOpened:
-                          (widget.order.points![index].status == "finished" ||
-                                      widget.order.points![index].status ==
+                          (widget.order.points![index]?.status == "finished" ||
+                                      widget.order.points![index]?.status ==
                                           "Завершен") ||
                                   (index != 0 &&
-                                      widget.order.points![0].status !=
+                                      widget.order.points![0]?.status !=
                                           "finished" &&
-                                      widget.order.points![index].status ==
+                                      widget.order.points![index]?.status ==
                                           "Завершен")
                               ? false
                               : isOpened,
@@ -961,7 +1023,8 @@ class _BuildPointItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                DateFormat("dd MMMM yyyy, в").add_jm()
+                DateFormat("dd MMMM yyyy, в")
+                    .add_jm()
                     .format(date ?? DateTime.now()),
                 style: ProjectTextStyles.ui_12Medium
                     .copyWith(color: ColorPalette.commonGrey),
@@ -979,7 +1042,7 @@ class _BuildPointItem extends StatelessWidget {
 }
 
 class _BuildExpandablePointItem extends StatelessWidget {
-  final PointDTO point;
+  final PointDTO? point;
   final bool isExpanded;
   final Function(bool) onExpansionChanged;
 
@@ -1005,16 +1068,18 @@ class _BuildExpandablePointItem extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(7),
               decoration: BoxDecoration(
-                color: point.status == "finished" || point.status == 'Завершен'
-                    ? ColorPalette.main
-                    : ColorPalette.lightGrey,
+                color:
+                    point?.status == "finished" || point?.status == 'Завершен'
+                        ? ColorPalette.main
+                        : ColorPalette.lightGrey,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: SvgPicture.asset(
                 "assets/images/svg/orders_geo_done.svg",
-                color: point.status == "finished" || point.status == 'Завершен'
-                    ? ColorPalette.white
-                    : null,
+                color:
+                    point?.status == "finished" || point?.status == 'Завершен'
+                        ? ColorPalette.white
+                        : null,
                 width: 18,
                 height: 18,
               ),
@@ -1031,15 +1096,16 @@ class _BuildExpandablePointItem extends StatelessWidget {
                     //   color: ColorPalette.lightGrey,
                     // ),
                     Text(
-                      DateFormat("dd MMMM yyyy, в").add_jm()
-                          .format(point.date ?? DateTime.now()),
+                      DateFormat("dd MMMM yyyy, в")
+                          .add_jm()
+                          .format(point?.date ?? DateTime.now()),
                       style: ProjectTextStyles.ui_12Medium
                           .copyWith(color: ColorPalette.commonGrey),
                     ),
                     Text(
-                      point.crossdockName != null
-                          ? '${point.crossdockName} (Кроссдок)'
-                          : (point.name ?? S.of(context).no_data),
+                      point?.crossdockName != null
+                          ? '${point?.crossdockName} (Кроссдок)'
+                          : (point?.name ?? S.of(context).no_data),
                       style: ProjectTextStyles.ui_16Medium,
                     ),
                     const SizedBox(
@@ -1051,8 +1117,8 @@ class _BuildExpandablePointItem extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             "assets/images/svg/pin-location.svg",
-                            color: point.status == "finished" ||
-                                    point.status == "Завершен"
+                            color: point?.status == "finished" ||
+                                    point?.status == "Завершен"
                                 ? ColorPalette.main
                                 : null,
                           ),
@@ -1061,9 +1127,9 @@ class _BuildExpandablePointItem extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text(
-                              point.address == null
+                              point?.address == null
                                   ? S.of(context).no_data
-                                  : '${point.address}',
+                                  : '${point?.address}',
                               style: ProjectTextStyles.ui_12Medium.copyWith(
                                 color: ColorPalette.commonGrey,
                               ),
@@ -1090,19 +1156,19 @@ class _BuildExpandablePointItem extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     "assets/images/svg/pin-location.svg",
-                    color:
-                        point.status == "finished" || point.status == "Завершен"
-                            ? ColorPalette.main
-                            : null,
+                    color: point?.status == "finished" ||
+                            point?.status == "Завершен"
+                        ? ColorPalette.main
+                        : null,
                   ),
                   const SizedBox(
                     width: 4,
                   ),
                   Expanded(
                     child: Text(
-                      point.address == null
+                      point?.address == null
                           ? S.of(context).no_data
-                          : point.address!,
+                          : point?.address ?? "",
                       style: ProjectTextStyles.ui_12Medium.copyWith(
                         color: ColorPalette.commonGrey,
                       ),
@@ -1115,15 +1181,15 @@ class _BuildExpandablePointItem extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                "Количество контейнеров - ${point.containers?.length} ",
+                "Количество контейнеров - ${point?.containers?.length} ",
                 textAlign: TextAlign.left,
                 style: ProjectTextStyles.ui_12Medium
                     .copyWith(color: ColorPalette.black),
               ),
-              if (point.products != null)
-                for (int k = 0; k < point.products!.length; k++)
+              if (point != null && point!.products != null)
+                for (int k = 0; k < point!.products!.length; k++)
                   Text(
-                    point.products?[k].name ?? S.of(context).no_data,
+                    point!.products?[k].name ?? S.of(context).no_data,
                     style: ProjectTextStyles.ui_12Medium
                         .copyWith(color: ColorPalette.commonGrey),
                   ),

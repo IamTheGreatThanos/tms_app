@@ -17,7 +17,7 @@ extension Read on BlocRideHistory {
       List<OrderHistoryData> filteredHistory = historyData.data ?? [];
       if (filteredHistory.isNotEmpty) {
         filteredHistory.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-        log('hello');
+      //  log('hello');
         for (int i = 0; i < filteredHistory.length - 1; i++) {
           if (!filteredHistory[i]
               .createdAt!
@@ -37,9 +37,21 @@ extension Read on BlocRideHistory {
           filteredHistory[0].showTime = true;
         }
       }
+
+      int finishedLength = 0;
+      int declinedLength = 0;
+      for(final OrderHistoryData data in  filteredHistory ){
+        if(data.orderStatus=="finished"){
+          finishedLength++;
+        }else if(data.orderStatus=="declined"){
+          declinedLength++;
+        }
+      }
       emit(StateLoadRideHistory(
         history: filteredHistory,
-        from: event.from ?? DateTime.now().subtract(Duration(days: 31)),
+        finishedLength: finishedLength,
+        declinedLength: declinedLength,
+        from: event.from ?? DateTime.now().subtract(const Duration(days: 31)),
         to: event.to ?? DateTime.now(),
       ));
     } catch (e) {
