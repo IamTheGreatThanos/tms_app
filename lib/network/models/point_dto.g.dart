@@ -82,6 +82,7 @@ _$_ContainerDTO _$$_ContainerDTOFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       isScanned: json['isScanned'] as bool? ?? false,
+      status: json['status'] as int?,
     );
 
 Map<String, dynamic> _$$_ContainerDTOToJson(_$_ContainerDTO instance) =>
@@ -92,4 +93,5 @@ Map<String, dynamic> _$$_ContainerDTOToJson(_$_ContainerDTO instance) =>
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'isScanned': instance.isScanned,
+      'status': instance.status,
     };

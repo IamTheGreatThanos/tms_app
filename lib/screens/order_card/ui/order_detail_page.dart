@@ -632,7 +632,10 @@ class _FABWidget extends StatelessWidget {
             children: [
               Center(
                 child: Text(
-                  "Приехал",
+                  (order.points![index]?.status == "finished" ||
+                                      order.points![index]?.status ==
+                                          "Завершен")?
+                  "Посмотреть детали":"Приехал",
                   style: ProjectTextStyles.ui_16Medium.copyWith(
                     color: Colors.white,
                   ),
@@ -958,16 +961,17 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                     // if (widget.order.points![i].status == "finished") {
                     widget.callback.call(
                       isOpened:
-                          (widget.order.points![index]?.status == "finished" ||
-                                      widget.order.points![index]?.status ==
-                                          "Завершен") ||
-                                  (index != 0 &&
-                                      widget.order.points![0]?.status !=
-                                          "finished" &&
-                                      widget.order.points![index]?.status ==
-                                          "Завершен")
-                              ? false
-                              : isOpened,
+                          // (widget.order.points![index]?.status == "finished" ||
+                          //             widget.order.points![index]?.status ==
+                          //                 "Завершен") ||
+                          //         (index != 0 &&
+                          //             widget.order.points![0]?.status !=
+                          //                 "finished" &&
+                          //             widget.order.points![index]?.status ==
+                          //                 "Завершен")
+                          //     ? false
+                          //     : 
+                              isOpened,
                       orderPoint: widget.order.points![index],
                     );
                     // }

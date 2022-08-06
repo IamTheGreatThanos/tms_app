@@ -223,9 +223,9 @@ class NetworkService {
   // }
 
   Future<OrderDTO> stopOrder({
-   required int orderId,
-   required int pointId,
-   required String cause, 
+    required int orderId,
+    required int pointId,
+    required String cause,
     UserDTO? emptyDriver,
   }) async {
     final response = await _dioWrapper.sendRequest(
@@ -246,7 +246,7 @@ class NetworkService {
 
   Future<OrderDTO> stopOrderAndChangeDriver({
     required int orderId,
-    required String cause, 
+    required String cause,
     UserDTO? emptyDriver,
   }) async {
     final response = await _dioWrapper.sendRequest(
@@ -322,37 +322,35 @@ class NetworkService {
   Future<String> sendContainers(
     List<ContainerDTO> containers,
   ) async {
+    try {
+      List<Map<String, dynamic>> temp = [];
 
-    try{
-
-    List<Map<String, dynamic>> temp = [];
-
-    for (int i = 0; i < containers.length; i++) {
-      if (containers[i].isScanned) {
-        temp.add({
-          'point_id': containers[i].pointId,
-          'code': containers[i].code,
-        });
+      for (int i = 0; i < containers.length; i++) {
+        if (containers[i].isScanned) {
+          temp.add({
+            'point_id': containers[i].pointId,
+            'code': containers[i].code,
+          });
+        }
       }
-    }
 
-    //log('TEMP LENGTH:::: ${temp.length}');
-    final response = await _dioWrapper.sendRequest(
-      path: "/order/point/containers",
-      method: NetworkMethod.post,
-      request: {  
-        'containers': temp,
-      },
-    );
-    log(
-      '##### sendContainers api:: ${response.statusCode}',
-      name: _networkService,
-    );
+      //log('TEMP LENGTH:::: ${temp.length}');
+      final response = await _dioWrapper.sendRequest(
+        path: "/order/point/containers",
+        method: NetworkMethod.post,
+        request: {
+          'containers': temp,
+        },
+      );
+      log(
+        '##### sendContainers api:: ${response.statusCode}',
+        name: _networkService,
+      );
 
-    return (response.data as Map<String, dynamic>)["message"].toString();
-    }catch(e){
+      return (response.data as Map<String, dynamic>)["message"].toString();
+    } catch (e) {
       log('MESSAGE::::: $e');
-    throw Exception(e);
+      throw Exception(e);
     }
   }
 
@@ -566,14 +564,16 @@ class NetworkService {
     );
 
     final OrderDTO order = await compute<Map<String, dynamic>, OrderDTO>(
-      (Map<String, dynamic> mapp) async{
-        return OrderDTO.fromJson(mapp).copyWith(transport: 
-        await compute<Map<String, dynamic>, TransportDTO>(
-      (Map<String, dynamic> mapp) {
-        return TransportDTO.fromJson(mapp);
-      },
-      (response.data as Map<String, dynamic>)['data']['transport']['transport'] as Map<String, dynamic>,
-    ),
+      (Map<String, dynamic> mapp) async {
+        return OrderDTO.fromJson(mapp).copyWith(
+          transport: (response.data as Map<String, dynamic>)['data']
+                      ['transport'] !=
+                  null
+              ? TransportDTO.fromJson(
+                  (response.data as Map<String, dynamic>)['data']['transport']
+                      ['transport'] as Map<String, dynamic>,
+                )
+              : null,
         );
       },
       (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,

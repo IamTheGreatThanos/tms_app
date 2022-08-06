@@ -810,6 +810,8 @@ mixin _$ContainerDTO {
   set updatedAt(String? value) => throw _privateConstructorUsedError;
   bool get isScanned => throw _privateConstructorUsedError;
   set isScanned(bool value) => throw _privateConstructorUsedError;
+  int? get status => throw _privateConstructorUsedError;
+  set status(int? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -828,7 +830,8 @@ abstract class $ContainerDTOCopyWith<$Res> {
       String? code,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
-      bool isScanned});
+      bool isScanned,
+      int? status});
 }
 
 /// @nodoc
@@ -847,6 +850,7 @@ class _$ContainerDTOCopyWithImpl<$Res> implements $ContainerDTOCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? isScanned = freezed,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -873,6 +877,10 @@ class _$ContainerDTOCopyWithImpl<$Res> implements $ContainerDTOCopyWith<$Res> {
           ? _value.isScanned
           : isScanned // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -890,7 +898,8 @@ abstract class _$$_ContainerDTOCopyWith<$Res>
       String? code,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
-      bool isScanned});
+      bool isScanned,
+      int? status});
 }
 
 /// @nodoc
@@ -912,6 +921,7 @@ class __$$_ContainerDTOCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? isScanned = freezed,
+    Object? status = freezed,
   }) {
     return _then(_$_ContainerDTO(
       id: id == freezed
@@ -938,6 +948,10 @@ class __$$_ContainerDTOCopyWithImpl<$Res>
           ? _value.isScanned
           : isScanned // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -951,7 +965,8 @@ class _$_ContainerDTO implements _ContainerDTO {
       this.code,
       @JsonKey(name: "created_at") this.createdAt,
       @JsonKey(name: "updated_at") this.updatedAt,
-      this.isScanned = false});
+      this.isScanned = false,
+      this.status});
 
   factory _$_ContainerDTO.fromJson(Map<String, dynamic> json) =>
       _$$_ContainerDTOFromJson(json);
@@ -972,10 +987,12 @@ class _$_ContainerDTO implements _ContainerDTO {
   @override
   @JsonKey()
   bool isScanned;
+  @override
+  int? status;
 
   @override
   String toString() {
-    return 'ContainerDTO(id: $id, pointId: $pointId, code: $code, createdAt: $createdAt, updatedAt: $updatedAt, isScanned: $isScanned)';
+    return 'ContainerDTO(id: $id, pointId: $pointId, code: $code, createdAt: $createdAt, updatedAt: $updatedAt, isScanned: $isScanned, status: $status)';
   }
 
   @JsonKey(ignore: true)
@@ -996,7 +1013,8 @@ abstract class _ContainerDTO implements ContainerDTO {
       String? code,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
-      bool isScanned}) = _$_ContainerDTO;
+      bool isScanned,
+      int? status}) = _$_ContainerDTO;
 
   factory _ContainerDTO.fromJson(Map<String, dynamic> json) =
       _$_ContainerDTO.fromJson;
@@ -1016,6 +1034,8 @@ abstract class _ContainerDTO implements ContainerDTO {
   String? get updatedAt => throw _privateConstructorUsedError;
   @override
   bool get isScanned => throw _privateConstructorUsedError;
+  @override
+  int? get status => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ContainerDTOCopyWith<_$_ContainerDTO> get copyWith =>

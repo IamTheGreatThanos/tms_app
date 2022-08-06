@@ -65,7 +65,7 @@ class ContainerDTO with _$ContainerDTO {
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(name: "updated_at") String? updatedAt,
     @Default(false) bool isScanned,
-
+    int? status,
 
     // @JsonKey(name: 'created_at') String? createdAt,
   }) = _ContainerDTO;

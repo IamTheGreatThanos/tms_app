@@ -434,7 +434,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: BlocBuilder<PointPageBloc, PointPageState>(
             builder: (context, state) {
-              if (state is PointPageStateLoaded) {
+              if (state is PointPageStateLoaded&&(state.orderPoint.status!="Завершен")) {
                 return SizedBox(
                   height: 70,
                   child: Padding(
