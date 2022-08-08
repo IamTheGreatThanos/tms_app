@@ -36,7 +36,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             // top: 70,
             right: 10,
             left: 10,
-            bottom: 22,
           ),
           child: MediaQuery.of(context).size.height < 750
               ? SingleChildScrollView(child: _buildColumn(context))
@@ -52,105 +51,96 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget _buildColumn(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const SizedBox(
-          height: 70,
-        ),
-        SvgPicture.asset("assets/images/svg/logo.svg"),
-        const SizedBox(
-          height: 13,
-        ),
-        Image.asset(
-          "assets/images/png/truck.png",
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Text(
-          S.of(context).with_your_help_were_doing_logistics_better,
-          style: ProjectTextStyles.ui_24Medium.copyWith(
-            color: ColorPalette.main,
+    return SafeArea(
+      child: ListView(
+        children: [
+          const SizedBox(
+            height: 20,
           ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Column(
-          children: [
-            MainButton(
-              borderRadius: 10.0,
-              title: S.of(context).registration,
-              onTap: () {
-                showPhoneBottomDialog(context);
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            MainButton(
-              borderRadius: 10.0,
-              title: S.of(context).enter,
-              textColor: ColorPalette.main,
-              onTap: () {
-                // AppRouter.pushOff(
-                //   context,
-                //   const BottomNavigationBarScreen(),
-                // );
-                // showReferalCodeBottomDialog(
-                //     context, SignUpVModel(bloc: BlocAuth()));
-                showSignInBottomDialog(context);
-              },
-              color: ColorPalette.white,
-              borderColor: ColorPalette.main,
-            ),
-          ],
-        ),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 43,
+          SvgPicture.asset(
+            "assets/images/svg/logo.svg",
+            height: 40,
           ),
-          child: RichText(
+          Image.asset(
+            "assets/images/png/truck.png",
+          ),
+          Text(
+            S.of(context).with_your_help_were_doing_logistics_better,
+            style: ProjectTextStyles.ui_24Medium.copyWith(
+              color: ColorPalette.main,
+            ),
             textAlign: TextAlign.center,
-            text: TextSpan(
-              style: ProjectTextStyles.ui_12Medium.copyWith(
-                color: ColorPalette.commonGrey,
-              ),
-              children: [
-                TextSpan(text: S.of(context).policy_title),
-                TextSpan(
-                    text: S.of(context).privacy_policy,
-                    style: ProjectTextStyles.ui_12Medium.copyWith(
-                      color: ColorPalette.pickColor,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        log('privacy_policy');
-                      }),
-                const TextSpan(text: ' & '),
-                TextSpan(
-                    text: S.of(context).terms_of_use,
-                    style: ProjectTextStyles.ui_12Medium.copyWith(
-                      color: ColorPalette.pickColor,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        log('terms_of_use');
-                      }),
-              ],
-            ),
           ),
-        )
-        // Container(
-        //   padding: const EdgeInsets.symmetric(
-        //     vertical: 16,
-        //   ),
-        //   decoration: ,
-        // )
-      ],
+          const SizedBox(
+            height: 30,
+          ),
+          Column(
+            children: [
+              MainButton(
+                borderRadius: 10.0,
+                title: S.of(context).registration,
+                onTap: () {
+                  showPhoneBottomDialog(context);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              MainButton(
+                borderRadius: 10.0,
+                title: S.of(context).enter,
+                textColor: ColorPalette.main,
+                onTap: () {
+                  // AppRouter.pushOff(
+                  //   context,
+                  //   const BottomNavigationBarScreen(),
+                  // );
+                  // showReferalCodeBottomDialog(
+                  //     context, SignUpVModel(bloc: BlocAuth()));
+                  showSignInBottomDialog(context);
+                },
+                color: ColorPalette.white,
+                borderColor: ColorPalette.main,
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 43,
+            ),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: ProjectTextStyles.ui_12Medium.copyWith(
+                  color: ColorPalette.commonGrey,
+                ),
+                children: [
+                  TextSpan(text: S.of(context).policy_title),
+                  TextSpan(
+                      text: S.of(context).privacy_policy,
+                      style: ProjectTextStyles.ui_12Medium.copyWith(
+                        color: ColorPalette.pickColor,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          log('privacy_policy');
+                        }),
+                  const TextSpan(text: ' & '),
+                  TextSpan(
+                      text: S.of(context).terms_of_use,
+                      style: ProjectTextStyles.ui_12Medium.copyWith(
+                        color: ColorPalette.pickColor,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          log('terms_of_use');
+                        }),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
