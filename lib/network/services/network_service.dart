@@ -563,25 +563,37 @@ class NetworkService {
       name: _networkService,
     );
 
-    final OrderDTO order = await compute<Map<String, dynamic>, OrderDTO>(
-      (Map<String, dynamic> mapp) async {
-        return OrderDTO.fromJson(mapp).copyWith(
-          transport: (response.data as Map<String, dynamic>)['data']
-                      ['transport'] !=
-                  null
+    return OrderDTO.fromJson((response.data as Map<String, dynamic>)['data']
+            as Map<String, dynamic>)
+        .copyWith(
+      transport:
+          (response.data as Map<String, dynamic>)['data']['transport'] != null
               ? TransportDTO.fromJson(
                   (response.data as Map<String, dynamic>)['data']['transport']
                       ['transport'] as Map<String, dynamic>,
                 )
               : null,
-        );
-      },
-      (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
     );
 
-    // log(points.toString(), name: _networkService);
+    // final OrderDTO order = await compute<Map<String, dynamic>, OrderDTO>(
+    //   (Map<String, dynamic> mapp) async {
+    //     return OrderDTO.fromJson(mapp).copyWith(
+    //       transport: (response.data as Map<String, dynamic>)['data']
+    //                   ['transport'] !=
+    //               null
+    //           ? TransportDTO.fromJson(
+    //               (response.data as Map<String, dynamic>)['data']['transport']
+    //                   ['transport'] as Map<String, dynamic>,
+    //             )
+    //           : null,
+    //     );
+    //   },
+    //   (response.data as Map<String, dynamic>)['data'] as Map<String, dynamic>,
+    // );
 
-    return order;
+    // // log(points.toString(), name: _networkService);
+
+    // return order;
   }
 
   Future<String> orderFinish({

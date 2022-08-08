@@ -108,7 +108,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
       // }
       emit(OrderDetailStateLoaded(orderPoints: response, order: currentOrder));
     } catch (e) {
-      log('$e', name: _tag);
+      log('READ: $e', name: _tag);
       emit(
         OrderDetailStateError(
           error: const AppError(message: "Что то пошло не так 1"),
@@ -227,6 +227,8 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
       currentOrder = refreshedOrder;
       orderId = event.orderId;
 
+      log('message 1');
+
       if (currentOrder.status == "stopped") {
         if (currentOrder.orderStatus == null ||
             currentOrder.orderStatus!.stopTimer == null) {
@@ -239,6 +241,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
             ),
           );
         } else {
+          log('message 2');
           if (currentOrder.orderStatus!.stopReason == "") {
             String otherTimeStart =
                 await repository.getOtherReasonTimer(orderId: orderId!);
@@ -267,7 +270,7 @@ class OrderDetailBloc extends Bloc<OrderDetailEvent, OrderDetailState> {
         ),
       );
     } catch (e) {
-      log('$e', name: _tag);
+      log('_refresh::: $e', name: _tag);
       emit(
         OrderDetailStateError(
           error:
