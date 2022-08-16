@@ -4,10 +4,8 @@ import 'dart:developer' as dev;
 
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
-import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
-import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -206,8 +204,8 @@ class _SessionState extends State<SessionPage> {
             bottom: 30,
             right: 15,
             child: IconButton(
-                onPressed: () async{
-                   await updateMap(15, currentPos!);
+                onPressed: () async {
+                  await updateMap(15, currentPos!);
                 },
                 icon: const Icon(
                   Icons.my_location,
