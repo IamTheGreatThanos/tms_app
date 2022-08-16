@@ -77,6 +77,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Column(
             children: [
               MainButton(
+                color: ColorPalette.main,
                 borderRadius: 10.0,
                 title: S.of(context).registration,
                 onTap: () {
