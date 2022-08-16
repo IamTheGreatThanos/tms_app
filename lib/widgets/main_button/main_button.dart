@@ -48,7 +48,7 @@ class MainButton extends StatelessWidget {
   const MainButton({
     Key? key,
     this.title,
-    this.color = ColorPalette.main,
+    this.color = ColorPalette.secondaryMain,
     this.isEnabled = true,
     this.textColor = ColorPalette.white,
     required this.onTap,

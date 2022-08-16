@@ -217,6 +217,7 @@ class _BuildUserInfo extends StatelessWidget {
                               padding: const EdgeInsets.only(right: 2.0),
                               child: SvgPicture.asset(
                                 "assets/images/svg/${index == 4 ? "half_" : ""}filled_star.svg",
+                                color: ColorPalette.main,
                               ),
                             );
                           }),

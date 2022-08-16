@@ -193,7 +193,7 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                                 vModel: _vmodel,
                               ),
                             ),
-                        color: ColorPalette.green,
+                        color: ColorPalette.main,
                         title: "Сохранить",
                       ),
                       const SizedBox(
@@ -405,7 +405,7 @@ class _BuildPersonalDataState extends State<_BuildPersonalData> {
           ),
           // vmodel.city,
           DropdownButtonFormField(
-            iconSize: 24,
+            iconSize: 20,
             value: cityValue,
             decoration: const InputDecoration(
               hintStyle: ProjectTextStyles.ui_16Medium,

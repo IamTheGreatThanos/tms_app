@@ -137,6 +137,7 @@ class _BottomNavigationBarScreenState extends State<BottomNavigationBarScreen> {
                               },
                               items: [
                                 BottomNavBarItem(
+                                  
                                   icon: "assets/images/svg/orders.svg",
                                   title: S.of(context).orders,
                                   activeColor: ColorPalette.black,

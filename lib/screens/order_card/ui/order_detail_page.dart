@@ -625,7 +625,7 @@ class _FABWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: ColorPalette.main,
+            color: ColorPalette.secondaryMain,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -666,7 +666,7 @@ class _FABWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Material(
-              color: ColorPalette.main,
+              color: ColorPalette.secondaryMain,
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 borderRadius: BorderRadius.circular(10),
@@ -774,7 +774,7 @@ class _FABWidget extends StatelessWidget {
                   color: ColorPalette.white,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
-                    color: ColorPalette.main,
+                    color: ColorPalette.secondaryMain,
                   ),
                 ),
                 child: Stack(
@@ -783,7 +783,7 @@ class _FABWidget extends StatelessWidget {
                       child: Text(
                         "Стоп",
                         style: ProjectTextStyles.ui_16Medium.copyWith(
-                          color: ColorPalette.main,
+                          color: ColorPalette.secondaryMain,
                         ),
                       ),
                     ),
@@ -794,7 +794,7 @@ class _FABWidget extends StatelessWidget {
                         "assets/images/svg/chevrone_down.svg",
                         width: 24,
                         height: 24,
-                        color: ColorPalette.main,
+                        color: ColorPalette.secondaryMain,
                       ),
                     )
                   ],
@@ -821,7 +821,7 @@ class _FABWidget extends StatelessWidget {
             vertical: 16,
           ),
           decoration: BoxDecoration(
-            color: ColorPalette.main,
+            color: ColorPalette.secondaryMain,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -862,7 +862,7 @@ class _FABWidget extends StatelessWidget {
             vertical: 16,
           ),
           decoration: BoxDecoration(
-            color: ColorPalette.main,
+            color: ColorPalette.secondaryMain,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(

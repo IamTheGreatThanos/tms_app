@@ -411,7 +411,7 @@ class _WarehousePageState extends State<WarehousePage>
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 16),
                                       decoration: BoxDecoration(
-                                        color: ColorPalette.main,
+                                        color: ColorPalette.secondaryMain,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Stack(
@@ -510,7 +510,7 @@ class _WarehousePageState extends State<WarehousePage>
                                   vertical: 16,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: ColorPalette.main,
+                                  color: ColorPalette.secondaryMain,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Stack(

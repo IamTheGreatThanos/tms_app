@@ -475,7 +475,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
                                 decoration: BoxDecoration(
-                                  color: ColorPalette.main,
+                                  color: ColorPalette.secondaryMain,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Stack(
@@ -566,7 +566,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                       vertical: 16,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: ColorPalette.main,
+                                      color: ColorPalette.secondaryMain,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Stack(

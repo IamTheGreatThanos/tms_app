@@ -131,7 +131,7 @@ class _ItemWidget extends StatelessWidget {
                       child: DefaultTextStyle.merge(
                         style: TextStyle(
                           color: item.activeColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                         maxLines: 1,
                         textAlign: item.textAlign,

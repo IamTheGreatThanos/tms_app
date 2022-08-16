@@ -106,5 +106,13 @@ flutter:
           weight: 500
         - asset: fonts/Gilroy-Regular.ttf
           weight: 300
+    - family: ProductSans
+      fonts:
+        - asset: fonts/ProductSans-Bold.ttf
+          weight: 700
+        - asset: fonts/ProductSans-Medium.ttf
+          weight: 500
+        - asset: fonts/ProductSans-Regular.ttf
+          weight: 300
 flutter_intl:
   enabled: true
