@@ -98,11 +98,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     color: Colors.black,
                   ),
                 ),
-                // todayHighlightColor: Colors.red,
+                todayHighlightColor: Colors.orange,
+                
                 selectionColor: Colors.orange,
-                startRangeSelectionColor: ColorPalette.main,
-                endRangeSelectionColor: ColorPalette.main,
-                rangeSelectionColor: Colors.green[100],
+                startRangeSelectionColor: ColorPalette.orange,
+                endRangeSelectionColor: ColorPalette.orange,
+                rangeSelectionColor: ColorPalette.orange.withOpacity(0.1),
 
                 // backgroundColor: Colors.grey,
                 view: DateRangePickerView.month,

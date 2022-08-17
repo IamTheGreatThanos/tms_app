@@ -282,9 +282,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                   width: 40,
                                                   height: 40,
                                                   decoration: BoxDecoration(
-                                                    color: const Color(
-                                                      0xFF22863A,
-                                                    ).withOpacity(0.1),
+                                                    color:  ColorPalette.orange.withOpacity(0.1),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                       100,
@@ -292,6 +290,7 @@ class _PointPageState extends State<PointPage> with TickerProviderStateMixin {
                                                   ),
                                                   child: SvgPicture.asset(
                                                     "assets/images/svg/box.svg",
+                                                    color: ColorPalette.orange,
                                                   ),
                                                 ),
                                                 const SizedBox(

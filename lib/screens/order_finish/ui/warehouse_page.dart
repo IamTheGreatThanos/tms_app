@@ -280,9 +280,7 @@ class _WarehousePageState extends State<WarehousePage>
                                                   width: 40,
                                                   height: 40,
                                                   decoration: BoxDecoration(
-                                                    color: const Color(
-                                                      0xFF22863A,
-                                                    ).withOpacity(0.1),
+                                                    color: ColorPalette.orange.withOpacity(0.1),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                       100,
@@ -290,6 +288,7 @@ class _WarehousePageState extends State<WarehousePage>
                                                   ),
                                                   child: SvgPicture.asset(
                                                     "assets/images/svg/box.svg",
+                                                    color:  ColorPalette.orange,
                                                   ),
                                                 ),
                                                 const SizedBox(
