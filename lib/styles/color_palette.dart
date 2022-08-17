@@ -22,4 +22,5 @@ class ColorPalette {
   static const Color black = Color(0xFF000000);
   static const Color warning = Color(0xFFFBBB05);
   static const Color errorRed = Color(0xFFE94335);
+  static const Color orange = Color(0xFFED8230);
 }
