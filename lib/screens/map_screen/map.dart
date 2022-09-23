@@ -9,6 +9,7 @@ import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
 import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,16 +43,16 @@ class _SessionState extends State<SessionPage> {
   final List<DrivingSessionResult> results = [];
   Position? currentPos;
   Future<void> initMap() async {
-    final Position _position = await _determinePosition();
-    currentPos = _position;
-    dev.log("CURRENT POS: ${_position.latitude} ${_position.longitude}");
-    await updateMap(5, _position);
+    final Position position = await _determinePosition();
+    currentPos = position;
+    dev.log("CURRENT POS: ${position.latitude} ${position.longitude}");
+    await updateMap(5, position);
 
     placemarks.add(PlacemarkMapObject(
       mapId: MapObjectId('placeMark ${placemarks.length - 1}'),
       point: Point(
-        latitude: _position.latitude, // data[i].lat as double,
-        longitude: _position.longitude, // data[i].long as double,
+        latitude: position.latitude, // data[i].lat as double,
+        longitude: position.longitude, // data[i].long as double,
       ),
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(
@@ -206,8 +207,9 @@ class _SessionState extends State<SessionPage> {
             bottom: 30,
             right: 15,
             child: IconButton(
-                onPressed: () async{
-                   await updateMap(15, currentPos!);
+                onPressed: () async {
+                  currentPos = await _determinePosition();
+                  await updateMap(15, currentPos!);
                 },
                 icon: const Icon(
                   Icons.my_location,
@@ -308,6 +310,9 @@ class _SessionState extends State<SessionPage> {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
+      await Geolocator.requestPermission();
+
+      showAppDialog(context, body: "Включите геолокацию в настройках телефона");
       return Future.error('Location services are disabled.');
     }
 
