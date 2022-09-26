@@ -23,4 +23,14 @@ class ColorPalette {
   static const Color warning = Color(0xFFFBBB05);
   static const Color errorRed = Color(0xFFE94335);
   static const Color orange = Color(0xFFED8230);
+
+  static List<Color> blueColors = [
+    Colors.blue.shade300,
+    Colors.blue.shade400,
+    Colors.blue.shade500,
+    Colors.blue.shade600,
+    Colors.blue.shade700,
+    Colors.blue.shade800,
+    Colors.blue.shade900,
+  ];
 }

@@ -283,7 +283,7 @@ class _SessionState extends State<SessionPage> {
               ),
               // coordinates: result.routes![i].geometry,
               strokeColor:
-                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                  ColorPalette.blueColors[Random().nextInt(ColorPalette.blueColors.length)],
               strokeWidth: 3,
             ),
           );
