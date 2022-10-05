@@ -8,7 +8,7 @@ part 'dynamic_link_layer_state.dart';
 
 class DynamicLinkLayerBloc
     extends Bloc<DynamicLinkLayerEvent, DynamicLinkLayerState> {
-  Uri? _link;
+  // Uri? _link;
   bool isAuthorized;
   final HiveRepository _hiveRepository;
 

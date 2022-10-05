@@ -17,8 +17,7 @@ part 'push_notifications_state.dart';
 
 const String _tag = 'PushNotificationsBloc';
 
-class PushNotificationsBloc
-    extends Bloc<PushNotificationsEvent, PushNotificationsState> {
+class PushNotificationsBloc extends Bloc<PushNotificationsEvent, PushNotificationsState> {
   final HiveRepository _hiveRepository;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final GlobalRepository _repository;
@@ -80,8 +79,7 @@ class PushNotificationsBloc
     InitialPushNotifyEvent event,
     Emitter<PushNotificationsState> emit,
   ) async {
-    final SharedPreferences _preferences =
-        await SharedPreferences.getInstance();
+    final SharedPreferences _preferences = await SharedPreferences.getInstance();
     if (Platform.isIOS) {
       await _firebaseMessaging.requestPermission(
         sound: true,
@@ -91,18 +89,19 @@ class PushNotificationsBloc
     }
     // messageSub = FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
 
-    const androiInit =
-        AndroidInitializationSettings('@mipmap/ic_launcher'); //for logo
-    final iosInit = IOSInitializationSettings(
+    const androiInit = AndroidInitializationSettings('@mipmap/ic_launcher'); //for logo
+    final iosInit = DarwinInitializationSettings(
       onDidReceiveLocalNotification: (id, title, body, payload) {},
     );
-    final initSetting =
-        InitializationSettings(android: androiInit, iOS: iosInit);
+    final initSetting = InitializationSettings(android: androiInit, iOS: iosInit);
     // final fltNotification = FlutterLocalNotificationsPlugin();
     await _flutterLocalNotificationsPlugin.initialize(
       initSetting,
-      onSelectNotification: (payload) async {
-        log('onSelectNotification payload ::: $payload');
+      onDidReceiveNotificationResponse: (payload) async {
+        log('onDidReceiveNotificationResponse payload ::: $payload');
+      },
+      onDidReceiveBackgroundNotificationResponse: (payload) async {
+        log('onDidReceiveBackgroundNotificationResponse payload ::: $payload');
       },
     );
     messageSub = FirebaseMessaging.onMessage.listen((message) {
@@ -121,8 +120,7 @@ class PushNotificationsBloc
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
       _flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
           ?.requestPermissions(
             alert: true,
             badge: true,
@@ -140,7 +138,7 @@ class PushNotificationsBloc
               'channelName',
               channelDescription: 'channelDescription',
             ),
-            iOS: IOSNotificationDetails(
+            iOS: DarwinNotificationDetails(
               presentAlert: true,
               presentBadge: true,
               presentSound: true,
@@ -152,8 +150,7 @@ class PushNotificationsBloc
 
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
-    messageOpenedAppSub =
-        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    messageOpenedAppSub = FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       _preferences.setString(lastFcmMessageId, message.messageId ?? '');
       _onMessageHandler(message);
     });

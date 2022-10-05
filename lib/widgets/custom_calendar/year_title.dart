@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 import 'utils/screen_sizes.dart';
 
 class YearTitle extends StatelessWidget {
   const YearTitle(
-    this.year,
-  );
+    this.year, {
+    super.key,
+  });
 
   final int year;
 

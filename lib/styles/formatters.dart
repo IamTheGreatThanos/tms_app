@@ -1,6 +1,5 @@
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class Formatters {
   static String mainTime(DateTime dateTime) {
