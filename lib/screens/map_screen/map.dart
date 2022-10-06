@@ -7,6 +7,7 @@ import 'package:europharm_flutter/network/models/point_dto.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_state.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
+import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +44,7 @@ class _SessionState extends State<SessionPage> {
   Future<void> initMap() async {
     final Position pos = await _determinePosition();
     currentPos = pos;
-  dev.log("CURRENT POS: ${pos.latitude} ${pos.longitude}");
+    dev.log("CURRENT POS: ${pos.latitude} ${pos.longitude}");
     await updateMap(5, pos);
 
     placemarks.add(PlacemarkMapObject(
@@ -76,8 +77,7 @@ class _SessionState extends State<SessionPage> {
     await controller.moveCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target:
-              Point(latitude: position.latitude, longitude: position.longitude),
+          target: Point(latitude: position.latitude, longitude: position.longitude),
           zoom: zoom,
         ),
       ),
@@ -122,8 +122,7 @@ class _SessionState extends State<SessionPage> {
                   if (state is MapLoadedState) {
                     // _requestRoutes(state.loadedMap);
                     return YandexMap(
-                      onMapCreated:
-                          (YandexMapController yandexMapController) async {
+                      onMapCreated: (YandexMapController yandexMapController) async {
                         completer.complete(yandexMapController);
                         initMap();
                         //final Position currentPos = await determinePosition();
@@ -132,8 +131,7 @@ class _SessionState extends State<SessionPage> {
                           final double? lat = double.tryParse(
                             state.loadedMap.first.lat!.toString(),
                           ); // FIXME
-                          final double? long = double.tryParse(
-                              state.loadedMap.first.long!.toString());
+                          final double? long = double.tryParse(state.loadedMap.first.long!.toString());
                           if (lat != null && long != null) {
                             dev.log('YandexMap: 1');
                             yandexMapController.moveCamera(
@@ -205,14 +203,16 @@ class _SessionState extends State<SessionPage> {
             bottom: 30,
             right: 15,
             child: IconButton(
-                onPressed: () async {
-                  await updateMap(15, currentPos!);
-                },
-                icon: const Icon(
-                  Icons.my_location,
-                  size: 45,
-                )),
-          )
+              onPressed: () async {
+                currentPos = await _determinePosition();
+                await updateMap(15, currentPos!);
+              },
+              icon: const Icon(
+                Icons.my_location,
+                size: 45,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -266,8 +266,7 @@ class _SessionState extends State<SessionPage> {
         ),
       ).result;
 
-      dev.log('YandexDriving.requestRoutes response ::: ${result.error}',
-          name: _tag);
+      dev.log('YandexDriving.requestRoutes response ::: ${result.error}', name: _tag);
 
       if (result.routes != null) {
         results.add(result);
@@ -279,8 +278,7 @@ class _SessionState extends State<SessionPage> {
                 points: result.routes![i].geometry,
               ),
               // coordinates: result.routes![i].geometry,
-              strokeColor:
-                  Colors.primaries[Random().nextInt(Colors.primaries.length)],
+              strokeColor: ColorPalette.blueColors[Random().nextInt(ColorPalette.blueColors.length)],
               strokeWidth: 3,
             ),
           );
@@ -307,6 +305,9 @@ class _SessionState extends State<SessionPage> {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
+      await Geolocator.requestPermission();
+
+      showAppDialog(context, body: "Включите геолокацию в настройках телефона");
       return Future.error('Location services are disabled.');
     }
 
@@ -325,8 +326,7 @@ class _SessionState extends State<SessionPage> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can

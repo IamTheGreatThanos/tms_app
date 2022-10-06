@@ -334,7 +334,7 @@ class NetworkService {
         }
       }
 
-      //log('TEMP LENGTH:::: ${temp.length}');
+      log('TEMP LENGTH:::: ${temp.length}');
       final response = await _dioWrapper.sendRequest(
         path: "/order/point/containers",
         method: NetworkMethod.post,
