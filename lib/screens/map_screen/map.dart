@@ -39,17 +39,18 @@ class _SessionState extends State<SessionPage> {
   final List<RequestPoint> points = [];
   final List<DrivingSessionResult> results = [];
   Position? currentPos;
+
   Future<void> initMap() async {
-    final Position _position = await _determinePosition();
-    currentPos = _position;
-    dev.log("CURRENT POS: ${_position.latitude} ${_position.longitude}");
-    await updateMap(5, _position);
+    final Position pos = await _determinePosition();
+    currentPos = pos;
+  dev.log("CURRENT POS: ${pos.latitude} ${pos.longitude}");
+    await updateMap(5, pos);
 
     placemarks.add(PlacemarkMapObject(
       mapId: MapObjectId('placeMark ${placemarks.length - 1}'),
       point: Point(
-        latitude: _position.latitude, // data[i].lat as double,
-        longitude: _position.longitude, // data[i].long as double,
+        latitude: pos.latitude, // data[i].lat as double,
+        longitude: pos.longitude, // data[i].long as double,
       ),
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(

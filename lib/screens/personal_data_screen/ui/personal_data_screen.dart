@@ -239,7 +239,7 @@ class _BuildAvatarState extends State<_BuildAvatar> {
       onTap: () async {
         var image = await ImagePicker().pickImage(source: ImageSource.gallery);
         if (image != null) {
-          print(image);
+          debugPrint(image.toString());
           setState(() {
             imagePath = image.path;
             widget.vModel.image = imagePath;

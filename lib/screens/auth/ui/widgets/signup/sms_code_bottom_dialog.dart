@@ -90,7 +90,7 @@ class _BuildSmsCodeFieldState extends State<_BuildSmsCodeField> {
                           cursorWidth: 2,
                           textStyle: ProjectTextStyles.ui_16Medium,
                           animationType: AnimationType.fade,
-                          animationDuration: Duration(milliseconds: 300),
+                          animationDuration: const Duration(milliseconds: 300),
                           enableActiveFill: true,
                           pinTheme: PinTheme(
                             shape: PinCodeFieldShape.box,

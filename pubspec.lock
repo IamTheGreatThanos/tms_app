@@ -1072,7 +1072,7 @@ packages:
     source: hosted
     version: "1.0.2"
   simple_gesture_detector:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: simple_gesture_detector
       url: "https://pub.dartlang.org"

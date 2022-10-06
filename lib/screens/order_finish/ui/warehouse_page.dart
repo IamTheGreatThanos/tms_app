@@ -22,7 +22,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class WarehousePage extends StatefulWidget {
   final OrderDTO order;
@@ -46,7 +45,6 @@ class _WarehousePageState extends State<WarehousePage>
     "Принять оплату",
     "Принять и подписать",
   ];
-  int _current = 0;
 
   late TabController _tabController;
   late PageController pageController;
@@ -67,7 +65,6 @@ class _WarehousePageState extends State<WarehousePage>
           if (kDebugMode) {
             print(_tabController.index);
           }
-          _current = _tabController.index;
         });
       }
     });
@@ -585,7 +582,7 @@ class _MapSection extends StatelessWidget {
                 child: SessionPage(
                   orderId: order.id,
                   order: order,
-                  orderPoints: [], // TODO
+                  orderPoints: const [], // TODO
                 ),
               ),
               // YandexMap(
@@ -666,6 +663,7 @@ class _BuildScanMethodChoose extends StatelessWidget {
                 true,
                 ScanMode.BARCODE,
               );
+
               if (barcode.isNotEmpty) {
                 Navigator.pop(context, barcode);
                 onScan.call(barcode);
@@ -735,7 +733,7 @@ class BuildBarcodeEnterField extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BuildBarcodeEnterField createState() => _BuildBarcodeEnterField();
+  State<BuildBarcodeEnterField> createState() => _BuildBarcodeEnterField();
 }
 
 class _BuildBarcodeEnterField extends State<BuildBarcodeEnterField> {

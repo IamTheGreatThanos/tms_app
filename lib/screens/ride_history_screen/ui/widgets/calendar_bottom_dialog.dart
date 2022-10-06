@@ -68,13 +68,8 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
     } else if (toDate != null && fromDate == null) {
       return "${dayFormat.format(toDate)} ${monthFormat.format(toDate).substring(0, 3)}";
     } else if (toDate != null && fromDate != null) {
-      return dayFormat.format(fromDate) +
-          " " +
-          monthFormat.format(fromDate).substring(0, 3) +
-          ' - ' +
-          dayFormat.format(toDate) +
-          " " +
-          monthFormat.format(toDate).substring(0, 3);
+      return "${dayFormat.format(fromDate)} ${monthFormat.format(fromDate).substring(0, 3)}"
+          " - ${dayFormat.format(toDate)} ${monthFormat.format(toDate).substring(0, 3)}";
     }
     setState(() {
       _rangeStart = DateTime.now();

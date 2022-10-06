@@ -30,6 +30,8 @@
 	<array>
 		<string>_dartobservatory._tcp</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Приложению требуется доступ к вашему местоположение, чтобы показать ваше местоположение в карте. Эти данные не будут нигде хранится.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Can I use the camera please?</string>
 	<key>NSMicrophoneUsageDescription</key>

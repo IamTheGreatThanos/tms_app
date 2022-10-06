@@ -12,8 +12,7 @@ void showReferalCodeBottomDialog(BuildContext context, SignUpVModel vModel) {
 class _BuildReferalCodeField extends StatefulWidget {
   final SignUpVModel vmodel;
 
-  const _BuildReferalCodeField({Key? key, required this.vmodel})
-      : super(key: key);
+  const _BuildReferalCodeField({Key? key, required this.vmodel}) : super(key: key);
 
   @override
   _BuildReferalCodeFieldState createState() => _BuildReferalCodeFieldState();
@@ -80,7 +79,8 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
                               successReferalCodeCallback(context);
                             },
                             child: SvgPicture.asset(
-                                "assets/images/svg/referal_code_help.svg",          color: ColorPalette.main,
+                              "assets/images/svg/referal_code_help.svg",
+                              color: ColorPalette.main,
                             ),
                           )
                         ],
@@ -132,10 +132,12 @@ class _BuildReferalCodeFieldState extends State<_BuildReferalCodeField> {
 }
 
 Future<void> successReferalCodeCallback(BuildContext context) async {
-  await showDialog(context: context, builder: (ctx) => OneButtonDialog());
+  await showDialog(context: context, builder: (ctx) => const OneButtonDialog());
 }
 
 class OneButtonDialog extends StatelessWidget {
+  const OneButtonDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MainDialogContainer(
@@ -145,7 +147,10 @@ class OneButtonDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset("assets/images/svg/referal_code_icon.svg",color: ColorPalette.main,),
+            SvgPicture.asset(
+              "assets/images/svg/referal_code_icon.svg",
+              color: ColorPalette.main,
+            ),
             const SizedBox(height: 15.0),
             Flexible(
               child: Text(
@@ -165,8 +170,7 @@ class OneButtonDialog extends StatelessWidget {
                   ),
                   TextSpan(
                     text: S.of(context).referal_code_dialog,
-                    style: ProjectTextStyles.ui_16Medium
-                        .copyWith(color: ColorPalette.darkGrey),
+                    style: ProjectTextStyles.ui_16Medium.copyWith(color: ColorPalette.darkGrey),
                   )
                 ])),
             const SizedBox(height: 15.0),

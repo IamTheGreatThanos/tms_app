@@ -1,8 +1,6 @@
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
-import 'utils/screen_sizes.dart';
-
 class DayNumber extends StatelessWidget {
   const DayNumber({
     Key? key,
@@ -19,23 +17,27 @@ class DayNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = getDayNumberSize(context);
+    // final double size = getDayNumberSize(context);
     final sizes = MediaQuery.of(context).size;
-    final double width = sizes.width < 365 ? 15 : sizes.width > 420 ? 21 : 18;
+    final double width = sizes.width < 365
+        ? 15
+        : sizes.width > 420
+            ? 21
+            : 18;
     return Padding(
       padding: EdgeInsets.only(right: isLastDay ? 0 : 7.0),
       child: InkWell(
         onTap: () {
-          if(day > 0) {
+          if (day > 0) {
             onTap.call();
           }
         },
         child: Container(
-          padding:  EdgeInsets.only(left: color != null ? 5 : 0,
-              right: color != null ? 5 : 0,
-              top: color != null ? 2 : 0,
-              bottom: color != null ? 2 : 4,
-
+          padding: EdgeInsets.only(
+            left: color != null ? 5 : 0,
+            right: color != null ? 5 : 0,
+            top: color != null ? 2 : 0,
+            bottom: color != null ? 2 : 4,
           ),
           width: width,
           height: 23,

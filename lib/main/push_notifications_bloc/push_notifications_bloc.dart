@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:europharm_flutter/main/push_notifications_bloc/constants/constants.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,6 +105,7 @@ class PushNotificationsBloc extends Bloc<PushNotificationsEvent, PushNotificatio
         log('onDidReceiveBackgroundNotificationResponse payload ::: $payload');
       },
     );
+
     messageSub = FirebaseMessaging.onMessage.listen((message) {
       log(
         'Push Notification received, title - ${message.notification?.title}',
@@ -177,5 +179,6 @@ class PushNotificationsBloc extends Bloc<PushNotificationsEvent, PushNotificatio
 }
 
 Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
   final messageData = jsonDecode(message.data['data'] as String);
 }

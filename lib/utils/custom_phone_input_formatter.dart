@@ -24,7 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/formatters/formatter_utils.dart';
 import 'package:flutter_multi_formatter/formatters/phone_input_enums.dart';
@@ -417,8 +416,7 @@ class PhoneCountryData {
   @override
   String toString() {
     // ignore: prefer_adjacent_string_concatenation
-    return '[PhoneCountryData(country: $country,' +
-        ' phoneCode: $phoneCode, countryCode: $countryCode)]';
+    return '[PhoneCountryData(country: $country,' + ' phoneCode: $phoneCode, countryCode: $countryCode)]';
   }
 }
 
@@ -437,8 +435,7 @@ class _PhoneCodes {
     if (subscringLength < 1) return null;
     var phoneCode = phone.substring(0, subscringLength);
 
-    var rawData = _data.firstWhere((data) => toNumericString(data!['phoneCode']) == phoneCode,
-        orElse: () => null);
+    var rawData = _data.firstWhere((data) => toNumericString(data!['phoneCode']) == phoneCode, orElse: () => null);
     if (rawData != null) {
       return PhoneCountryData.fromMap(rawData);
     }
