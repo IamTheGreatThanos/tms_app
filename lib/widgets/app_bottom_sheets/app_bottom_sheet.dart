@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:europharm_flutter/widgets/app_bottom_sheets/knob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import 'knob.dart';
 
 Future<T?> showAppBottomSheet<T>(
   BuildContext context, {
@@ -12,6 +10,7 @@ Future<T?> showAppBottomSheet<T>(
   bool isDismissible = true,
   bool isScrollControlled = true,
   bool useRootNavigator = false,
+  bool enableDrag = true,
   double initialChildSize = 0.9,
   double minChildSize = 0.25,
   double maxChildSize = 1.0,
@@ -26,6 +25,7 @@ Future<T?> showAppBottomSheet<T>(
     context: context,
     isScrollControlled: isScrollControlled,
     isDismissible: isDismissible,
+    enableDrag: enableDrag,
     backgroundColor: const Color(0xFFFFFFFF),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
@@ -49,16 +49,17 @@ Future<T?> showAppBottomSheet<T>(
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      leading != null
-                          ? IconButton(
-                              onPressed: leadingOnPressed ??
-                                  () => Navigator.pop(context),
-                              padding: const EdgeInsets.all(0),
-                              icon: SvgPicture.asset(
-                                leading,
-                              ),
-                            )
-                          : const SizedBox(width: 50),
+                      if (leading != null)
+                        IconButton(
+                          onPressed:
+                              leadingOnPressed ?? () => Navigator.pop(context),
+                          padding: EdgeInsets.zero,
+                          icon: SvgPicture.asset(
+                            leading,
+                          ),
+                        )
+                      else
+                        const SizedBox(width: 50),
                       Text(
                         title ?? '',
                         textAlign: TextAlign.center,
@@ -68,15 +69,16 @@ Future<T?> showAppBottomSheet<T>(
                           fontSize: 20,
                         ),
                       ),
-                      trailing != null
-                          ? IconButton(
-                              onPressed: trailingOnPressed ??
-                                  () => Navigator.pop(context),
-                              icon: SvgPicture.asset(
-                                trailing,
-                              ),
-                            )
-                          : const SizedBox(width: 50),
+                      if (trailing != null)
+                        IconButton(
+                          onPressed:
+                              trailingOnPressed ?? () => Navigator.pop(context),
+                          icon: SvgPicture.asset(
+                            trailing,
+                          ),
+                        )
+                      else
+                        const SizedBox(width: 50),
                     ],
                   ),
                 subChild ?? const SizedBox.shrink(),

@@ -16,7 +16,7 @@ class _FaqScreenState extends State<FaqScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalette.grey,
+      backgroundColor: ColorPalette.background,
       appBar: CustomAppBar(title: S.of(context).faq,),
       body: Padding(
         padding: const EdgeInsets.only(

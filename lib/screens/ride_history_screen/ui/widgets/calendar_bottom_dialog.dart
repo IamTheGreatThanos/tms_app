@@ -4,17 +4,16 @@ import 'package:europharm_flutter/widgets/app_calendar_new/utils.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:table_calendar/table_calendar.dart' as c;
 
 const width = 300.0;
 
 void showAppCalendarBottomSheetNew(
-    BuildContext context, {
-      DateTime? initialDate,
-      required DateTime startDate,
-      required DateTime endDate,
-      required Function onChangedDates,
-    }) {
+  BuildContext context, {
+  DateTime? initialDate,
+  required DateTime startDate,
+  required DateTime endDate,
+  required Function onChangedDates,
+}) {
   showAppBottomSheet(
     context,
     title: 'Календарь',
@@ -44,13 +43,12 @@ class BuildTableCalendar extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _BuildTableCalendarState createState() => _BuildTableCalendarState();
+  State<BuildTableCalendar> createState() => _BuildTableCalendarState();
 }
 
 class _BuildTableCalendarState extends State<BuildTableCalendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.enforced;
-  DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
@@ -66,33 +64,19 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
     final dayFormat = DateFormat.d();
     final monthFormat = DateFormat.LLLL();
     if (toDate == null && fromDate != null) {
-      return dayFormat.format(fromDate) +
-          " " +
-          monthFormat.format(fromDate).substring(0, 3);
+      return "${dayFormat.format(fromDate)} ${monthFormat.format(fromDate).substring(0, 3)}";
     } else if (toDate != null && fromDate == null) {
-      return dayFormat.format(toDate) +
-          " " +
-          monthFormat.format(toDate).substring(0, 3);
+      return "${dayFormat.format(toDate)} ${monthFormat.format(toDate).substring(0, 3)}";
     } else if (toDate != null && fromDate != null) {
-      return dayFormat.format(fromDate) +
-          " " +
-          monthFormat.format(fromDate).substring(0, 3) +
-          ' - ' +
-          dayFormat.format(toDate) +
-          " " +
-          monthFormat.format(toDate).substring(0, 3);
+      return "${dayFormat.format(fromDate)} ${monthFormat.format(fromDate).substring(0, 3)}"
+          " - ${dayFormat.format(toDate)} ${monthFormat.format(toDate).substring(0, 3)}";
     }
     setState(() {
       _rangeStart = DateTime.now();
       _rangeEnd = DateTime.now();
     });
-    return dayFormat.format(_rangeStart!) +
-        " " +
-        monthFormat.format(_rangeStart!).substring(0, 3) +
-        ' - ' +
-        dayFormat.format(_rangeEnd!) +
-        " " +
-        monthFormat.format(_rangeEnd!).substring(0, 3);
+    return '${dayFormat.format(_rangeStart!)} ${monthFormat.format(_rangeStart!).substring(0, 3)} - '
+        '${dayFormat.format(_rangeEnd!)} ${monthFormat.format(_rangeEnd!).substring(0, 3)}';
   }
 
   @override
@@ -106,8 +90,8 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
           ),
           // child: Text("dawdwa"),
           child:
-          // c.TableCalendar(focusedDay: DateTime.now(), firstDay: DateTime.now().subtract(const Duration(days: 365)), lastDay: DateTime.now())
-          TableCalendar(
+              // c.TableCalendar(focusedDay: DateTime.now(), firstDay: DateTime.now().subtract(const Duration(days: 365)), lastDay: DateTime.now())
+              TableCalendar(
             focusedDay: DateTime.now(),
             firstDay: DateTime.now().subtract(const Duration(days: 365)),
             lastDay: DateTime.now(),
@@ -120,7 +104,6 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
               if (!isSameDay(_selectedDay, selectedDay)) {
                 setState(() {
                   _selectedDay = selectedDay;
-                  _focusedDay = focusedDay;
                   _rangeStart = null;
                   _rangeEnd = null;
                   _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -130,7 +113,6 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
             onRangeSelected: (start, end, focusedDay) {
               setState(() {
                 _selectedDay = null;
-                _focusedDay = focusedDay;
                 _rangeStart = start;
                 _rangeEnd = end;
                 _rangeSelectionMode = RangeSelectionMode.toggledOn;
@@ -143,9 +125,7 @@ class _BuildTableCalendarState extends State<BuildTableCalendar> {
                 });
               }
             },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
+            onPageChanged: (focusedDay) {},
           ),
         ),
         Row(

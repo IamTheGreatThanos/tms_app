@@ -9,13 +9,8 @@ abstract class AppRouter {
     if (context == null) {
       return Future.value();
     }
-    return Navigator.of(
-      context,
-      rootNavigator: rootNavigator,
-    ).push(
-      CupertinoPageRoute(
-        builder: (context) => screen,
-      ),
+    return Navigator.of(context, rootNavigator: rootNavigator).push(
+      CupertinoPageRoute(builder: (context) => screen),
     );
   }
 

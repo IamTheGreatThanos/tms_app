@@ -1,13 +1,8 @@
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/main.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
-import 'package:europharm_flutter/screens/bottom_navigation_bar/cubit/bottom_nav_bar_cubit.dart';
-import 'package:europharm_flutter/screens/documents_screen/ui/documents_screen.dart';
-import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
-import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
-import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
 import 'package:europharm_flutter/widgets/dialogs/two_buttons_dialog.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalette.grey,
+      backgroundColor: ColorPalette.background,
       appBar: CustomAppBar(
         title: S.of(context).settings,
       ),
@@ -96,26 +91,26 @@ class _BuildSettingsMenu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _BuildMenuItem(
-            icon: "personal_data",
-            title: S.of(context).personal_data,
-            onTap: () {
-              AppRouter.push(
-                context,
-                const PersonalDataScreen(),
-              );
-            },
-          ),
-          _BuildMenuItem(
-            icon: "ride_history",
-            title: S.of(context).ride_history,
-            onTap: () {
-              AppRouter.push(
-                context,
-                const RideHistoryScreen(),
-              );
-            },
-          ),
+          // _BuildMenuItem(
+          //   icon: "personal_data",
+          //   title: S.of(context).personal_data,
+          //   onTap: () {
+          //     AppRouter.push(
+          //       context,
+          //       const PersonalDataScreen(),
+          //     );
+          //   },
+          // ),
+          // _BuildMenuItem(
+          //   icon: "ride_history",
+          //   title: S.of(context).ride_history,
+          //   onTap: () {
+          //     AppRouter.push(
+          //       context,
+          //       const RideHistoryScreen(),
+          //     );
+          //   },
+          // ),
           _BuildMenuItem(
             icon: "settings_finances",
             title: S.of(context).finances,
@@ -126,16 +121,16 @@ class _BuildSettingsMenu extends StatelessWidget {
             title: S.of(context).ratings,
             onTap: () {},
           ),
-          _BuildMenuItem(
-            icon: "documents",
-            title: S.of(context).documents,
-            onTap: () {
-              AppRouter.push(
-                context,
-                const DocumentsScreen(),
-              );
-            },
-          ),
+          // _BuildMenuItem(
+          //   icon: "documents",
+          //   title: S.of(context).documents,
+          //   onTap: () {
+          //     AppRouter.push(
+          //       context,
+          //       const DocumentsScreen(),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );
@@ -175,6 +170,7 @@ class _BuildMenuItem extends StatelessWidget {
                     ),
                     child: SvgPicture.asset(
                       "assets/images/svg/$icon.svg",
+                      color: ColorPalette.main,
                       width: 24,
                       height: 24,
                     ),

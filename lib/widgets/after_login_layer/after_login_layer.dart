@@ -19,10 +19,9 @@ class AfterLoginLayer extends StatelessWidget {
         S.current,
         context.read<HiveRepository>(),
       )..add(InitialAfterLoginEvent()),
-      child: Center(
+      child: const Center(
         child: Text("Authorized"),
-      )
+      ),
     );
   }
-
 }

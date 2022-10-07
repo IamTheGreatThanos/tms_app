@@ -1,14 +1,19 @@
-part of '../bloc_profile_screen.dart';
+part of '../profile_bloc.dart';
 
-extension Read on BlocProfileScreen {
+extension Read on ProfileBloc {
   Future<void> _read(
-      EventProfileInitial event, Emitter<StateBlocProfile> emit) async {
+    ProfileEventInitial event,
+    Emitter<ProfileState> emit,
+  ) async {
     try {
-      final profile = await repository.getProfile();
-      emit(StateProfileLoadData(profile: profile));
+      final UserDTO profile = await repository.getProfile();
+      // String? deviceToken =
+      //     await firebaseMessagingRepository.generateNewToken();
+      // print(deviceToken);
+      emit(ProfileStateLoaded(profile: profile));
     } catch (e) {
       emit(
-        StateProfileError(
+        ProfileStateError(
           error: AppError(
             message: e.dioErrorMessage,
             code: e.dioErrorStatusCode,

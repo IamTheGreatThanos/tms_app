@@ -14,6 +14,7 @@ class SignInVModel extends Cubit<_StateVModel> {
       hintStyle: ProjectTextStyles.ui_16Medium.copyWith(
         color: ColorPalette.commonGrey,
       ),
+      keyboardType: TextInputType.number,
       onChanged: updateIsValidated,
       validator: (value) => _validator(value!, error),
       hintText: '+7',

@@ -4,8 +4,12 @@ import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
 ///snack bar for showing errors and other notifications
-Future<void> showCustomSnackbar(BuildContext context, String content,
-    {Color color = ColorPalette.errorRed, String? errorText}) async {
+Future<void> showCustomSnackbar(
+  BuildContext context,
+  String content, {
+  Color color = ColorPalette.errorRed,
+  String? errorText,
+}) async {
   await _buildCustomSnackBarWidget(
     context,
     content,
@@ -14,8 +18,12 @@ Future<void> showCustomSnackbar(BuildContext context, String content,
   ).show(context);
 }
 
-Flushbar _buildCustomSnackBarWidget(BuildContext context, String content,
-    {Color color = ColorPalette.errorRed, String? errorText}) {
+Flushbar _buildCustomSnackBarWidget(
+  BuildContext context,
+  String content, {
+  Color color = ColorPalette.errorRed,
+  String? errorText,
+}) {
   return Flushbar(
     backgroundColor: Colors.transparent,
     padding: const EdgeInsets.all(0),

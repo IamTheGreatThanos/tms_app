@@ -1,16 +1,13 @@
-import 'dart:async';
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/network/dio_wrapper/dio_extension.dart';
-import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 
-import '../../../network/models/dto_models/response/error.dart';
-import '../../../network/models/dto_models/response/marks_response.dart';
-import '../../../network/repository/global_repository.dart';
-import '../ui/_vmodel.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/error.dart';
+import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'events.dart';
 
@@ -28,9 +25,11 @@ class BlocVerification
       emit(StateVerificationFirstStep());
     });
     on<EventVerificationSecondStep>((event, emit) {
-      emit(StateVerificationSecondStep(
-        idImages: event.idImages,
-      ));
+      emit(
+        StateVerificationSecondStep(
+          idImages: event.idImages,
+        ),
+      );
     });
     on<EventVerificationThirdStep>((event, emit) {
       emit(StateVerificationThirdStep());
@@ -57,11 +56,14 @@ class BlocVerification
         log("${marks}");
         emit(StateVerificationFourthStep(marks));
       } catch (e) {
-        emit(StateVerificationError(
+        emit(
+          StateVerificationError(
             error: AppError(
               message: e.dioErrorMessage,
               code: e.dioErrorStatusCode,
-            )));
+            ),
+          ),
+        );
       }
     });
     on<EventVerificationVerify>((event, emit) async {
@@ -75,17 +77,23 @@ class BlocVerification
         }
       } catch (e) {
         if (e is DioError) {
-          emit(StateVerificationError(
+          emit(
+            StateVerificationError(
               error: AppError(
                 message: e.dioErrorMessage,
                 code: e.dioErrorStatusCode,
-              )));
+              ),
+            ),
+          );
         } else {
-          emit(StateVerificationError(
+          emit(
+            StateVerificationError(
               error: AppError(
                 message: e.toString(),
                 code: 0,
-              )));
+              ),
+            ),
+          );
         }
         emit(StateVerificationFourthStep(marks));
       }

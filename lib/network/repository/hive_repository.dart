@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:europharm_flutter/network/models/dto_models/response/dto_tokens_reaponse.dart';
 import 'package:hive/hive.dart';
 
@@ -7,13 +9,9 @@ class HiveRepository {
   Future<void> init() async {
     registerAdapters();
     _stringsBox = await Hive.openBox<String>(BoxNames.stringBox);
-
   }
 
-  void registerAdapters() {
-
-  }
-
+  void registerAdapters() {}
 
   Future<void> saveTokens(String accessToken, String refreshToken) async {
     await _stringsBox.put(BoxKeys.access_token_key, accessToken);

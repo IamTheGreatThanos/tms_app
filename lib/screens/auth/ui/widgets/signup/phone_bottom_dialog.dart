@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/screens/auth/bloc/bloc_auth.dart';
@@ -28,7 +30,7 @@ void showPhoneBottomDialog(BuildContext context) {
   showAppBottomSheet(context,
       initialChildSize: 0.45,
       useRootNavigator: true,
-      child: _BuildPhoneField());
+      child: const _BuildPhoneField());
 }
 
 class _BuildPhoneField extends StatefulWidget {
@@ -133,7 +135,7 @@ class _BuildPhoneFieldState extends State<_BuildPhoneField> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      print('privacy_policy');
+                                      log('privacy_policy');
                                     }),
                               const TextSpan(text: ' & '),
                               TextSpan(
@@ -143,7 +145,7 @@ class _BuildPhoneFieldState extends State<_BuildPhoneField> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      print('terms_of_use');
+                                      log('terms_of_use');
                                     }),
                             ],
                           ),

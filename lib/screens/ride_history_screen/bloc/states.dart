@@ -7,10 +7,14 @@ class StateRideHistoryInitial extends StateBlocRideHistory {}
 
 class StateLoadRideHistory extends StateBlocRideHistory {
   final List<OrderHistoryData> history;
+  final int finishedLength;
+  final int declinedLength;
   final DateTime from;
   final DateTime to;
 
-  StateLoadRideHistory({
+  StateLoadRideHistory( {
+    required this.declinedLength,
+    required this.finishedLength,
     required this.history,
     required this.from,
     required this.to,

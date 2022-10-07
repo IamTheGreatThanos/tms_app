@@ -1,40 +1,40 @@
 {
   "project_info": {
-    "project_number": "459027461479",
-    "project_id": "europharm-3e09b",
-    "storage_bucket": "europharm-3e09b.appspot.com"
+    "project_number": "1026634301421",
+    "project_id": "tms-satti",
+    "storage_bucket": "tms-satti.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:459027461479:android:17210dcf9d69fecb0c2bc2",
+        "mobilesdk_app_id": "1:1026634301421:android:1dd281f6fcdc87982db1e4",
         "android_client_info": {
-          "package_name": "com.thousand.europharm.europharm_flutter"
+          "package_name": "com.thousand.tmcsatti"
         }
       },
       "oauth_client": [
         {
-          "client_id": "459027461479-6flal0fbj52toit5gk6hgpqgds9tpt1p.apps.googleusercontent.com",
+          "client_id": "1026634301421-vauj4bia9pn65hput8nvdk09f4oalqut.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAl3frRA5V934VTbYjGwxM1kNJKIIJ6-NI"
+          "current_key": "AIzaSyBllK4wt37hDFM1PoVpAiFApkizhbrG1hA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "459027461479-6flal0fbj52toit5gk6hgpqgds9tpt1p.apps.googleusercontent.com",
+              "client_id": "1026634301421-vauj4bia9pn65hput8nvdk09f4oalqut.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "459027461479-opjn6n4v0f7av3ffud09vcaue4q37ni6.apps.googleusercontent.com",
+              "client_id": "1026634301421-vlt4fnhkikjtm141lt8cg089u6em050v.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.thousand.europharm.europharmFlutter"
+                "bundle_id": "com.thousand.tmcsatti"
               }
             }
           ]

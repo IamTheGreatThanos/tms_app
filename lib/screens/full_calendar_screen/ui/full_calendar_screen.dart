@@ -2,15 +2,13 @@ import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/custom_calendar/scrolling_years_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
 class FullCalendarScreen extends StatefulWidget {
   const FullCalendarScreen({Key? key}) : super(key: key);
 
   @override
-  _FullCalendarScreenState createState() => _FullCalendarScreenState();
+  State<FullCalendarScreen> createState() => _FullCalendarScreenState();
 }
 
 class _FullCalendarScreenState extends State<FullCalendarScreen> {
@@ -60,7 +58,6 @@ class _FullCalendarScreenState extends State<FullCalendarScreen> {
             'Декабрь',
           ],
           onMonthTap: (int day, int month, int year) {
-            print('Tapped $day/$month/$year');
             Navigator.of(context).pop(DateTime(year, month, day));
           },
           monthTitleStyle: ProjectTextStyles.ui_20Large.copyWith(

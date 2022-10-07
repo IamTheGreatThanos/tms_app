@@ -15,17 +15,22 @@ class RideHistoryScreen extends StatefulWidget {
   const RideHistoryScreen({Key? key}) : super(key: key);
 
   @override
-  _RideHistoryScreenState createState() => _RideHistoryScreenState();
+  State<RideHistoryScreen> createState() => _RideHistoryScreenState();
 }
 
 class _RideHistoryScreenState extends State<RideHistoryScreen> {
   bool showDate = true;
-
+  Map<String?,String> statuses= {
+    null:"Ошибка статуса",
+    "in_process":"В пути",
+    "finished":"Завершен",
+    "declined":"Отменен",
+  };
   @override
   Widget build(BuildContext context) {
     return AppLoaderOverlay(
       child: Scaffold(
-        backgroundColor: ColorPalette.backgroundGray,
+        backgroundColor: ColorPalette.background,
         appBar: CustomAppBar(
           title: S.of(context).ride_history,
         ),
@@ -41,7 +46,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
             if (state is StateLoadRideHistory) {
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 100),
                   child: Column(
                     children: [
                       Container(
@@ -64,11 +69,15 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                           onChangedDates:
                                               (DateTime? start, DateTime? end) {
                                             context.read<BlocRideHistory>().add(
-                                                EventReadRideHistory(
-                                                    from: start, to: end));
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop();
+                                                  EventReadRideHistory(
+                                                    from: start,
+                                                    to: end,
+                                                  ),
+                                                );
+                                            Navigator.of(
+                                              context,
+                                              rootNavigator: true,
+                                            ).pop();
                                           },
                                           startDate: state.from,
                                           endDate: state.to,
@@ -96,7 +105,6 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                     ),
                                   ],
                                 ),
-                                SvgPicture.asset("assets/images/svg/share.svg")
                               ],
                             ),
                             const SizedBox(
@@ -129,7 +137,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                         "Всего",
                                         style: ProjectTextStyles.ui_16Medium
                                             .copyWith(
-                                                color: ColorPalette.commonGrey),
+                                          color: ColorPalette.commonGrey,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -143,7 +152,7 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   Column(
                                     children: [
                                       Text(
-                                        "0",
+                                        "${state.finishedLength}",
                                         style: ProjectTextStyles.ui_20Medium
                                             .copyWith(
                                           color: ColorPalette.green,
@@ -170,8 +179,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                   ),
                                   Column(
                                     children: [
-                                      const Text(
-                                        "0",
+                                       Text(
+                                        "${state.declinedLength}",
                                         style: ProjectTextStyles.ui_20Medium,
                                       ),
                                       const SizedBox(
@@ -181,7 +190,8 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                                         "Отменен",
                                         style: ProjectTextStyles.ui_16Medium
                                             .copyWith(
-                                                color: ColorPalette.commonGrey),
+                                          color: ColorPalette.commonGrey,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -192,125 +202,185 @@ class _RideHistoryScreenState extends State<RideHistoryScreen> {
                         ),
                       ),
                       ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: state.history.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (state.history[index].showTime)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Text(
-                                      DateFormat("dd MMMM").format(
-                                          state.history[index].createdAt!),
-                                      style: ProjectTextStyles.ui_16Medium
-                                          .copyWith(
-                                        color: ColorPalette.commonGrey,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.history.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (state.history[index].showTime)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                  ),
+                                  child: Text(
+                                    DateFormat("dd MMMM, hh:mm").format(
+                                      state.history[index].createdAt!,
+                                    ),
+                                    style:
+                                        ProjectTextStyles.ui_16Medium.copyWith(
+                                      color: ColorPalette.commonGrey,
+                                    ),
+                                  ),
+                                ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(
+                                      state.history[index].showTime ? 20 : 0,
+                                    ),
+                                    topRight: Radius.circular(
+                                      state.history[index].showTime ? 20 : 0,
+                                    ),
+                                    bottomLeft: Radius.circular(
+                                      state.history.length == 1 ||
+                                              (index !=
+                                                      state.history.length -
+                                                          1 &&
+                                                  state.history[index + 1]
+                                                      .showTime)
+                                          ? 20
+                                          : 0,
+                                    ),
+                                    bottomRight: Radius.circular(
+                                      state.history.length == 1 ||
+                                              (index !=
+                                                      state.history.length -
+                                                          1 &&
+                                                  state.history[index + 1]
+                                                      .showTime)
+                                          ? 20
+                                          : 0,
+                                    ),
+                                  ),
+                                  color: ColorPalette.white,
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppListTile(
+                                      leading: const CircleAvatar(
+                                        backgroundColor: Colors.transparent,
+                                        radius: 10,
+                                        backgroundImage: AssetImage(
+                                          "assets/images/svg/history_item.svg",
+                                        ),
+                                      ),
+                                      title: '${state.history[index].order}',
+
+                                      /// FIXME
+                                      subtitle: DateFormat("dd.MM.yyyy в kk:mm")
+                                          .format(
+                                        state.history[index].createdAt!,
+                                      ),
+                                      trailing: Text(statuses[state.history[index].orderStatus]??"Ошибка статуса"),
+                                      // trailing: SvgPicture.asset(
+                                      //   "assets/images/svg/chevrone_right.svg",
+                                      // ),
+                                      contentPadding:
+                                          const EdgeInsets.all(15.0),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 50),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              state.history[index]
+                                                      .orderTransport?.name ??
+                                                  "Нет данных",
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              state.history[index]
+                                                      .orderTransport?.number ??
+                                                  "Нет данных",
+                                              style: const TextStyle(
+                                                color: ColorPalette.commonGrey,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(
-                                            state.history[index].showTime
-                                                ? 20
-                                                : 0),
-                                        topRight: Radius.circular(
-                                            state.history[index].showTime
-                                                ? 20
-                                                : 0),
-                                        bottomLeft: Radius.circular(
-                                            state.history.length == 1 ||
-                                                    (index != state.history.length - 1 &&
-                                                        state.history[index + 1]
-                                                            .showTime)
-                                                ? 20
-                                                : 0),
-                                        bottomRight:
-                                            Radius.circular(state.history.length == 1 || (index != state.history.length - 1 && state.history[index + 1].showTime) ? 20 : 0)),
-                                    color: ColorPalette.white,
-                                  ),
-                                  child: AppListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 10,
-                                      backgroundImage: AssetImage(
-                                          "assets/images/svg/history_item.svg"),
+                                    const Divider(
+                                      color: ColorPalette.lightGrey,
+                                      thickness: 2,
                                     ),
-                                    title: state
-                                        .history[index].order!.description!,
-                                    subtitle: DateFormat("dd.MM.yyyy в kk:mm")
-                                        .format(
-                                            state.history[index].createdAt!),
-                                    trailing: SvgPicture.asset(
-                                        "assets/images/svg/chevrone_right.svg"),
-                                    contentPadding: const EdgeInsets.all(15.0),
-                                  ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     Row(
-                                  //       children: [
-                                  //         Container(
-                                  //             decoration: BoxDecoration(
-                                  //                 borderRadius:
-                                  //                     BorderRadius.circular(
-                                  //                         100),
-                                  //                 color:
-                                  //                     ColorPalette.lightGrey),
-                                  //             padding: const EdgeInsets.all(8),
-                                  //             child: SvgPicture.asset(
-                                  //                 "assets/images/svg/history_item.svg")),
-                                  //         const SizedBox(
-                                  //           width: 10,
-                                  //         ),
-                                  //         Column(
-                                  //           crossAxisAlignment:
-                                  //               CrossAxisAlignment.start,
-                                  //           children: [
-                                  //             Text(
-                                  //               state.history[index].order!.description!,
-                                  //               style: ProjectTextStyles
-                                  //                   .ui_16Medium,
-                                  //               overflow: TextOverflow.ellipsis,
-                                  //             ),
-                                  //             const SizedBox(
-                                  //               height: 3,
-                                  //             ),
-                                  //             Text(
-                                  //               DateFormat("dd.MM.yyyy в kk:mm")
-                                  //                   .format(state
-                                  //                       .history[index].createdAt!),
-                                  //               style: ProjectTextStyles
-                                  //                   .ui_12Medium
-                                  //                   .copyWith(
-                                  //                       color: ColorPalette
-                                  //                           .commonGrey),
-                                  //             )
-                                  //           ],
-                                  //         ),
-                                  //       ],
-                                  //     ),
-                                  //     SvgPicture.asset(
-                                  //         "assets/images/svg/chevrone_right.svg"),
-                                  //   ],
-                                  // ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          })
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Row(
+                                //       children: [
+                                //         Container(
+                                //             decoration: BoxDecoration(
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(
+                                //                         100),
+                                //                 color:
+                                //                     ColorPalette.lightGrey),
+                                //             padding: const EdgeInsets.all(8),
+                                //             child: SvgPicture.asset(
+                                //                 "assets/images/svg/history_item.svg")),
+                                //         const SizedBox(
+                                //           width: 10,
+                                //         ),
+                                //         Column(
+                                //           crossAxisAlignment:
+                                //               CrossAxisAlignment.start,
+                                //           children: [
+                                //             Text(
+                                //               state.history[index].order!.description!,
+                                //               style: ProjectTextStyles
+                                //                   .ui_16Medium,
+                                //               overflow: TextOverflow.ellipsis,
+                                //             ),
+                                //             const SizedBox(
+                                //               height: 3,
+                                //             ),
+                                //             Text(
+                                //               DateFormat("dd.MM.yyyy в kk:mm")
+                                //                   .format(state
+                                //                       .history[index].createdAt!),
+                                //               style: ProjectTextStyles
+                                //                   .ui_12Medium
+                                //                   .copyWith(
+                                //                       color: ColorPalette
+                                //                           .commonGrey),
+                                //             )
+                                //           ],
+                                //         ),
+                                //       ],
+                                //     ),
+                                //     SvgPicture.asset(
+                                //         "assets/images/svg/chevrone_right.svg"),
+                                //   ],
+                                // ),
+                              ),
+                            ],
+                          );
+                        },
+                      )
                     ],
                   ),
                 ),
               );
             }
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },

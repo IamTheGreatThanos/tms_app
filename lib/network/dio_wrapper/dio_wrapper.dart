@@ -24,14 +24,13 @@ class DioWrapper {
   }) async {
     _dio.options.baseUrl = baseURL;
 
-    ///TODO must be removed
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-    };
+    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (HttpClient client) {
+    //   client.badCertificateCallback =
+    //       (X509Certificate cert, String host, int port) => true;
+    // };
 
-    _dio.interceptors.requestLock.lock();
+    // _dio.interceptors.requestLock.lock();
     _dio.interceptors.clear();
     _dio.options.connectTimeout = 40000;
     _dio.options.receiveTimeout = 40000;
@@ -45,15 +44,16 @@ class DioWrapper {
         loginBloc: loginBloc,
       ),
       LogInterceptor(
-          request: true,
-          requestBody: true,
-          requestHeader: true,
-          responseBody: true,
-          responseHeader: true,
-          error: true),
+        request: true,
+        requestBody: true,
+        requestHeader: true,
+        responseBody: false,
+        responseHeader: false,
+        error: true,
+      ),
     ]);
 
-    _dio.interceptors.requestLock.unlock();
+    // _dio.interceptors.requestLock.unlock();
   }
 
   void changeBaseURL({required String url}) {
@@ -74,18 +74,17 @@ class DioWrapper {
     return await _dio.download(urlPath, savePath);
   }
 
-  Future<dynamic> sendRequest({
+  Future<Response<dynamic>> sendRequest({
     required String path,
     required NetworkMethod method,
-    Encodable? request,
+    String? baseUrl,
+    dynamic request,
     FormData? formData,
     Map<String, dynamic>? queryParameters,
     Options? options,
     bool isUrlEncoded = true,
   }) async {
-    final params = request == null
-        ? (formData == null ? null : FormData.fromMap({}))
-        : request.toJson();
+    final params = request ?? (formData == null ? null : FormData.fromMap({}));
 
     switch (method) {
       case NetworkMethod.get:
@@ -94,6 +93,7 @@ class DioWrapper {
           method,
           queryParameters: queryParameters,
           isUrlEncoded: isUrlEncoded,
+          baseUrl: baseUrl,
         );
         return response;
       case NetworkMethod.post:
@@ -101,7 +101,7 @@ class DioWrapper {
             ? await _postRequest(
                 path,
                 method,
-                data: params,
+                data: request ,// params,
                 queryParameters: queryParameters,
                 options: options,
               )
@@ -135,8 +135,8 @@ class DioWrapper {
           queryParameters: queryParameters,
         );
         return response;
-      default:
-        return null;
+      // default:
+      //   return null;
     }
   }
 
@@ -147,7 +147,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.put(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -161,7 +161,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.delete(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -176,7 +176,7 @@ class DioWrapper {
     Options? options,
   }) async {
     var response = _dio.post(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
       options: options,
@@ -191,7 +191,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.patch(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -204,7 +204,7 @@ class DioWrapper {
     Map<String, dynamic>? queryParameters,
   }) async {
     var response = _dio.post(
-      "$path",
+      path,
       data: data,
       queryParameters: queryParameters,
     );
@@ -216,28 +216,41 @@ class DioWrapper {
     NetworkMethod method, {
     Map<String, dynamic>? queryParameters,
     bool isUrlEncoded = true,
+    String? baseUrl,
 
     /// disables encoding of URI if false in accordance with header 'application/x-www-form-urlencoded'
   }) async {
-    if (!isUrlEncoded && queryParameters != null) {
-      path = path + '?' + _transformQueryParametersToString(queryParameters);
+    String tempUrl = _dio.options.baseUrl;
+    if (baseUrl != null) {
+      _dio.options.baseUrl = baseUrl;
     }
-    var response =
-        _dio.get(path, queryParameters: isUrlEncoded ? queryParameters : null);
+    if (!isUrlEncoded && queryParameters != null) {
+      path = '$path?${_transformQueryParametersToString(queryParameters)}';
+    }
+    var response = _dio.get(
+      path,
+      queryParameters: isUrlEncoded ? queryParameters : null,
+    );
+
+    if (baseUrl != null) {
+      _dio.options.baseUrl = tempUrl;
+    }
     return response;
   }
 
   String _transformQueryParametersToString(
-      Map<String, dynamic> queryParameters) {
-    String _query = '';
+    Map<String, dynamic> queryParameters,
+  ) {
+    String query = '';
     queryParameters.forEach((key, value) {
-      _query += '$key=${value.toString()}&';
+      query += '$key=${value.toString()}&';
     });
-    return _query.substring(0, _query.length - 1);
+
+    return query.substring(0, query.length - 1);
   }
 }
 
-class AuthInterceptor extends InterceptorsWrapper {
+class AuthInterceptor extends QueuedInterceptorsWrapper {
   final TokensRepository tokensRepository;
   final Dio baseDio;
   final Dio dioRefresher;
@@ -250,7 +263,6 @@ class AuthInterceptor extends InterceptorsWrapper {
   }) : dioRefresher = Dio(baseDio.options) {
     dioRefresher.interceptors.add(LogInterceptor(requestBody: true));
 
-    ///TODO must be removed
     (dioRefresher.httpClientAdapter as DefaultHttpClientAdapter)
         .onHttpClientCreate = (HttpClient client) {
       client.badCertificateCallback =
@@ -264,18 +276,22 @@ class AuthInterceptor extends InterceptorsWrapper {
     RequestInterceptorHandler handler,
   ) async {
     options.followRedirects = false;
+    options.headers['Accept'] = "application/json";
     options.headers["Authorization"] = 'Bearer ${tokensRepository.accessToken}';
     return super.onRequest(options, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
+    if (err.response?.statusCode == 302) {
+      loginBloc.add(LogOutEvent());
+    }
     if (err.response?.statusCode == 401) {
       if (err.requestOptions.path.contains('auth/login')) {
         handler.next(err);
         return;
       }
-      baseDio.interceptors.requestLock.lock();
+      // baseDio.interceptors.requestLock.lock();
       final tokens = await refreshTokens(tokensRepository.refreshToken);
       if (tokens != null) {
         tokensRepository.save(tokens.accessToken);
@@ -283,23 +299,29 @@ class AuthInterceptor extends InterceptorsWrapper {
             'Bearer ${tokens.accessToken}';
         final lastResponse = await dioRefresher.fetch(err.requestOptions);
         handler.resolve(lastResponse);
-        baseDio.interceptors.requestLock.unlock();
+        // baseDio.interceptors.requestLock.unlock();
         return;
       }
     }
     handler.next(err);
   }
 
-  Future<DTOTokensResponse?> refreshTokens(String refreshToken) async {
+  Future<DTOTokensResponse?> refreshTokens(
+    String refreshToken,
+  ) async {
     try {
-      final response = await dioRefresher
-          .get('auth/refresh', queryParameters: {"token": refreshToken});
+      final response = await dioRefresher.get(
+        'auth/refresh',
+        queryParameters: {"token": refreshToken},
+      );
+
       return DTOTokensResponse.fromJson(response.data);
     } catch (e) {
-      if (e is DioError &&
-          e.response?.statusCode == 404) {
+      if (e is DioError && e.response?.statusCode == 404) {
         loginBloc.add(LogOutEvent());
+        return null;
       }
+      throw Exception(e);
     }
   }
 }

@@ -96,7 +96,7 @@ class AppTextField extends StatefulWidget {
   final _obscureText = <bool>[];
 
   @override
-  _AppTextFieldState createState() => _AppTextFieldState();
+  State<AppTextField> createState() => _AppTextFieldState();
 
   bool get obscureText => _obscureText.first;
 

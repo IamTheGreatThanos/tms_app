@@ -11,16 +11,22 @@ class OrderHistoryResponse {
   final String? message;
   final List<OrderHistoryData>? data;
 
-  factory OrderHistoryResponse.fromJson(Map<String?, dynamic> json) => OrderHistoryResponse(
-    success: json["success"],
-    statusCode: json["statusCode"],
-    message: json["message"],
-    data: json["data"] == null ? null : List<OrderHistoryData>.from(json["data"].map((x) => OrderHistoryData.fromJson(x))),
-  );
+  factory OrderHistoryResponse.fromJson(Map<String?, dynamic> json) =>
+      OrderHistoryResponse(
+        success: json["success"],
+        statusCode: json["statusCode"],
+        message: json["message"],
+        data: json["data"] == null
+            ? null
+            : List<OrderHistoryData>.from(
+                json["data"].map((x) => OrderHistoryData.fromJson(x))),
+      );
 }
 
 class OrderHistoryData {
   OrderHistoryData({
+    this.orderStatus,
+    this.orderTransport,
     this.id,
     this.order,
     this.user,
@@ -30,21 +36,49 @@ class OrderHistoryData {
   }) : showTime = false;
 
   final int? id;
-  final Order? order;
+  final String? order;
+  final String? orderStatus;
   final User? user;
+  final OrderHistoryTransport? orderTransport;
   final String? status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   bool showTime;
 
-  factory OrderHistoryData.fromJson(Map<String?, dynamic> json) => OrderHistoryData(
-    id: json["id"],
-    order: json["order"] == null ? null : Order.fromJson(json["order"]),
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
-    status: json["status"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+  factory OrderHistoryData.fromJson(Map<String?, dynamic> json) =>
+      OrderHistoryData(
+        id: json["id"],
+        orderTransport: json["order_transport"] == null? null:OrderHistoryTransport.fromJson(json["order_transport"]),
+        order: json["order"]
+            as String?, // == null ? null : Order.fromJson(json["order"]),
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        status: json["status"],
+           orderStatus: json["order_status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+}
+
+class OrderHistoryTransport {
+  OrderHistoryTransport({
+    this.number,
+    this.name,
+    this.id,
+  });
+
+  final int? id;
+  final String? number;
+  final String? name;
+
+  factory OrderHistoryTransport.fromJson(Map<String?, dynamic> json) => OrderHistoryTransport(
+        id: json["id"],
+        name: json["name"],
+        number: json["number"],
+      );
 }
 
 class Order {
@@ -93,27 +127,42 @@ class Order {
   final OrderTransport? transport;
 
   factory Order.fromJson(Map<String?, dynamic> json) => Order(
-    id: json["id"],
-    description: json["description"],
-    from: json["from"],
-    to: json["to"],
-    fromLat: json["from_lat"],
-    fromLong: json["from_long"],
-    toLat: json["to_lat"],
-    toLong: json["to_long"],
-    status: json["status"],
-    employee: json["employee"] == null ? null : Employee.fromJson(json["employee"]),
-    startDate: json["start_date"] == null ? null : DateTime.parse(json["start_date"]),
-    endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
-    payment: json["payment"],
-    fromCityId: json["from_city_id"] == null ? null : CityId.fromJson(json["from_city_id"]),
-    toCityId: json["to_city_id"] == null ? null : CityId.fromJson(json["to_city_id"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    images: json["images"] == null ? null : Images.fromJson(json["images"]),
-    points: json["point?s"] == null ? null : List<Point>.from(json["points"].map((x) => Point.fromJson(x))),
-    countPoints: json["count_point?s"],
-    transport: json["transport"] == null ? null : OrderTransport.fromJson(json["transport"]),
-  );
+        id: json["id"],
+        description: json["description"],
+        from: json["from"],
+        to: json["to"],
+        fromLat: json["from_lat"],
+        fromLong: json["from_long"],
+        toLat: json["to_lat"],
+        toLong: json["to_long"],
+        status: json["status"],
+        employee: json["employee"] == null
+            ? null
+            : Employee.fromJson(json["employee"]),
+        startDate: json["start_date"] == null
+            ? null
+            : DateTime.parse(json["start_date"]),
+        endDate:
+            json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
+        payment: json["payment"],
+        fromCityId: json["from_city_id"] == null
+            ? null
+            : CityId.fromJson(json["from_city_id"]),
+        toCityId: json["to_city_id"] == null
+            ? null
+            : CityId.fromJson(json["to_city_id"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        images: json["images"] == null ? null : Images.fromJson(json["images"]),
+        points: json["point?s"] == null
+            ? null
+            : List<Point>.from(json["points"].map((x) => Point.fromJson(x))),
+        countPoints: json["count_point?s"],
+        transport: json["transport"] == null
+            ? null
+            : OrderTransport.fromJson(json["transport"]),
+      );
 }
 
 class Employee {
@@ -142,17 +191,21 @@ class Employee {
   final DateTime? updatedAt;
 
   factory Employee.fromJson(Map<String?, dynamic> json) => Employee(
-    id: json["id"],
-    cityId: json["city_id"],
-    name: json["name"],
-    surname: json["surname"],
-    token: json["token"],
-    phone: json["phone"],
-    email: json["email"],
-    password: json["password"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        cityId: json["city_id"],
+        name: json["name"],
+        surname: json["surname"],
+        token: json["token"],
+        phone: json["phone"],
+        email: json["email"],
+        password: json["password"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class CityId {
@@ -171,22 +224,24 @@ class CityId {
   final DateTime? updatedAt;
 
   factory CityId.fromJson(Map<String?, dynamic> json) => CityId(
-    id: json["id"],
-    name: json["name"],
-    countryId: json["country_id"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        countryId: json["country_id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class Images {
   Images();
 
-  factory Images.fromJson(Map<String?, dynamic> json) => Images(
-  );
+  factory Images.fromJson(Map<String?, dynamic> json) => Images();
 
-  Map<String?, dynamic> toJson() => {
-  };
+  Map<String?, dynamic> toJson() => {};
 }
 
 class Point {
@@ -213,16 +268,23 @@ class Point {
   final int? countProducts;
 
   factory Point.fromJson(Map<String, dynamic> json) => Point(
-    id: json["id"],
-    name: json["name"],
-    address: json["address"],
-    status: json["status"],
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    products: json["products"] == null ? null : List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
-    countProducts: json["count_products"],
-  );
+        id: json["id"],
+        name: json["name"],
+        address: json["address"],
+        status: json["status"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        products: json["products"] == null
+            ? null
+            : List<Product>.from(
+                json["products"].map((x) => Product.fromJson(x))),
+        countProducts: json["count_products"],
+      );
 }
 
 class Product {
@@ -245,18 +307,24 @@ class Product {
   final DateTime? updatedAt;
 
   factory Product.fromJson(Map<String?, dynamic> json) => Product(
-    id: json["id"],
-    point: json["point"],
-    name: json["name"],
-    code: json["code"],
-    status: json["status"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        point: json["point"],
+        name: json["name"],
+        code: json["code"],
+        status: json["status"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class OrderTransport {
   OrderTransport({
+    this.number,
+    this.name,
     this.id,
     this.orderId,
     this.transport,
@@ -268,18 +336,28 @@ class OrderTransport {
   final int? id;
   final int? orderId;
   final TransportTransport? transport;
+  final String? number;
+  final String? name;
   final String? type;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
   factory OrderTransport.fromJson(Map<String?, dynamic> json) => OrderTransport(
-    id: json["id"],
-    orderId: json["order_id"],
-    transport: json["transport"] == null ? null : TransportTransport.fromJson(json["transport"]),
-    type: json["type"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        number: json["number"],
+        orderId: json["order_id"],
+        transport: json["transport"] == null
+            ? null
+            : TransportTransport.fromJson(json["transport"]),
+        type: json["type"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class TransportTransport {
@@ -301,15 +379,17 @@ class TransportTransport {
   final String? registration;
   final String? image;
 
-  factory TransportTransport.fromJson(Map<String?, dynamic> json) => TransportTransport(
-    id: json["id"],
-    model: json["model"] == null ? null : Model.fromJson(json["model"]),
-    carDate: json["car_date"] == null ? null : DateTime.parse(json["car_date"]),
-    dimensions: json["dimensions"],
-    number: json["number"],
-    registration: json["registration"],
-    image: json["image"],
-  );
+  factory TransportTransport.fromJson(Map<String?, dynamic> json) =>
+      TransportTransport(
+        id: json["id"],
+        model: json["model"] == null ? null : Model.fromJson(json["model"]),
+        carDate:
+            json["car_date"] == null ? null : DateTime.parse(json["car_date"]),
+        dimensions: json["dimensions"],
+        number: json["number"],
+        registration: json["registration"],
+        image: json["image"],
+      );
 }
 
 class Model {
@@ -330,13 +410,17 @@ class Model {
   final DateTime? updatedAt;
 
   factory Model.fromJson(Map<String?, dynamic> json) => Model(
-    id: json["id"],
-    markId: json["mark_id"],
-    name: json["name"],
-    icon: json["icon"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        markId: json["mark_id"],
+        name: json["name"],
+        icon: json["icon"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class User {
@@ -381,25 +465,35 @@ class User {
   final TransportTransport? transport;
 
   factory User.fromJson(Map<String?, dynamic> json) => User(
-    id: json["id"],
-    city: json["city"],
-    phone: json["phone"],
-    name: json["name"],
-    surname: json["surname"],
-    date: json["date"] == null ? null : DateTime.parse(json["date"]),
-    iin: json["iin"],
-    role: json["role"],
-    type: json["type"],
-    avatar: json["avatar"],
-    token: json["token"],
-    promocode: json["promocode"],
-    actived: json["actived"],
-    phoneVerified: json["phone_verified"] == null ? null : DateTime.parse(json["phone_verified"]),
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    documents: json["documents"] == null ? null : Documents.fromJson(json["documents"]),
-    transport: json["transport"] == null ? null : TransportTransport.fromJson(json["transport"]),
-  );
+        id: json["id"],
+        city: json["city"],
+        phone: json["phone"],
+        name: json["name"],
+        surname: json["surname"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
+        iin: json["iin"],
+        role: json["role"],
+        type: json["type"],
+        avatar: json["avatar"],
+        token: json["token"],
+        promocode: json["promocode"],
+        actived: json["actived"],
+        phoneVerified: json["phone_verified"] == null
+            ? null
+            : DateTime.parse(json["phone_verified"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        documents: json["documents"] == null
+            ? null
+            : Documents.fromJson(json["documents"]),
+        transport: json["transport"] == null
+            ? null
+            : TransportTransport.fromJson(json["transport"]),
+      );
 }
 
 class Documents {
@@ -420,11 +514,12 @@ class Documents {
   final String? personImage;
 
   factory Documents.fromJson(Map<String?, dynamic> json) => Documents(
-    id: json["id"],
-    docNumber: json["doc_number"],
-    deadline: json["deadline"] == null ? null : DateTime.parse(json["deadline"]),
-    image1: json["image_1"],
-    image2: json["image_2"],
-    personImage: json["person_image"],
-  );
+        id: json["id"],
+        docNumber: json["doc_number"],
+        deadline:
+            json["deadline"] == null ? null : DateTime.parse(json["deadline"]),
+        image1: json["image_1"],
+        image2: json["image_2"],
+        personImage: json["person_image"],
+      );
 }

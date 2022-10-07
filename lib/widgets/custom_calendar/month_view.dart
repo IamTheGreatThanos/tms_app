@@ -1,10 +1,8 @@
-import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:flutter/material.dart';
 
 import 'day_number.dart';
 import 'month_title.dart';
 import 'utils/dates.dart';
-import 'utils/screen_sizes.dart';
 
 class MonthView extends StatelessWidget {
   const MonthView({
@@ -36,8 +34,7 @@ class MonthView extends StatelessWidget {
     Color? color;
     if (isCurrentDate(date)) {
       color = currentDateColor;
-    } else if (highlightedDates != null &&
-        isHighlightedDate(date, highlightedDates!)) {
+    } else if (highlightedDates != null && isHighlightedDate(date, highlightedDates!)) {
       color = highlightedDateColor!;
     }
     return color;
@@ -65,8 +62,7 @@ class MonthView extends StatelessWidget {
         ),
       );
 
-      if ((day - 1 + firstWeekdayOfMonth) % DateTime.daysPerWeek == 0 ||
-          day == daysInMonth) {
+      if ((day - 1 + firstWeekdayOfMonth) % DateTime.daysPerWeek == 0 || day == daysInMonth) {
         dayRows.add(
           Row(
             children: List<DayNumber>.from(dayRowChildren),
@@ -84,29 +80,25 @@ class MonthView extends StatelessWidget {
 
   Widget buildMonthView(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Container(
-        width: MediaQuery.of(context).size.width / 2 - 21,
-        // margin: EdgeInsets.all(padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            MonthTitle(
-              month: month,
-              monthNames: monthNames,
-              style: titleStyle!,
-            ),
-            Container(
-              // padding: const EdgeInsets.all(8),
-              // decoration: BoxDecoration(
-              //   color: ColorPalette.blue,
-              //   borderRadius: BorderRadius.circular(50)
-              // ),
-              margin: const EdgeInsets.only(top: 8.0),
-              child: buildMonthDays(context),
-            ),
-          ],
-        ),
+      padding: const EdgeInsets.only(bottom: 20.0, right: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          MonthTitle(
+            month: month,
+            monthNames: monthNames,
+            style: titleStyle!,
+          ),
+          Container(
+            // padding: const EdgeInsets.all(8),
+            // decoration: BoxDecoration(
+            //   color: ColorPalette.blue,
+            //   borderRadius: BorderRadius.circular(50)
+            // ),
+            margin: const EdgeInsets.only(top: 8.0),
+            child: buildMonthDays(context),
+          ),
+        ],
       ),
     );
   }

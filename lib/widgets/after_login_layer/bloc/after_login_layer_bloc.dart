@@ -1,13 +1,9 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:europharm_flutter/generated/l10n.dart';
-import 'package:europharm_flutter/managers/push_notification_manager.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'after_login_layer_event.dart';
 
@@ -15,9 +11,13 @@ part 'after_login_layer_state.dart';
 
 class AfterLoginLayerBloc
     extends Bloc<AfterLoginLayerEvent, AfterLoginLayerState> {
-  GlobalRepository _repository;
-  TokensRepository _tokensRepository;
+  // ignore: unused_field
+  final GlobalRepository _repository;
+  // ignore: unused_field
+  final TokensRepository _tokensRepository;
+  // ignore: unused_field
   final S _lang;
+  // ignore: unused_field
   final HiveRepository _hiveRepository;
 
   AfterLoginLayerBloc(
@@ -31,9 +31,7 @@ class AfterLoginLayerBloc
 
   _onInitialAfterLoginEvent(
       InitialAfterLoginEvent event, Emitter<AfterLoginLayerState> emit) async {
-    try {
-
-    } catch (error) {
+    try {} catch (error) {
       if (kDebugMode) {
         rethrow;
       }
@@ -41,4 +39,3 @@ class AfterLoginLayerBloc
     }
   }
 }
-

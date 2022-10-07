@@ -1,13 +1,14 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
+import 'package:europharm_flutter/widgets/app_calendar_new/calendar_page.dart';
+import 'package:europharm_flutter/widgets/app_calendar_new/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'calendar_page.dart';
-import 'utils.dart';
-
 typedef _OnCalendarPageChanged = void Function(
-    int pageIndex, DateTime focusedDay);
+  int pageIndex,
+  DateTime focusedDay,
+);
 
 class CalendarCore extends StatelessWidget {
   final DateTime? focusedDay;
@@ -73,7 +74,6 @@ class CalendarCore extends StatelessWidget {
         ),
         Expanded(
           child: ListView.builder(
-            scrollDirection: Axis.vertical,
             controller: pageController,
             // physics: NeverScrollableScrollPhysics(),
             itemCount: _getPageCount(calendarFormat, firstDay, lastDay),
@@ -100,8 +100,11 @@ class CalendarCore extends StatelessWidget {
                   if (previousFocusedDay == null || previousIndex == null) {
                     baseDay = _getBaseDay(calendarFormat, index);
                   } else {
-                    baseDay =
-                        _getFocusedDay(calendarFormat, previousFocusedDay, index);
+                    baseDay = _getFocusedDay(
+                      calendarFormat,
+                      previousFocusedDay,
+                      index,
+                    );
                   }
 
                   return SizedBox(
@@ -131,19 +134,20 @@ class CalendarCore extends StatelessWidget {
 
   TableRow _buildDaysOfWeek(BuildContext context, List<String> weekDays) {
     return TableRow(
-        children: List.generate(
-      7,
-      (index) {
-        return Center(
-          child: ExcludeSemantics(
-            child: Text(
-              weekDays[index],
-              style: TextStyle(),
+      children: List.generate(
+        7,
+        (index) {
+          return Center(
+            child: ExcludeSemantics(
+              child: Text(
+                weekDays[index],
+                style: const TextStyle(),
+              ),
             ),
-          ),
-        );
-      },
-    ).toList());
+          );
+        },
+      ).toList(),
+    );
   }
 
   int _getPageCount(CalendarFormat format, DateTime first, DateTime last) {
@@ -175,7 +179,10 @@ class CalendarCore extends StatelessWidget {
   }
 
   DateTime _getFocusedDay(
-      CalendarFormat format, DateTime prevFocusedDay, int pageIndex) {
+    CalendarFormat format,
+    DateTime prevFocusedDay,
+    int pageIndex,
+  ) {
     if (pageIndex == previousIndex) {
       return prevFocusedDay;
     }
@@ -188,12 +195,18 @@ class CalendarCore extends StatelessWidget {
         day = DateTime.utc(prevFocusedDay.year, prevFocusedDay.month + pageDif);
         break;
       case CalendarFormat.twoWeeks:
-        day = DateTime.utc(prevFocusedDay.year, prevFocusedDay.month,
-            prevFocusedDay.day + pageDif * 14);
+        day = DateTime.utc(
+          prevFocusedDay.year,
+          prevFocusedDay.month,
+          prevFocusedDay.day + pageDif * 14,
+        );
         break;
       case CalendarFormat.week:
-        day = DateTime.utc(prevFocusedDay.year, prevFocusedDay.month,
-            prevFocusedDay.day + pageDif * 7);
+        day = DateTime.utc(
+          prevFocusedDay.year,
+          prevFocusedDay.month,
+          prevFocusedDay.day + pageDif * 7,
+        );
         break;
     }
 
@@ -215,11 +228,17 @@ class CalendarCore extends StatelessWidget {
         break;
       case CalendarFormat.twoWeeks:
         day = DateTime.utc(
-            firstDay.year, firstDay.month, firstDay.day + pageIndex * 14);
+          firstDay.year,
+          firstDay.month,
+          firstDay.day + pageIndex * 14,
+        );
         break;
       case CalendarFormat.week:
         day = DateTime.utc(
-            firstDay.year, firstDay.month, firstDay.day + pageIndex * 7);
+          firstDay.year,
+          firstDay.month,
+          firstDay.day + pageIndex * 7,
+        );
         break;
     }
 
@@ -290,13 +309,13 @@ class CalendarCore extends StatelessWidget {
   }
 
   DateTime _firstDayOfMonth(DateTime month) {
-    return DateTime.utc(month.year, month.month, 1);
+    return DateTime.utc(month.year, month.month);
   }
 
   DateTime _lastDayOfMonth(DateTime month) {
     final date = month.month < 12
-        ? DateTime.utc(month.year, month.month + 1, 1)
-        : DateTime.utc(month.year + 1, 1, 1);
+        ? DateTime.utc(month.year, month.month + 1)
+        : DateTime.utc(month.year + 1, 1);
     return date.subtract(const Duration(days: 1));
   }
 
@@ -325,7 +344,7 @@ class CalendarCore extends StatelessWidget {
   }
 
   int _getDaysAfter(DateTime lastDay) {
-    int invertedStartingWeekday = 8 - getWeekdayNumber(startingDayOfWeek);
+    final int invertedStartingWeekday = 8 - getWeekdayNumber(startingDayOfWeek);
 
     int daysAfter = 7 - ((lastDay.weekday + invertedStartingWeekday) % 7);
     if (daysAfter == 7) {

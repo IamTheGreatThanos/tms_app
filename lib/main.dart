@@ -1,8 +1,19 @@
-import 'package:europharm_flutter/screens/user_confirmation/ui/personal_info_verification.dart';
+import 'package:europharm_flutter/firebase_options.dart';
+import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main/dependency_initializer/dependency_initializer.dart';
+import 'package:europharm_flutter/main/dependency_provider/dependency_provider.dart';
+import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
+import 'package:europharm_flutter/main/top_level_blocs/top_level_blocs.dart';
+import 'package:europharm_flutter/managers/user_store.dart';
+import 'package:europharm_flutter/network/dio_wrapper/dio_wrapper.dart';
+import 'package:europharm_flutter/network/repository/global_repository.dart';
+import 'package:europharm_flutter/network/repository/hive_repository.dart';
+import 'package:europharm_flutter/network/services/network_service.dart';
+import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
 import 'package:europharm_flutter/utils/scroll_glow_disable.dart';
+import 'package:europharm_flutter/widgets/dynamic_link_layer/dynamic_link_layer.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,22 +21,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-
-import 'generated/l10n.dart';
-import 'main/dependency_initializer/dependency_initializer.dart';
-import 'main/dependency_provider/dependency_provider.dart';
-import 'main/login_bloc/login_bloc.dart';
-import 'main/top_level_blocs/top_level_blocs.dart';
-import 'managers/error_handler/error_handler.dart';
-import 'managers/secure_storage_manager/secure_storage_manager.dart';
-import 'managers/url_manager/url_manager.dart';
-import 'managers/user_store.dart';
-import 'network/dio_wrapper/dio_wrapper.dart';
-import 'network/repository/global_repository.dart';
-import 'network/repository/hive_repository.dart';
-import 'network/services/network_service.dart';
-import 'network/tokens_repository/tokens_repository.dart';
-import 'widgets/dynamic_link_layer/dynamic_link_layer.dart';
 
 const String baseUrl = 'http://185.129.50.172/api/v1/';
 
@@ -38,38 +33,39 @@ void main() async {
   ///Global managers initialization
   Future<bool> _initialize(BuildContext context) async {
     try {
-      await Firebase.initializeApp();
-      // final FirebaseAnalytics analytics = FirebaseAnalytics();
-      // final FirebaseAnalyticsObserver observer =
-      //     FirebaseAnalyticsObserver(analytics: analytics);
-      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ]);
-      context.read<ErrorHandler>().initialize(S.of(context));
+      WidgetsFlutterBinding.ensureInitialized();
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      // context.read<ErrorHandler>().initialize(S.of(context));
       final docDir = await getApplicationDocumentsDirectory();
       Hive.init(docDir.path);
-      await context.read<SecureStorage>().init();
-      final urlManager = context.read<UrlManager>();
+      // await context.read<SecureStorage>().init();
       await context.read<HiveRepository>().init();
       await context.read<UserStore>().init(context.read<HiveRepository>());
       await context
           .read<TokensRepository>()
           .init(context.read<HiveRepository>());
+      // await context.read<FirebaseMessagingRepository>().init();
       await context.read<DioWrapper>().init(
-            baseURL: projectBaseUrl,
-            tokensRepository: context.read<TokensRepository>(),
-            globalRepository: context.read<GlobalRepository>(),
-            loginBloc: context.read<LoginBloc>(),
-          );
+          baseURL: projectBaseUrl,
+          tokensRepository: context.read<TokensRepository>(),
+          globalRepository: context.read<GlobalRepository>(),
+          loginBloc: context.read<LoginBloc>());
+
       context.read<NetworkService>().init(context.read<DioWrapper>());
-      context
-          .read<GlobalRepository>()
-          .init(context.read<NetworkService>(), context.read<HiveRepository>());
-    } catch (e, stackTrace) {
-      await FirebaseCrashlytics.instance.recordError(e, stackTrace,
-          reason: 'Dependencies are not initialized', fatal: true);
+      context.read<GlobalRepository>().init(
+            context.read<NetworkService>(),
+            context.read<HiveRepository>(),
+          );
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
     return true;
   }
@@ -79,12 +75,12 @@ void main() async {
       child: DependenciesProvider(
         child: TopLevelBlocs(
           child: MaterialApp(
-            // builder: (context, child) {
-            //   return ScrollConfiguration(
-            //     behavior: DisableGlowScrollBehavior(),
-            //     child: child!,
-            //   );
-            // },
+            builder: (context, child) {
+              return ScrollConfiguration(
+                behavior: DisableGlowScrollBehavior(),
+                child: child!,
+              );
+            },
             title: 'Europharm',
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
@@ -93,19 +89,21 @@ void main() async {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+            locale: const Locale('zh'),
             supportedLocales: S.delegate.supportedLocales,
             theme: ThemeData(
               appBarTheme: const AppBarTheme(
                 backgroundColor: Colors.white,
               ),
               scaffoldBackgroundColor: ColorPalette.white,
-              fontFamily: 'Gilroy',
+              fontFamily: 'ProductSans',
               textSelectionTheme: const TextSelectionThemeData().copyWith(
                 cursorColor: ColorPalette.black,
               ),
             ),
             home: DependenciesInitializer(
               loadingIndicatorScreen: const Scaffold(
+                backgroundColor: Colors.white, // Colors.orange, /// FIXME
                 body: Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -135,9 +133,10 @@ class MainAuthorization extends StatelessWidget {
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       },
-      buildWhen: (p, c) => (c is LoadingLoginState ||
+      buildWhen: (p, c) =>
+          c is LoadingLoginState ||
           c is UnauthorizedState ||
-          c is AuthorizedState),
+          c is AuthorizedState,
       builder: (context, state) {
         if (state is LoadingLoginState) {
           return const Material(
@@ -150,13 +149,13 @@ class MainAuthorization extends StatelessWidget {
         }
         if (state is UnauthorizedState) {
           return const Application(
-            false,
+            isAuthenticated: false,
             key: ValueKey(0),
           );
         }
         if (state is AuthorizedState) {
           return const Application(
-            true,
+            isAuthenticated: true,
             key: ValueKey(1),
           );
         }
@@ -169,8 +168,8 @@ class MainAuthorization extends StatelessWidget {
 class Application extends StatelessWidget {
   final bool isAuthenticated;
 
-  const Application(
-    this.isAuthenticated, {
+  const Application({
+    required this.isAuthenticated,
     Key? key,
   }) : super(key: key);
 
@@ -190,7 +189,7 @@ class RestartWidget extends StatefulWidget {
   }
 
   @override
-  _RestartWidgetState createState() => _RestartWidgetState();
+  State<RestartWidget> createState() => _RestartWidgetState();
 }
 
 class _RestartWidgetState extends State<RestartWidget> {

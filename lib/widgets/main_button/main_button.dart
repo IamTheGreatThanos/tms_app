@@ -28,6 +28,7 @@ class MainButton extends StatelessWidget {
 
   ///Icon before text (optional)
   final String? icon;
+  final Color? iconColor;
 
   ///Width of button. If width not specified, than equals screen width
   final double? width;
@@ -47,13 +48,14 @@ class MainButton extends StatelessWidget {
   const MainButton({
     Key? key,
     this.title,
-    this.color = ColorPalette.main,
+    this.color = ColorPalette.secondaryMain,
     this.isEnabled = true,
     this.textColor = ColorPalette.white,
     required this.onTap,
     this.buttonHeight = 50,
     this.borderColor,
     this.icon,
+    this.iconColor,
     this.width,
     this.fontSize = 16,
     this.borderRadius = 12,
@@ -94,9 +96,7 @@ class MainButton extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: SvgPicture.asset(
                           icon!,
-                          color: !isEnabled && disabledTextColor != null
-                              ? disabledTextColor
-                              : null,
+                          color: iconColor,
                           width: 20,
                           height: 20,
                         ),
@@ -113,7 +113,7 @@ class MainButton extends StatelessWidget {
                           fontSize: fontSize,
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
