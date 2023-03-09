@@ -52,95 +52,99 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   Widget _buildColumn(BuildContext context) {
     return SafeArea(
-      child: ListView(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          SvgPicture.asset(
-            "assets/images/svg/logo.svg",
-            height: 40,
-          ),
-          Image.asset(
-            "assets/images/png/truck.png",
-          ),
-          Text(
-            S.of(context).with_your_help_were_doing_logistics_better,
-            style: ProjectTextStyles.ui_24Medium.copyWith(
-              color: ColorPalette.main,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Column(
-            children: [
-              MainButton(
+            SvgPicture.asset(
+              "assets/images/svg/logo.svg",
+              height: 40,
+            ),
+            Image.asset(
+              "assets/images/png/truck.png",
+            ),
+            Text(
+              S.of(context).with_your_help_were_doing_logistics_better,
+              style: ProjectTextStyles.ui_24Medium.copyWith(
                 color: ColorPalette.main,
-                borderRadius: 10.0,
-                title: S.of(context).registration,
-                onTap: () {
-                  showPhoneBottomDialog(context);
-                },
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              MainButton(
-                borderRadius: 10.0,
-                title: S.of(context).enter,
-                textColor: ColorPalette.main,
-                onTap: () {
-                  // AppRouter.pushOff(
-                  //   context,
-                  //   const BottomNavigationBarScreen(),
-                  // );
-                  // showReferalCodeBottomDialog(
-                  //     context, SignUpVModel(bloc: BlocAuth()));
-                  showSignInBottomDialog(context);
-                },
-                color: ColorPalette.white,
-                borderColor: ColorPalette.main,
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 43,
-            ),
-            child: RichText(
               textAlign: TextAlign.center,
-              text: TextSpan(
-                style: ProjectTextStyles.ui_12Medium.copyWith(
-                  color: ColorPalette.commonGrey,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Column(
+              children: [
+                MainButton(
+                  color: ColorPalette.main,
+                  borderRadius: 10.0,
+                  title: S.of(context).registration,
+                  onTap: () {
+                    showPhoneBottomDialog(context);
+                  },
                 ),
-                children: [
-                  TextSpan(text: S.of(context).policy_title),
-                  TextSpan(
-                      text: S.of(context).privacy_policy,
-                      style: ProjectTextStyles.ui_12Medium.copyWith(
-                        color: ColorPalette.pickColor,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          log('privacy_policy');
-                        }),
-                  const TextSpan(text: ' & '),
-                  TextSpan(
-                      text: S.of(context).terms_of_use,
-                      style: ProjectTextStyles.ui_12Medium.copyWith(
-                        color: ColorPalette.pickColor,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          log('terms_of_use');
-                        }),
-                ],
+                const SizedBox(
+                  height: 10,
+                ),
+                MainButton(
+                  borderRadius: 10.0,
+                  title: S.of(context).enter,
+                  textColor: ColorPalette.main,
+                  onTap: () {
+                    // AppRouter.pushOff(
+                    //   context,
+                    //   const BottomNavigationBarScreen(),
+                    // );
+                    // showReferalCodeBottomDialog(
+                    //     context, SignUpVModel(bloc: BlocAuth()));
+                    showSignInBottomDialog(context);
+                  },
+                  color: ColorPalette.white,
+                  borderColor: ColorPalette.main,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 43,
+              ),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: ProjectTextStyles.ui_12Medium.copyWith(
+                    color: ColorPalette.commonGrey,
+                  ),
+                  children: [
+                    TextSpan(text: S.of(context).policy_title),
+                    TextSpan(
+                        text: S.of(context).privacy_policy,
+                        style: ProjectTextStyles.ui_12Medium.copyWith(
+                          color: ColorPalette.pickColor,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            log('privacy_policy');
+                          }),
+                    const TextSpan(text: ' & '),
+                    TextSpan(
+                        text: S.of(context).terms_of_use,
+                        style: ProjectTextStyles.ui_12Medium.copyWith(
+                          color: ColorPalette.pickColor,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            log('terms_of_use');
+                          }),
+                  ],
+                ),
               ),
             ),
-          )
-        ],
+            SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }
