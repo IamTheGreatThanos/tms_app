@@ -3,13 +3,14 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/order_documents.dart';
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
+import 'package:europharm_flutter/network/models/repairs.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/network/repository/hive_repository.dart';
 import 'package:europharm_flutter/network/services/network_service.dart';
@@ -97,11 +98,11 @@ class GlobalRepository {
       _networkService.orderPointFinish(pointId: pointId);
 
   Future<OrderDTO> stopOrder({
-   required int orderId,
-   required int pointId,
-   required String cause,
+    required int orderId,
+    required int pointId,
+    required String cause,
     UserDTO? emptyDriver,
-}) async =>
+  }) async =>
       _networkService.stopOrder(
         orderId: orderId,
         pointId: pointId,
@@ -198,4 +199,10 @@ class GlobalRepository {
         await SharedPreferences.getInstance();
     return _preferences.getString('$orderId OTHERTIME') as String;
   }
+
+  Future<List<OrderDocuments>> getOrderDocuments(
+          {required int orderId, required int userId}) async =>
+      _networkService.getOrderDocuments(orderId: orderId, userId: userId);
+
+  Future<List<Repairs>> getRepairs() async => _networkService.getRepairs();
 }

@@ -8,10 +8,11 @@ import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/screens/map_screen/data/bloc/map_cubit.dart';
 import 'package:europharm_flutter/screens/map_screen/data/repo_map.dart';
 import 'package:europharm_flutter/screens/map_screen/map.dart';
-import 'package:europharm_flutter/screens/order_card/bloc/order_detail_bloc.dart';
 import 'package:europharm_flutter/screens/order_card/bloc/empty_drivers_cubit.dart';
+import 'package:europharm_flutter/screens/order_card/bloc/order_detail_bloc.dart';
 import 'package:europharm_flutter/screens/order_card/provider/order_detail_provider.dart';
 import 'package:europharm_flutter/screens/order_card/ui/cause_bottom_sheet.dart';
+import 'package:europharm_flutter/screens/order_card/ui/order_documents_page.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/timer.dart';
 import 'package:europharm_flutter/screens/order_card/ui/widgets/transfer_order_bottom_sheet.dart';
 import 'package:europharm_flutter/screens/order_finish/bloc/point_page_bloc.dart';
@@ -105,6 +106,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               Navigator.of(context, rootNavigator: true).pop();
             },
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.playlist_add_check_circle,
+                color: ColorPalette.black,
+              ),
+              tooltip: 'Documents',
+              onPressed: () {
+                AppRouter.push(
+                    context, OrderDocumentsPage(order: widget.order));
+              },
+            ),
+          ],
         ),
 
         ///
@@ -391,8 +405,15 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                                       color: Colors.black,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                const SizedBox(height: 4,),
-                                Text("${state.order.transport?.number}",style: const TextStyle(color: ColorPalette.commonGrey,),)
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                Text(
+                                  "${state.order.transport?.number}",
+                                  style: const TextStyle(
+                                    color: ColorPalette.commonGrey,
+                                  ),
+                                )
                               ],
                             ),
                           ],
@@ -633,9 +654,9 @@ class _FABWidget extends StatelessWidget {
               Center(
                 child: Text(
                   (order.points![index]?.status == "finished" ||
-                                      order.points![index]?.status ==
-                                          "Завершен")?
-                  "Посмотреть детали":"Приехал",
+                          order.points![index]?.status == "Завершен")
+                      ? "Посмотреть детали"
+                      : "Приехал",
                   style: ProjectTextStyles.ui_16Medium.copyWith(
                     color: Colors.white,
                   ),
@@ -970,8 +991,8 @@ class _BuildOrderItemState extends State<_BuildOrderItem> {
                           //             widget.order.points![index]?.status ==
                           //                 "Завершен")
                           //     ? false
-                          //     : 
-                              isOpened,
+                          //     :
+                          isOpened,
                       orderPoint: widget.order.points![index],
                     );
                     // }

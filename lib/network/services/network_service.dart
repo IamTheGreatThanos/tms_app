@@ -8,13 +8,14 @@ import 'package:europharm_flutter/network/models/dto_models/response/cities_resp
 import 'package:europharm_flutter/network/models/dto_models/response/login_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/marks_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/order_history_response.dart';
-import 'package:europharm_flutter/network/models/dto_models/response/orders_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_code_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/phone_register_response.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/positions_response.dart';
 import 'package:europharm_flutter/network/models/notification_dto.dart';
+import 'package:europharm_flutter/network/models/order_documents.dart';
 import 'package:europharm_flutter/network/models/order_dto.dart';
 import 'package:europharm_flutter/network/models/point_dto.dart';
+import 'package:europharm_flutter/network/models/repairs.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmodel.dart';
 import 'package:europharm_flutter/screens/user_confirmation/ui/_vmodel.dart';
@@ -642,5 +643,53 @@ class NetworkService {
     );
 
     return orders;
+  }
+
+  Future<List<OrderDocuments>> getOrderDocuments(
+      {required int orderId, required int userId}) async {
+    final response = await _dioWrapper.sendRequest(
+      path: "docs?user_id=$userId&order_id=$orderId",
+      method: NetworkMethod.get,
+    );
+
+    // return OrdersResponse.fromJson(response.data as Map<String, dynamic>);
+    log(
+      '##### getOrderDocuments api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<OrderDocuments> documents = await compute<List, dynamic>(
+      (List list) {
+        return list
+            .map((e) => OrderDocuments.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as List<dynamic>),
+    );
+
+    return documents;
+  }
+
+  Future<List<Repairs>> getRepairs() async {
+    final response = await _dioWrapper.sendRequest(
+      path: "repairs",
+      method: NetworkMethod.get,
+    );
+
+    log(
+      '##### getRepairs api:: ${response.statusCode}',
+      name: _networkService,
+    );
+
+    final List<Repairs> repairs = await compute<List, dynamic>(
+      (List list) {
+        return list
+            .map((e) => Repairs.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+      (response.data as Map<String, dynamic>)['data'] as List,
+    );
+
+    return repairs;
   }
 }

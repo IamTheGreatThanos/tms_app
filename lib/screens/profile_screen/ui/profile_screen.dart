@@ -3,6 +3,7 @@ import 'package:europharm_flutter/generated/l10n.dart';
 import 'package:europharm_flutter/screens/faq_screen/ui/faq_screen.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/ui/personal_data_screen.dart';
 import 'package:europharm_flutter/screens/profile_screen/bloc/profile_bloc.dart';
+import 'package:europharm_flutter/screens/repair_history_screen/ui/repair_page.dart';
 import 'package:europharm_flutter/screens/ride_history_screen/ui/ride_history_screen.dart';
 import 'package:europharm_flutter/screens/settings_screen/ui/settings_screen.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
@@ -294,6 +295,18 @@ class _BuildProfileMenu extends StatelessWidget {
               AppRouter.push(
                 context,
                 const RideHistoryScreen(),
+              );
+            },
+          ),
+          _BuildMenuItem(
+            icon: "ride_history",
+            title: "История ремонта",
+            onTap: () {
+              final bloc = BlocProvider.of<ProfileBloc>(context).state;
+              if (bloc is ProfileStateLoaded) {}
+              AppRouter.push(
+                context,
+                const RepairHistoryPage(),
               );
             },
           ),

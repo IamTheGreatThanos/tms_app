@@ -22,11 +22,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-const String baseUrl = 'http://185.129.50.172/api/v1/';
+const String baseUrl = 'http://185.129.50.172/api/v2/';
 
 String get projectBaseUrl {
   if (kDebugMode) return baseUrl;
-  return "http://185.129.50.172/api/v1/";
+  return "http://185.129.50.172/api/v2/";
 }
 
 void main() async {

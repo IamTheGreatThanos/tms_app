@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
-import 'package:europharm_flutter/network/models/dto_models/encodable.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/dto_tokens_reaponse.dart';
 import 'package:europharm_flutter/network/repository/global_repository.dart';
 import 'package:europharm_flutter/network/tokens_repository/tokens_repository.dart';
@@ -101,7 +100,7 @@ class DioWrapper {
             ? await _postRequest(
                 path,
                 method,
-                data: request ,// params,
+                data: request, // params,
                 queryParameters: queryParameters,
                 options: options,
               )

@@ -1,9 +1,7 @@
 import 'dart:developer';
 
 import 'package:europharm_flutter/screens/order_finish/bloc/point_page_bloc.dart';
-import 'package:europharm_flutter/screens/order_finish/ui/widgets/success_order_finished.dart';
 import 'package:europharm_flutter/styles/color_palette.dart';
-import 'package:europharm_flutter/utils/app_router.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/camera/camera_shape.dart';
 import 'package:europharm_flutter/widgets/snackbar/snackbar.dart';
@@ -52,7 +50,6 @@ class _ScanBarcodePageState extends State<ScanBarcodePage> {
               'Успешно отсканировано!',
               color: ColorPalette.green,
             );
-            
           }
         },
         builder: (context, state) {
@@ -95,7 +92,6 @@ class _ScanBarcodePageState extends State<ScanBarcodePage> {
                         // context
                         //     .read<BlocGoodsList>()
                         //     .add(EventScanItem(code: code));
-
                       }
                     }
                   },
@@ -104,15 +100,15 @@ class _ScanBarcodePageState extends State<ScanBarcodePage> {
                   alignment: Alignment.center,
                   decoration: ShapeDecoration(
                     shape: CameraShaper(
-                      paintHeight: MediaQuery.of(context).size.height * 0.2,
-                      paintWidth: MediaQuery.of(context).size.width - 26,
+                      paintHeight: MediaQuery.of(context).size.width - 200,
+                      paintWidth: MediaQuery.of(context).size.width - 200,
                     ),
                   ),
                 ),
                 Positioned(
                   left: 0,
                   right: 0,
-                  top: MediaQuery.of(context).size.height / 3,
+                  top: MediaQuery.of(context).size.height / 4,
                   child: const Center(
                     child: Text(
                       'Отсканируйте штрих код на обороте коробки',
