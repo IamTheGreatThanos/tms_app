@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>TMC</string>
+	<string>TMS</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,13 +31,13 @@
 		<string>_dartobservatory._tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Can I use the camera please?</string>
+	<string>Приложению требуется доступ к вашей камере, чтобы загружать фотографии.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Приложению требуется доступ к вашему местоположение, чтобы показать ваше местоположение в карте. Эти данные не будут нигде хранится.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Can I use the mic please?</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can I use the gallery please?</string>
+	<string>Приложению требуется доступ к вашей галерее, чтобы загрузить фото профиля.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
