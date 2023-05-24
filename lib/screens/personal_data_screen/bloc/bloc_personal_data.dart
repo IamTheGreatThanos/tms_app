@@ -10,21 +10,38 @@ import 'package:europharm_flutter/screens/personal_data_screen/ui/widgets/_vmode
 import 'package:meta/meta.dart';
 
 part 'events.dart';
-
-part 'states.dart';
-
-part 'parts/_read.dart';
-
 part 'parts/_edit.dart';
+part 'parts/_read.dart';
+part 'states.dart';
 
 class BlocPersonalData
     extends Bloc<EventBlocPersonalData, StateBlocPersonalData> {
+  final GlobalRepository repository;
+
   BlocPersonalData({
     required this.repository,
   }) : super(StateLoadingPersonalData()) {
     on<EventInitialPersonalData>(_read);
     on<EventEditProfile>(_edit);
+    on<EventDeleteAccount>(_deleteAccount);
   }
 
-  final GlobalRepository repository;
+  Future<void> _deleteAccount(
+      EventDeleteAccount event, Emitter<StateBlocPersonalData> emit) async {
+    try {
+      final user = await repository.getProfile();
+      await repository.deleteAccount(user.id);
+      emit(StateSuccessfullyAccountDeleted());
+    } catch (e) {
+      print(e);
+      emit(
+        StatePersonalDataError(
+          error: AppError(
+            message: e.dioErrorMessage,
+            code: e.dioErrorStatusCode,
+          ),
+        ),
+      );
+    }
+  }
 }

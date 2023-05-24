@@ -22,3 +22,5 @@ class StatePersonalDataError extends StateBlocPersonalData {
 }
 
 class StateSuccessfullyEditedProfile extends StateBlocPersonalData {}
+
+class StateSuccessfullyAccountDeleted extends StateBlocPersonalData {}

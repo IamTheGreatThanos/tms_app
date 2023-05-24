@@ -13,6 +13,7 @@ class EventRegisterPhone extends EventBlocAuth {
     required this.phone,
   });
 }
+
 class EventRegisterPhoneCode extends EventBlocAuth {
   final String phone;
   final String code;

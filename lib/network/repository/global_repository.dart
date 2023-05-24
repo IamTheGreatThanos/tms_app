@@ -35,6 +35,9 @@ class GlobalRepository {
   Future<LoginResponse> login(String phone, String password) async =>
       _networkService.login(phone, password);
 
+  Future<LoginResponse> deleteAccount(int userId) async =>
+      _networkService.deleteAccount(userId);
+
   Future<PhoneRegisterResponse> registerPhone(String phone) async =>
       _networkService.registerPhone(phone);
 

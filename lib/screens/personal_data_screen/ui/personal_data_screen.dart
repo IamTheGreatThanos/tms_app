@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:europharm_flutter/generated/l10n.dart';
+import 'package:europharm_flutter/main.dart';
+import 'package:europharm_flutter/main/login_bloc/login_bloc.dart';
 import 'package:europharm_flutter/network/models/dto_models/response/cities_response.dart';
 import 'package:europharm_flutter/network/models/user_dto.dart';
 import 'package:europharm_flutter/screens/personal_data_screen/bloc/bloc_personal_data.dart';
@@ -12,6 +14,7 @@ import 'package:europharm_flutter/styles/text_styles.dart';
 import 'package:europharm_flutter/widgets/app_bottom_sheets/app_dialog.dart';
 import 'package:europharm_flutter/widgets/app_loader_overlay.dart';
 import 'package:europharm_flutter/widgets/custom_app_bar.dart';
+import 'package:europharm_flutter/widgets/dialogs/two_buttons_dialog.dart';
 import 'package:europharm_flutter/widgets/main_button/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +63,11 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                 context,
                 body: state.error.message,
               );
+            }
+
+            if (state is StateSuccessfullyAccountDeleted) {
+              context.read<LoginBloc>().add(LogOutEvent());
+              RestartWidget.restartApp(context);
             }
 
             if (state is StateSuccessfullyEditedProfile) {
@@ -195,6 +203,37 @@ class _PersonalDataScreenState extends State<PersonalDataScreen> {
                             ),
                         color: ColorPalette.main,
                         title: "Сохранить",
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return TwoButtonsDialog(
+                                  title: 'Внимание!',
+                                  subtitle: 'Вы точно хотите удалить аккаунт?',
+                                  firstButtonText: 'Нет',
+                                  secondButtonText: 'Да',
+                                  onFirstTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  onSecondTap: () {
+                                    context
+                                        .read<BlocPersonalData>()
+                                        .add(EventDeleteAccount());
+                                  },
+                                );
+                              });
+                        },
+                        child: Text(
+                          'Удалить аккаунт',
+                          style: ProjectTextStyles.ui_16Medium.copyWith(
+                              decoration: TextDecoration.underline,
+                              color: ColorPalette.red),
+                        ),
                       ),
                       const SizedBox(
                         height: 15,

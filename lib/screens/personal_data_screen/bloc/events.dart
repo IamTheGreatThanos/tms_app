@@ -12,3 +12,5 @@ class EventEditProfile extends EventBlocPersonalData {
     required this.vModel,
   });
 }
+
+class EventDeleteAccount extends EventBlocPersonalData {}

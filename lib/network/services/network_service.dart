@@ -91,6 +91,15 @@ class NetworkService {
     return LoginResponse.fromJson(response.data);
   }
 
+  Future<LoginResponse> deleteAccount(int userId) async {
+    final response = await _dioWrapper.sendRequest(
+      formData: FormData.fromMap({'type': 'mobile', 'userId': userId}),
+      path: "delete-user",
+      method: NetworkMethod.post,
+    );
+    return LoginResponse.fromJson(response.data);
+  }
+
   Future<void> sendDeviceToken({
     required String deviceToken,
   }) async {

@@ -10,12 +10,10 @@ import 'package:europharm_flutter/network/services/firebase_messaging_repository
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'events.dart';
-
-part 'states.dart';
-
+part 'parts/register_confirm.dart';
 part 'parts/register_phone.dart';
 part 'parts/register_phone_code.dart';
-part 'parts/register_confirm.dart';
+part 'states.dart';
 
 class BlocAuth extends Bloc<EventBlocAuth, StateBlocAuth> {
   BlocAuth({
