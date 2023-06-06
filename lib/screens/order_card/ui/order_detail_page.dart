@@ -603,35 +603,39 @@ class _FABWidget extends StatelessWidget {
             order.status == 'В пути'))) {
       return GestureDetector(
         onTap: () {
-          if (index == 0 ||
-              points[index - 1] == null ||
-              (index > 0 &&
-                  (points[index - 1]?.status == "finished" ||
-                      points[index - 1]?.status == "Завершен"))) {
-            AppRouter.push(
-              context,
-              BlocProvider<PointPageBloc>(
-                create: (context) => PointPageBloc(
-                  repository: context.read<GlobalRepository>(),
-                )..add(
-                    PointPageEventLoadProducts(
-                      pointId: point!.id,
-                    ),
+          // TODO: Убрал ограничение ниже
+
+          // if (index == 0 ||
+          //     points[index - 1] == null ||
+          //     (index > 0 &&
+          //         (points[index - 1]?.status == "finished" ||
+          //             points[index - 1]?.status == "Завершен"))) {
+          AppRouter.push(
+            context,
+            BlocProvider<PointPageBloc>(
+              create: (context) => PointPageBloc(
+                repository: context.read<GlobalRepository>(),
+              )..add(
+                  PointPageEventLoadProducts(
+                    pointId: point!.id,
                   ),
-                child: point!.id == order.points!.first?.id
-                    ? WarehousePage(order: order, isScan: isScan, point: point!)
-                    : PointPage(
-                        order: order,
-                        point: point!,
-                        isScan: order.points!.first?.id == point!.id,
-                        // isScan: ,
-                      ),
-              ),
-            );
-          } else {
-            showCustomSnackbar(context, 'Сначало завершите предыдущую точку',
-                errorText: 'Сначало завершите предыдущую точку');
-          }
+                ),
+              child: point!.id == order.points!.first?.id
+                  ? WarehousePage(order: order, isScan: isScan, point: point!)
+                  : PointPage(
+                      order: order,
+                      point: point!,
+                      isScan: order.points!.first?.id == point!.id,
+                      // isScan: ,
+                    ),
+            ),
+          );
+          // } else {
+          //   showCustomSnackbar(context, 'Сначало завершите предыдущую точку',
+          //       errorText: 'Сначало завершите предыдущую точку');
+          // }
+
+          // TODO: Убрал ограничение конец
 
           // .then(
           //   (value) {
